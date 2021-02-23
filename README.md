@@ -21,7 +21,7 @@ The fastMavlink library is used in two projects of mine, the STorM32 gimbal cont
 
 ## Licence ##
 
-yet to be determined
+Yet to be determined. It will be a permissive licence, along the ideas of the original MAVLink project.
 
 ## Limitations ##
 
