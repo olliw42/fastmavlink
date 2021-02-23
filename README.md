@@ -1,9 +1,9 @@
 
 # The FastMavlink Library #
 
-FastMavlink is designed to be the most lightweight and most performant MAVLink C library, additionally providing novel features.
+FastMavlink is designed to be the most lightweight and most performant [MAVLink](https://mavlink.io/en/) C library, additionally providing novel features.
 
-It may not reach the goals to 100.00%, not now and not then, but as compared to the standard pymavlink-mavgen library (https://github.com/ArduPilot/pymavlink) it provides drastically improved performance, in terms of cpu time, flash, and RAM footprint, and capabilities.
+It may not reach the goals to 100.00%, not now and not then, but as compared to the standard [pymavlink-mavgen](https://github.com/ArduPilot/pymavlink) library it provides drastically improved performance, in terms of cpu time, flash, and RAM footprint, and capabilities.
 
 This is not achieved by some magic vodoo coding tricks, but simply by a careful design which avoids superfluous calculations, obscure data fields, and unnecessary use of RAM and stack.
 
@@ -17,7 +17,7 @@ Lastly, the C code is generated using a Python generator from the MAVLink protoc
 
 You don't believe this all this can be true, you think it must be exaggerated? Well, when please check it out and judge :)
 
-The fastMavlink library is used in two projects of mine, the STorM32 gimbal controller and the MAVLink for OpenTx projects. So, it can claim some maturity. Yet, obviously, there is plenty of room to further improve, extend and advance it. Suggestions are welcome.
+The fastMavlink library is used in two projects of mine, the [STorM32 gimbal controller](http://www.olliw.eu/2013/storm32bgc/) and the [MAVLink for OpenTx](http://www.olliw.eu/2020/olliwtelem/) projects. So, it can claim some maturity. Yet, obviously, there is plenty of room to further improve, extend and advance it. Suggestions are welcome.
 
 ## Licence ##
 
