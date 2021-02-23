@@ -3,7 +3,7 @@
 
 FastMavlink is designed to be the most lightweight and most performant MAVLink C library, additionally providing novel features.
 
-It may not reach the goals to 100.00%, not now and not then, but as compared to the standard pymavlink-mavgen library https://github.com/ArduPilot/pymavlink) it provides drastically improved performance, in terms of cpu time, flash, and RAM footprint, and capabilities.
+It may not reach the goals to 100.00%, not now and not then, but as compared to the standard pymavlink-mavgen library (https://github.com/ArduPilot/pymavlink) it provides drastically improved performance, in terms of cpu time, flash, and RAM footprint, and capabilities.
 
 This is not achieved by some magic vodoo coding tricks, but simply by a careful design which avoids superfluous calculations, obscure data fields, and unnecessary use of RAM and stack.
 
@@ -46,7 +46,6 @@ In the following the discrete tasks shall be carefully analyzed, as this should 
 
 
 ### Reading/Parsing:
-----------------
 
 Overview of primitive tasks:
 
@@ -108,7 +107,6 @@ msg_t -> data
 
 
 ### Sending/Emitting:
------------------
 
 Overview of primitive tasks:
 
