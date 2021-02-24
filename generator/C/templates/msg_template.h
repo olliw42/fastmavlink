@@ -42,7 +42,7 @@ ${{array_fields:#define FASTMAVLINK_MSG_${msg_name}_FIELD_${name_upper}_LEN  ${a
 
 
 //----------------------------------------
-//-- Message ${name} packing routines
+//-- Message ${name} packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_${name_lower}_pack(
@@ -133,7 +133,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_${name_lower}_encode_to_frame_b
 
 
 //----------------------------------------
-//-- Message ${name} unpacking routines
+//-- Message ${name} unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_${name_lower}_decode(fmav_${name_lower}_t* payload, const fmav_message_t* msg)
