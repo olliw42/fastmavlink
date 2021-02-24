@@ -48,7 +48,7 @@ typedef struct _fmav_storm32_gimbal_manager_profile_t {
 
 
 //----------------------------------------
-//-- Message STORM32_GIMBAL_MANAGER_PROFILE packing routines
+//-- Message STORM32_GIMBAL_MANAGER_PROFILE packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storm32_gimbal_manager_profile_pack(
@@ -147,7 +147,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storm32_gimbal_manager_profile_
 
 
 //----------------------------------------
-//-- Message STORM32_GIMBAL_MANAGER_PROFILE unpacking routines
+//-- Message STORM32_GIMBAL_MANAGER_PROFILE unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_storm32_gimbal_manager_profile_decode(fmav_storm32_gimbal_manager_profile_t* payload, const fmav_message_t* msg)

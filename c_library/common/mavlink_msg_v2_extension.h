@@ -44,7 +44,7 @@ typedef struct _fmav_v2_extension_t {
 
 
 //----------------------------------------
-//-- Message V2_EXTENSION packing routines
+//-- Message V2_EXTENSION packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_v2_extension_pack(
@@ -137,7 +137,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_v2_extension_encode_to_frame_bu
 
 
 //----------------------------------------
-//-- Message V2_EXTENSION unpacking routines
+//-- Message V2_EXTENSION unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_v2_extension_decode(fmav_v2_extension_t* payload, const fmav_message_t* msg)

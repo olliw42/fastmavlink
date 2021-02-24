@@ -51,7 +51,7 @@ typedef struct _fmav_camera_image_captured_t {
 
 
 //----------------------------------------
-//-- Message CAMERA_IMAGE_CAPTURED packing routines
+//-- Message CAMERA_IMAGE_CAPTURED packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_image_captured_pack(
@@ -156,7 +156,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_image_captured_encode_to
 
 
 //----------------------------------------
-//-- Message CAMERA_IMAGE_CAPTURED unpacking routines
+//-- Message CAMERA_IMAGE_CAPTURED unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_camera_image_captured_decode(fmav_camera_image_captured_t* payload, const fmav_message_t* msg)

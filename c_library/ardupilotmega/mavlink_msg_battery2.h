@@ -41,7 +41,7 @@ typedef struct _fmav_battery2_t {
 
 
 //----------------------------------------
-//-- Message BATTERY2 packing routines
+//-- Message BATTERY2 packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_battery2_pack(
@@ -130,7 +130,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_battery2_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message BATTERY2 unpacking routines
+//-- Message BATTERY2 unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_battery2_decode(fmav_battery2_t* payload, const fmav_message_t* msg)

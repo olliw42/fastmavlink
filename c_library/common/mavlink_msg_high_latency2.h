@@ -66,7 +66,7 @@ typedef struct _fmav_high_latency2_t {
 
 
 //----------------------------------------
-//-- Message HIGH_LATENCY2 packing routines
+//-- Message HIGH_LATENCY2 packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency2_pack(
@@ -205,7 +205,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency2_encode_to_frame_b
 
 
 //----------------------------------------
-//-- Message HIGH_LATENCY2 unpacking routines
+//-- Message HIGH_LATENCY2 unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_high_latency2_decode(fmav_high_latency2_t* payload, const fmav_message_t* msg)

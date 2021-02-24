@@ -44,7 +44,7 @@ typedef struct _fmav_set_mag_offsets_t {
 
 
 //----------------------------------------
-//-- Message SET_MAG_OFFSETS packing routines
+//-- Message SET_MAG_OFFSETS packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_mag_offsets_pack(
@@ -139,7 +139,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_mag_offsets_encode_to_frame
 
 
 //----------------------------------------
-//-- Message SET_MAG_OFFSETS unpacking routines
+//-- Message SET_MAG_OFFSETS unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_set_mag_offsets_decode(fmav_set_mag_offsets_t* payload, const fmav_message_t* msg)

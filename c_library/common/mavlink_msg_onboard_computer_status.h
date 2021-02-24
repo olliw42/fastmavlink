@@ -72,7 +72,7 @@ typedef struct _fmav_onboard_computer_status_t {
 
 
 //----------------------------------------
-//-- Message ONBOARD_COMPUTER_STATUS packing routines
+//-- Message ONBOARD_COMPUTER_STATUS packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_onboard_computer_status_pack(
@@ -195,7 +195,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_onboard_computer_status_encode_
 
 
 //----------------------------------------
-//-- Message ONBOARD_COMPUTER_STATUS unpacking routines
+//-- Message ONBOARD_COMPUTER_STATUS unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_onboard_computer_status_decode(fmav_onboard_computer_status_t* payload, const fmav_message_t* msg)

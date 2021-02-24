@@ -46,7 +46,7 @@ typedef struct _fmav_data_transmission_handshake_t {
 
 
 //----------------------------------------
-//-- Message DATA_TRANSMISSION_HANDSHAKE packing routines
+//-- Message DATA_TRANSMISSION_HANDSHAKE packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data_transmission_handshake_pack(
@@ -145,7 +145,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data_transmission_handshake_enc
 
 
 //----------------------------------------
-//-- Message DATA_TRANSMISSION_HANDSHAKE unpacking routines
+//-- Message DATA_TRANSMISSION_HANDSHAKE unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_data_transmission_handshake_decode(fmav_data_transmission_handshake_t* payload, const fmav_message_t* msg)

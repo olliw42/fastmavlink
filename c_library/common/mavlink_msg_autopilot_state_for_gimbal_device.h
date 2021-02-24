@@ -51,7 +51,7 @@ typedef struct _fmav_autopilot_state_for_gimbal_device_t {
 
 
 //----------------------------------------
-//-- Message AUTOPILOT_STATE_FOR_GIMBAL_DEVICE packing routines
+//-- Message AUTOPILOT_STATE_FOR_GIMBAL_DEVICE packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_autopilot_state_for_gimbal_device_pack(
@@ -158,7 +158,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_autopilot_state_for_gimbal_devi
 
 
 //----------------------------------------
-//-- Message AUTOPILOT_STATE_FOR_GIMBAL_DEVICE unpacking routines
+//-- Message AUTOPILOT_STATE_FOR_GIMBAL_DEVICE unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_autopilot_state_for_gimbal_device_decode(fmav_autopilot_state_for_gimbal_device_t* payload, const fmav_message_t* msg)

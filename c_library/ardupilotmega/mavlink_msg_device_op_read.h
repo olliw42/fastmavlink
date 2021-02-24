@@ -49,7 +49,7 @@ typedef struct _fmav_device_op_read_t {
 
 
 //----------------------------------------
-//-- Message DEVICE_OP_READ packing routines
+//-- Message DEVICE_OP_READ packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_device_op_read_pack(
@@ -152,7 +152,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_device_op_read_encode_to_frame_
 
 
 //----------------------------------------
-//-- Message DEVICE_OP_READ unpacking routines
+//-- Message DEVICE_OP_READ unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_device_op_read_decode(fmav_device_op_read_t* payload, const fmav_message_t* msg)

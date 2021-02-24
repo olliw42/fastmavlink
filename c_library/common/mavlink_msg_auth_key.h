@@ -40,7 +40,7 @@ typedef struct _fmav_auth_key_t {
 
 
 //----------------------------------------
-//-- Message AUTH_KEY packing routines
+//-- Message AUTH_KEY packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_auth_key_pack(
@@ -127,7 +127,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_auth_key_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message AUTH_KEY unpacking routines
+//-- Message AUTH_KEY unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_auth_key_decode(fmav_auth_key_t* payload, const fmav_message_t* msg)

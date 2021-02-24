@@ -46,7 +46,7 @@ typedef struct _fmav_esc_status_t {
 
 
 //----------------------------------------
-//-- Message ESC_STATUS packing routines
+//-- Message ESC_STATUS packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_status_pack(
@@ -139,7 +139,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_status_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message ESC_STATUS unpacking routines
+//-- Message ESC_STATUS unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_esc_status_decode(fmav_esc_status_t* payload, const fmav_message_t* msg)

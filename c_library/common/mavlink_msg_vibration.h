@@ -46,7 +46,7 @@ typedef struct _fmav_vibration_t {
 
 
 //----------------------------------------
-//-- Message VIBRATION packing routines
+//-- Message VIBRATION packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vibration_pack(
@@ -145,7 +145,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vibration_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message VIBRATION unpacking routines
+//-- Message VIBRATION unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_vibration_decode(fmav_vibration_t* payload, const fmav_message_t* msg)

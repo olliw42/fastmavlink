@@ -44,7 +44,7 @@ typedef struct _fmav_set_gps_global_origin_t {
 
 
 //----------------------------------------
-//-- Message SET_GPS_GLOBAL_ORIGIN packing routines
+//-- Message SET_GPS_GLOBAL_ORIGIN packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_gps_global_origin_pack(
@@ -139,7 +139,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_gps_global_origin_encode_to
 
 
 //----------------------------------------
-//-- Message SET_GPS_GLOBAL_ORIGIN unpacking routines
+//-- Message SET_GPS_GLOBAL_ORIGIN unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_set_gps_global_origin_decode(fmav_set_gps_global_origin_t* payload, const fmav_message_t* msg)

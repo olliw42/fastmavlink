@@ -45,7 +45,7 @@ typedef struct _fmav_heartbeat_t {
 
 
 //----------------------------------------
-//-- Message HEARTBEAT packing routines
+//-- Message HEARTBEAT packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_heartbeat_pack(
@@ -142,7 +142,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_heartbeat_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message HEARTBEAT unpacking routines
+//-- Message HEARTBEAT unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_heartbeat_decode(fmav_heartbeat_t* payload, const fmav_message_t* msg)

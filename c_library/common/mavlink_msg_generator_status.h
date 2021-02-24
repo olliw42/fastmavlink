@@ -50,7 +50,7 @@ typedef struct _fmav_generator_status_t {
 
 
 //----------------------------------------
-//-- Message GENERATOR_STATUS packing routines
+//-- Message GENERATOR_STATUS packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_generator_status_pack(
@@ -157,7 +157,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_generator_status_encode_to_fram
 
 
 //----------------------------------------
-//-- Message GENERATOR_STATUS unpacking routines
+//-- Message GENERATOR_STATUS unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_generator_status_decode(fmav_generator_status_t* payload, const fmav_message_t* msg)

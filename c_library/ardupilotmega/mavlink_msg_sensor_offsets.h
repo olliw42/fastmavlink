@@ -51,7 +51,7 @@ typedef struct _fmav_sensor_offsets_t {
 
 
 //----------------------------------------
-//-- Message SENSOR_OFFSETS packing routines
+//-- Message SENSOR_OFFSETS packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sensor_offsets_pack(
@@ -160,7 +160,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sensor_offsets_encode_to_frame_
 
 
 //----------------------------------------
-//-- Message SENSOR_OFFSETS unpacking routines
+//-- Message SENSOR_OFFSETS unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_sensor_offsets_decode(fmav_sensor_offsets_t* payload, const fmav_message_t* msg)

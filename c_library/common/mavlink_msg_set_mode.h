@@ -42,7 +42,7 @@ typedef struct _fmav_set_mode_t {
 
 
 //----------------------------------------
-//-- Message SET_MODE packing routines
+//-- Message SET_MODE packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_mode_pack(
@@ -133,7 +133,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_mode_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message SET_MODE unpacking routines
+//-- Message SET_MODE unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_set_mode_decode(fmav_set_mode_t* payload, const fmav_message_t* msg)

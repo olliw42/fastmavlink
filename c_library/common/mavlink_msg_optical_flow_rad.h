@@ -51,7 +51,7 @@ typedef struct _fmav_optical_flow_rad_t {
 
 
 //----------------------------------------
-//-- Message OPTICAL_FLOW_RAD packing routines
+//-- Message OPTICAL_FLOW_RAD packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_optical_flow_rad_pack(
@@ -160,7 +160,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_optical_flow_rad_encode_to_fram
 
 
 //----------------------------------------
-//-- Message OPTICAL_FLOW_RAD unpacking routines
+//-- Message OPTICAL_FLOW_RAD unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_optical_flow_rad_decode(fmav_optical_flow_rad_t* payload, const fmav_message_t* msg)

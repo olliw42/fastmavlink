@@ -48,7 +48,7 @@ typedef struct _fmav_attitude_quaternion_t {
 
 
 //----------------------------------------
-//-- Message ATTITUDE_QUATERNION packing routines
+//-- Message ATTITUDE_QUATERNION packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_attitude_quaternion_pack(
@@ -149,7 +149,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_attitude_quaternion_encode_to_f
 
 
 //----------------------------------------
-//-- Message ATTITUDE_QUATERNION unpacking routines
+//-- Message ATTITUDE_QUATERNION unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_attitude_quaternion_decode(fmav_attitude_quaternion_t* payload, const fmav_message_t* msg)

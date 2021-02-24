@@ -42,7 +42,7 @@ typedef struct _fmav_gopro_get_response_t {
 
 
 //----------------------------------------
-//-- Message GOPRO_GET_RESPONSE packing routines
+//-- Message GOPRO_GET_RESPONSE packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gopro_get_response_pack(
@@ -131,7 +131,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gopro_get_response_encode_to_fr
 
 
 //----------------------------------------
-//-- Message GOPRO_GET_RESPONSE unpacking routines
+//-- Message GOPRO_GET_RESPONSE unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gopro_get_response_decode(fmav_gopro_get_response_t* payload, const fmav_message_t* msg)

@@ -56,7 +56,7 @@ typedef struct _fmav_gimbal_device_information_t {
 
 
 //----------------------------------------
-//-- Message GIMBAL_DEVICE_INFORMATION packing routines
+//-- Message GIMBAL_DEVICE_INFORMATION packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_device_information_pack(
@@ -169,7 +169,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_device_information_encod
 
 
 //----------------------------------------
-//-- Message GIMBAL_DEVICE_INFORMATION unpacking routines
+//-- Message GIMBAL_DEVICE_INFORMATION unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gimbal_device_information_decode(fmav_gimbal_device_information_t* payload, const fmav_message_t* msg)

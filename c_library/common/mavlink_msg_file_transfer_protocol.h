@@ -43,7 +43,7 @@ typedef struct _fmav_file_transfer_protocol_t {
 
 
 //----------------------------------------
-//-- Message FILE_TRANSFER_PROTOCOL packing routines
+//-- Message FILE_TRANSFER_PROTOCOL packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_file_transfer_protocol_pack(
@@ -134,7 +134,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_file_transfer_protocol_encode_t
 
 
 //----------------------------------------
-//-- Message FILE_TRANSFER_PROTOCOL unpacking routines
+//-- Message FILE_TRANSFER_PROTOCOL unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_file_transfer_protocol_decode(fmav_file_transfer_protocol_t* payload, const fmav_message_t* msg)

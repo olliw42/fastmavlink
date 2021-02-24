@@ -57,7 +57,7 @@ typedef struct _fmav_servo_output_raw_t {
 
 
 //----------------------------------------
-//-- Message SERVO_OUTPUT_RAW packing routines
+//-- Message SERVO_OUTPUT_RAW packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_servo_output_raw_pack(
@@ -178,7 +178,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_servo_output_raw_encode_to_fram
 
 
 //----------------------------------------
-//-- Message SERVO_OUTPUT_RAW unpacking routines
+//-- Message SERVO_OUTPUT_RAW unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_servo_output_raw_decode(fmav_servo_output_raw_t* payload, const fmav_message_t* msg)

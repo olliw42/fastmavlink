@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Tue Feb 23 2021"
+#define FASTMAVLINK_BUILD_DATE  "Thu Feb 25 2021"
 #endif
 
 #ifdef FASTMAVLINK_DIALECT_VERSION

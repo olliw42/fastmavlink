@@ -42,7 +42,7 @@ typedef struct _fmav_mission_clear_all_t {
 
 
 //----------------------------------------
-//-- Message MISSION_CLEAR_ALL packing routines
+//-- Message MISSION_CLEAR_ALL packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_clear_all_pack(
@@ -133,7 +133,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_clear_all_encode_to_fra
 
 
 //----------------------------------------
-//-- Message MISSION_CLEAR_ALL unpacking routines
+//-- Message MISSION_CLEAR_ALL unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_mission_clear_all_decode(fmav_mission_clear_all_t* payload, const fmav_message_t* msg)

@@ -43,7 +43,7 @@ typedef struct _fmav_ping_t {
 
 
 //----------------------------------------
-//-- Message PING packing routines
+//-- Message PING packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ping_pack(
@@ -136,7 +136,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ping_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message PING unpacking routines
+//-- Message PING unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_ping_decode(fmav_ping_t* payload, const fmav_message_t* msg)

@@ -48,7 +48,7 @@ typedef struct _fmav_obstacle_distance_3d_t {
 
 
 //----------------------------------------
-//-- Message OBSTACLE_DISTANCE_3D packing routines
+//-- Message OBSTACLE_DISTANCE_3D packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_obstacle_distance_3d_pack(
@@ -151,7 +151,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_obstacle_distance_3d_encode_to_
 
 
 //----------------------------------------
-//-- Message OBSTACLE_DISTANCE_3D unpacking routines
+//-- Message OBSTACLE_DISTANCE_3D unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_obstacle_distance_3d_decode(fmav_obstacle_distance_3d_t* payload, const fmav_message_t* msg)

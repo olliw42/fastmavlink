@@ -44,7 +44,7 @@ typedef struct _fmav_param_set_t {
 
 
 //----------------------------------------
-//-- Message PARAM_SET packing routines
+//-- Message PARAM_SET packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_set_pack(
@@ -137,7 +137,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_set_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message PARAM_SET unpacking routines
+//-- Message PARAM_SET unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_param_set_decode(fmav_param_set_t* payload, const fmav_message_t* msg)

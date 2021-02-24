@@ -46,7 +46,7 @@ typedef struct _fmav_pid_tuning_t {
 
 
 //----------------------------------------
-//-- Message PID_TUNING packing routines
+//-- Message PID_TUNING packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_pid_tuning_pack(
@@ -145,7 +145,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_pid_tuning_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message PID_TUNING unpacking routines
+//-- Message PID_TUNING unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_pid_tuning_decode(fmav_pid_tuning_t* payload, const fmav_message_t* msg)

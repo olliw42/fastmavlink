@@ -52,7 +52,7 @@ typedef struct _fmav_adap_tuning_t {
 
 
 //----------------------------------------
-//-- Message ADAP_TUNING packing routines
+//-- Message ADAP_TUNING packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adap_tuning_pack(
@@ -163,7 +163,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adap_tuning_encode_to_frame_buf
 
 
 //----------------------------------------
-//-- Message ADAP_TUNING unpacking routines
+//-- Message ADAP_TUNING unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_adap_tuning_decode(fmav_adap_tuning_t* payload, const fmav_message_t* msg)

@@ -49,7 +49,7 @@ typedef struct _fmav_rally_point_t {
 
 
 //----------------------------------------
-//-- Message RALLY_POINT packing routines
+//-- Message RALLY_POINT packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rally_point_pack(
@@ -154,7 +154,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rally_point_encode_to_frame_buf
 
 
 //----------------------------------------
-//-- Message RALLY_POINT unpacking routines
+//-- Message RALLY_POINT unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_rally_point_decode(fmav_rally_point_t* payload, const fmav_message_t* msg)

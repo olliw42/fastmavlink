@@ -44,7 +44,7 @@ typedef struct _fmav_tunnel_t {
 
 
 //----------------------------------------
-//-- Message TUNNEL packing routines
+//-- Message TUNNEL packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_tunnel_pack(
@@ -137,7 +137,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_tunnel_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message TUNNEL unpacking routines
+//-- Message TUNNEL unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_tunnel_decode(fmav_tunnel_t* payload, const fmav_message_t* msg)

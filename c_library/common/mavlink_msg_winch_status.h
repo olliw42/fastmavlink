@@ -47,7 +47,7 @@ typedef struct _fmav_winch_status_t {
 
 
 //----------------------------------------
-//-- Message WINCH_STATUS packing routines
+//-- Message WINCH_STATUS packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_winch_status_pack(
@@ -148,7 +148,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_winch_status_encode_to_frame_bu
 
 
 //----------------------------------------
-//-- Message WINCH_STATUS unpacking routines
+//-- Message WINCH_STATUS unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_winch_status_decode(fmav_winch_status_t* payload, const fmav_message_t* msg)

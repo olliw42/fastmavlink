@@ -45,7 +45,7 @@ typedef struct _fmav_mount_control_t {
 
 
 //----------------------------------------
-//-- Message MOUNT_CONTROL packing routines
+//-- Message MOUNT_CONTROL packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_control_pack(
@@ -142,7 +142,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_control_encode_to_frame_b
 
 
 //----------------------------------------
-//-- Message MOUNT_CONTROL unpacking routines
+//-- Message MOUNT_CONTROL unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_mount_control_decode(fmav_mount_control_t* payload, const fmav_message_t* msg)

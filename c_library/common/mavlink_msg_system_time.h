@@ -41,7 +41,7 @@ typedef struct _fmav_system_time_t {
 
 
 //----------------------------------------
-//-- Message SYSTEM_TIME packing routines
+//-- Message SYSTEM_TIME packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_system_time_pack(
@@ -130,7 +130,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_system_time_encode_to_frame_buf
 
 
 //----------------------------------------
-//-- Message SYSTEM_TIME unpacking routines
+//-- Message SYSTEM_TIME unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_system_time_decode(fmav_system_time_t* payload, const fmav_message_t* msg)

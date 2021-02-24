@@ -46,7 +46,7 @@ typedef struct _fmav_gimbal_manager_status_t {
 
 
 //----------------------------------------
-//-- Message GIMBAL_MANAGER_STATUS packing routines
+//-- Message GIMBAL_MANAGER_STATUS packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_manager_status_pack(
@@ -145,7 +145,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_manager_status_encode_to
 
 
 //----------------------------------------
-//-- Message GIMBAL_MANAGER_STATUS unpacking routines
+//-- Message GIMBAL_MANAGER_STATUS unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gimbal_manager_status_decode(fmav_gimbal_manager_status_t* payload, const fmav_message_t* msg)

@@ -49,7 +49,7 @@ typedef struct _fmav_uavcan_node_info_t {
 
 
 //----------------------------------------
-//-- Message UAVCAN_NODE_INFO packing routines
+//-- Message UAVCAN_NODE_INFO packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavcan_node_info_pack(
@@ -150,7 +150,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavcan_node_info_encode_to_fram
 
 
 //----------------------------------------
-//-- Message UAVCAN_NODE_INFO unpacking routines
+//-- Message UAVCAN_NODE_INFO unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_uavcan_node_info_decode(fmav_uavcan_node_info_t* payload, const fmav_message_t* msg)

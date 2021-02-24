@@ -59,7 +59,7 @@ typedef struct _fmav_rc_channels_override_t {
 
 
 //----------------------------------------
-//-- Message RC_CHANNELS_OVERRIDE packing routines
+//-- Message RC_CHANNELS_OVERRIDE packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_override_pack(
@@ -184,7 +184,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_override_encode_to_
 
 
 //----------------------------------------
-//-- Message RC_CHANNELS_OVERRIDE unpacking routines
+//-- Message RC_CHANNELS_OVERRIDE unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_rc_channels_override_decode(fmav_rc_channels_override_t* payload, const fmav_message_t* msg)

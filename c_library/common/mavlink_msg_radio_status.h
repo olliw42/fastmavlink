@@ -46,7 +46,7 @@ typedef struct _fmav_radio_status_t {
 
 
 //----------------------------------------
-//-- Message RADIO_STATUS packing routines
+//-- Message RADIO_STATUS packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_status_pack(
@@ -145,7 +145,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_status_encode_to_frame_bu
 
 
 //----------------------------------------
-//-- Message RADIO_STATUS unpacking routines
+//-- Message RADIO_STATUS unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_radio_status_decode(fmav_radio_status_t* payload, const fmav_message_t* msg)

@@ -50,7 +50,7 @@ typedef struct _fmav_radio_calibration_t {
 
 
 //----------------------------------------
-//-- Message RADIO_CALIBRATION packing routines
+//-- Message RADIO_CALIBRATION packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_calibration_pack(
@@ -147,7 +147,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_calibration_encode_to_fra
 
 
 //----------------------------------------
-//-- Message RADIO_CALIBRATION unpacking routines
+//-- Message RADIO_CALIBRATION unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_radio_calibration_decode(fmav_radio_calibration_t* payload, const fmav_message_t* msg)

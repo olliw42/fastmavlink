@@ -51,7 +51,7 @@ typedef struct _fmav_hil_optical_flow_t {
 
 
 //----------------------------------------
-//-- Message HIL_OPTICAL_FLOW packing routines
+//-- Message HIL_OPTICAL_FLOW packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_optical_flow_pack(
@@ -160,7 +160,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_optical_flow_encode_to_fram
 
 
 //----------------------------------------
-//-- Message HIL_OPTICAL_FLOW unpacking routines
+//-- Message HIL_OPTICAL_FLOW unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_hil_optical_flow_decode(fmav_hil_optical_flow_t* payload, const fmav_message_t* msg)

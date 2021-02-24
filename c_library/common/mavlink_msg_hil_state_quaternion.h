@@ -55,7 +55,7 @@ typedef struct _fmav_hil_state_quaternion_t {
 
 
 //----------------------------------------
-//-- Message HIL_STATE_QUATERNION packing routines
+//-- Message HIL_STATE_QUATERNION packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_state_quaternion_pack(
@@ -170,7 +170,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_state_quaternion_encode_to_
 
 
 //----------------------------------------
-//-- Message HIL_STATE_QUATERNION unpacking routines
+//-- Message HIL_STATE_QUATERNION unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_hil_state_quaternion_decode(fmav_hil_state_quaternion_t* payload, const fmav_message_t* msg)

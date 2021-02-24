@@ -48,7 +48,7 @@ typedef struct _fmav_wind_cov_t {
 
 
 //----------------------------------------
-//-- Message WIND_COV packing routines
+//-- Message WIND_COV packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wind_cov_pack(
@@ -151,7 +151,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wind_cov_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message WIND_COV unpacking routines
+//-- Message WIND_COV unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_wind_cov_decode(fmav_wind_cov_t* payload, const fmav_message_t* msg)

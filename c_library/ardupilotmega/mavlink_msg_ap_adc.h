@@ -45,7 +45,7 @@ typedef struct _fmav_ap_adc_t {
 
 
 //----------------------------------------
-//-- Message AP_ADC packing routines
+//-- Message AP_ADC packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ap_adc_pack(
@@ -142,7 +142,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ap_adc_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message AP_ADC unpacking routines
+//-- Message AP_ADC unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_ap_adc_decode(fmav_ap_adc_t* payload, const fmav_message_t* msg)

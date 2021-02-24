@@ -50,7 +50,7 @@ typedef struct _fmav_scaled_imu_t {
 
 
 //----------------------------------------
-//-- Message SCALED_IMU packing routines
+//-- Message SCALED_IMU packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_scaled_imu_pack(
@@ -157,7 +157,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_scaled_imu_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message SCALED_IMU unpacking routines
+//-- Message SCALED_IMU unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_scaled_imu_decode(fmav_scaled_imu_t* payload, const fmav_message_t* msg)

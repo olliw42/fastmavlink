@@ -49,7 +49,7 @@ typedef struct _fmav_storm32_gimbal_manager_control_pitchyaw_t {
 
 
 //----------------------------------------
-//-- Message STORM32_GIMBAL_MANAGER_CONTROL_PITCHYAW packing routines
+//-- Message STORM32_GIMBAL_MANAGER_CONTROL_PITCHYAW packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storm32_gimbal_manager_control_pitchyaw_pack(
@@ -154,7 +154,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storm32_gimbal_manager_control_
 
 
 //----------------------------------------
-//-- Message STORM32_GIMBAL_MANAGER_CONTROL_PITCHYAW unpacking routines
+//-- Message STORM32_GIMBAL_MANAGER_CONTROL_PITCHYAW unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_storm32_gimbal_manager_control_pitchyaw_decode(fmav_storm32_gimbal_manager_control_pitchyaw_t* payload, const fmav_message_t* msg)

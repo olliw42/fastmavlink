@@ -48,7 +48,7 @@ typedef struct _fmav_global_position_int_t {
 
 
 //----------------------------------------
-//-- Message GLOBAL_POSITION_INT packing routines
+//-- Message GLOBAL_POSITION_INT packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_global_position_int_pack(
@@ -151,7 +151,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_global_position_int_encode_to_f
 
 
 //----------------------------------------
-//-- Message GLOBAL_POSITION_INT unpacking routines
+//-- Message GLOBAL_POSITION_INT unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_global_position_int_decode(fmav_global_position_int_t* payload, const fmav_message_t* msg)

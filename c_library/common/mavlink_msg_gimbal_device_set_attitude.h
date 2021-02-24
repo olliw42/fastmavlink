@@ -46,7 +46,7 @@ typedef struct _fmav_gimbal_device_set_attitude_t {
 
 
 //----------------------------------------
-//-- Message GIMBAL_DEVICE_SET_ATTITUDE packing routines
+//-- Message GIMBAL_DEVICE_SET_ATTITUDE packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_device_set_attitude_pack(
@@ -143,7 +143,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_device_set_attitude_enco
 
 
 //----------------------------------------
-//-- Message GIMBAL_DEVICE_SET_ATTITUDE unpacking routines
+//-- Message GIMBAL_DEVICE_SET_ATTITUDE unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gimbal_device_set_attitude_decode(fmav_gimbal_device_set_attitude_t* payload, const fmav_message_t* msg)

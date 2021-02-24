@@ -44,7 +44,7 @@ typedef struct _fmav_request_data_stream_t {
 
 
 //----------------------------------------
-//-- Message REQUEST_DATA_STREAM packing routines
+//-- Message REQUEST_DATA_STREAM packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_request_data_stream_pack(
@@ -139,7 +139,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_request_data_stream_encode_to_f
 
 
 //----------------------------------------
-//-- Message REQUEST_DATA_STREAM unpacking routines
+//-- Message REQUEST_DATA_STREAM unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_request_data_stream_decode(fmav_request_data_stream_t* payload, const fmav_message_t* msg)

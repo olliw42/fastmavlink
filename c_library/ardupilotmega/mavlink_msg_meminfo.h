@@ -42,7 +42,7 @@ typedef struct _fmav_meminfo_t {
 
 
 //----------------------------------------
-//-- Message MEMINFO packing routines
+//-- Message MEMINFO packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_meminfo_pack(
@@ -133,7 +133,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_meminfo_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message MEMINFO unpacking routines
+//-- Message MEMINFO unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_meminfo_decode(fmav_meminfo_t* payload, const fmav_message_t* msg)

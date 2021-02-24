@@ -41,7 +41,7 @@ typedef struct _fmav_encapsulated_data_t {
 
 
 //----------------------------------------
-//-- Message ENCAPSULATED_DATA packing routines
+//-- Message ENCAPSULATED_DATA packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_encapsulated_data_pack(
@@ -128,7 +128,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_encapsulated_data_encode_to_fra
 
 
 //----------------------------------------
-//-- Message ENCAPSULATED_DATA unpacking routines
+//-- Message ENCAPSULATED_DATA unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_encapsulated_data_decode(fmav_encapsulated_data_t* payload, const fmav_message_t* msg)

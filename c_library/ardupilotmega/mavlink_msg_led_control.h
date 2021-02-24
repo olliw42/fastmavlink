@@ -45,7 +45,7 @@ typedef struct _fmav_led_control_t {
 
 
 //----------------------------------------
-//-- Message LED_CONTROL packing routines
+//-- Message LED_CONTROL packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_led_control_pack(
@@ -140,7 +140,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_led_control_encode_to_frame_buf
 
 
 //----------------------------------------
-//-- Message LED_CONTROL unpacking routines
+//-- Message LED_CONTROL unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_led_control_decode(fmav_led_control_t* payload, const fmav_message_t* msg)

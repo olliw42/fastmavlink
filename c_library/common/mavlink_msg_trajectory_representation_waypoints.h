@@ -64,7 +64,7 @@ typedef struct _fmav_trajectory_representation_waypoints_t {
 
 
 //----------------------------------------
-//-- Message TRAJECTORY_REPRESENTATION_WAYPOINTS packing routines
+//-- Message TRAJECTORY_REPRESENTATION_WAYPOINTS packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_trajectory_representation_waypoints_pack(
@@ -175,7 +175,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_trajectory_representation_waypo
 
 
 //----------------------------------------
-//-- Message TRAJECTORY_REPRESENTATION_WAYPOINTS unpacking routines
+//-- Message TRAJECTORY_REPRESENTATION_WAYPOINTS unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_trajectory_representation_waypoints_decode(fmav_trajectory_representation_waypoints_t* payload, const fmav_message_t* msg)

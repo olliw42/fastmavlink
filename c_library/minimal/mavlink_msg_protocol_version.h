@@ -45,7 +45,7 @@ typedef struct _fmav_protocol_version_t {
 
 
 //----------------------------------------
-//-- Message PROTOCOL_VERSION packing routines
+//-- Message PROTOCOL_VERSION packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_protocol_version_pack(
@@ -138,7 +138,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_protocol_version_encode_to_fram
 
 
 //----------------------------------------
-//-- Message PROTOCOL_VERSION unpacking routines
+//-- Message PROTOCOL_VERSION unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_protocol_version_decode(fmav_protocol_version_t* payload, const fmav_message_t* msg)

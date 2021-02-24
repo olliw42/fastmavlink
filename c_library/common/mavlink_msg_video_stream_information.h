@@ -52,7 +52,7 @@ typedef struct _fmav_video_stream_information_t {
 
 
 //----------------------------------------
-//-- Message VIDEO_STREAM_INFORMATION packing routines
+//-- Message VIDEO_STREAM_INFORMATION packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_information_pack(
@@ -159,7 +159,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_information_encode
 
 
 //----------------------------------------
-//-- Message VIDEO_STREAM_INFORMATION unpacking routines
+//-- Message VIDEO_STREAM_INFORMATION unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_video_stream_information_decode(fmav_video_stream_information_t* payload, const fmav_message_t* msg)

@@ -50,7 +50,7 @@ typedef struct _fmav_esc_telemetry_5_to_8_t {
 
 
 //----------------------------------------
-//-- Message ESC_TELEMETRY_5_TO_8 packing routines
+//-- Message ESC_TELEMETRY_5_TO_8 packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_telemetry_5_to_8_pack(
@@ -147,7 +147,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_telemetry_5_to_8_encode_to_
 
 
 //----------------------------------------
-//-- Message ESC_TELEMETRY_5_TO_8 unpacking routines
+//-- Message ESC_TELEMETRY_5_TO_8 unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_esc_telemetry_5_to_8_decode(fmav_esc_telemetry_5_to_8_t* payload, const fmav_message_t* msg)

@@ -40,7 +40,7 @@ typedef struct _fmav_mission_item_reached_t {
 
 
 //----------------------------------------
-//-- Message MISSION_ITEM_REACHED packing routines
+//-- Message MISSION_ITEM_REACHED packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_item_reached_pack(
@@ -127,7 +127,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_item_reached_encode_to_
 
 
 //----------------------------------------
-//-- Message MISSION_ITEM_REACHED unpacking routines
+//-- Message MISSION_ITEM_REACHED unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_mission_item_reached_decode(fmav_mission_item_reached_t* payload, const fmav_message_t* msg)

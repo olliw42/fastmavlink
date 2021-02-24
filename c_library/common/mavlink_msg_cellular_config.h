@@ -50,7 +50,7 @@ typedef struct _fmav_cellular_config_t {
 
 
 //----------------------------------------
-//-- Message CELLULAR_CONFIG packing routines
+//-- Message CELLULAR_CONFIG packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_cellular_config_pack(
@@ -149,7 +149,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_cellular_config_encode_to_frame
 
 
 //----------------------------------------
-//-- Message CELLULAR_CONFIG unpacking routines
+//-- Message CELLULAR_CONFIG unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_cellular_config_decode(fmav_cellular_config_t* payload, const fmav_message_t* msg)

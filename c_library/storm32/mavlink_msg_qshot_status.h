@@ -41,7 +41,7 @@ typedef struct _fmav_qshot_status_t {
 
 
 //----------------------------------------
-//-- Message QSHOT_STATUS packing routines
+//-- Message QSHOT_STATUS packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_qshot_status_pack(
@@ -130,7 +130,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_qshot_status_encode_to_frame_bu
 
 
 //----------------------------------------
-//-- Message QSHOT_STATUS unpacking routines
+//-- Message QSHOT_STATUS unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_qshot_status_decode(fmav_qshot_status_t* payload, const fmav_message_t* msg)

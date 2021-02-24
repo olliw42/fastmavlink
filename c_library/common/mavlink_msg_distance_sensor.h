@@ -51,7 +51,7 @@ typedef struct _fmav_distance_sensor_t {
 
 
 //----------------------------------------
-//-- Message DISTANCE_SENSOR packing routines
+//-- Message DISTANCE_SENSOR packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_pack(
@@ -158,7 +158,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_encode_to_frame
 
 
 //----------------------------------------
-//-- Message DISTANCE_SENSOR unpacking routines
+//-- Message DISTANCE_SENSOR unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_distance_sensor_decode(fmav_distance_sensor_t* payload, const fmav_message_t* msg)

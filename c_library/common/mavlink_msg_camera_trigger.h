@@ -41,7 +41,7 @@ typedef struct _fmav_camera_trigger_t {
 
 
 //----------------------------------------
-//-- Message CAMERA_TRIGGER packing routines
+//-- Message CAMERA_TRIGGER packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_trigger_pack(
@@ -130,7 +130,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_trigger_encode_to_frame_
 
 
 //----------------------------------------
-//-- Message CAMERA_TRIGGER unpacking routines
+//-- Message CAMERA_TRIGGER unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_camera_trigger_decode(fmav_camera_trigger_t* payload, const fmav_message_t* msg)

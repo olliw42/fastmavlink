@@ -55,7 +55,7 @@ typedef struct _fmav_highres_imu_t {
 
 
 //----------------------------------------
-//-- Message HIGHRES_IMU packing routines
+//-- Message HIGHRES_IMU packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_highres_imu_pack(
@@ -172,7 +172,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_highres_imu_encode_to_frame_buf
 
 
 //----------------------------------------
-//-- Message HIGHRES_IMU unpacking routines
+//-- Message HIGHRES_IMU unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_highres_imu_decode(fmav_highres_imu_t* payload, const fmav_message_t* msg)

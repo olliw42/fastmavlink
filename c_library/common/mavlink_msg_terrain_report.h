@@ -46,7 +46,7 @@ typedef struct _fmav_terrain_report_t {
 
 
 //----------------------------------------
-//-- Message TERRAIN_REPORT packing routines
+//-- Message TERRAIN_REPORT packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_report_pack(
@@ -145,7 +145,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_report_encode_to_frame_
 
 
 //----------------------------------------
-//-- Message TERRAIN_REPORT unpacking routines
+//-- Message TERRAIN_REPORT unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_terrain_report_decode(fmav_terrain_report_t* payload, const fmav_message_t* msg)

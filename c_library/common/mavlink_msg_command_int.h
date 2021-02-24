@@ -52,7 +52,7 @@ typedef struct _fmav_command_int_t {
 
 
 //----------------------------------------
-//-- Message COMMAND_INT packing routines
+//-- Message COMMAND_INT packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_int_pack(
@@ -163,7 +163,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_int_encode_to_frame_buf
 
 
 //----------------------------------------
-//-- Message COMMAND_INT unpacking routines
+//-- Message COMMAND_INT unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_command_int_decode(fmav_command_int_t* payload, const fmav_message_t* msg)

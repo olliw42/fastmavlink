@@ -40,7 +40,7 @@ typedef struct _fmav_icarous_heartbeat_t {
 
 
 //----------------------------------------
-//-- Message ICAROUS_HEARTBEAT packing routines
+//-- Message ICAROUS_HEARTBEAT packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_icarous_heartbeat_pack(
@@ -127,7 +127,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_icarous_heartbeat_encode_to_fra
 
 
 //----------------------------------------
-//-- Message ICAROUS_HEARTBEAT unpacking routines
+//-- Message ICAROUS_HEARTBEAT unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_icarous_heartbeat_decode(fmav_icarous_heartbeat_t* payload, const fmav_message_t* msg)

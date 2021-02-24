@@ -42,7 +42,7 @@ typedef struct _fmav_actuator_control_target_t {
 
 
 //----------------------------------------
-//-- Message ACTUATOR_CONTROL_TARGET packing routines
+//-- Message ACTUATOR_CONTROL_TARGET packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_actuator_control_target_pack(
@@ -131,7 +131,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_actuator_control_target_encode_
 
 
 //----------------------------------------
-//-- Message ACTUATOR_CONTROL_TARGET unpacking routines
+//-- Message ACTUATOR_CONTROL_TARGET unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_actuator_control_target_decode(fmav_actuator_control_target_t* payload, const fmav_message_t* msg)

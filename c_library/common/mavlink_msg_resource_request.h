@@ -45,7 +45,7 @@ typedef struct _fmav_resource_request_t {
 
 
 //----------------------------------------
-//-- Message RESOURCE_REQUEST packing routines
+//-- Message RESOURCE_REQUEST packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_resource_request_pack(
@@ -138,7 +138,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_resource_request_encode_to_fram
 
 
 //----------------------------------------
-//-- Message RESOURCE_REQUEST unpacking routines
+//-- Message RESOURCE_REQUEST unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_resource_request_decode(fmav_resource_request_t* payload, const fmav_message_t* msg)

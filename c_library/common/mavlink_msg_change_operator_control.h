@@ -43,7 +43,7 @@ typedef struct _fmav_change_operator_control_t {
 
 
 //----------------------------------------
-//-- Message CHANGE_OPERATOR_CONTROL packing routines
+//-- Message CHANGE_OPERATOR_CONTROL packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_change_operator_control_pack(
@@ -134,7 +134,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_change_operator_control_encode_
 
 
 //----------------------------------------
-//-- Message CHANGE_OPERATOR_CONTROL unpacking routines
+//-- Message CHANGE_OPERATOR_CONTROL unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_change_operator_control_decode(fmav_change_operator_control_t* payload, const fmav_message_t* msg)

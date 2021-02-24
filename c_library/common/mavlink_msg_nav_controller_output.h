@@ -47,7 +47,7 @@ typedef struct _fmav_nav_controller_output_t {
 
 
 //----------------------------------------
-//-- Message NAV_CONTROLLER_OUTPUT packing routines
+//-- Message NAV_CONTROLLER_OUTPUT packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_controller_output_pack(
@@ -148,7 +148,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_controller_output_encode_to
 
 
 //----------------------------------------
-//-- Message NAV_CONTROLLER_OUTPUT unpacking routines
+//-- Message NAV_CONTROLLER_OUTPUT unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_nav_controller_output_decode(fmav_nav_controller_output_t* payload, const fmav_message_t* msg)

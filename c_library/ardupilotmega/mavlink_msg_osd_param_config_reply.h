@@ -41,7 +41,7 @@ typedef struct _fmav_osd_param_config_reply_t {
 
 
 //----------------------------------------
-//-- Message OSD_PARAM_CONFIG_REPLY packing routines
+//-- Message OSD_PARAM_CONFIG_REPLY packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_osd_param_config_reply_pack(
@@ -130,7 +130,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_osd_param_config_reply_encode_t
 
 
 //----------------------------------------
-//-- Message OSD_PARAM_CONFIG_REPLY unpacking routines
+//-- Message OSD_PARAM_CONFIG_REPLY unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_osd_param_config_reply_decode(fmav_osd_param_config_reply_t* payload, const fmav_message_t* msg)

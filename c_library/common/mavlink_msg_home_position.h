@@ -50,7 +50,7 @@ typedef struct _fmav_home_position_t {
 
 
 //----------------------------------------
-//-- Message HOME_POSITION packing routines
+//-- Message HOME_POSITION packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_home_position_pack(
@@ -155,7 +155,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_home_position_encode_to_frame_b
 
 
 //----------------------------------------
-//-- Message HOME_POSITION unpacking routines
+//-- Message HOME_POSITION unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_home_position_decode(fmav_home_position_t* payload, const fmav_message_t* msg)

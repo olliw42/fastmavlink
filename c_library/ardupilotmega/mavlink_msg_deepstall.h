@@ -49,7 +49,7 @@ typedef struct _fmav_deepstall_t {
 
 
 //----------------------------------------
-//-- Message DEEPSTALL packing routines
+//-- Message DEEPSTALL packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_deepstall_pack(
@@ -154,7 +154,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_deepstall_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message DEEPSTALL unpacking routines
+//-- Message DEEPSTALL unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_deepstall_decode(fmav_deepstall_t* payload, const fmav_message_t* msg)

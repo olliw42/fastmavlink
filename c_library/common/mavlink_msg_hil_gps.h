@@ -54,7 +54,7 @@ typedef struct _fmav_hil_gps_t {
 
 
 //----------------------------------------
-//-- Message HIL_GPS packing routines
+//-- Message HIL_GPS packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_gps_pack(
@@ -169,7 +169,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_gps_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message HIL_GPS unpacking routines
+//-- Message HIL_GPS unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_hil_gps_decode(fmav_hil_gps_t* payload, const fmav_message_t* msg)

@@ -49,7 +49,7 @@ typedef struct _fmav_digicam_control_t {
 
 
 //----------------------------------------
-//-- Message DIGICAM_CONTROL packing routines
+//-- Message DIGICAM_CONTROL packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_digicam_control_pack(
@@ -154,7 +154,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_digicam_control_encode_to_frame
 
 
 //----------------------------------------
-//-- Message DIGICAM_CONTROL unpacking routines
+//-- Message DIGICAM_CONTROL unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_digicam_control_decode(fmav_digicam_control_t* payload, const fmav_message_t* msg)

@@ -43,7 +43,7 @@ typedef struct _fmav_mission_count_t {
 
 
 //----------------------------------------
-//-- Message MISSION_COUNT packing routines
+//-- Message MISSION_COUNT packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_count_pack(
@@ -136,7 +136,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_count_encode_to_frame_b
 
 
 //----------------------------------------
-//-- Message MISSION_COUNT unpacking routines
+//-- Message MISSION_COUNT unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_mission_count_decode(fmav_mission_count_t* payload, const fmav_message_t* msg)

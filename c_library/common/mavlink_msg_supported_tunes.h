@@ -42,7 +42,7 @@ typedef struct _fmav_supported_tunes_t {
 
 
 //----------------------------------------
-//-- Message SUPPORTED_TUNES packing routines
+//-- Message SUPPORTED_TUNES packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_supported_tunes_pack(
@@ -133,7 +133,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_supported_tunes_encode_to_frame
 
 
 //----------------------------------------
-//-- Message SUPPORTED_TUNES unpacking routines
+//-- Message SUPPORTED_TUNES unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_supported_tunes_decode(fmav_supported_tunes_t* payload, const fmav_message_t* msg)

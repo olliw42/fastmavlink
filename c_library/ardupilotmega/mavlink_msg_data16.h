@@ -42,7 +42,7 @@ typedef struct _fmav_data16_t {
 
 
 //----------------------------------------
-//-- Message DATA16 packing routines
+//-- Message DATA16 packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data16_pack(
@@ -131,7 +131,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data16_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message DATA16 unpacking routines
+//-- Message DATA16 unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_data16_decode(fmav_data16_t* payload, const fmav_message_t* msg)

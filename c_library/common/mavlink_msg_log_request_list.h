@@ -43,7 +43,7 @@ typedef struct _fmav_log_request_list_t {
 
 
 //----------------------------------------
-//-- Message LOG_REQUEST_LIST packing routines
+//-- Message LOG_REQUEST_LIST packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_request_list_pack(
@@ -136,7 +136,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_request_list_encode_to_fram
 
 
 //----------------------------------------
-//-- Message LOG_REQUEST_LIST unpacking routines
+//-- Message LOG_REQUEST_LIST unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_log_request_list_decode(fmav_log_request_list_t* payload, const fmav_message_t* msg)

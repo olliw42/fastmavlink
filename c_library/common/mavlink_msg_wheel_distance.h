@@ -42,7 +42,7 @@ typedef struct _fmav_wheel_distance_t {
 
 
 //----------------------------------------
-//-- Message WHEEL_DISTANCE packing routines
+//-- Message WHEEL_DISTANCE packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wheel_distance_pack(
@@ -131,7 +131,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wheel_distance_encode_to_frame_
 
 
 //----------------------------------------
-//-- Message WHEEL_DISTANCE unpacking routines
+//-- Message WHEEL_DISTANCE unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_wheel_distance_decode(fmav_wheel_distance_t* payload, const fmav_message_t* msg)

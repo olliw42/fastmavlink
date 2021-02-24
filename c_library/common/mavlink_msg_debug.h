@@ -42,7 +42,7 @@ typedef struct _fmav_debug_t {
 
 
 //----------------------------------------
-//-- Message DEBUG packing routines
+//-- Message DEBUG packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_debug_pack(
@@ -133,7 +133,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_debug_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message DEBUG unpacking routines
+//-- Message DEBUG unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_debug_decode(fmav_debug_t* payload, const fmav_message_t* msg)

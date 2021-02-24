@@ -45,7 +45,7 @@ typedef struct _fmav_logging_data_t {
 
 
 //----------------------------------------
-//-- Message LOGGING_DATA packing routines
+//-- Message LOGGING_DATA packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_logging_data_pack(
@@ -140,7 +140,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_logging_data_encode_to_frame_bu
 
 
 //----------------------------------------
-//-- Message LOGGING_DATA unpacking routines
+//-- Message LOGGING_DATA unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_logging_data_decode(fmav_logging_data_t* payload, const fmav_message_t* msg)

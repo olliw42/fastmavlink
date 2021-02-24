@@ -50,7 +50,7 @@ typedef struct _fmav_storage_information_t {
 
 
 //----------------------------------------
-//-- Message STORAGE_INFORMATION packing routines
+//-- Message STORAGE_INFORMATION packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storage_information_pack(
@@ -155,7 +155,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storage_information_encode_to_f
 
 
 //----------------------------------------
-//-- Message STORAGE_INFORMATION unpacking routines
+//-- Message STORAGE_INFORMATION unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_storage_information_decode(fmav_storage_information_t* payload, const fmav_message_t* msg)

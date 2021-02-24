@@ -44,7 +44,7 @@ typedef struct _fmav_debug_float_array_t {
 
 
 //----------------------------------------
-//-- Message DEBUG_FLOAT_ARRAY packing routines
+//-- Message DEBUG_FLOAT_ARRAY packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_debug_float_array_pack(
@@ -135,7 +135,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_debug_float_array_encode_to_fra
 
 
 //----------------------------------------
-//-- Message DEBUG_FLOAT_ARRAY unpacking routines
+//-- Message DEBUG_FLOAT_ARRAY unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_debug_float_array_decode(fmav_debug_float_array_t* payload, const fmav_message_t* msg)

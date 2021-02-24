@@ -43,7 +43,7 @@ typedef struct _fmav_gps_inject_data_t {
 
 
 //----------------------------------------
-//-- Message GPS_INJECT_DATA packing routines
+//-- Message GPS_INJECT_DATA packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_inject_data_pack(
@@ -134,7 +134,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_inject_data_encode_to_frame
 
 
 //----------------------------------------
-//-- Message GPS_INJECT_DATA unpacking routines
+//-- Message GPS_INJECT_DATA unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gps_inject_data_decode(fmav_gps_inject_data_t* payload, const fmav_message_t* msg)

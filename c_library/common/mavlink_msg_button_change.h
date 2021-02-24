@@ -42,7 +42,7 @@ typedef struct _fmav_button_change_t {
 
 
 //----------------------------------------
-//-- Message BUTTON_CHANGE packing routines
+//-- Message BUTTON_CHANGE packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_button_change_pack(
@@ -133,7 +133,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_button_change_encode_to_frame_b
 
 
 //----------------------------------------
-//-- Message BUTTON_CHANGE unpacking routines
+//-- Message BUTTON_CHANGE unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_button_change_decode(fmav_button_change_t* payload, const fmav_message_t* msg)

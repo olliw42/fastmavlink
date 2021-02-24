@@ -41,7 +41,7 @@ typedef struct _fmav_extended_sys_state_t {
 
 
 //----------------------------------------
-//-- Message EXTENDED_SYS_STATE packing routines
+//-- Message EXTENDED_SYS_STATE packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_extended_sys_state_pack(
@@ -130,7 +130,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_extended_sys_state_encode_to_fr
 
 
 //----------------------------------------
-//-- Message EXTENDED_SYS_STATE unpacking routines
+//-- Message EXTENDED_SYS_STATE unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_extended_sys_state_decode(fmav_extended_sys_state_t* payload, const fmav_message_t* msg)

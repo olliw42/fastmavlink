@@ -41,7 +41,7 @@ typedef struct _fmav_log_request_end_t {
 
 
 //----------------------------------------
-//-- Message LOG_REQUEST_END packing routines
+//-- Message LOG_REQUEST_END packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_request_end_pack(
@@ -130,7 +130,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_request_end_encode_to_frame
 
 
 //----------------------------------------
-//-- Message LOG_REQUEST_END unpacking routines
+//-- Message LOG_REQUEST_END unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_log_request_end_decode(fmav_log_request_end_t* payload, const fmav_message_t* msg)

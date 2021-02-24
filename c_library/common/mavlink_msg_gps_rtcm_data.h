@@ -42,7 +42,7 @@ typedef struct _fmav_gps_rtcm_data_t {
 
 
 //----------------------------------------
-//-- Message GPS_RTCM_DATA packing routines
+//-- Message GPS_RTCM_DATA packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_rtcm_data_pack(
@@ -131,7 +131,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_rtcm_data_encode_to_frame_b
 
 
 //----------------------------------------
-//-- Message GPS_RTCM_DATA unpacking routines
+//-- Message GPS_RTCM_DATA unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gps_rtcm_data_decode(fmav_gps_rtcm_data_t* payload, const fmav_message_t* msg)

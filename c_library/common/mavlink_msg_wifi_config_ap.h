@@ -44,7 +44,7 @@ typedef struct _fmav_wifi_config_ap_t {
 
 
 //----------------------------------------
-//-- Message WIFI_CONFIG_AP packing routines
+//-- Message WIFI_CONFIG_AP packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wifi_config_ap_pack(
@@ -135,7 +135,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wifi_config_ap_encode_to_frame_
 
 
 //----------------------------------------
-//-- Message WIFI_CONFIG_AP unpacking routines
+//-- Message WIFI_CONFIG_AP unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_wifi_config_ap_decode(fmav_wifi_config_ap_t* payload, const fmav_message_t* msg)

@@ -44,7 +44,7 @@ typedef struct _fmav_mount_orientation_t {
 
 
 //----------------------------------------
-//-- Message MOUNT_ORIENTATION packing routines
+//-- Message MOUNT_ORIENTATION packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_orientation_pack(
@@ -139,7 +139,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_orientation_encode_to_fra
 
 
 //----------------------------------------
-//-- Message MOUNT_ORIENTATION unpacking routines
+//-- Message MOUNT_ORIENTATION unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_mount_orientation_decode(fmav_mount_orientation_t* payload, const fmav_message_t* msg)

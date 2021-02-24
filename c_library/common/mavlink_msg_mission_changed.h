@@ -44,7 +44,7 @@ typedef struct _fmav_mission_changed_t {
 
 
 //----------------------------------------
-//-- Message MISSION_CHANGED packing routines
+//-- Message MISSION_CHANGED packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_changed_pack(
@@ -139,7 +139,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_changed_encode_to_frame
 
 
 //----------------------------------------
-//-- Message MISSION_CHANGED unpacking routines
+//-- Message MISSION_CHANGED unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_mission_changed_decode(fmav_mission_changed_t* payload, const fmav_message_t* msg)

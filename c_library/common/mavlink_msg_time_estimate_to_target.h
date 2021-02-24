@@ -44,7 +44,7 @@ typedef struct _fmav_time_estimate_to_target_t {
 
 
 //----------------------------------------
-//-- Message TIME_ESTIMATE_TO_TARGET packing routines
+//-- Message TIME_ESTIMATE_TO_TARGET packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_time_estimate_to_target_pack(
@@ -139,7 +139,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_time_estimate_to_target_encode_
 
 
 //----------------------------------------
-//-- Message TIME_ESTIMATE_TO_TARGET unpacking routines
+//-- Message TIME_ESTIMATE_TO_TARGET unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_time_estimate_to_target_decode(fmav_time_estimate_to_target_t* payload, const fmav_message_t* msg)

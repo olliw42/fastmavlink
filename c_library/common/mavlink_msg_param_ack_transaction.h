@@ -45,7 +45,7 @@ typedef struct _fmav_param_ack_transaction_t {
 
 
 //----------------------------------------
-//-- Message PARAM_ACK_TRANSACTION packing routines
+//-- Message PARAM_ACK_TRANSACTION packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ack_transaction_pack(
@@ -140,7 +140,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ack_transaction_encode_to
 
 
 //----------------------------------------
-//-- Message PARAM_ACK_TRANSACTION unpacking routines
+//-- Message PARAM_ACK_TRANSACTION unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_param_ack_transaction_decode(fmav_param_ack_transaction_t* payload, const fmav_message_t* msg)

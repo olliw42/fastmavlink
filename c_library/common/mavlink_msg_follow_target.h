@@ -54,7 +54,7 @@ typedef struct _fmav_follow_target_t {
 
 
 //----------------------------------------
-//-- Message FOLLOW_TARGET packing routines
+//-- Message FOLLOW_TARGET packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_follow_target_pack(
@@ -159,7 +159,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_follow_target_encode_to_frame_b
 
 
 //----------------------------------------
-//-- Message FOLLOW_TARGET unpacking routines
+//-- Message FOLLOW_TARGET unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_follow_target_decode(fmav_follow_target_t* payload, const fmav_message_t* msg)

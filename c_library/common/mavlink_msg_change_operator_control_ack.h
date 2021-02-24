@@ -42,7 +42,7 @@ typedef struct _fmav_change_operator_control_ack_t {
 
 
 //----------------------------------------
-//-- Message CHANGE_OPERATOR_CONTROL_ACK packing routines
+//-- Message CHANGE_OPERATOR_CONTROL_ACK packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_change_operator_control_ack_pack(
@@ -133,7 +133,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_change_operator_control_ack_enc
 
 
 //----------------------------------------
-//-- Message CHANGE_OPERATOR_CONTROL_ACK unpacking routines
+//-- Message CHANGE_OPERATOR_CONTROL_ACK unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_change_operator_control_ack_decode(fmav_change_operator_control_ack_t* payload, const fmav_message_t* msg)

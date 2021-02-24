@@ -50,7 +50,7 @@ typedef struct _fmav_trajectory_representation_bezier_t {
 
 
 //----------------------------------------
-//-- Message TRAJECTORY_REPRESENTATION_BEZIER packing routines
+//-- Message TRAJECTORY_REPRESENTATION_BEZIER packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_trajectory_representation_bezier_pack(
@@ -147,7 +147,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_trajectory_representation_bezie
 
 
 //----------------------------------------
-//-- Message TRAJECTORY_REPRESENTATION_BEZIER unpacking routines
+//-- Message TRAJECTORY_REPRESENTATION_BEZIER unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_trajectory_representation_bezier_decode(fmav_trajectory_representation_bezier_t* payload, const fmav_message_t* msg)

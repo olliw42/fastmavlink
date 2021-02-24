@@ -60,7 +60,7 @@ typedef struct _fmav_rc_channels_t {
 
 
 //----------------------------------------
-//-- Message RC_CHANNELS packing routines
+//-- Message RC_CHANNELS packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_pack(
@@ -187,7 +187,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_encode_to_frame_buf
 
 
 //----------------------------------------
-//-- Message RC_CHANNELS unpacking routines
+//-- Message RC_CHANNELS unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_rc_channels_decode(fmav_rc_channels_t* payload, const fmav_message_t* msg)

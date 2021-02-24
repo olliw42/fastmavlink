@@ -41,7 +41,7 @@ typedef struct _fmav_message_interval_t {
 
 
 //----------------------------------------
-//-- Message MESSAGE_INTERVAL packing routines
+//-- Message MESSAGE_INTERVAL packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_message_interval_pack(
@@ -130,7 +130,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_message_interval_encode_to_fram
 
 
 //----------------------------------------
-//-- Message MESSAGE_INTERVAL unpacking routines
+//-- Message MESSAGE_INTERVAL unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_message_interval_decode(fmav_message_interval_t* payload, const fmav_message_t* msg)

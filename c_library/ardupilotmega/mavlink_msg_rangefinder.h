@@ -41,7 +41,7 @@ typedef struct _fmav_rangefinder_t {
 
 
 //----------------------------------------
-//-- Message RANGEFINDER packing routines
+//-- Message RANGEFINDER packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rangefinder_pack(
@@ -130,7 +130,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rangefinder_encode_to_frame_buf
 
 
 //----------------------------------------
-//-- Message RANGEFINDER unpacking routines
+//-- Message RANGEFINDER unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_rangefinder_decode(fmav_rangefinder_t* payload, const fmav_message_t* msg)

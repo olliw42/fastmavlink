@@ -41,7 +41,7 @@ typedef struct _fmav_raw_rpm_t {
 
 
 //----------------------------------------
-//-- Message RAW_RPM packing routines
+//-- Message RAW_RPM packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_rpm_pack(
@@ -130,7 +130,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_rpm_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message RAW_RPM unpacking routines
+//-- Message RAW_RPM unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_raw_rpm_decode(fmav_raw_rpm_t* payload, const fmav_message_t* msg)

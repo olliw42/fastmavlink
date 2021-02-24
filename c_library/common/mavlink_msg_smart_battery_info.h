@@ -52,7 +52,7 @@ typedef struct _fmav_smart_battery_info_t {
 
 
 //----------------------------------------
-//-- Message SMART_BATTERY_INFO packing routines
+//-- Message SMART_BATTERY_INFO packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_smart_battery_info_pack(
@@ -159,7 +159,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_smart_battery_info_encode_to_fr
 
 
 //----------------------------------------
-//-- Message SMART_BATTERY_INFO unpacking routines
+//-- Message SMART_BATTERY_INFO unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_smart_battery_info_decode(fmav_smart_battery_info_t* payload, const fmav_message_t* msg)

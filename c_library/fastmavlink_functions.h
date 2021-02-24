@@ -3,24 +3,26 @@
 // (c) OlliW, OlliW42, www.olliw.eu
 //------------------------------
 // API:
-// 
+//
 // receive into frame buf:
 //   uint8_t fmav_parse_to_frame_buf(fmav_result_t* result, uint8_t* buf, fmav_status_t* status, uint8_t c)
 //   uint8_t fmav_check_frame_buf(fmav_result_t* result, uint8_t* buf)
 //   void fmav_frame_buf_to_msg(fmav_message_t* msg, fmav_result_t* result, uint8_t* buf)
 //   uint8_t fmav_parse_and_check_to_frame_buf(fmav_result_t* result, uint8_t* buf, fmav_status_t* status, uint8_t c)
 //   uint8_t fmav_parse_to_msg_wbuf(fmav_message_t* msg, uint8_t* buf, fmav_status_t* status, uint8_t c)
-// 
+//
 // receive into msg:
 //   uint8_t fmav_parse_to_msg(fmav_message_t* msg, fmav_status_t* status, uint8_t c)
-// 
+//
 // emit from msg:
 //   uint16_t fmav_msg_to_frame_buf(uint8_t* buf, fmav_message_t* msg)
-// 
-// helper:  
+//
+// helper:
 //   uint8_t fmav_msg_is_v2(fmav_message_t* msg)
 //   uint8_t fmav_msg_get_target_sysid(fmav_message_t* msg)
 //   uint8_t fmav_msg_get_target_compid(fmav_message_t* msg)
+//   uint8_t fmav_msg_is_for_me_r(uint8_t my_sysid, uint8_t my_compid, fmav_result_t* result)
+//   uint8_t fmav_msg_is_for_me(uint8_t my_sysid, uint8_t my_compid, fmav_message_t* msg)
 //   void fmav_status_reset(fmav_status_t* status)
 //   void fmav_init(void)
 //------------------------------
@@ -202,7 +204,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_parse_reset(fmav_status_t* status)
 // returns NONE, HAS_HEADER, or OK
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_frame_buf(fmav_result_t* result, uint8_t* buf, fmav_status_t* status, uint8_t c)
 {
-    if (status->rx_cnt >= FASTMAVLINK_FRAME_LEN_MAX) { //this should never happen, but play it safe
+    if (status->rx_cnt >= FASTMAVLINK_FRAME_LEN_MAX) { // this should never happen, but play it safe
         status->rx_state = FASTMAVLINK_PARSE_STATE_IDLE;
     }
 
@@ -412,7 +414,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_msg_wbuf(fmav_message_t* ms
 // returns NONE, HAS_HEADER, MSGID_UNKNOWN, LENGTH_ERROR, CRC_ERROR, SIGNATURE_ERROR, or OK
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_msg(fmav_message_t* msg, fmav_status_t* status, uint8_t c)
 {
-    if (status->rx_cnt >= FASTMAVLINK_FRAME_LEN_MAX) { //this should never happen, but play it safe
+    if (status->rx_cnt >= FASTMAVLINK_FRAME_LEN_MAX) { // this should never happen, but play it safe
         status->rx_state = FASTMAVLINK_PARSE_STATE_IDLE;
     }
 
@@ -627,6 +629,35 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_get_target_sysid(fmav_message_t*
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_get_target_compid(fmav_message_t* msg)
 {
     return msg->target_compid;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_is_for_me_r(uint8_t my_sysid, uint8_t my_compid, fmav_result_t* result)
+{
+  if (result->target_sysid == 0) return 1;
+  if (result->target_sysid != my_sysid) return 0;
+  if (result->target_compid == 0) return 1;
+  if (result->target_compid == my_compid) return 1;
+  return 0;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_is_for_me(uint8_t my_sysid, uint8_t my_compid, fmav_message_t* msg)
+{
+  // The message either has no target_sysid or is broadcast, so accept
+  if (msg->target_sysid == 0) return 1;
+
+  // The message has a target_sysid but it is not ours, so reject
+  if (msg->target_sysid != my_sysid) return 0;
+
+  // The message either has no target_compid or is broadcast, so accept
+  if (msg->target_compid == 0) return 1;
+
+  // The message has a target_compid and it is ours, so accept
+  if (msg->target_compid == my_compid) return 1;
+
+  // The message has a target_compid but it is not ours, so reject
+  return 0;
 }
 
 

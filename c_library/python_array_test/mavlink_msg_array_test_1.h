@@ -40,7 +40,7 @@ typedef struct _fmav_array_test_1_t {
 
 
 //----------------------------------------
-//-- Message ARRAY_TEST_1 packing routines
+//-- Message ARRAY_TEST_1 packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_1_pack(
@@ -127,7 +127,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_1_encode_to_frame_bu
 
 
 //----------------------------------------
-//-- Message ARRAY_TEST_1 unpacking routines
+//-- Message ARRAY_TEST_1 unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_array_test_1_decode(fmav_array_test_1_t* payload, const fmav_message_t* msg)

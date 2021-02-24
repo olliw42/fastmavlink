@@ -55,7 +55,7 @@ typedef struct _fmav_hil_sensor_t {
 
 
 //----------------------------------------
-//-- Message HIL_SENSOR packing routines
+//-- Message HIL_SENSOR packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_sensor_pack(
@@ -172,7 +172,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_sensor_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message HIL_SENSOR unpacking routines
+//-- Message HIL_SENSOR unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_hil_sensor_decode(fmav_hil_sensor_t* payload, const fmav_message_t* msg)

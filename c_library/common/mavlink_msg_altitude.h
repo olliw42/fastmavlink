@@ -46,7 +46,7 @@ typedef struct _fmav_altitude_t {
 
 
 //----------------------------------------
-//-- Message ALTITUDE packing routines
+//-- Message ALTITUDE packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_altitude_pack(
@@ -145,7 +145,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_altitude_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message ALTITUDE unpacking routines
+//-- Message ALTITUDE unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_altitude_decode(fmav_altitude_t* payload, const fmav_message_t* msg)

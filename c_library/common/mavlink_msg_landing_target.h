@@ -53,7 +53,7 @@ typedef struct _fmav_landing_target_t {
 
 
 //----------------------------------------
-//-- Message LANDING_TARGET packing routines
+//-- Message LANDING_TARGET packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_landing_target_pack(
@@ -164,7 +164,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_landing_target_encode_to_frame_
 
 
 //----------------------------------------
-//-- Message LANDING_TARGET unpacking routines
+//-- Message LANDING_TARGET unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_landing_target_decode(fmav_landing_target_t* payload, const fmav_message_t* msg)

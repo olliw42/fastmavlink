@@ -46,7 +46,7 @@ typedef struct _fmav_safety_allowed_area_t {
 
 
 //----------------------------------------
-//-- Message SAFETY_ALLOWED_AREA packing routines
+//-- Message SAFETY_ALLOWED_AREA packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_safety_allowed_area_pack(
@@ -145,7 +145,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_safety_allowed_area_encode_to_f
 
 
 //----------------------------------------
-//-- Message SAFETY_ALLOWED_AREA unpacking routines
+//-- Message SAFETY_ALLOWED_AREA unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_safety_allowed_area_decode(fmav_safety_allowed_area_t* payload, const fmav_message_t* msg)

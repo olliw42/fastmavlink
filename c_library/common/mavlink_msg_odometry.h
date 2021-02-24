@@ -58,7 +58,7 @@ typedef struct _fmav_odometry_t {
 
 
 //----------------------------------------
-//-- Message ODOMETRY packing routines
+//-- Message ODOMETRY packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_odometry_pack(
@@ -175,7 +175,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_odometry_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message ODOMETRY unpacking routines
+//-- Message ODOMETRY unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_odometry_decode(fmav_odometry_t* payload, const fmav_message_t* msg)

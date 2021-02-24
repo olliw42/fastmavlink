@@ -41,7 +41,7 @@ typedef struct _fmav_hwstatus_t {
 
 
 //----------------------------------------
-//-- Message HWSTATUS packing routines
+//-- Message HWSTATUS packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hwstatus_pack(
@@ -130,7 +130,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hwstatus_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message HWSTATUS unpacking routines
+//-- Message HWSTATUS unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_hwstatus_decode(fmav_hwstatus_t* payload, const fmav_message_t* msg)

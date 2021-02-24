@@ -50,7 +50,7 @@ typedef struct _fmav_simstate_t {
 
 
 //----------------------------------------
-//-- Message SIMSTATE packing routines
+//-- Message SIMSTATE packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_simstate_pack(
@@ -157,7 +157,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_simstate_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message SIMSTATE unpacking routines
+//-- Message SIMSTATE unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_simstate_decode(fmav_simstate_t* payload, const fmav_message_t* msg)

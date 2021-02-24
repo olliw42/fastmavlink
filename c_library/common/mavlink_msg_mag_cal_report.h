@@ -57,7 +57,7 @@ typedef struct _fmav_mag_cal_report_t {
 
 
 //----------------------------------------
-//-- Message MAG_CAL_REPORT packing routines
+//-- Message MAG_CAL_REPORT packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_report_pack(
@@ -178,7 +178,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_report_encode_to_frame_
 
 
 //----------------------------------------
-//-- Message MAG_CAL_REPORT unpacking routines
+//-- Message MAG_CAL_REPORT unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_mag_cal_report_decode(fmav_mag_cal_report_t* payload, const fmav_message_t* msg)

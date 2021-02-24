@@ -52,7 +52,7 @@ typedef struct _fmav_adsb_vehicle_t {
 
 
 //----------------------------------------
-//-- Message ADSB_VEHICLE packing routines
+//-- Message ADSB_VEHICLE packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adsb_vehicle_pack(
@@ -161,7 +161,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adsb_vehicle_encode_to_frame_bu
 
 
 //----------------------------------------
-//-- Message ADSB_VEHICLE unpacking routines
+//-- Message ADSB_VEHICLE unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_adsb_vehicle_decode(fmav_adsb_vehicle_t* payload, const fmav_message_t* msg)

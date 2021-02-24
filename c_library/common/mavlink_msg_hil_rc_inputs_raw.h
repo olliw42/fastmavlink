@@ -53,7 +53,7 @@ typedef struct _fmav_hil_rc_inputs_raw_t {
 
 
 //----------------------------------------
-//-- Message HIL_RC_INPUTS_RAW packing routines
+//-- Message HIL_RC_INPUTS_RAW packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_rc_inputs_raw_pack(
@@ -166,7 +166,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_rc_inputs_raw_encode_to_fra
 
 
 //----------------------------------------
-//-- Message HIL_RC_INPUTS_RAW unpacking routines
+//-- Message HIL_RC_INPUTS_RAW unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_hil_rc_inputs_raw_decode(fmav_hil_rc_inputs_raw_t* payload, const fmav_message_t* msg)

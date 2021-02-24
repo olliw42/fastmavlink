@@ -52,7 +52,7 @@ typedef struct _fmav_gps2_raw_t {
 
 
 //----------------------------------------
-//-- Message GPS2_RAW packing routines
+//-- Message GPS2_RAW packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_raw_pack(
@@ -163,7 +163,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_raw_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message GPS2_RAW unpacking routines
+//-- Message GPS2_RAW unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gps2_raw_decode(fmav_gps2_raw_t* payload, const fmav_message_t* msg)

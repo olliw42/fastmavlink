@@ -43,7 +43,7 @@ typedef struct _fmav_flight_information_t {
 
 
 //----------------------------------------
-//-- Message FLIGHT_INFORMATION packing routines
+//-- Message FLIGHT_INFORMATION packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_flight_information_pack(
@@ -136,7 +136,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_flight_information_encode_to_fr
 
 
 //----------------------------------------
-//-- Message FLIGHT_INFORMATION unpacking routines
+//-- Message FLIGHT_INFORMATION unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_flight_information_decode(fmav_flight_information_t* payload, const fmav_message_t* msg)

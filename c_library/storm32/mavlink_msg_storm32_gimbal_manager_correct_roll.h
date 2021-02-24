@@ -44,7 +44,7 @@ typedef struct _fmav_storm32_gimbal_manager_correct_roll_t {
 
 
 //----------------------------------------
-//-- Message STORM32_GIMBAL_MANAGER_CORRECT_ROLL packing routines
+//-- Message STORM32_GIMBAL_MANAGER_CORRECT_ROLL packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storm32_gimbal_manager_correct_roll_pack(
@@ -139,7 +139,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storm32_gimbal_manager_correct_
 
 
 //----------------------------------------
-//-- Message STORM32_GIMBAL_MANAGER_CORRECT_ROLL unpacking routines
+//-- Message STORM32_GIMBAL_MANAGER_CORRECT_ROLL unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_storm32_gimbal_manager_correct_roll_decode(fmav_storm32_gimbal_manager_correct_roll_t* payload, const fmav_message_t* msg)

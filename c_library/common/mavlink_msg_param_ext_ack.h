@@ -44,7 +44,7 @@ typedef struct _fmav_param_ext_ack_t {
 
 
 //----------------------------------------
-//-- Message PARAM_EXT_ACK packing routines
+//-- Message PARAM_EXT_ACK packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ext_ack_pack(
@@ -135,7 +135,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ext_ack_encode_to_frame_b
 
 
 //----------------------------------------
-//-- Message PARAM_EXT_ACK unpacking routines
+//-- Message PARAM_EXT_ACK unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_param_ext_ack_decode(fmav_param_ext_ack_t* payload, const fmav_message_t* msg)

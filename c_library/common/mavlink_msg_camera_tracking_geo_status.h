@@ -52,7 +52,7 @@ typedef struct _fmav_camera_tracking_geo_status_t {
 
 
 //----------------------------------------
-//-- Message CAMERA_TRACKING_GEO_STATUS packing routines
+//-- Message CAMERA_TRACKING_GEO_STATUS packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_tracking_geo_status_pack(
@@ -163,7 +163,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_tracking_geo_status_enco
 
 
 //----------------------------------------
-//-- Message CAMERA_TRACKING_GEO_STATUS unpacking routines
+//-- Message CAMERA_TRACKING_GEO_STATUS unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_camera_tracking_geo_status_decode(fmav_camera_tracking_geo_status_t* payload, const fmav_message_t* msg)

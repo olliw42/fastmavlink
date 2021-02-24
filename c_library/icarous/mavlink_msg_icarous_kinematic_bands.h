@@ -55,7 +55,7 @@ typedef struct _fmav_icarous_kinematic_bands_t {
 
 
 //----------------------------------------
-//-- Message ICAROUS_KINEMATIC_BANDS packing routines
+//-- Message ICAROUS_KINEMATIC_BANDS packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_icarous_kinematic_bands_pack(
@@ -172,7 +172,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_icarous_kinematic_bands_encode_
 
 
 //----------------------------------------
-//-- Message ICAROUS_KINEMATIC_BANDS unpacking routines
+//-- Message ICAROUS_KINEMATIC_BANDS unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_icarous_kinematic_bands_decode(fmav_icarous_kinematic_bands_t* payload, const fmav_message_t* msg)

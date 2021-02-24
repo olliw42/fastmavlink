@@ -43,7 +43,7 @@ typedef struct _fmav_mission_ack_t {
 
 
 //----------------------------------------
-//-- Message MISSION_ACK packing routines
+//-- Message MISSION_ACK packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_ack_pack(
@@ -136,7 +136,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_ack_encode_to_frame_buf
 
 
 //----------------------------------------
-//-- Message MISSION_ACK unpacking routines
+//-- Message MISSION_ACK unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_mission_ack_decode(fmav_mission_ack_t* payload, const fmav_message_t* msg)

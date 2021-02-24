@@ -42,7 +42,7 @@ typedef struct _fmav_aoa_ssa_t {
 
 
 //----------------------------------------
-//-- Message AOA_SSA packing routines
+//-- Message AOA_SSA packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_aoa_ssa_pack(
@@ -133,7 +133,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_aoa_ssa_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message AOA_SSA unpacking routines
+//-- Message AOA_SSA unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_aoa_ssa_decode(fmav_aoa_ssa_t* payload, const fmav_message_t* msg)

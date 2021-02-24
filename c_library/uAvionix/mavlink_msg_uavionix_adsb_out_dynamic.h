@@ -55,7 +55,7 @@ typedef struct _fmav_uavionix_adsb_out_dynamic_t {
 
 
 //----------------------------------------
-//-- Message UAVIONIX_ADSB_OUT_DYNAMIC packing routines
+//-- Message UAVIONIX_ADSB_OUT_DYNAMIC packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_dynamic_pack(
@@ -172,7 +172,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_dynamic_encod
 
 
 //----------------------------------------
-//-- Message UAVIONIX_ADSB_OUT_DYNAMIC unpacking routines
+//-- Message UAVIONIX_ADSB_OUT_DYNAMIC unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_uavionix_adsb_out_dynamic_decode(fmav_uavionix_adsb_out_dynamic_t* payload, const fmav_message_t* msg)

@@ -50,7 +50,7 @@ typedef struct _fmav_command_long_t {
 
 
 //----------------------------------------
-//-- Message COMMAND_LONG packing routines
+//-- Message COMMAND_LONG packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_long_pack(
@@ -157,7 +157,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_long_encode_to_frame_bu
 
 
 //----------------------------------------
-//-- Message COMMAND_LONG unpacking routines
+//-- Message COMMAND_LONG unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_command_long_decode(fmav_command_long_t* payload, const fmav_message_t* msg)

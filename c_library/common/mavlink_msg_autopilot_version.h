@@ -54,7 +54,7 @@ typedef struct _fmav_autopilot_version_t {
 
 
 //----------------------------------------
-//-- Message AUTOPILOT_VERSION packing routines
+//-- Message AUTOPILOT_VERSION packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_autopilot_version_pack(
@@ -161,7 +161,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_autopilot_version_encode_to_fra
 
 
 //----------------------------------------
-//-- Message AUTOPILOT_VERSION unpacking routines
+//-- Message AUTOPILOT_VERSION unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_autopilot_version_decode(fmav_autopilot_version_t* payload, const fmav_message_t* msg)

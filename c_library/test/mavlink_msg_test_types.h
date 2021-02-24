@@ -71,7 +71,7 @@ typedef struct _fmav_test_types_t {
 
 
 //----------------------------------------
-//-- Message TEST_TYPES packing routines
+//-- Message TEST_TYPES packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_test_types_pack(
@@ -198,7 +198,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_test_types_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message TEST_TYPES unpacking routines
+//-- Message TEST_TYPES unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_test_types_decode(fmav_test_types_t* payload, const fmav_message_t* msg)

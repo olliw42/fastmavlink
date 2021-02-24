@@ -47,7 +47,7 @@ typedef struct _fmav_gimbal_manager_set_pitchyaw_t {
 
 
 //----------------------------------------
-//-- Message GIMBAL_MANAGER_SET_PITCHYAW packing routines
+//-- Message GIMBAL_MANAGER_SET_PITCHYAW packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_manager_set_pitchyaw_pack(
@@ -148,7 +148,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_manager_set_pitchyaw_enc
 
 
 //----------------------------------------
-//-- Message GIMBAL_MANAGER_SET_PITCHYAW unpacking routines
+//-- Message GIMBAL_MANAGER_SET_PITCHYAW unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gimbal_manager_set_pitchyaw_decode(fmav_gimbal_manager_set_pitchyaw_t* payload, const fmav_message_t* msg)

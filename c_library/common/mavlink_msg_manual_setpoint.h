@@ -46,7 +46,7 @@ typedef struct _fmav_manual_setpoint_t {
 
 
 //----------------------------------------
-//-- Message MANUAL_SETPOINT packing routines
+//-- Message MANUAL_SETPOINT packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_setpoint_pack(
@@ -145,7 +145,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_setpoint_encode_to_frame
 
 
 //----------------------------------------
-//-- Message MANUAL_SETPOINT unpacking routines
+//-- Message MANUAL_SETPOINT unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_manual_setpoint_decode(fmav_manual_setpoint_t* payload, const fmav_message_t* msg)

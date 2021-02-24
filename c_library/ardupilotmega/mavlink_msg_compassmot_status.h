@@ -45,7 +45,7 @@ typedef struct _fmav_compassmot_status_t {
 
 
 //----------------------------------------
-//-- Message COMPASSMOT_STATUS packing routines
+//-- Message COMPASSMOT_STATUS packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_compassmot_status_pack(
@@ -142,7 +142,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_compassmot_status_encode_to_fra
 
 
 //----------------------------------------
-//-- Message COMPASSMOT_STATUS unpacking routines
+//-- Message COMPASSMOT_STATUS unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_compassmot_status_decode(fmav_compassmot_status_t* payload, const fmav_message_t* msg)

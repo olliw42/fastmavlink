@@ -45,7 +45,7 @@ typedef struct _fmav_vision_position_delta_t {
 
 
 //----------------------------------------
-//-- Message VISION_POSITION_DELTA packing routines
+//-- Message VISION_POSITION_DELTA packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_position_delta_pack(
@@ -138,7 +138,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_position_delta_encode_to
 
 
 //----------------------------------------
-//-- Message VISION_POSITION_DELTA unpacking routines
+//-- Message VISION_POSITION_DELTA unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_vision_position_delta_decode(fmav_vision_position_delta_t* payload, const fmav_message_t* msg)

@@ -43,7 +43,7 @@ typedef struct _fmav_setup_signing_t {
 
 
 //----------------------------------------
-//-- Message SETUP_SIGNING packing routines
+//-- Message SETUP_SIGNING packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_setup_signing_pack(
@@ -134,7 +134,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_setup_signing_encode_to_frame_b
 
 
 //----------------------------------------
-//-- Message SETUP_SIGNING unpacking routines
+//-- Message SETUP_SIGNING unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_setup_signing_decode(fmav_setup_signing_t* payload, const fmav_message_t* msg)

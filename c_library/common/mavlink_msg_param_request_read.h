@@ -43,7 +43,7 @@ typedef struct _fmav_param_request_read_t {
 
 
 //----------------------------------------
-//-- Message PARAM_REQUEST_READ packing routines
+//-- Message PARAM_REQUEST_READ packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_request_read_pack(
@@ -134,7 +134,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_request_read_encode_to_fr
 
 
 //----------------------------------------
-//-- Message PARAM_REQUEST_READ unpacking routines
+//-- Message PARAM_REQUEST_READ unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_param_request_read_decode(fmav_param_request_read_t* payload, const fmav_message_t* msg)

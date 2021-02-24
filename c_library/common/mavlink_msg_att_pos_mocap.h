@@ -46,7 +46,7 @@ typedef struct _fmav_att_pos_mocap_t {
 
 
 //----------------------------------------
-//-- Message ATT_POS_MOCAP packing routines
+//-- Message ATT_POS_MOCAP packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_att_pos_mocap_pack(
@@ -141,7 +141,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_att_pos_mocap_encode_to_frame_b
 
 
 //----------------------------------------
-//-- Message ATT_POS_MOCAP unpacking routines
+//-- Message ATT_POS_MOCAP unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_att_pos_mocap_decode(fmav_att_pos_mocap_t* payload, const fmav_message_t* msg)

@@ -46,7 +46,7 @@ typedef struct _fmav_open_drone_id_basic_id_t {
 
 
 //----------------------------------------
-//-- Message OPEN_DRONE_ID_BASIC_ID packing routines
+//-- Message OPEN_DRONE_ID_BASIC_ID packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_basic_id_pack(
@@ -141,7 +141,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_basic_id_encode_t
 
 
 //----------------------------------------
-//-- Message OPEN_DRONE_ID_BASIC_ID unpacking routines
+//-- Message OPEN_DRONE_ID_BASIC_ID unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_open_drone_id_basic_id_decode(fmav_open_drone_id_basic_id_t* payload, const fmav_message_t* msg)

@@ -53,7 +53,7 @@ typedef struct _fmav_camera_feedback_t {
 
 
 //----------------------------------------
-//-- Message CAMERA_FEEDBACK packing routines
+//-- Message CAMERA_FEEDBACK packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_feedback_pack(
@@ -166,7 +166,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_feedback_encode_to_frame
 
 
 //----------------------------------------
-//-- Message CAMERA_FEEDBACK unpacking routines
+//-- Message CAMERA_FEEDBACK unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_camera_feedback_decode(fmav_camera_feedback_t* payload, const fmav_message_t* msg)

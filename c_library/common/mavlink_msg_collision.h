@@ -46,7 +46,7 @@ typedef struct _fmav_collision_t {
 
 
 //----------------------------------------
-//-- Message COLLISION packing routines
+//-- Message COLLISION packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_collision_pack(
@@ -145,7 +145,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_collision_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message COLLISION unpacking routines
+//-- Message COLLISION unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_collision_decode(fmav_collision_t* payload, const fmav_message_t* msg)

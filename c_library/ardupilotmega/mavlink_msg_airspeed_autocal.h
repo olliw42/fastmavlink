@@ -51,7 +51,7 @@ typedef struct _fmav_airspeed_autocal_t {
 
 
 //----------------------------------------
-//-- Message AIRSPEED_AUTOCAL packing routines
+//-- Message AIRSPEED_AUTOCAL packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_airspeed_autocal_pack(
@@ -160,7 +160,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_airspeed_autocal_encode_to_fram
 
 
 //----------------------------------------
-//-- Message AIRSPEED_AUTOCAL unpacking routines
+//-- Message AIRSPEED_AUTOCAL unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_airspeed_autocal_decode(fmav_airspeed_autocal_t* payload, const fmav_message_t* msg)

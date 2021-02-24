@@ -42,7 +42,7 @@ typedef struct _fmav_command_cancel_t {
 
 
 //----------------------------------------
-//-- Message COMMAND_CANCEL packing routines
+//-- Message COMMAND_CANCEL packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_cancel_pack(
@@ -133,7 +133,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_cancel_encode_to_frame_
 
 
 //----------------------------------------
-//-- Message COMMAND_CANCEL unpacking routines
+//-- Message COMMAND_CANCEL unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_command_cancel_decode(fmav_command_cancel_t* payload, const fmav_message_t* msg)

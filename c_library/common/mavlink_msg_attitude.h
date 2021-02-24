@@ -46,7 +46,7 @@ typedef struct _fmav_attitude_t {
 
 
 //----------------------------------------
-//-- Message ATTITUDE packing routines
+//-- Message ATTITUDE packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_attitude_pack(
@@ -145,7 +145,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_attitude_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message ATTITUDE unpacking routines
+//-- Message ATTITUDE unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_attitude_decode(fmav_attitude_t* payload, const fmav_message_t* msg)

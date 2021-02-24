@@ -48,7 +48,7 @@ typedef struct _fmav_mag_cal_progress_t {
 
 
 //----------------------------------------
-//-- Message MAG_CAL_PROGRESS packing routines
+//-- Message MAG_CAL_PROGRESS packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_progress_pack(
@@ -149,7 +149,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_progress_encode_to_fram
 
 
 //----------------------------------------
-//-- Message MAG_CAL_PROGRESS unpacking routines
+//-- Message MAG_CAL_PROGRESS unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_mag_cal_progress_decode(fmav_mag_cal_progress_t* payload, const fmav_message_t* msg)

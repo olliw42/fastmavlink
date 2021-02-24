@@ -47,7 +47,7 @@ typedef struct _fmav_uavionix_adsb_out_cfg_t {
 
 
 //----------------------------------------
-//-- Message UAVIONIX_ADSB_OUT_CFG packing routines
+//-- Message UAVIONIX_ADSB_OUT_CFG packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_cfg_pack(
@@ -146,7 +146,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_cfg_encode_to
 
 
 //----------------------------------------
-//-- Message UAVIONIX_ADSB_OUT_CFG unpacking routines
+//-- Message UAVIONIX_ADSB_OUT_CFG unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_uavionix_adsb_out_cfg_decode(fmav_uavionix_adsb_out_cfg_t* payload, const fmav_message_t* msg)

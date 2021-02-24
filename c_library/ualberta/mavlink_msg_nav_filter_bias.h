@@ -46,7 +46,7 @@ typedef struct _fmav_nav_filter_bias_t {
 
 
 //----------------------------------------
-//-- Message NAV_FILTER_BIAS packing routines
+//-- Message NAV_FILTER_BIAS packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_filter_bias_pack(
@@ -145,7 +145,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_filter_bias_encode_to_frame
 
 
 //----------------------------------------
-//-- Message NAV_FILTER_BIAS unpacking routines
+//-- Message NAV_FILTER_BIAS unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_nav_filter_bias_decode(fmav_nav_filter_bias_t* payload, const fmav_message_t* msg)

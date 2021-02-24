@@ -47,7 +47,7 @@ typedef struct _fmav_vicon_position_estimate_t {
 
 
 //----------------------------------------
-//-- Message VICON_POSITION_ESTIMATE packing routines
+//-- Message VICON_POSITION_ESTIMATE packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vicon_position_estimate_pack(
@@ -146,7 +146,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vicon_position_estimate_encode_
 
 
 //----------------------------------------
-//-- Message VICON_POSITION_ESTIMATE unpacking routines
+//-- Message VICON_POSITION_ESTIMATE unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_vicon_position_estimate_decode(fmav_vicon_position_estimate_t* payload, const fmav_message_t* msg)

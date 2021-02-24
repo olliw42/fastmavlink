@@ -45,7 +45,7 @@ typedef struct _fmav_serial_control_t {
 
 
 //----------------------------------------
-//-- Message SERIAL_CONTROL packing routines
+//-- Message SERIAL_CONTROL packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_serial_control_pack(
@@ -140,7 +140,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_serial_control_encode_to_frame_
 
 
 //----------------------------------------
-//-- Message SERIAL_CONTROL unpacking routines
+//-- Message SERIAL_CONTROL unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_serial_control_decode(fmav_serial_control_t* payload, const fmav_message_t* msg)

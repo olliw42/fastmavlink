@@ -41,7 +41,7 @@ typedef struct _fmav_log_erase_t {
 
 
 //----------------------------------------
-//-- Message LOG_ERASE packing routines
+//-- Message LOG_ERASE packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_erase_pack(
@@ -130,7 +130,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_erase_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message LOG_ERASE unpacking routines
+//-- Message LOG_ERASE unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_log_erase_decode(fmav_log_erase_t* payload, const fmav_message_t* msg)

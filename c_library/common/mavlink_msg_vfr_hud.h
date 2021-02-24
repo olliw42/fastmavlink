@@ -45,7 +45,7 @@ typedef struct _fmav_vfr_hud_t {
 
 
 //----------------------------------------
-//-- Message VFR_HUD packing routines
+//-- Message VFR_HUD packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vfr_hud_pack(
@@ -142,7 +142,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vfr_hud_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message VFR_HUD unpacking routines
+//-- Message VFR_HUD unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_vfr_hud_decode(fmav_vfr_hud_t* payload, const fmav_message_t* msg)

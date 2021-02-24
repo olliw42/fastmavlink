@@ -42,7 +42,7 @@ typedef struct _fmav_power_status_t {
 
 
 //----------------------------------------
-//-- Message POWER_STATUS packing routines
+//-- Message POWER_STATUS packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_power_status_pack(
@@ -133,7 +133,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_power_status_encode_to_frame_bu
 
 
 //----------------------------------------
-//-- Message POWER_STATUS unpacking routines
+//-- Message POWER_STATUS unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_power_status_decode(fmav_power_status_t* payload, const fmav_message_t* msg)

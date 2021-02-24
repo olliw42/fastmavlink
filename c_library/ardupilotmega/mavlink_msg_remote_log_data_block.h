@@ -43,7 +43,7 @@ typedef struct _fmav_remote_log_data_block_t {
 
 
 //----------------------------------------
-//-- Message REMOTE_LOG_DATA_BLOCK packing routines
+//-- Message REMOTE_LOG_DATA_BLOCK packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_remote_log_data_block_pack(
@@ -134,7 +134,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_remote_log_data_block_encode_to
 
 
 //----------------------------------------
-//-- Message REMOTE_LOG_DATA_BLOCK unpacking routines
+//-- Message REMOTE_LOG_DATA_BLOCK unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_remote_log_data_block_decode(fmav_remote_log_data_block_t* payload, const fmav_message_t* msg)

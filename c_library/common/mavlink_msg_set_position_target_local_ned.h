@@ -55,7 +55,7 @@ typedef struct _fmav_set_position_target_local_ned_t {
 
 
 //----------------------------------------
-//-- Message SET_POSITION_TARGET_LOCAL_NED packing routines
+//-- Message SET_POSITION_TARGET_LOCAL_NED packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_position_target_local_ned_pack(
@@ -172,7 +172,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_position_target_local_ned_e
 
 
 //----------------------------------------
-//-- Message SET_POSITION_TARGET_LOCAL_NED unpacking routines
+//-- Message SET_POSITION_TARGET_LOCAL_NED unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_set_position_target_local_ned_decode(fmav_set_position_target_local_ned_t* payload, const fmav_message_t* msg)

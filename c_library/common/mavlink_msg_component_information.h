@@ -46,7 +46,7 @@ typedef struct _fmav_component_information_t {
 
 
 //----------------------------------------
-//-- Message COMPONENT_INFORMATION packing routines
+//-- Message COMPONENT_INFORMATION packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_component_information_pack(
@@ -141,7 +141,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_component_information_encode_to
 
 
 //----------------------------------------
-//-- Message COMPONENT_INFORMATION unpacking routines
+//-- Message COMPONENT_INFORMATION unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_component_information_decode(fmav_component_information_t* payload, const fmav_message_t* msg)

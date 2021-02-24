@@ -46,7 +46,7 @@ typedef struct _fmav_ekf_status_report_t {
 
 
 //----------------------------------------
-//-- Message EKF_STATUS_REPORT packing routines
+//-- Message EKF_STATUS_REPORT packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ekf_status_report_pack(
@@ -145,7 +145,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ekf_status_report_encode_to_fra
 
 
 //----------------------------------------
-//-- Message EKF_STATUS_REPORT unpacking routines
+//-- Message EKF_STATUS_REPORT unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_ekf_status_report_decode(fmav_ekf_status_report_t* payload, const fmav_message_t* msg)

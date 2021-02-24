@@ -49,7 +49,7 @@ typedef struct _fmav_global_position_int_cov_t {
 
 
 //----------------------------------------
-//-- Message GLOBAL_POSITION_INT_COV packing routines
+//-- Message GLOBAL_POSITION_INT_COV packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_global_position_int_cov_pack(
@@ -152,7 +152,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_global_position_int_cov_encode_
 
 
 //----------------------------------------
-//-- Message GLOBAL_POSITION_INT_COV unpacking routines
+//-- Message GLOBAL_POSITION_INT_COV unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_global_position_int_cov_decode(fmav_global_position_int_cov_t* payload, const fmav_message_t* msg)

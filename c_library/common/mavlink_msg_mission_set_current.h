@@ -42,7 +42,7 @@ typedef struct _fmav_mission_set_current_t {
 
 
 //----------------------------------------
-//-- Message MISSION_SET_CURRENT packing routines
+//-- Message MISSION_SET_CURRENT packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_set_current_pack(
@@ -133,7 +133,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_set_current_encode_to_f
 
 
 //----------------------------------------
-//-- Message MISSION_SET_CURRENT unpacking routines
+//-- Message MISSION_SET_CURRENT unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_mission_set_current_decode(fmav_mission_set_current_t* payload, const fmav_message_t* msg)

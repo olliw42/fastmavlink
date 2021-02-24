@@ -44,7 +44,7 @@ typedef struct _fmav_scaled_pressure_t {
 
 
 //----------------------------------------
-//-- Message SCALED_PRESSURE packing routines
+//-- Message SCALED_PRESSURE packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_scaled_pressure_pack(
@@ -139,7 +139,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_scaled_pressure_encode_to_frame
 
 
 //----------------------------------------
-//-- Message SCALED_PRESSURE unpacking routines
+//-- Message SCALED_PRESSURE unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_scaled_pressure_decode(fmav_scaled_pressure_t* payload, const fmav_message_t* msg)

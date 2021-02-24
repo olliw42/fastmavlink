@@ -44,7 +44,7 @@ typedef struct _fmav_play_tune_t {
 
 
 //----------------------------------------
-//-- Message PLAY_TUNE packing routines
+//-- Message PLAY_TUNE packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_play_tune_pack(
@@ -135,7 +135,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_play_tune_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message PLAY_TUNE unpacking routines
+//-- Message PLAY_TUNE unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_play_tune_decode(fmav_play_tune_t* payload, const fmav_message_t* msg)

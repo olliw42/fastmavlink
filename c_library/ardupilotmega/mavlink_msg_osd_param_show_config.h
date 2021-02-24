@@ -44,7 +44,7 @@ typedef struct _fmav_osd_param_show_config_t {
 
 
 //----------------------------------------
-//-- Message OSD_PARAM_SHOW_CONFIG packing routines
+//-- Message OSD_PARAM_SHOW_CONFIG packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_osd_param_show_config_pack(
@@ -139,7 +139,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_osd_param_show_config_encode_to
 
 
 //----------------------------------------
-//-- Message OSD_PARAM_SHOW_CONFIG unpacking routines
+//-- Message OSD_PARAM_SHOW_CONFIG unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_osd_param_show_config_decode(fmav_osd_param_show_config_t* payload, const fmav_message_t* msg)

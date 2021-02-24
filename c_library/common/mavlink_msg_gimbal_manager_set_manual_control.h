@@ -47,7 +47,7 @@ typedef struct _fmav_gimbal_manager_set_manual_control_t {
 
 
 //----------------------------------------
-//-- Message GIMBAL_MANAGER_SET_MANUAL_CONTROL packing routines
+//-- Message GIMBAL_MANAGER_SET_MANUAL_CONTROL packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_manager_set_manual_control_pack(
@@ -148,7 +148,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_manager_set_manual_contr
 
 
 //----------------------------------------
-//-- Message GIMBAL_MANAGER_SET_MANUAL_CONTROL unpacking routines
+//-- Message GIMBAL_MANAGER_SET_MANUAL_CONTROL unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gimbal_manager_set_manual_control_decode(fmav_gimbal_manager_set_manual_control_t* payload, const fmav_message_t* msg)

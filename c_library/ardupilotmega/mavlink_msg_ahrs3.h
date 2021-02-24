@@ -49,7 +49,7 @@ typedef struct _fmav_ahrs3_t {
 
 
 //----------------------------------------
-//-- Message AHRS3 packing routines
+//-- Message AHRS3 packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs3_pack(
@@ -154,7 +154,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs3_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message AHRS3 unpacking routines
+//-- Message AHRS3 unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_ahrs3_decode(fmav_ahrs3_t* payload, const fmav_message_t* msg)

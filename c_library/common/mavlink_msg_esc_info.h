@@ -50,7 +50,7 @@ typedef struct _fmav_esc_info_t {
 
 
 //----------------------------------------
-//-- Message ESC_INFO packing routines
+//-- Message ESC_INFO packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_info_pack(
@@ -151,7 +151,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_info_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message ESC_INFO unpacking routines
+//-- Message ESC_INFO unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_esc_info_decode(fmav_esc_info_t* payload, const fmav_message_t* msg)

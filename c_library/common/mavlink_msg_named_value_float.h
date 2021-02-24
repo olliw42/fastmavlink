@@ -42,7 +42,7 @@ typedef struct _fmav_named_value_float_t {
 
 
 //----------------------------------------
-//-- Message NAMED_VALUE_FLOAT packing routines
+//-- Message NAMED_VALUE_FLOAT packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_named_value_float_pack(
@@ -131,7 +131,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_named_value_float_encode_to_fra
 
 
 //----------------------------------------
-//-- Message NAMED_VALUE_FLOAT unpacking routines
+//-- Message NAMED_VALUE_FLOAT unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_named_value_float_decode(fmav_named_value_float_t* payload, const fmav_message_t* msg)

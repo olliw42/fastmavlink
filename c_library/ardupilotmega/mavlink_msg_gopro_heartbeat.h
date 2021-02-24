@@ -42,7 +42,7 @@ typedef struct _fmav_gopro_heartbeat_t {
 
 
 //----------------------------------------
-//-- Message GOPRO_HEARTBEAT packing routines
+//-- Message GOPRO_HEARTBEAT packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gopro_heartbeat_pack(
@@ -133,7 +133,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gopro_heartbeat_encode_to_frame
 
 
 //----------------------------------------
-//-- Message GOPRO_HEARTBEAT unpacking routines
+//-- Message GOPRO_HEARTBEAT unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gopro_heartbeat_decode(fmav_gopro_heartbeat_t* payload, const fmav_message_t* msg)

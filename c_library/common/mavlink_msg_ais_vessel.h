@@ -57,7 +57,7 @@ typedef struct _fmav_ais_vessel_t {
 
 
 //----------------------------------------
-//-- Message AIS_VESSEL packing routines
+//-- Message AIS_VESSEL packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ais_vessel_pack(
@@ -174,7 +174,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ais_vessel_encode_to_frame_buf(
 
 
 //----------------------------------------
-//-- Message AIS_VESSEL unpacking routines
+//-- Message AIS_VESSEL unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_ais_vessel_decode(fmav_ais_vessel_t* payload, const fmav_message_t* msg)

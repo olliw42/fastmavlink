@@ -40,7 +40,7 @@ typedef struct _fmav_uavionix_adsb_transceiver_health_report_t {
 
 
 //----------------------------------------
-//-- Message UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT packing routines
+//-- Message UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT packing routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_transceiver_health_report_pack(
@@ -127,7 +127,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_transceiver_healt
 
 
 //----------------------------------------
-//-- Message UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT unpacking routines
+//-- Message UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT unpacking routines, for receiving
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_uavionix_adsb_transceiver_health_report_decode(fmav_uavionix_adsb_transceiver_health_report_t* payload, const fmav_message_t* msg)
