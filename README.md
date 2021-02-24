@@ -3,7 +3,7 @@
 
 FastMavlink is designed to be the most lightweight and most performant [MAVLink](https://mavlink.io/en/) C library, additionally providing novel features.
 
-It may not reach the goals to 100.00%, not now and not then, but as compared to the standard [pymavlink-mavgen](https://github.com/ArduPilot/pymavlink) library it provides drastically improved performance, in terms of cpu time, flash, and RAM footprint, and capabilities.
+It may not reach the goals to 100.00%, not now and not then, but as compared to the standard [pymavlink-mavgen](https://github.com/ArduPilot/pymavlink) library it provides drastically improved performance, in terms of CPU time, flash, and RAM footprint, and capabilities.
 
 This is not achieved by some magic vodoo coding tricks, but simply by a careful design which avoids superfluous calculations, obscure data fields, and unnecessary use of RAM and stack.
 
@@ -31,16 +31,16 @@ Messages can be generated and emitted only in MAVLink v2 format and without sign
 
 ## C Code Architecture ##
 
-The C code was architected along the line of the tasks which need to be covered for reading/parsing, handling, and sending/emitting MAVLink messages. That is, for each discrete task a function exists, which can then be combined to more user-friendly and easy-to-use higher-level functions, some of which are provided too. This way, only the tasks have to be executed as they are needed for the particular application at hand, allowing to minimize cpu time, RAM and stack usage.
+The C code was architected along the line of the tasks which need to be covered for reading/parsing, handling, and sending/emitting MAVLink messages. That is, for each discrete task a function exists, which can then be combined to more user-friendly and easy-to-use higher-level functions, some of which are provided too. This way, only the tasks have to be executed as they are needed for the particular application at hand, allowing to minimize CPU time, RAM and stack usage.
 
 For instance, parsing a message for a MAVLink component with routing capabilities involves these discrete tasks: 
 
-- parsing the received bytes into a working buffer, only considering the information in its header, mainly the len field
-- checking if the message ID is known, and determine e.g. the target IDs
+- parsing the received bytes into a working buffer, only considering the information in its header, mainly the len field (= very fast parsing)
+- checking if the message ID is known, and determining the target IDs
 - forwarding the data in the working buffer to the proper links (no extra effort needed)
-- converting the data in the working buffer into a message structure holding the required information, which can be feed to the component's message handler
+- converting the data in the working buffer into a message structure holding the required and relevant information, which can be passed on to the component's message handler
 
-This ensures a most fast parsing and a minimal effort (= cpu time) for forwarding known and unknown messages, and the proper design of the message structure minimizes the effort (= cpu time) for handling. The discrete tasks are represented by corresponding discrete functions, namely `fmav_parse_to_frame_buf()`, `fmav_check_frame_buf()`, and `fmav_frame_buf_to_msg()`. But also the higher-level functions `fmav_parse_and_check_to_frame_buf()` or `fmav_parse_to_msg()` are available.
+This ensures a most fast parsing and a minimal effort (= CPU time) for forwarding of known and unknown messages, and the proper design of the message structure minimizes the effort (= CPU time) for handling. The discrete tasks are represented by corresponding discrete functions, namely `fmav_parse_to_frame_buf()`, `fmav_check_frame_buf()`, and `fmav_frame_buf_to_msg()`, which can be called in sequence when (and only when) needed. But also the higher-level functions `fmav_parse_and_check_to_frame_buf()` or `fmav_parse_to_msg()` are available.
 
 In the following the discrete tasks shall be carefully analyzed, as this should help much to understand the fabric of the fastMavlink library.
 
@@ -53,6 +53,7 @@ Overview of primitive tasks:
 |---|---|---|---|---|---|---|---|---|---|---|
 |Rx |->| buf |->| check |->| msg_t |->| payload_t |->| data |
 
+Reading/parsing can be disected into (up to) 6 discrete steps: The received byte (Rx) is parsed into a working buffer (buf), the information in which is then checked (check), and if good converted into a message structure (msg_t), which can be passed on to the message handler. The message handler typically will decode the payload into a payload structure (payload_t), in order to access the data in the individual message fields (data). Importantly, it is not necessary that each step is explicitely executed, and in fact this is usually not optimal. For instance, in simpler applications one may want to parse the received bytes (Rx) directly into a message structure (msg_t), i.e., do Rx -> msg_t, and this would reduce RAM footprint as the working buffer (buf) is then not needed.
 
 #### fmav_parse_to_frame_buf():
 1 -> 2, Rx -> buf
@@ -107,6 +108,8 @@ Overview of primitive tasks:
 | 1 |   | 2 |   | 3 |   | 4 |   | 5 |
 |---|---|---|---|---|---|---|---|---|
 |data|->| payload_t |->| msg_t |->| buf |->| Tx |
+
+Sending/emitting can be disected into (up to) 5 discrete steps: The data in the message fields (data) is encoded into a payload structure (payload_t), which is then packed into a message structure (msg_t), then converted into a working buffer (buf), which can be directly send out (Tx). As before, it is not necessary that each step is explicitely executed, and in fact this is usually not optimal. For instance, in simpler applications one may want to pack the data for the message fields (data) directly into the working buffer (buf), i.e., do data -> buf, and this would reduce RAM and/or stack footprint as neither the payload structure (payload_t) nor the message structure (msg_t) need to be involved, and it also would save CPU cycles.
 
 
 #### fmav_msg_xxx_pack():
