@@ -3,13 +3,13 @@
 
 FastMavlink is designed to be the most lightweight and most performant [MAVLink](https://mavlink.io/en/) C library, additionally providing novel features.
 
-It may not reach the goals to 100.00%, not now and not then, but as compared to the standard [pymavlink-mavgen](https://github.com/ArduPilot/pymavlink) library it provides drastically improved performance, in terms of CPU time, flash, and RAM footprint, and capabilities.
+It may not reach the goals to 100.00%, not now and not then, but as compared to the standard [pymavlink-mavgen](https://github.com/ArduPilot/pymavlink) library it provides much improved performance, in terms of CPU time, flash, and RAM footprint, and capabilities.
 
 This is not achieved by some magic vodoo coding tricks, but simply by a careful design which avoids superfluous calculations, obscure data fields, and unnecessary use of RAM and stack.
 
 To give an example: In order to parse a message, determine if it is targeted at the application, and send a response out to the proper link, the pymavlink-mavgen library requires you to search three (3!) times for the target id pairs which correspond to the respective message id. The fastMavlink library only requires one search, and this is the minimum which is logically needed. Searching is a comparatively costly process, and avoiding unnecessary searches obviously relates to a boost in performance. 
 
-Some of the drawbacks of the pymavlink-mavgen library were listed and addressed in https://github.com/mavlink/mavlink/pull/1127, which can serve to further demonstrate the point. However, fastMavlink's C code is not simply an improved version of pymavlink-mavgen's, but pretty much a complete rewrite from scratch. It is therefore also clean, logically structured, and cruft were removed. It inherits some ideas however, such as the header-only design.
+Some of the drawbacks of the pymavlink-mavgen library were listed and addressed in https://github.com/mavlink/mavlink/pull/1127, which can serve to further demonstrate the point. However, fastMavlink's C code is not simply an improved version of pymavlink-mavgen's, but pretty much a complete rewrite from scratch. It is therefore also clean, logically structured, and cruft were removed. It inherits some ideas however, such as the header-only design and organization into dialect subfolders, and code for few basic functions.
 
 In addition, the fastMavlink C library provides features not provided otherwise but which are quite missed. For instance, it has optimized routines for use in MAVLink routers as well as a MAVLink router library. It offers a pymavlink-mavgen mimicry capability, which can make changing to fastMavlink easy.
 
@@ -17,7 +17,7 @@ Lastly, the C code is generated using a Python generator from the MAVLink protoc
 
 You don't believe this all this can be true, you think it must be exaggerated? Well, when please check it out and judge :)
 
-The fastMavlink library is used in two projects of mine, the [STorM32 gimbal controller](http://www.olliw.eu/2013/storm32bgc/) and the [MAVLink for OpenTx](http://www.olliw.eu/2020/olliwtelem/) projects. So, it can claim some maturity. Yet, obviously, there is plenty of room to further improve, extend and advance it. Suggestions are welcome.
+The fastMavlink library is used in two projects of mine, the [STorM32 gimbal controller](http://www.olliw.eu/2013/storm32bgc/) and the [MAVLink for OpenTx](http://www.olliw.eu/2020/olliwtelem/) projects. So, it can claim some maturity. Yet, obviously, the software is offered as is with no explicit or implied warranty, and there is plenty of room to further improve, extend and advance it. Suggestions are welcome.
 
 ## Licence ##
 
@@ -36,13 +36,13 @@ The C code was architected along the line of the tasks which need to be covered 
 For instance, parsing a message for a MAVLink component with routing capabilities involves these discrete tasks: 
 
 - parsing the received bytes into a working buffer, only considering the information in its header, mainly the len field (= very fast parsing)
-- checking if the message ID is known, and determining the target IDs
+- checking if the message ID is known, checksum is ok, and determining the target IDs
 - forwarding the data in the working buffer to the proper links (no extra effort needed)
 - converting the data in the working buffer into a message structure holding the required and relevant information, which can be passed on to the component's message handler
 
-This ensures a most fast parsing and a minimal effort (= CPU time) for forwarding of known and unknown messages, and the proper design of the message structure minimizes the effort (= CPU time) for handling. The discrete tasks are represented by corresponding discrete functions, namely `fmav_parse_to_frame_buf()`, `fmav_check_frame_buf()`, and `fmav_frame_buf_to_msg()`, which can be called in sequence when (and only when) needed. But also the higher-level functions `fmav_parse_and_check_to_frame_buf()` or `fmav_parse_to_msg()` are available.
+This ensures a most fast parsing and a minimal effort (= CPU time) for forwarding of known and unknown messages, and the proper design of the message structure minimizes the effort (= CPU time) for handling. The discrete tasks are represented by corresponding functions, namely `fmav_parse_to_frame_buf()`, `fmav_check_frame_buf()`, and `fmav_frame_buf_to_msg()`, which can be called in sequence when (and only when) needed. But also the higher-level functions `fmav_parse_and_check_to_frame_buf()` or `fmav_parse_to_msg()` are available.
 
-In the following the discrete tasks shall be carefully analyzed, as this should help much to understand the fabric of the fastMavlink library.
+In the following the discrete tasks shall be analyzed, as this should help much to understand the fabric of the fastMavlink library.
 
 
 ### Reading/Parsing
@@ -53,7 +53,9 @@ Overview of primitive tasks:
 |---|---|---|---|---|---|---|---|---|---|---|
 |Rx |->| buf |->| check |->| msg_t |->| payload_t |->| data |
 
-Reading/parsing can be disected into (up to) 6 discrete steps: The received byte (Rx) is parsed into a working buffer (buf), the information in which is then checked (check), and if good converted into a message structure (msg_t), which can be passed on to the message handler. The message handler typically will decode the payload into a payload structure (payload_t), in order to access the data in the individual message fields (data). Importantly, it is not necessary that each step is explicitely executed, and in fact this is usually not optimal. For instance, in simpler applications one may want to parse the received bytes (Rx) directly into a message structure (msg_t), i.e., do Rx -> msg_t, and this would reduce RAM footprint as the working buffer (buf) is then not needed.
+Reading/parsing can be disected into (up to) 6 discrete steps: 
+
+The received byte (Rx) is parsed into a working buffer (buf), the information in which is then checked (check), and if good converted into a message structure (msg_t), which can be passed on to the message handler. The message handler typically will decode the payload into a payload structure (payload_t), in order to access the data in the individual message fields (data). Importantly, it is not necessary that each step is explicitely executed, and in fact this is usually not optimal. For instance, in simpler applications one may want to parse the received bytes (Rx) directly into a message structure (msg_t), i.e., do Rx -> msg_t, and this would reduce RAM footprint as the working buffer (buf) is then not needed.
 
 #### fmav_parse_to_frame_buf():
 1 -> 2, Rx -> buf
@@ -109,7 +111,9 @@ Overview of primitive tasks:
 |---|---|---|---|---|---|---|---|---|
 |data|->| payload_t |->| msg_t |->| buf |->| Tx |
 
-Sending/emitting can be disected into (up to) 5 discrete steps: The data in the message fields (data) is encoded into a payload structure (payload_t), which is then packed into a message structure (msg_t), then converted into a working buffer (buf), which can be directly send out (Tx). As before, it is not necessary that each step is explicitely executed, and in fact this is usually not optimal. For instance, in simpler applications one may want to pack the data for the message fields (data) directly into the working buffer (buf), i.e., do data -> buf, and this would reduce RAM and/or stack footprint as neither the payload structure (payload_t) nor the message structure (msg_t) need to be involved, and it also would save CPU cycles.
+Sending/emitting can be disected into (up to) 5 discrete steps:
+
+The data in the message fields (data) is encoded into a payload structure (payload_t), which is then packed into a message structure (msg_t), then converted into a working buffer (buf), which can be directly send out (Tx). As before, it is not necessary that each step is explicitely executed, and in fact this is usually not optimal. For instance, in simpler applications one may want to pack the data for the message fields (data) directly into the working buffer (buf), i.e., do data -> buf, and this would reduce RAM and/or stack footprint as neither the payload structure (payload_t) nor the message structure (msg_t) need to be involved, and it also would save CPU cycles.
 
 
 #### fmav_msg_xxx_pack():
@@ -150,7 +154,7 @@ The fastMavlink C code library includes function wrappers which mimic those of t
 
 ```#include "path_to_code_generator_output/dialect/mavlink.h"```
 
-instead of `".../dialect/dialect.h"`. This defines the token `FASTMAVLINK_PYMAVLINK_ENABLED`, which in turn enables the related code. The mimicry works as drop-in-replacement. That is, fastMavlink's enums, structs, and functions are actually used, but simply presented with a different look. Additional work for converting to fastMavlink will hence typically be required if fields of pymavlink-mavgen's status and message structs are directly used, since they are not be present in fastMavlink's structs.
+instead of `".../dialect/dialect.h"`. This defines the token `FASTMAVLINK_PYMAVLINK_ENABLED`, which in turn enables the related code. The mimicry works as drop-in-replacement. That is, fastMavlink's enums, structures, and functions are actually used, but simply presented with a different look. Additional work for converting to fastMavlink will hence be typically required if fields of pymavlink-mavgen's status and message structures are directly used, since they may not be present in fastMavlink's structures.
 
 
 
