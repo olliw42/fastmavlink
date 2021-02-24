@@ -1,5 +1,5 @@
 
-# The FastMavlink Library #
+# The fastMavlink Library #
 
 FastMavlink is designed to be the most lightweight and most performant [MAVLink](https://mavlink.io/en/) C library, additionally providing novel features.
 
@@ -45,103 +45,93 @@ This ensures a most fast parsing and a minimal effort (= cpu time) for forwardin
 In the following the discrete tasks shall be carefully analyzed, as this should help much to understand the fabric of the fastMavlink library.
 
 
-### Reading/Parsing:
+### Reading/Parsing
 
 Overview of primitive tasks:
 
-1       2         3           4             5			6
-Rx  ->  buf   ->  check   ->  msg_t   ->    payload_t	->	data
+| 1 |   | 2 |   | 3 |   | 4 |   | 5 |   | 6 |
+|---|---|---|---|---|---|---|---|---|---|---|
+|Rx |->| buf |->| check |->| msg_t |->| payload_t |->| data |
 
 
-fmav_parse_to_frame_buf():
-1   ->  2
-Rx      buf
-takes c of Rx and fills buf
-parses as economically as possible
-located in fastmavlink_functions.h
+#### fmav_parse_to_frame_buf():
+1 -> 2, Rx -> buf
+- takes c of Rx and fills buf
+- parses as economically as possible
+- located in fastmavlink_functions.h
 
 
-fmav_check_frame_buf():
-2   ->  3
-buf     check
-checks if msgid known, length ok, crc ok, retrieves target ids
-located in fastmavlink_functions.h
+#### fmav_check_frame_buf():
+2 -> 3, buf -> check
+- checks if msgid known, length ok, crc ok, retrieves target ids
+- located in fastmavlink_functions.h
 
 
-fmav_frame_buf_to_msg():
-3     ->  4
-check     msg_t
-basically copy and fill, with keeping relevant information
-located in fastmavlink_functions.h
+#### fmav_frame_buf_to_msg():
+3 -> 4, check -> msg_t
+- basically copy and fill, with keeping relevant information
+- located in fastmavlink_functions.h
 
 
-fmav_msg_xxx_decode():
-4     ->  5
-msg_t     payload_t
-located in mavlink_msg_xxx.h
+#### fmav_msg_xxx_decode():
+4 -> 5, msg_t -> payload_t
+- located in mavlink_msg_xxx.h
 
 
-fmav_parse_and_check_to_frame_buf():
-1       3
-Rx  ->  check
-wrapper to the first two steps
-located in fastmavlink_functions.h
+#### fmav_parse_and_check_to_frame_buf():
+1 -> 3, Rx -> check
+- wrapper to the first two steps
+- located in fastmavlink_functions.h
 
 
-fmav_parse_to_msg_wbuf():
-1       4
-Rx  ->  msg_t
-wrapper to the first three steps
-located in fastmavlink_functions.h
+#### fmav_parse_to_msg_wbuf():
+1 -> 4, Rx -> msg_t
+- wrapper to the first three steps
+- located in fastmavlink_functions.h
 
 
-fmav_parse_to_msg():
-1       4
-Rx  ->  msg_t
-parses directly from Rx into msg
-located in fastmavlink_functions.h
+#### fmav_parse_to_msg():
+1 -> 4, Rx  ->  msg_t
+- parses directly from Rx into msg
+- located in fastmavlink_functions.h
 
 
 missing:
-msg_t -> data
+- msg_t -> data
 
 
-### Sending/Emitting:
+### Sending/Emitting
 
 Overview of primitive tasks:
 
-1         2             3           4         5
-data  ->  payload_t ->  msg_t  ->   buf   ->  Tx
+| 1 |   | 2 |   | 3 |   | 4 |   | 5 |
+|---|---|---|---|---|---|---|---|---|
+|data|->| payload_t |->| msg_t |->| buf |->| Tx |
 
 
-fmav_msg_xxx_pack():
-1         3
-data  ->  msg_t
-located in mavlink_msg_xxx.h
+#### fmav_msg_xxx_pack():
+1 -> 3, data  ->  msg_t
+- located in mavlink_msg_xxx.h
 
 
-fmav_msg_xxx_encode():
-2         	3
-payload_t	->  msg_t
-located in mavlink_msg_xxx.h
+#### fmav_msg_xxx_encode():
+2 -> 3, payload_t	->  msg_t
+- located in mavlink_msg_xxx.h
 
 
-fmav_msg_to_frame_buf():
-3           4
-msg_t  ->   buf
-located in fastmavlink_functions.h
+#### fmav_msg_to_frame_buf():
+3 -> 4, msg_t  ->   buf
+- located in fastmavlink_functions.h
 
 
-fmav_msg_xxx_pack_to_frame_buf():
-1         4
-data  ->  buf
-located in mavlink_msg_xxx.h
+#### fmav_msg_xxx_pack_to_frame_buf():
+1 -> 4, data  ->  buf
+- located in mavlink_msg_xxx.h
 
 
-fmav_msg_xxx_encode_to_frame_buf():
-2           4
-payload_t   ->  buf
-located in mavlink_msg_xxx.h
+#### fmav_msg_xxx_encode_to_frame_buf():
+2 -> 4, payload_t   ->  buf
+- located in mavlink_msg_xxx.h
 
 
 ## C Code Usage ##
@@ -153,7 +143,7 @@ In order to use the dialect dialect.xml, include
 
 ## Pymavlink-mavgen Mimicry ##
 
-The FastMavlink C code library includes function wrappers which mimic those of the pymavlink-mavgen library. This allows us to easily port to fastMavlink, with no or little effort in many cases. The mimicry is activated by including
+The fastMavlink C code library includes function wrappers which mimic those of the pymavlink-mavgen library. This allows us to easily port to fastMavlink, with no or little effort in many cases. The mimicry is activated by including
 
 ```#include "path_to_code_generator_output/dialect/mavlink.h"```
 
