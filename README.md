@@ -93,6 +93,12 @@ The received byte (Rx) is parsed into a working buffer (buf), the information in
 - located in fastmavlink_functions.h
 
 
+#### fmav_parse_to_msg():
+1 -> 4, Rx  ->  msg_t
+- parses directly from Rx into msg structure
+- located in fastmavlink_functions.h
+
+
 #### fmav_msg_xxx_decode():
 4 -> 5, msg_t -> payload_t
 - located in mavlink_msg_xxx.h
@@ -107,12 +113,6 @@ The received byte (Rx) is parsed into a working buffer (buf), the information in
 #### fmav_parse_to_msg_wbuf():
 1 -> 4, Rx -> msg_t
 - wrapper to the first three steps
-- located in fastmavlink_functions.h
-
-
-#### fmav_parse_to_msg():
-1 -> 4, Rx  ->  msg_t
-- parses directly from Rx into msg
 - located in fastmavlink_functions.h
 
 
@@ -139,7 +139,7 @@ The data in the message fields (data) is encoded into a payload structure (paylo
 
 
 #### fmav_msg_xxx_encode():
-2 -> 3, payload_t	->  msg_t
+2 -> 3, payload_t -> msg_t
 - located in mavlink_msg_xxx.h
 
 
@@ -158,6 +158,18 @@ The data in the message fields (data) is encoded into a payload structure (paylo
 - located in mavlink_msg_xxx.h
 
 
+#### fmav_msg_xxx_pack_to_serial():
+1 -> 5, data  ->  Tx
+- user has to provide a function fmav_serial_write_char()
+- located in mavlink_msg_xxx.h
+
+
+#### fmav_msg_xxx_encode_to_serial():
+2 -> 5, payload_t   ->  Tx
+- user has to provide a function fmav_serial_write_char()
+- located in mavlink_msg_xxx.h
+
+
 missing:
 - msg_t -> Tx
 
@@ -170,7 +182,7 @@ The fastMavlink C code library includes function wrappers which mimic those of t
 #include "path_to_code_generator_output/dialect/mavlink.h"
 ```
 
-instead of `".../dialect/dialect.h"`. This defines the token `FASTMAVLINK_PYMAVLINK_ENABLED`, which in turn enables the related code. The mimicry works as drop-in-replacement. That is, fastMavlink's enums, structures, and functions are actually used, but simply presented with a different look. Additional work for converting to fastMavlink will hence be typically required if fields of pymavlink-mavgen's status and message structures are directly used, since they may not be present in fastMavlink's structures.
+instead of `".../dialect/dialect.h"`. This defines the token `FASTMAVLINK_PYMAVLINK_ENABLED`, which in turn enables the related code. The mimicry works as drop-in-replacement. That is, fastMavlink's enums, structures, and functions are actually used, but simply presented with a different look. Additional work for converting to fastMavlink will typically be required if fields of pymavlink-mavgen's status and message structures are directly used, since they may not be present in fastMavlink's structures.
 
 
 
