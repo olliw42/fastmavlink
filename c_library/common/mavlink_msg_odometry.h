@@ -56,6 +56,9 @@ typedef struct _fmav_odometry_t {
 #define FASTMAVLINK_MSG_ODOMETRY_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ODOMETRY_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_ODOMETRY_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ODOMETRY_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_331_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_331_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message ODOMETRY packing routines, for sending
@@ -159,7 +162,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_odometry_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_odometry_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -172,6 +175,65 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_odometry_encode_to_frame_buf(
         _payload->time_usec, _payload->frame_id, _payload->child_frame_id, _payload->x, _payload->y, _payload->z, _payload->q, _payload->vx, _payload->vy, _payload->vz, _payload->rollspeed, _payload->pitchspeed, _payload->yawspeed, _payload->pose_covariance, _payload->velocity_covariance, _payload->reset_counter, _payload->estimator_type,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_odometry_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t time_usec, uint8_t frame_id, uint8_t child_frame_id, float x, float y, float z, const float* q, float vx, float vy, float vz, float rollspeed, float pitchspeed, float yawspeed, const float* pose_covariance, const float* velocity_covariance, uint8_t reset_counter, uint8_t estimator_type,
+    fmav_status_t* _status)
+{
+    fmav_odometry_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.x = x;
+    _payload.y = y;
+    _payload.z = z;
+    _payload.vx = vx;
+    _payload.vy = vy;
+    _payload.vz = vz;
+    _payload.rollspeed = rollspeed;
+    _payload.pitchspeed = pitchspeed;
+    _payload.yawspeed = yawspeed;
+    _payload.frame_id = frame_id;
+    _payload.child_frame_id = child_frame_id;
+    _payload.reset_counter = reset_counter;
+    _payload.estimator_type = estimator_type;
+    memcpy(&(_payload.q), q, sizeof(float)*4);
+    memcpy(&(_payload.pose_covariance), pose_covariance, sizeof(float)*21);
+    memcpy(&(_payload.velocity_covariance), velocity_covariance, sizeof(float)*21);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_ODOMETRY,
+        FASTMAVLINK_MSG_ODOMETRY_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ODOMETRY_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ODOMETRY_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_odometry_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_odometry_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_ODOMETRY,
+        FASTMAVLINK_MSG_ODOMETRY_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ODOMETRY_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ODOMETRY_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

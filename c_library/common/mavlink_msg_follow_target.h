@@ -52,6 +52,9 @@ typedef struct _fmav_follow_target_t {
 #define FASTMAVLINK_MSG_FOLLOW_TARGET_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_FOLLOW_TARGET_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_FOLLOW_TARGET_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_144_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_144_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message FOLLOW_TARGET packing routines, for sending
@@ -143,7 +146,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_follow_target_pack_to_frame_buf
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_follow_target_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -156,6 +159,59 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_follow_target_encode_to_frame_b
         _payload->timestamp, _payload->est_capabilities, _payload->lat, _payload->lon, _payload->alt, _payload->vel, _payload->acc, _payload->attitude_q, _payload->rates, _payload->position_cov, _payload->custom_state,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_follow_target_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t timestamp, uint8_t est_capabilities, int32_t lat, int32_t lon, float alt, const float* vel, const float* acc, const float* attitude_q, const float* rates, const float* position_cov, uint64_t custom_state,
+    fmav_status_t* _status)
+{
+    fmav_follow_target_t _payload;
+
+    _payload.timestamp = timestamp;
+    _payload.custom_state = custom_state;
+    _payload.lat = lat;
+    _payload.lon = lon;
+    _payload.alt = alt;
+    _payload.est_capabilities = est_capabilities;
+    memcpy(&(_payload.vel), vel, sizeof(float)*3);
+    memcpy(&(_payload.acc), acc, sizeof(float)*3);
+    memcpy(&(_payload.attitude_q), attitude_q, sizeof(float)*4);
+    memcpy(&(_payload.rates), rates, sizeof(float)*3);
+    memcpy(&(_payload.position_cov), position_cov, sizeof(float)*3);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_FOLLOW_TARGET,
+        FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_FOLLOW_TARGET_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_follow_target_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_follow_target_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_FOLLOW_TARGET,
+        FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_FOLLOW_TARGET_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

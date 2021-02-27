@@ -56,6 +56,9 @@ typedef struct _fmav_control_system_state_t {
 #define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_146_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_146_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message CONTROL_SYSTEM_STATE packing routines, for sending
@@ -159,7 +162,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_control_system_state_pack_to_fr
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_control_system_state_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -172,6 +175,65 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_control_system_state_encode_to_
         _payload->time_usec, _payload->x_acc, _payload->y_acc, _payload->z_acc, _payload->x_vel, _payload->y_vel, _payload->z_vel, _payload->x_pos, _payload->y_pos, _payload->z_pos, _payload->airspeed, _payload->vel_variance, _payload->pos_variance, _payload->q, _payload->roll_rate, _payload->pitch_rate, _payload->yaw_rate,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_control_system_state_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t time_usec, float x_acc, float y_acc, float z_acc, float x_vel, float y_vel, float z_vel, float x_pos, float y_pos, float z_pos, float airspeed, const float* vel_variance, const float* pos_variance, const float* q, float roll_rate, float pitch_rate, float yaw_rate,
+    fmav_status_t* _status)
+{
+    fmav_control_system_state_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.x_acc = x_acc;
+    _payload.y_acc = y_acc;
+    _payload.z_acc = z_acc;
+    _payload.x_vel = x_vel;
+    _payload.y_vel = y_vel;
+    _payload.z_vel = z_vel;
+    _payload.x_pos = x_pos;
+    _payload.y_pos = y_pos;
+    _payload.z_pos = z_pos;
+    _payload.airspeed = airspeed;
+    _payload.roll_rate = roll_rate;
+    _payload.pitch_rate = pitch_rate;
+    _payload.yaw_rate = yaw_rate;
+    memcpy(&(_payload.vel_variance), vel_variance, sizeof(float)*3);
+    memcpy(&(_payload.pos_variance), pos_variance, sizeof(float)*3);
+    memcpy(&(_payload.q), q, sizeof(float)*4);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_CONTROL_SYSTEM_STATE,
+        FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_control_system_state_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_control_system_state_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_CONTROL_SYSTEM_STATE,
+        FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

@@ -40,6 +40,9 @@ typedef struct _fmav_array_test_5_t {
 #define FASTMAVLINK_MSG_ARRAY_TEST_5_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ARRAY_TEST_5_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_ARRAY_TEST_5_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ARRAY_TEST_5_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_17155_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_17155_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message ARRAY_TEST_5 packing routines, for sending
@@ -115,7 +118,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_5_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_5_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -128,6 +131,51 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_5_encode_to_frame_bu
         _payload->c1, _payload->c2,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_5_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const char* c1, const char* c2,
+    fmav_status_t* _status)
+{
+    fmav_array_test_5_t _payload;
+
+
+    memcpy(&(_payload.c1), c1, sizeof(char)*5);
+    memcpy(&(_payload.c2), c2, sizeof(char)*5);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_ARRAY_TEST_5,
+        FASTMAVLINK_MSG_ARRAY_TEST_5_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ARRAY_TEST_5_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ARRAY_TEST_5_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_5_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_array_test_5_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_ARRAY_TEST_5,
+        FASTMAVLINK_MSG_ARRAY_TEST_5_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ARRAY_TEST_5_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ARRAY_TEST_5_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

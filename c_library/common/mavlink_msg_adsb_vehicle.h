@@ -50,6 +50,9 @@ typedef struct _fmav_adsb_vehicle_t {
 #define FASTMAVLINK_MSG_ADSB_VEHICLE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ADSB_VEHICLE_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_ADSB_VEHICLE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ADSB_VEHICLE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_246_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_246_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message ADSB_VEHICLE packing routines, for sending
@@ -145,7 +148,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adsb_vehicle_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adsb_vehicle_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -158,6 +161,61 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adsb_vehicle_encode_to_frame_bu
         _payload->ICAO_address, _payload->lat, _payload->lon, _payload->altitude_type, _payload->altitude, _payload->heading, _payload->hor_velocity, _payload->ver_velocity, _payload->callsign, _payload->emitter_type, _payload->tslc, _payload->flags, _payload->squawk,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adsb_vehicle_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint32_t ICAO_address, int32_t lat, int32_t lon, uint8_t altitude_type, int32_t altitude, uint16_t heading, uint16_t hor_velocity, int16_t ver_velocity, const char* callsign, uint8_t emitter_type, uint8_t tslc, uint16_t flags, uint16_t squawk,
+    fmav_status_t* _status)
+{
+    fmav_adsb_vehicle_t _payload;
+
+    _payload.ICAO_address = ICAO_address;
+    _payload.lat = lat;
+    _payload.lon = lon;
+    _payload.altitude = altitude;
+    _payload.heading = heading;
+    _payload.hor_velocity = hor_velocity;
+    _payload.ver_velocity = ver_velocity;
+    _payload.flags = flags;
+    _payload.squawk = squawk;
+    _payload.altitude_type = altitude_type;
+    _payload.emitter_type = emitter_type;
+    _payload.tslc = tslc;
+    memcpy(&(_payload.callsign), callsign, sizeof(char)*9);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_ADSB_VEHICLE,
+        FASTMAVLINK_MSG_ADSB_VEHICLE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ADSB_VEHICLE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ADSB_VEHICLE_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adsb_vehicle_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_adsb_vehicle_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_ADSB_VEHICLE,
+        FASTMAVLINK_MSG_ADSB_VEHICLE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ADSB_VEHICLE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ADSB_VEHICLE_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

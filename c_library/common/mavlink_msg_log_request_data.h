@@ -42,6 +42,9 @@ typedef struct _fmav_log_request_data_t {
 #define FASTMAVLINK_MSG_LOG_REQUEST_DATA_TARGET_SYSTEM_OFS  10
 #define FASTMAVLINK_MSG_LOG_REQUEST_DATA_TARGET_COMPONENT_OFS  11
 
+#define FASTMAVLINK_MSG_LOG_REQUEST_DATA_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_119_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_119_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message LOG_REQUEST_DATA packing routines, for sending
@@ -123,7 +126,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_request_data_pack_to_frame_
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_request_data_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -136,6 +139,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_request_data_encode_to_fram
         _payload->target_system, _payload->target_component, _payload->id, _payload->ofs, _payload->count,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_request_data_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component, uint16_t id, uint32_t ofs, uint32_t count,
+    fmav_status_t* _status)
+{
+    fmav_log_request_data_t _payload;
+
+    _payload.ofs = ofs;
+    _payload.count = count;
+    _payload.id = id;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_LOG_REQUEST_DATA,
+        FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_LOG_REQUEST_DATA_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_request_data_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_log_request_data_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_LOG_REQUEST_DATA,
+        FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_LOG_REQUEST_DATA_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

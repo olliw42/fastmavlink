@@ -47,6 +47,9 @@ typedef struct _fmav_deepstall_t {
 #define FASTMAVLINK_MSG_DEEPSTALL_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_DEEPSTALL_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_DEEPSTALL_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_DEEPSTALL_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_195_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_195_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message DEEPSTALL packing routines, for sending
@@ -138,7 +141,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_deepstall_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_deepstall_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -151,6 +154,59 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_deepstall_encode_to_frame_buf(
         _payload->landing_lat, _payload->landing_lon, _payload->path_lat, _payload->path_lon, _payload->arc_entry_lat, _payload->arc_entry_lon, _payload->altitude, _payload->expected_travel_distance, _payload->cross_track_error, _payload->stage,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_deepstall_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    int32_t landing_lat, int32_t landing_lon, int32_t path_lat, int32_t path_lon, int32_t arc_entry_lat, int32_t arc_entry_lon, float altitude, float expected_travel_distance, float cross_track_error, uint8_t stage,
+    fmav_status_t* _status)
+{
+    fmav_deepstall_t _payload;
+
+    _payload.landing_lat = landing_lat;
+    _payload.landing_lon = landing_lon;
+    _payload.path_lat = path_lat;
+    _payload.path_lon = path_lon;
+    _payload.arc_entry_lat = arc_entry_lat;
+    _payload.arc_entry_lon = arc_entry_lon;
+    _payload.altitude = altitude;
+    _payload.expected_travel_distance = expected_travel_distance;
+    _payload.cross_track_error = cross_track_error;
+    _payload.stage = stage;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_DEEPSTALL,
+        FASTMAVLINK_MSG_DEEPSTALL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_DEEPSTALL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_DEEPSTALL_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_deepstall_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_deepstall_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_DEEPSTALL,
+        FASTMAVLINK_MSG_DEEPSTALL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_DEEPSTALL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_DEEPSTALL_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

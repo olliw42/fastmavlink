@@ -41,6 +41,9 @@ typedef struct _fmav_statustext_t {
 #define FASTMAVLINK_MSG_STATUSTEXT_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_STATUSTEXT_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_STATUSTEXT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_STATUSTEXT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_253_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_253_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message STATUSTEXT packing routines, for sending
@@ -118,7 +121,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_statustext_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_statustext_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -131,6 +134,52 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_statustext_encode_to_frame_buf(
         _payload->severity, _payload->text, _payload->id, _payload->chunk_seq,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_statustext_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t severity, const char* text, uint16_t id, uint8_t chunk_seq,
+    fmav_status_t* _status)
+{
+    fmav_statustext_t _payload;
+
+    _payload.severity = severity;
+    _payload.id = id;
+    _payload.chunk_seq = chunk_seq;
+    memcpy(&(_payload.text), text, sizeof(char)*50);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_STATUSTEXT,
+        FASTMAVLINK_MSG_STATUSTEXT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_STATUSTEXT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_STATUSTEXT_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_statustext_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_statustext_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_STATUSTEXT,
+        FASTMAVLINK_MSG_STATUSTEXT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_STATUSTEXT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_STATUSTEXT_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

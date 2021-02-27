@@ -46,6 +46,9 @@ typedef struct _fmav_obstacle_distance_t {
 #define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_OBSTACLE_DISTANCE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_330_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_330_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message OBSTACLE_DISTANCE packing routines, for sending
@@ -133,7 +136,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_obstacle_distance_pack_to_frame
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_obstacle_distance_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -146,6 +149,57 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_obstacle_distance_encode_to_fra
         _payload->time_usec, _payload->sensor_type, _payload->distances, _payload->increment, _payload->min_distance, _payload->max_distance, _payload->increment_f, _payload->angle_offset, _payload->frame,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_obstacle_distance_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t time_usec, uint8_t sensor_type, const uint16_t* distances, uint8_t increment, uint16_t min_distance, uint16_t max_distance, float increment_f, float angle_offset, uint8_t frame,
+    fmav_status_t* _status)
+{
+    fmav_obstacle_distance_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.min_distance = min_distance;
+    _payload.max_distance = max_distance;
+    _payload.sensor_type = sensor_type;
+    _payload.increment = increment;
+    _payload.increment_f = increment_f;
+    _payload.angle_offset = angle_offset;
+    _payload.frame = frame;
+    memcpy(&(_payload.distances), distances, sizeof(uint16_t)*72);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_OBSTACLE_DISTANCE,
+        FASTMAVLINK_MSG_OBSTACLE_DISTANCE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_OBSTACLE_DISTANCE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_OBSTACLE_DISTANCE_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_obstacle_distance_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_obstacle_distance_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_OBSTACLE_DISTANCE,
+        FASTMAVLINK_MSG_OBSTACLE_DISTANCE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_OBSTACLE_DISTANCE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_OBSTACLE_DISTANCE_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

@@ -44,6 +44,9 @@ typedef struct _fmav_cellular_status_t {
 #define FASTMAVLINK_MSG_CELLULAR_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_CELLULAR_STATUS_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_CELLULAR_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_CELLULAR_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_334_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_334_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message CELLULAR_STATUS packing routines, for sending
@@ -129,7 +132,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_cellular_status_pack_to_frame_b
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_cellular_status_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -142,6 +145,56 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_cellular_status_encode_to_frame
         _payload->status, _payload->failure_reason, _payload->type, _payload->quality, _payload->mcc, _payload->mnc, _payload->lac,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_cellular_status_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t status, uint8_t failure_reason, uint8_t type, uint8_t quality, uint16_t mcc, uint16_t mnc, uint16_t lac,
+    fmav_status_t* _status)
+{
+    fmav_cellular_status_t _payload;
+
+    _payload.mcc = mcc;
+    _payload.mnc = mnc;
+    _payload.lac = lac;
+    _payload.status = status;
+    _payload.failure_reason = failure_reason;
+    _payload.type = type;
+    _payload.quality = quality;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_CELLULAR_STATUS,
+        FASTMAVLINK_MSG_CELLULAR_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_CELLULAR_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_CELLULAR_STATUS_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_cellular_status_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_cellular_status_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_CELLULAR_STATUS,
+        FASTMAVLINK_MSG_CELLULAR_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_CELLULAR_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_CELLULAR_STATUS_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

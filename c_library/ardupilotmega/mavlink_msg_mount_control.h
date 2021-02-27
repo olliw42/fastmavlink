@@ -43,6 +43,9 @@ typedef struct _fmav_mount_control_t {
 #define FASTMAVLINK_MSG_MOUNT_CONTROL_TARGET_SYSTEM_OFS  12
 #define FASTMAVLINK_MSG_MOUNT_CONTROL_TARGET_COMPONENT_OFS  13
 
+#define FASTMAVLINK_MSG_MOUNT_CONTROL_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_MOUNT_CONTROL_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_157_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_157_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message MOUNT_CONTROL packing routines, for sending
@@ -126,7 +129,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_control_pack_to_frame_buf
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_control_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -139,6 +142,55 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_control_encode_to_frame_b
         _payload->target_system, _payload->target_component, _payload->input_a, _payload->input_b, _payload->input_c, _payload->save_position,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_control_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component, int32_t input_a, int32_t input_b, int32_t input_c, uint8_t save_position,
+    fmav_status_t* _status)
+{
+    fmav_mount_control_t _payload;
+
+    _payload.input_a = input_a;
+    _payload.input_b = input_b;
+    _payload.input_c = input_c;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+    _payload.save_position = save_position;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_MOUNT_CONTROL,
+        FASTMAVLINK_MSG_MOUNT_CONTROL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_MOUNT_CONTROL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_MOUNT_CONTROL_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_control_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_mount_control_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_MOUNT_CONTROL,
+        FASTMAVLINK_MSG_MOUNT_CONTROL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_MOUNT_CONTROL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_MOUNT_CONTROL_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

@@ -58,6 +58,9 @@ typedef struct _fmav_sim_state_t {
 #define FASTMAVLINK_MSG_SIM_STATE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_SIM_STATE_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_SIM_STATE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_SIM_STATE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_108_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_108_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message SIM_STATE packing routines, for sending
@@ -171,7 +174,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sim_state_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sim_state_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -184,6 +187,70 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sim_state_encode_to_frame_buf(
         _payload->q1, _payload->q2, _payload->q3, _payload->q4, _payload->roll, _payload->pitch, _payload->yaw, _payload->xacc, _payload->yacc, _payload->zacc, _payload->xgyro, _payload->ygyro, _payload->zgyro, _payload->lat, _payload->lon, _payload->alt, _payload->std_dev_horz, _payload->std_dev_vert, _payload->vn, _payload->ve, _payload->vd,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sim_state_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    float q1, float q2, float q3, float q4, float roll, float pitch, float yaw, float xacc, float yacc, float zacc, float xgyro, float ygyro, float zgyro, float lat, float lon, float alt, float std_dev_horz, float std_dev_vert, float vn, float ve, float vd,
+    fmav_status_t* _status)
+{
+    fmav_sim_state_t _payload;
+
+    _payload.q1 = q1;
+    _payload.q2 = q2;
+    _payload.q3 = q3;
+    _payload.q4 = q4;
+    _payload.roll = roll;
+    _payload.pitch = pitch;
+    _payload.yaw = yaw;
+    _payload.xacc = xacc;
+    _payload.yacc = yacc;
+    _payload.zacc = zacc;
+    _payload.xgyro = xgyro;
+    _payload.ygyro = ygyro;
+    _payload.zgyro = zgyro;
+    _payload.lat = lat;
+    _payload.lon = lon;
+    _payload.alt = alt;
+    _payload.std_dev_horz = std_dev_horz;
+    _payload.std_dev_vert = std_dev_vert;
+    _payload.vn = vn;
+    _payload.ve = ve;
+    _payload.vd = vd;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_SIM_STATE,
+        FASTMAVLINK_MSG_SIM_STATE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_SIM_STATE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_SIM_STATE_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sim_state_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_sim_state_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_SIM_STATE,
+        FASTMAVLINK_MSG_SIM_STATE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_SIM_STATE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_SIM_STATE_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

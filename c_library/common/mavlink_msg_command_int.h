@@ -50,6 +50,9 @@ typedef struct _fmav_command_int_t {
 #define FASTMAVLINK_MSG_COMMAND_INT_TARGET_SYSTEM_OFS  30
 #define FASTMAVLINK_MSG_COMMAND_INT_TARGET_COMPONENT_OFS  31
 
+#define FASTMAVLINK_MSG_COMMAND_INT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_COMMAND_INT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_75_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_75_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message COMMAND_INT packing routines, for sending
@@ -147,7 +150,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_int_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_int_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -160,6 +163,62 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_int_encode_to_frame_buf
         _payload->target_system, _payload->target_component, _payload->frame, _payload->command, _payload->current, _payload->autocontinue, _payload->param1, _payload->param2, _payload->param3, _payload->param4, _payload->x, _payload->y, _payload->z,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_int_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component, uint8_t frame, uint16_t command, uint8_t current, uint8_t autocontinue, float param1, float param2, float param3, float param4, int32_t x, int32_t y, float z,
+    fmav_status_t* _status)
+{
+    fmav_command_int_t _payload;
+
+    _payload.param1 = param1;
+    _payload.param2 = param2;
+    _payload.param3 = param3;
+    _payload.param4 = param4;
+    _payload.x = x;
+    _payload.y = y;
+    _payload.z = z;
+    _payload.command = command;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+    _payload.frame = frame;
+    _payload.current = current;
+    _payload.autocontinue = autocontinue;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_COMMAND_INT,
+        FASTMAVLINK_MSG_COMMAND_INT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_COMMAND_INT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_COMMAND_INT_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_int_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_command_int_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_COMMAND_INT,
+        FASTMAVLINK_MSG_COMMAND_INT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_COMMAND_INT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_COMMAND_INT_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

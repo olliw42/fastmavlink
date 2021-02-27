@@ -47,6 +47,9 @@ typedef struct _fmav_device_op_read_t {
 #define FASTMAVLINK_MSG_DEVICE_OP_READ_TARGET_SYSTEM_OFS  4
 #define FASTMAVLINK_MSG_DEVICE_OP_READ_TARGET_COMPONENT_OFS  5
 
+#define FASTMAVLINK_MSG_DEVICE_OP_READ_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_DEVICE_OP_READ_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_11000_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_11000_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message DEVICE_OP_READ packing routines, for sending
@@ -136,7 +139,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_device_op_read_pack_to_frame_bu
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_device_op_read_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -149,6 +152,58 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_device_op_read_encode_to_frame_
         _payload->target_system, _payload->target_component, _payload->request_id, _payload->bustype, _payload->bus, _payload->address, _payload->busname, _payload->regstart, _payload->count, _payload->bank,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_device_op_read_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component, uint32_t request_id, uint8_t bustype, uint8_t bus, uint8_t address, const char* busname, uint8_t regstart, uint8_t count, uint8_t bank,
+    fmav_status_t* _status)
+{
+    fmav_device_op_read_t _payload;
+
+    _payload.request_id = request_id;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+    _payload.bustype = bustype;
+    _payload.bus = bus;
+    _payload.address = address;
+    _payload.regstart = regstart;
+    _payload.count = count;
+    _payload.bank = bank;
+    memcpy(&(_payload.busname), busname, sizeof(char)*40);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_DEVICE_OP_READ,
+        FASTMAVLINK_MSG_DEVICE_OP_READ_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_DEVICE_OP_READ_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_DEVICE_OP_READ_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_device_op_read_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_device_op_read_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_DEVICE_OP_READ,
+        FASTMAVLINK_MSG_DEVICE_OP_READ_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_DEVICE_OP_READ_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_DEVICE_OP_READ_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

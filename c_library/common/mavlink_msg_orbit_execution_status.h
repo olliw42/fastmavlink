@@ -43,6 +43,9 @@ typedef struct _fmav_orbit_execution_status_t {
 #define FASTMAVLINK_MSG_ORBIT_EXECUTION_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ORBIT_EXECUTION_STATUS_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_ORBIT_EXECUTION_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ORBIT_EXECUTION_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_360_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_360_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message ORBIT_EXECUTION_STATUS packing routines, for sending
@@ -126,7 +129,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_orbit_execution_status_pack_to_
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_orbit_execution_status_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -139,6 +142,55 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_orbit_execution_status_encode_t
         _payload->time_usec, _payload->radius, _payload->frame, _payload->x, _payload->y, _payload->z,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_orbit_execution_status_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t time_usec, float radius, uint8_t frame, int32_t x, int32_t y, float z,
+    fmav_status_t* _status)
+{
+    fmav_orbit_execution_status_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.radius = radius;
+    _payload.x = x;
+    _payload.y = y;
+    _payload.z = z;
+    _payload.frame = frame;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_ORBIT_EXECUTION_STATUS,
+        FASTMAVLINK_MSG_ORBIT_EXECUTION_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ORBIT_EXECUTION_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ORBIT_EXECUTION_STATUS_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_orbit_execution_status_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_orbit_execution_status_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_ORBIT_EXECUTION_STATUS,
+        FASTMAVLINK_MSG_ORBIT_EXECUTION_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ORBIT_EXECUTION_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ORBIT_EXECUTION_STATUS_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

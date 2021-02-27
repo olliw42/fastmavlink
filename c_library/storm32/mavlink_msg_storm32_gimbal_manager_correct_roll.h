@@ -42,6 +42,9 @@ typedef struct _fmav_storm32_gimbal_manager_correct_roll_t {
 #define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_TARGET_SYSTEM_OFS  4
 #define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_TARGET_COMPONENT_OFS  5
 
+#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_60014_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_60014_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message STORM32_GIMBAL_MANAGER_CORRECT_ROLL packing routines, for sending
@@ -123,7 +126,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storm32_gimbal_manager_correct_
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storm32_gimbal_manager_correct_roll_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -136,6 +139,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storm32_gimbal_manager_correct_
         _payload->target_system, _payload->target_component, _payload->gimbal_id, _payload->client, _payload->roll,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storm32_gimbal_manager_correct_roll_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component, uint8_t gimbal_id, uint8_t client, float roll,
+    fmav_status_t* _status)
+{
+    fmav_storm32_gimbal_manager_correct_roll_t _payload;
+
+    _payload.roll = roll;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+    _payload.gimbal_id = gimbal_id;
+    _payload.client = client;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_STORM32_GIMBAL_MANAGER_CORRECT_ROLL,
+        FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storm32_gimbal_manager_correct_roll_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_storm32_gimbal_manager_correct_roll_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_STORM32_GIMBAL_MANAGER_CORRECT_ROLL,
+        FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

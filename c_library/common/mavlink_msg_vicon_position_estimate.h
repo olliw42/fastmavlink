@@ -45,6 +45,9 @@ typedef struct _fmav_vicon_position_estimate_t {
 #define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_104_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_104_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message VICON_POSITION_ESTIMATE packing routines, for sending
@@ -130,7 +133,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vicon_position_estimate_pack_to
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vicon_position_estimate_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -143,6 +146,56 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vicon_position_estimate_encode_
         _payload->usec, _payload->x, _payload->y, _payload->z, _payload->roll, _payload->pitch, _payload->yaw, _payload->covariance,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vicon_position_estimate_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t usec, float x, float y, float z, float roll, float pitch, float yaw, const float* covariance,
+    fmav_status_t* _status)
+{
+    fmav_vicon_position_estimate_t _payload;
+
+    _payload.usec = usec;
+    _payload.x = x;
+    _payload.y = y;
+    _payload.z = z;
+    _payload.roll = roll;
+    _payload.pitch = pitch;
+    _payload.yaw = yaw;
+    memcpy(&(_payload.covariance), covariance, sizeof(float)*21);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_VICON_POSITION_ESTIMATE,
+        FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vicon_position_estimate_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_vicon_position_estimate_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_VICON_POSITION_ESTIMATE,
+        FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

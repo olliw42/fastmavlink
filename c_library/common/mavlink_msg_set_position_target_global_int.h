@@ -53,6 +53,9 @@ typedef struct _fmav_set_position_target_global_int_t {
 #define FASTMAVLINK_MSG_SET_POSITION_TARGET_GLOBAL_INT_TARGET_SYSTEM_OFS  50
 #define FASTMAVLINK_MSG_SET_POSITION_TARGET_GLOBAL_INT_TARGET_COMPONENT_OFS  51
 
+#define FASTMAVLINK_MSG_SET_POSITION_TARGET_GLOBAL_INT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_SET_POSITION_TARGET_GLOBAL_INT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_86_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_86_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message SET_POSITION_TARGET_GLOBAL_INT packing routines, for sending
@@ -156,7 +159,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_position_target_global_int_
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_position_target_global_int_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -169,6 +172,65 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_position_target_global_int_
         _payload->time_boot_ms, _payload->target_system, _payload->target_component, _payload->coordinate_frame, _payload->type_mask, _payload->lat_int, _payload->lon_int, _payload->alt, _payload->vx, _payload->vy, _payload->vz, _payload->afx, _payload->afy, _payload->afz, _payload->yaw, _payload->yaw_rate,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_position_target_global_int_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint32_t time_boot_ms, uint8_t target_system, uint8_t target_component, uint8_t coordinate_frame, uint16_t type_mask, int32_t lat_int, int32_t lon_int, float alt, float vx, float vy, float vz, float afx, float afy, float afz, float yaw, float yaw_rate,
+    fmav_status_t* _status)
+{
+    fmav_set_position_target_global_int_t _payload;
+
+    _payload.time_boot_ms = time_boot_ms;
+    _payload.lat_int = lat_int;
+    _payload.lon_int = lon_int;
+    _payload.alt = alt;
+    _payload.vx = vx;
+    _payload.vy = vy;
+    _payload.vz = vz;
+    _payload.afx = afx;
+    _payload.afy = afy;
+    _payload.afz = afz;
+    _payload.yaw = yaw;
+    _payload.yaw_rate = yaw_rate;
+    _payload.type_mask = type_mask;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+    _payload.coordinate_frame = coordinate_frame;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_SET_POSITION_TARGET_GLOBAL_INT,
+        FASTMAVLINK_MSG_SET_POSITION_TARGET_GLOBAL_INT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_SET_POSITION_TARGET_GLOBAL_INT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_SET_POSITION_TARGET_GLOBAL_INT_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_position_target_global_int_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_set_position_target_global_int_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_SET_POSITION_TARGET_GLOBAL_INT,
+        FASTMAVLINK_MSG_SET_POSITION_TARGET_GLOBAL_INT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_SET_POSITION_TARGET_GLOBAL_INT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_SET_POSITION_TARGET_GLOBAL_INT_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

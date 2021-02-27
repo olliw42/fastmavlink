@@ -64,6 +64,9 @@ typedef struct _fmav_high_latency2_t {
 #define FASTMAVLINK_MSG_HIGH_LATENCY2_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_HIGH_LATENCY2_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_HIGH_LATENCY2_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_HIGH_LATENCY2_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_235_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_235_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message HIGH_LATENCY2 packing routines, for sending
@@ -189,7 +192,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency2_pack_to_frame_buf
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency2_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -202,6 +205,76 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency2_encode_to_frame_b
         _payload->timestamp, _payload->type, _payload->autopilot, _payload->custom_mode, _payload->latitude, _payload->longitude, _payload->altitude, _payload->target_altitude, _payload->heading, _payload->target_heading, _payload->target_distance, _payload->throttle, _payload->airspeed, _payload->airspeed_sp, _payload->groundspeed, _payload->windspeed, _payload->wind_heading, _payload->eph, _payload->epv, _payload->temperature_air, _payload->climb_rate, _payload->battery, _payload->wp_num, _payload->failure_flags, _payload->custom0, _payload->custom1, _payload->custom2,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency2_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint32_t timestamp, uint8_t type, uint8_t autopilot, uint16_t custom_mode, int32_t latitude, int32_t longitude, int16_t altitude, int16_t target_altitude, uint8_t heading, uint8_t target_heading, uint16_t target_distance, uint8_t throttle, uint8_t airspeed, uint8_t airspeed_sp, uint8_t groundspeed, uint8_t windspeed, uint8_t wind_heading, uint8_t eph, uint8_t epv, int8_t temperature_air, int8_t climb_rate, int8_t battery, uint16_t wp_num, uint16_t failure_flags, int8_t custom0, int8_t custom1, int8_t custom2,
+    fmav_status_t* _status)
+{
+    fmav_high_latency2_t _payload;
+
+    _payload.timestamp = timestamp;
+    _payload.latitude = latitude;
+    _payload.longitude = longitude;
+    _payload.custom_mode = custom_mode;
+    _payload.altitude = altitude;
+    _payload.target_altitude = target_altitude;
+    _payload.target_distance = target_distance;
+    _payload.wp_num = wp_num;
+    _payload.failure_flags = failure_flags;
+    _payload.type = type;
+    _payload.autopilot = autopilot;
+    _payload.heading = heading;
+    _payload.target_heading = target_heading;
+    _payload.throttle = throttle;
+    _payload.airspeed = airspeed;
+    _payload.airspeed_sp = airspeed_sp;
+    _payload.groundspeed = groundspeed;
+    _payload.windspeed = windspeed;
+    _payload.wind_heading = wind_heading;
+    _payload.eph = eph;
+    _payload.epv = epv;
+    _payload.temperature_air = temperature_air;
+    _payload.climb_rate = climb_rate;
+    _payload.battery = battery;
+    _payload.custom0 = custom0;
+    _payload.custom1 = custom1;
+    _payload.custom2 = custom2;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_HIGH_LATENCY2,
+        FASTMAVLINK_MSG_HIGH_LATENCY2_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_HIGH_LATENCY2_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_HIGH_LATENCY2_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency2_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_high_latency2_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_HIGH_LATENCY2,
+        FASTMAVLINK_MSG_HIGH_LATENCY2_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_HIGH_LATENCY2_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_HIGH_LATENCY2_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

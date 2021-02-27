@@ -51,6 +51,9 @@ typedef struct _fmav_camera_feedback_t {
 #define FASTMAVLINK_MSG_CAMERA_FEEDBACK_TARGET_SYSTEM_OFS  42
 #define FASTMAVLINK_MSG_CAMERA_FEEDBACK_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_CAMERA_FEEDBACK_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_CAMERA_FEEDBACK_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_180_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_180_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message CAMERA_FEEDBACK packing routines, for sending
@@ -150,7 +153,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_feedback_pack_to_frame_b
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_feedback_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -163,6 +166,63 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_feedback_encode_to_frame
         _payload->time_usec, _payload->target_system, _payload->cam_idx, _payload->img_idx, _payload->lat, _payload->lng, _payload->alt_msl, _payload->alt_rel, _payload->roll, _payload->pitch, _payload->yaw, _payload->foc_len, _payload->flags, _payload->completed_captures,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_feedback_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t time_usec, uint8_t target_system, uint8_t cam_idx, uint16_t img_idx, int32_t lat, int32_t lng, float alt_msl, float alt_rel, float roll, float pitch, float yaw, float foc_len, uint8_t flags, uint16_t completed_captures,
+    fmav_status_t* _status)
+{
+    fmav_camera_feedback_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.lat = lat;
+    _payload.lng = lng;
+    _payload.alt_msl = alt_msl;
+    _payload.alt_rel = alt_rel;
+    _payload.roll = roll;
+    _payload.pitch = pitch;
+    _payload.yaw = yaw;
+    _payload.foc_len = foc_len;
+    _payload.img_idx = img_idx;
+    _payload.target_system = target_system;
+    _payload.cam_idx = cam_idx;
+    _payload.flags = flags;
+    _payload.completed_captures = completed_captures;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_CAMERA_FEEDBACK,
+        FASTMAVLINK_MSG_CAMERA_FEEDBACK_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_CAMERA_FEEDBACK_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_CAMERA_FEEDBACK_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_feedback_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_camera_feedback_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_CAMERA_FEEDBACK,
+        FASTMAVLINK_MSG_CAMERA_FEEDBACK_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_CAMERA_FEEDBACK_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_CAMERA_FEEDBACK_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

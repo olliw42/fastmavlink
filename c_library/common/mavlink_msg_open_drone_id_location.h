@@ -56,6 +56,9 @@ typedef struct _fmav_open_drone_id_location_t {
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_TARGET_SYSTEM_OFS  30
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_TARGET_COMPONENT_OFS  31
 
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_12901_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_12901_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message OPEN_DRONE_ID_LOCATION packing routines, for sending
@@ -163,7 +166,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_location_pack_to_
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_location_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -176,6 +179,67 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_location_encode_t
         _payload->target_system, _payload->target_component, _payload->id_or_mac, _payload->status, _payload->direction, _payload->speed_horizontal, _payload->speed_vertical, _payload->latitude, _payload->longitude, _payload->altitude_barometric, _payload->altitude_geodetic, _payload->height_reference, _payload->height, _payload->horizontal_accuracy, _payload->vertical_accuracy, _payload->barometer_accuracy, _payload->speed_accuracy, _payload->timestamp, _payload->timestamp_accuracy,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_location_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t status, uint16_t direction, uint16_t speed_horizontal, int16_t speed_vertical, int32_t latitude, int32_t longitude, float altitude_barometric, float altitude_geodetic, uint8_t height_reference, float height, uint8_t horizontal_accuracy, uint8_t vertical_accuracy, uint8_t barometer_accuracy, uint8_t speed_accuracy, float timestamp, uint8_t timestamp_accuracy,
+    fmav_status_t* _status)
+{
+    fmav_open_drone_id_location_t _payload;
+
+    _payload.latitude = latitude;
+    _payload.longitude = longitude;
+    _payload.altitude_barometric = altitude_barometric;
+    _payload.altitude_geodetic = altitude_geodetic;
+    _payload.height = height;
+    _payload.timestamp = timestamp;
+    _payload.direction = direction;
+    _payload.speed_horizontal = speed_horizontal;
+    _payload.speed_vertical = speed_vertical;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+    _payload.status = status;
+    _payload.height_reference = height_reference;
+    _payload.horizontal_accuracy = horizontal_accuracy;
+    _payload.vertical_accuracy = vertical_accuracy;
+    _payload.barometer_accuracy = barometer_accuracy;
+    _payload.speed_accuracy = speed_accuracy;
+    _payload.timestamp_accuracy = timestamp_accuracy;
+    memcpy(&(_payload.id_or_mac), id_or_mac, sizeof(uint8_t)*20);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_LOCATION,
+        FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_location_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_open_drone_id_location_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_LOCATION,
+        FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

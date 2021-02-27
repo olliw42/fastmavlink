@@ -42,6 +42,9 @@ typedef struct _fmav_gimbal_control_t {
 #define FASTMAVLINK_MSG_GIMBAL_CONTROL_TARGET_SYSTEM_OFS  12
 #define FASTMAVLINK_MSG_GIMBAL_CONTROL_TARGET_COMPONENT_OFS  13
 
+#define FASTMAVLINK_MSG_GIMBAL_CONTROL_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_GIMBAL_CONTROL_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_201_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_201_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message GIMBAL_CONTROL packing routines, for sending
@@ -123,7 +126,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_control_pack_to_frame_bu
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_control_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -136,6 +139,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_control_encode_to_frame_
         _payload->target_system, _payload->target_component, _payload->demanded_rate_x, _payload->demanded_rate_y, _payload->demanded_rate_z,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_control_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component, float demanded_rate_x, float demanded_rate_y, float demanded_rate_z,
+    fmav_status_t* _status)
+{
+    fmav_gimbal_control_t _payload;
+
+    _payload.demanded_rate_x = demanded_rate_x;
+    _payload.demanded_rate_y = demanded_rate_y;
+    _payload.demanded_rate_z = demanded_rate_z;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_GIMBAL_CONTROL,
+        FASTMAVLINK_MSG_GIMBAL_CONTROL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_GIMBAL_CONTROL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_GIMBAL_CONTROL_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_control_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_gimbal_control_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_GIMBAL_CONTROL,
+        FASTMAVLINK_MSG_GIMBAL_CONTROL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_GIMBAL_CONTROL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_GIMBAL_CONTROL_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

@@ -43,6 +43,9 @@ typedef struct _fmav_protocol_version_t {
 #define FASTMAVLINK_MSG_PROTOCOL_VERSION_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_PROTOCOL_VERSION_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_PROTOCOL_VERSION_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_PROTOCOL_VERSION_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_300_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_300_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message PROTOCOL_VERSION packing routines, for sending
@@ -122,7 +125,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_protocol_version_pack_to_frame_
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_protocol_version_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -135,6 +138,53 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_protocol_version_encode_to_fram
         _payload->version, _payload->min_version, _payload->max_version, _payload->spec_version_hash, _payload->library_version_hash,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_protocol_version_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint16_t version, uint16_t min_version, uint16_t max_version, const uint8_t* spec_version_hash, const uint8_t* library_version_hash,
+    fmav_status_t* _status)
+{
+    fmav_protocol_version_t _payload;
+
+    _payload.version = version;
+    _payload.min_version = min_version;
+    _payload.max_version = max_version;
+    memcpy(&(_payload.spec_version_hash), spec_version_hash, sizeof(uint8_t)*8);
+    memcpy(&(_payload.library_version_hash), library_version_hash, sizeof(uint8_t)*8);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_PROTOCOL_VERSION,
+        FASTMAVLINK_MSG_PROTOCOL_VERSION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_PROTOCOL_VERSION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_PROTOCOL_VERSION_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_protocol_version_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_protocol_version_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_PROTOCOL_VERSION,
+        FASTMAVLINK_MSG_PROTOCOL_VERSION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_PROTOCOL_VERSION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_PROTOCOL_VERSION_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

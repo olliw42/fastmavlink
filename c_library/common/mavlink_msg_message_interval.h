@@ -39,6 +39,9 @@ typedef struct _fmav_message_interval_t {
 #define FASTMAVLINK_MSG_MESSAGE_INTERVAL_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_MESSAGE_INTERVAL_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_MESSAGE_INTERVAL_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_244_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_244_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message MESSAGE_INTERVAL packing routines, for sending
@@ -114,7 +117,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_message_interval_pack_to_frame_
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_message_interval_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -127,6 +130,51 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_message_interval_encode_to_fram
         _payload->message_id, _payload->interval_us,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_message_interval_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint16_t message_id, int32_t interval_us,
+    fmav_status_t* _status)
+{
+    fmav_message_interval_t _payload;
+
+    _payload.interval_us = interval_us;
+    _payload.message_id = message_id;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_MESSAGE_INTERVAL,
+        FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_MESSAGE_INTERVAL_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_message_interval_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_message_interval_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_MESSAGE_INTERVAL,
+        FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_MESSAGE_INTERVAL_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

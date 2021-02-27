@@ -43,6 +43,9 @@ typedef struct _fmav_vision_position_delta_t {
 #define FASTMAVLINK_MSG_VISION_POSITION_DELTA_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_VISION_POSITION_DELTA_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_VISION_POSITION_DELTA_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_11011_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_11011_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message VISION_POSITION_DELTA packing routines, for sending
@@ -122,7 +125,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_position_delta_pack_to_f
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_position_delta_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -135,6 +138,53 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_position_delta_encode_to
         _payload->time_usec, _payload->time_delta_usec, _payload->angle_delta, _payload->position_delta, _payload->confidence,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_position_delta_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t time_usec, uint64_t time_delta_usec, const float* angle_delta, const float* position_delta, float confidence,
+    fmav_status_t* _status)
+{
+    fmav_vision_position_delta_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.time_delta_usec = time_delta_usec;
+    _payload.confidence = confidence;
+    memcpy(&(_payload.angle_delta), angle_delta, sizeof(float)*3);
+    memcpy(&(_payload.position_delta), position_delta, sizeof(float)*3);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_VISION_POSITION_DELTA,
+        FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_VISION_POSITION_DELTA_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_position_delta_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_vision_position_delta_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_VISION_POSITION_DELTA,
+        FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_VISION_POSITION_DELTA_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

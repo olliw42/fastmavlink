@@ -69,6 +69,9 @@ typedef struct _fmav_test_types_t {
 #define FASTMAVLINK_MSG_TEST_TYPES_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_TEST_TYPES_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_TEST_TYPES_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_TEST_TYPES_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_17000_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_17000_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message TEST_TYPES packing routines, for sending
@@ -182,7 +185,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_test_types_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_test_types_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -195,6 +198,70 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_test_types_encode_to_frame_buf(
         _payload->c, _payload->s, _payload->u8, _payload->u16, _payload->u32, _payload->u64, _payload->s8, _payload->s16, _payload->s32, _payload->s64, _payload->f, _payload->d, _payload->u8_array, _payload->u16_array, _payload->u32_array, _payload->u64_array, _payload->s8_array, _payload->s16_array, _payload->s32_array, _payload->s64_array, _payload->f_array, _payload->d_array,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_test_types_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    char c, const char* s, uint8_t u8, uint16_t u16, uint32_t u32, uint64_t u64, int8_t s8, int16_t s16, int32_t s32, int64_t s64, float f, double d, const uint8_t* u8_array, const uint16_t* u16_array, const uint32_t* u32_array, const uint64_t* u64_array, const int8_t* s8_array, const int16_t* s16_array, const int32_t* s32_array, const int64_t* s64_array, const float* f_array, const double* d_array,
+    fmav_status_t* _status)
+{
+    fmav_test_types_t _payload;
+
+    _payload.u64 = u64;
+    _payload.s64 = s64;
+    _payload.d = d;
+    _payload.u32 = u32;
+    _payload.s32 = s32;
+    _payload.f = f;
+    _payload.u16 = u16;
+    _payload.s16 = s16;
+    _payload.c = c;
+    _payload.u8 = u8;
+    _payload.s8 = s8;
+    memcpy(&(_payload.u64_array), u64_array, sizeof(uint64_t)*3);
+    memcpy(&(_payload.s64_array), s64_array, sizeof(int64_t)*3);
+    memcpy(&(_payload.d_array), d_array, sizeof(double)*3);
+    memcpy(&(_payload.u32_array), u32_array, sizeof(uint32_t)*3);
+    memcpy(&(_payload.s32_array), s32_array, sizeof(int32_t)*3);
+    memcpy(&(_payload.f_array), f_array, sizeof(float)*3);
+    memcpy(&(_payload.u16_array), u16_array, sizeof(uint16_t)*3);
+    memcpy(&(_payload.s16_array), s16_array, sizeof(int16_t)*3);
+    memcpy(&(_payload.s), s, sizeof(char)*10);
+    memcpy(&(_payload.u8_array), u8_array, sizeof(uint8_t)*3);
+    memcpy(&(_payload.s8_array), s8_array, sizeof(int8_t)*3);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_TEST_TYPES,
+        FASTMAVLINK_MSG_TEST_TYPES_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_TEST_TYPES_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_TEST_TYPES_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_test_types_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_test_types_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_TEST_TYPES,
+        FASTMAVLINK_MSG_TEST_TYPES_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_TEST_TYPES_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_TEST_TYPES_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

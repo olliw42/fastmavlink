@@ -47,6 +47,9 @@ typedef struct _fmav_optical_flow_t {
 #define FASTMAVLINK_MSG_OPTICAL_FLOW_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_OPTICAL_FLOW_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_OPTICAL_FLOW_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_100_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_100_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message OPTICAL_FLOW packing routines, for sending
@@ -138,7 +141,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_optical_flow_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_optical_flow_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -151,6 +154,59 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_optical_flow_encode_to_frame_bu
         _payload->time_usec, _payload->sensor_id, _payload->flow_x, _payload->flow_y, _payload->flow_comp_m_x, _payload->flow_comp_m_y, _payload->quality, _payload->ground_distance, _payload->flow_rate_x, _payload->flow_rate_y,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_optical_flow_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t time_usec, uint8_t sensor_id, int16_t flow_x, int16_t flow_y, float flow_comp_m_x, float flow_comp_m_y, uint8_t quality, float ground_distance, float flow_rate_x, float flow_rate_y,
+    fmav_status_t* _status)
+{
+    fmav_optical_flow_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.flow_comp_m_x = flow_comp_m_x;
+    _payload.flow_comp_m_y = flow_comp_m_y;
+    _payload.ground_distance = ground_distance;
+    _payload.flow_x = flow_x;
+    _payload.flow_y = flow_y;
+    _payload.sensor_id = sensor_id;
+    _payload.quality = quality;
+    _payload.flow_rate_x = flow_rate_x;
+    _payload.flow_rate_y = flow_rate_y;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_OPTICAL_FLOW,
+        FASTMAVLINK_MSG_OPTICAL_FLOW_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_OPTICAL_FLOW_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_OPTICAL_FLOW_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_optical_flow_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_optical_flow_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_OPTICAL_FLOW,
+        FASTMAVLINK_MSG_OPTICAL_FLOW_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_OPTICAL_FLOW_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_OPTICAL_FLOW_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

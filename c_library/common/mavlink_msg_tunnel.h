@@ -42,6 +42,9 @@ typedef struct _fmav_tunnel_t {
 #define FASTMAVLINK_MSG_TUNNEL_TARGET_SYSTEM_OFS  2
 #define FASTMAVLINK_MSG_TUNNEL_TARGET_COMPONENT_OFS  3
 
+#define FASTMAVLINK_MSG_TUNNEL_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_TUNNEL_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_385_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_385_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message TUNNEL packing routines, for sending
@@ -121,7 +124,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_tunnel_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_tunnel_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -134,6 +137,53 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_tunnel_encode_to_frame_buf(
         _payload->target_system, _payload->target_component, _payload->payload_type, _payload->payload_length, _payload->payload,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_tunnel_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component, uint16_t payload_type, uint8_t payload_length, const uint8_t* payload,
+    fmav_status_t* _status)
+{
+    fmav_tunnel_t _payload;
+
+    _payload.payload_type = payload_type;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+    _payload.payload_length = payload_length;
+    memcpy(&(_payload.payload), payload, sizeof(uint8_t)*128);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_TUNNEL,
+        FASTMAVLINK_MSG_TUNNEL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_TUNNEL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_TUNNEL_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_tunnel_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_tunnel_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_TUNNEL,
+        FASTMAVLINK_MSG_TUNNEL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_TUNNEL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_TUNNEL_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

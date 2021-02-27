@@ -53,6 +53,9 @@ typedef struct _fmav_icarous_kinematic_bands_t {
 #define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_42001_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_42001_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message ICAROUS_KINEMATIC_BANDS packing routines, for sending
@@ -156,7 +159,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_icarous_kinematic_bands_pack_to
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_icarous_kinematic_bands_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -169,6 +172,65 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_icarous_kinematic_bands_encode_
         _payload->numBands, _payload->type1, _payload->min1, _payload->max1, _payload->type2, _payload->min2, _payload->max2, _payload->type3, _payload->min3, _payload->max3, _payload->type4, _payload->min4, _payload->max4, _payload->type5, _payload->min5, _payload->max5,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_icarous_kinematic_bands_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    int8_t numBands, uint8_t type1, float min1, float max1, uint8_t type2, float min2, float max2, uint8_t type3, float min3, float max3, uint8_t type4, float min4, float max4, uint8_t type5, float min5, float max5,
+    fmav_status_t* _status)
+{
+    fmav_icarous_kinematic_bands_t _payload;
+
+    _payload.min1 = min1;
+    _payload.max1 = max1;
+    _payload.min2 = min2;
+    _payload.max2 = max2;
+    _payload.min3 = min3;
+    _payload.max3 = max3;
+    _payload.min4 = min4;
+    _payload.max4 = max4;
+    _payload.min5 = min5;
+    _payload.max5 = max5;
+    _payload.numBands = numBands;
+    _payload.type1 = type1;
+    _payload.type2 = type2;
+    _payload.type3 = type3;
+    _payload.type4 = type4;
+    _payload.type5 = type5;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_ICAROUS_KINEMATIC_BANDS,
+        FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_icarous_kinematic_bands_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_icarous_kinematic_bands_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_ICAROUS_KINEMATIC_BANDS,
+        FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

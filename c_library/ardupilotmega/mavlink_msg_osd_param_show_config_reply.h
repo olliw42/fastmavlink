@@ -44,6 +44,9 @@ typedef struct _fmav_osd_param_show_config_reply_t {
 #define FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_REPLY_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_REPLY_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_REPLY_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_REPLY_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_11036_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_11036_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message OSD_PARAM_SHOW_CONFIG_REPLY packing routines, for sending
@@ -127,7 +130,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_osd_param_show_config_reply_pac
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_osd_param_show_config_reply_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -140,6 +143,55 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_osd_param_show_config_reply_enc
         _payload->request_id, _payload->result, _payload->param_id, _payload->config_type, _payload->min_value, _payload->max_value, _payload->increment,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_osd_param_show_config_reply_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint32_t request_id, uint8_t result, const char* param_id, uint8_t config_type, float min_value, float max_value, float increment,
+    fmav_status_t* _status)
+{
+    fmav_osd_param_show_config_reply_t _payload;
+
+    _payload.request_id = request_id;
+    _payload.min_value = min_value;
+    _payload.max_value = max_value;
+    _payload.increment = increment;
+    _payload.result = result;
+    _payload.config_type = config_type;
+    memcpy(&(_payload.param_id), param_id, sizeof(char)*16);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_OSD_PARAM_SHOW_CONFIG_REPLY,
+        FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_REPLY_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_REPLY_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_REPLY_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_osd_param_show_config_reply_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_osd_param_show_config_reply_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_OSD_PARAM_SHOW_CONFIG_REPLY,
+        FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_REPLY_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_REPLY_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_REPLY_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

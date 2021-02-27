@@ -42,6 +42,9 @@ typedef struct _fmav_log_entry_t {
 #define FASTMAVLINK_MSG_LOG_ENTRY_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_LOG_ENTRY_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_LOG_ENTRY_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_LOG_ENTRY_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_118_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_118_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message LOG_ENTRY packing routines, for sending
@@ -123,7 +126,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_entry_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_entry_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -136,6 +139,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_entry_encode_to_frame_buf(
         _payload->id, _payload->num_logs, _payload->last_log_num, _payload->time_utc, _payload->size,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_entry_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint16_t id, uint16_t num_logs, uint16_t last_log_num, uint32_t time_utc, uint32_t size,
+    fmav_status_t* _status)
+{
+    fmav_log_entry_t _payload;
+
+    _payload.time_utc = time_utc;
+    _payload.size = size;
+    _payload.id = id;
+    _payload.num_logs = num_logs;
+    _payload.last_log_num = last_log_num;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_LOG_ENTRY,
+        FASTMAVLINK_MSG_LOG_ENTRY_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_LOG_ENTRY_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_LOG_ENTRY_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_entry_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_log_entry_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_LOG_ENTRY,
+        FASTMAVLINK_MSG_LOG_ENTRY_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_LOG_ENTRY_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_LOG_ENTRY_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

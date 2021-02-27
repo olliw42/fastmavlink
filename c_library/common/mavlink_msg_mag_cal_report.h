@@ -55,6 +55,9 @@ typedef struct _fmav_mag_cal_report_t {
 #define FASTMAVLINK_MSG_MAG_CAL_REPORT_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_MAG_CAL_REPORT_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_MAG_CAL_REPORT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_MAG_CAL_REPORT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_192_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_192_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message MAG_CAL_REPORT packing routines, for sending
@@ -162,7 +165,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_report_pack_to_frame_bu
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_report_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -175,6 +178,67 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_report_encode_to_frame_
         _payload->compass_id, _payload->cal_mask, _payload->cal_status, _payload->autosaved, _payload->fitness, _payload->ofs_x, _payload->ofs_y, _payload->ofs_z, _payload->diag_x, _payload->diag_y, _payload->diag_z, _payload->offdiag_x, _payload->offdiag_y, _payload->offdiag_z, _payload->orientation_confidence, _payload->old_orientation, _payload->new_orientation, _payload->scale_factor,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_report_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t compass_id, uint8_t cal_mask, uint8_t cal_status, uint8_t autosaved, float fitness, float ofs_x, float ofs_y, float ofs_z, float diag_x, float diag_y, float diag_z, float offdiag_x, float offdiag_y, float offdiag_z, float orientation_confidence, uint8_t old_orientation, uint8_t new_orientation, float scale_factor,
+    fmav_status_t* _status)
+{
+    fmav_mag_cal_report_t _payload;
+
+    _payload.fitness = fitness;
+    _payload.ofs_x = ofs_x;
+    _payload.ofs_y = ofs_y;
+    _payload.ofs_z = ofs_z;
+    _payload.diag_x = diag_x;
+    _payload.diag_y = diag_y;
+    _payload.diag_z = diag_z;
+    _payload.offdiag_x = offdiag_x;
+    _payload.offdiag_y = offdiag_y;
+    _payload.offdiag_z = offdiag_z;
+    _payload.compass_id = compass_id;
+    _payload.cal_mask = cal_mask;
+    _payload.cal_status = cal_status;
+    _payload.autosaved = autosaved;
+    _payload.orientation_confidence = orientation_confidence;
+    _payload.old_orientation = old_orientation;
+    _payload.new_orientation = new_orientation;
+    _payload.scale_factor = scale_factor;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_MAG_CAL_REPORT,
+        FASTMAVLINK_MSG_MAG_CAL_REPORT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_MAG_CAL_REPORT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_MAG_CAL_REPORT_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_report_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_mag_cal_report_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_MAG_CAL_REPORT,
+        FASTMAVLINK_MSG_MAG_CAL_REPORT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_MAG_CAL_REPORT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_MAG_CAL_REPORT_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

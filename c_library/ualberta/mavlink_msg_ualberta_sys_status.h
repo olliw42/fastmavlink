@@ -40,6 +40,9 @@ typedef struct _fmav_ualberta_sys_status_t {
 #define FASTMAVLINK_MSG_UALBERTA_SYS_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_UALBERTA_SYS_STATUS_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_UALBERTA_SYS_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_UALBERTA_SYS_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_222_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_222_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message UALBERTA_SYS_STATUS packing routines, for sending
@@ -117,7 +120,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ualberta_sys_status_pack_to_fra
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ualberta_sys_status_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -130,6 +133,52 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ualberta_sys_status_encode_to_f
         _payload->mode, _payload->nav_mode, _payload->pilot,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ualberta_sys_status_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t mode, uint8_t nav_mode, uint8_t pilot,
+    fmav_status_t* _status)
+{
+    fmav_ualberta_sys_status_t _payload;
+
+    _payload.mode = mode;
+    _payload.nav_mode = nav_mode;
+    _payload.pilot = pilot;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_UALBERTA_SYS_STATUS,
+        FASTMAVLINK_MSG_UALBERTA_SYS_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_UALBERTA_SYS_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_UALBERTA_SYS_STATUS_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ualberta_sys_status_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_ualberta_sys_status_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_UALBERTA_SYS_STATUS,
+        FASTMAVLINK_MSG_UALBERTA_SYS_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_UALBERTA_SYS_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_UALBERTA_SYS_STATUS_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

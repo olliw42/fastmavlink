@@ -42,6 +42,9 @@ typedef struct _fmav_set_gps_global_origin_t {
 #define FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_TARGET_SYSTEM_OFS  12
 #define FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_48_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_48_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message SET_GPS_GLOBAL_ORIGIN packing routines, for sending
@@ -123,7 +126,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_gps_global_origin_pack_to_f
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_gps_global_origin_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -136,6 +139,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_gps_global_origin_encode_to
         _payload->target_system, _payload->latitude, _payload->longitude, _payload->altitude, _payload->time_usec,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_gps_global_origin_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, int32_t latitude, int32_t longitude, int32_t altitude, uint64_t time_usec,
+    fmav_status_t* _status)
+{
+    fmav_set_gps_global_origin_t _payload;
+
+    _payload.latitude = latitude;
+    _payload.longitude = longitude;
+    _payload.altitude = altitude;
+    _payload.target_system = target_system;
+    _payload.time_usec = time_usec;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_SET_GPS_GLOBAL_ORIGIN,
+        FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_gps_global_origin_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_set_gps_global_origin_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_SET_GPS_GLOBAL_ORIGIN,
+        FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

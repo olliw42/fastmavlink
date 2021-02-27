@@ -52,6 +52,9 @@ typedef struct _fmav_autopilot_version_t {
 #define FASTMAVLINK_MSG_AUTOPILOT_VERSION_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_AUTOPILOT_VERSION_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_AUTOPILOT_VERSION_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_AUTOPILOT_VERSION_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_148_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_148_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message AUTOPILOT_VERSION packing routines, for sending
@@ -145,7 +148,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_autopilot_version_pack_to_frame
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_autopilot_version_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -158,6 +161,60 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_autopilot_version_encode_to_fra
         _payload->capabilities, _payload->flight_sw_version, _payload->middleware_sw_version, _payload->os_sw_version, _payload->board_version, _payload->flight_custom_version, _payload->middleware_custom_version, _payload->os_custom_version, _payload->vendor_id, _payload->product_id, _payload->uid, _payload->uid2,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_autopilot_version_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t capabilities, uint32_t flight_sw_version, uint32_t middleware_sw_version, uint32_t os_sw_version, uint32_t board_version, const uint8_t* flight_custom_version, const uint8_t* middleware_custom_version, const uint8_t* os_custom_version, uint16_t vendor_id, uint16_t product_id, uint64_t uid, const uint8_t* uid2,
+    fmav_status_t* _status)
+{
+    fmav_autopilot_version_t _payload;
+
+    _payload.capabilities = capabilities;
+    _payload.uid = uid;
+    _payload.flight_sw_version = flight_sw_version;
+    _payload.middleware_sw_version = middleware_sw_version;
+    _payload.os_sw_version = os_sw_version;
+    _payload.board_version = board_version;
+    _payload.vendor_id = vendor_id;
+    _payload.product_id = product_id;
+    memcpy(&(_payload.flight_custom_version), flight_custom_version, sizeof(uint8_t)*8);
+    memcpy(&(_payload.middleware_custom_version), middleware_custom_version, sizeof(uint8_t)*8);
+    memcpy(&(_payload.os_custom_version), os_custom_version, sizeof(uint8_t)*8);
+    memcpy(&(_payload.uid2), uid2, sizeof(uint8_t)*18);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_AUTOPILOT_VERSION,
+        FASTMAVLINK_MSG_AUTOPILOT_VERSION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_AUTOPILOT_VERSION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_AUTOPILOT_VERSION_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_autopilot_version_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_autopilot_version_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_AUTOPILOT_VERSION,
+        FASTMAVLINK_MSG_AUTOPILOT_VERSION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_AUTOPILOT_VERSION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_AUTOPILOT_VERSION_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

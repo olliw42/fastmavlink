@@ -47,6 +47,9 @@ typedef struct _fmav_camera_fov_status_t {
 #define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_CAMERA_FOV_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_271_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_271_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message CAMERA_FOV_STATUS packing routines, for sending
@@ -136,7 +139,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_fov_status_pack_to_frame
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_fov_status_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -149,6 +152,58 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_fov_status_encode_to_fra
         _payload->time_boot_ms, _payload->lat_camera, _payload->lon_camera, _payload->alt_camera, _payload->lat_image, _payload->lon_image, _payload->alt_image, _payload->q, _payload->hfov, _payload->vfov,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_fov_status_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint32_t time_boot_ms, int32_t lat_camera, int32_t lon_camera, int32_t alt_camera, int32_t lat_image, int32_t lon_image, int32_t alt_image, const float* q, float hfov, float vfov,
+    fmav_status_t* _status)
+{
+    fmav_camera_fov_status_t _payload;
+
+    _payload.time_boot_ms = time_boot_ms;
+    _payload.lat_camera = lat_camera;
+    _payload.lon_camera = lon_camera;
+    _payload.alt_camera = alt_camera;
+    _payload.lat_image = lat_image;
+    _payload.lon_image = lon_image;
+    _payload.alt_image = alt_image;
+    _payload.hfov = hfov;
+    _payload.vfov = vfov;
+    memcpy(&(_payload.q), q, sizeof(float)*4);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_CAMERA_FOV_STATUS,
+        FASTMAVLINK_MSG_CAMERA_FOV_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_CAMERA_FOV_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_CAMERA_FOV_STATUS_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_fov_status_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_camera_fov_status_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_CAMERA_FOV_STATUS,
+        FASTMAVLINK_MSG_CAMERA_FOV_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_CAMERA_FOV_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_CAMERA_FOV_STATUS_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

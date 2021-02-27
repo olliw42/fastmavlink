@@ -42,6 +42,9 @@ typedef struct _fmav_set_actuator_control_target_t {
 #define FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_TARGET_SYSTEM_OFS  41
 #define FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_TARGET_COMPONENT_OFS  42
 
+#define FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_139_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_139_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message SET_ACTUATOR_CONTROL_TARGET packing routines, for sending
@@ -121,7 +124,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_actuator_control_target_pac
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_actuator_control_target_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -134,6 +137,53 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_actuator_control_target_enc
         _payload->time_usec, _payload->group_mlx, _payload->target_system, _payload->target_component, _payload->controls,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_actuator_control_target_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t time_usec, uint8_t group_mlx, uint8_t target_system, uint8_t target_component, const float* controls,
+    fmav_status_t* _status)
+{
+    fmav_set_actuator_control_target_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.group_mlx = group_mlx;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+    memcpy(&(_payload.controls), controls, sizeof(float)*8);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_SET_ACTUATOR_CONTROL_TARGET,
+        FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_actuator_control_target_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_set_actuator_control_target_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_SET_ACTUATOR_CONTROL_TARGET,
+        FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

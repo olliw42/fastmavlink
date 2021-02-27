@@ -39,6 +39,9 @@ typedef struct _fmav_extended_sys_state_t {
 #define FASTMAVLINK_MSG_EXTENDED_SYS_STATE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_EXTENDED_SYS_STATE_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_EXTENDED_SYS_STATE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_EXTENDED_SYS_STATE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_245_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_245_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message EXTENDED_SYS_STATE packing routines, for sending
@@ -114,7 +117,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_extended_sys_state_pack_to_fram
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_extended_sys_state_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -127,6 +130,51 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_extended_sys_state_encode_to_fr
         _payload->vtol_state, _payload->landed_state,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_extended_sys_state_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t vtol_state, uint8_t landed_state,
+    fmav_status_t* _status)
+{
+    fmav_extended_sys_state_t _payload;
+
+    _payload.vtol_state = vtol_state;
+    _payload.landed_state = landed_state;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_EXTENDED_SYS_STATE,
+        FASTMAVLINK_MSG_EXTENDED_SYS_STATE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_EXTENDED_SYS_STATE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_EXTENDED_SYS_STATE_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_extended_sys_state_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_extended_sys_state_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_EXTENDED_SYS_STATE,
+        FASTMAVLINK_MSG_EXTENDED_SYS_STATE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_EXTENDED_SYS_STATE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_EXTENDED_SYS_STATE_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

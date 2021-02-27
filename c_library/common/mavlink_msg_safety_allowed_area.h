@@ -44,6 +44,9 @@ typedef struct _fmav_safety_allowed_area_t {
 #define FASTMAVLINK_MSG_SAFETY_ALLOWED_AREA_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_SAFETY_ALLOWED_AREA_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_SAFETY_ALLOWED_AREA_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_SAFETY_ALLOWED_AREA_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_55_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_55_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message SAFETY_ALLOWED_AREA packing routines, for sending
@@ -129,7 +132,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_safety_allowed_area_pack_to_fra
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_safety_allowed_area_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -142,6 +145,56 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_safety_allowed_area_encode_to_f
         _payload->frame, _payload->p1x, _payload->p1y, _payload->p1z, _payload->p2x, _payload->p2y, _payload->p2z,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_safety_allowed_area_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t frame, float p1x, float p1y, float p1z, float p2x, float p2y, float p2z,
+    fmav_status_t* _status)
+{
+    fmav_safety_allowed_area_t _payload;
+
+    _payload.p1x = p1x;
+    _payload.p1y = p1y;
+    _payload.p1z = p1z;
+    _payload.p2x = p2x;
+    _payload.p2y = p2y;
+    _payload.p2z = p2z;
+    _payload.frame = frame;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_SAFETY_ALLOWED_AREA,
+        FASTMAVLINK_MSG_SAFETY_ALLOWED_AREA_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_SAFETY_ALLOWED_AREA_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_SAFETY_ALLOWED_AREA_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_safety_allowed_area_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_safety_allowed_area_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_SAFETY_ALLOWED_AREA,
+        FASTMAVLINK_MSG_SAFETY_ALLOWED_AREA_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_SAFETY_ALLOWED_AREA_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_SAFETY_ALLOWED_AREA_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

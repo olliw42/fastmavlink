@@ -46,6 +46,9 @@ typedef struct _fmav_storm32_gimbal_manager_profile_t {
 #define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_TARGET_COMPONENT_OFS  1
 
+#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_60015_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_60015_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message STORM32_GIMBAL_MANAGER_PROFILE packing routines, for sending
@@ -131,7 +134,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storm32_gimbal_manager_profile_
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storm32_gimbal_manager_profile_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -144,6 +147,56 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storm32_gimbal_manager_profile_
         _payload->target_system, _payload->target_component, _payload->gimbal_id, _payload->profile, _payload->priorities, _payload->profile_flags, _payload->rc_timeout, _payload->timeouts,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storm32_gimbal_manager_profile_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component, uint8_t gimbal_id, uint8_t profile, const uint8_t* priorities, uint8_t profile_flags, uint8_t rc_timeout, const uint8_t* timeouts,
+    fmav_status_t* _status)
+{
+    fmav_storm32_gimbal_manager_profile_t _payload;
+
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+    _payload.gimbal_id = gimbal_id;
+    _payload.profile = profile;
+    _payload.profile_flags = profile_flags;
+    _payload.rc_timeout = rc_timeout;
+    memcpy(&(_payload.priorities), priorities, sizeof(uint8_t)*8);
+    memcpy(&(_payload.timeouts), timeouts, sizeof(uint8_t)*8);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_STORM32_GIMBAL_MANAGER_PROFILE,
+        FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storm32_gimbal_manager_profile_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_storm32_gimbal_manager_profile_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_STORM32_GIMBAL_MANAGER_PROFILE,
+        FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

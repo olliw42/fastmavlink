@@ -48,6 +48,9 @@ typedef struct _fmav_simstate_t {
 #define FASTMAVLINK_MSG_SIMSTATE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_SIMSTATE_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_SIMSTATE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_SIMSTATE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_164_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_164_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message SIMSTATE packing routines, for sending
@@ -141,7 +144,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_simstate_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_simstate_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -154,6 +157,60 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_simstate_encode_to_frame_buf(
         _payload->roll, _payload->pitch, _payload->yaw, _payload->xacc, _payload->yacc, _payload->zacc, _payload->xgyro, _payload->ygyro, _payload->zgyro, _payload->lat, _payload->lng,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_simstate_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    float roll, float pitch, float yaw, float xacc, float yacc, float zacc, float xgyro, float ygyro, float zgyro, int32_t lat, int32_t lng,
+    fmav_status_t* _status)
+{
+    fmav_simstate_t _payload;
+
+    _payload.roll = roll;
+    _payload.pitch = pitch;
+    _payload.yaw = yaw;
+    _payload.xacc = xacc;
+    _payload.yacc = yacc;
+    _payload.zacc = zacc;
+    _payload.xgyro = xgyro;
+    _payload.ygyro = ygyro;
+    _payload.zgyro = zgyro;
+    _payload.lat = lat;
+    _payload.lng = lng;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_SIMSTATE,
+        FASTMAVLINK_MSG_SIMSTATE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_SIMSTATE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_SIMSTATE_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_simstate_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_simstate_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_SIMSTATE,
+        FASTMAVLINK_MSG_SIMSTATE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_SIMSTATE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_SIMSTATE_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

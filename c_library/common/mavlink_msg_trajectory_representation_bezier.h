@@ -48,6 +48,9 @@ typedef struct _fmav_trajectory_representation_bezier_t {
 #define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_333_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_333_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message TRAJECTORY_REPRESENTATION_BEZIER packing routines, for sending
@@ -131,7 +134,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_trajectory_representation_bezie
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_trajectory_representation_bezier_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -144,6 +147,55 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_trajectory_representation_bezie
         _payload->time_usec, _payload->valid_points, _payload->pos_x, _payload->pos_y, _payload->pos_z, _payload->delta, _payload->pos_yaw,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_trajectory_representation_bezier_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t time_usec, uint8_t valid_points, const float* pos_x, const float* pos_y, const float* pos_z, const float* delta, const float* pos_yaw,
+    fmav_status_t* _status)
+{
+    fmav_trajectory_representation_bezier_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.valid_points = valid_points;
+    memcpy(&(_payload.pos_x), pos_x, sizeof(float)*5);
+    memcpy(&(_payload.pos_y), pos_y, sizeof(float)*5);
+    memcpy(&(_payload.pos_z), pos_z, sizeof(float)*5);
+    memcpy(&(_payload.delta), delta, sizeof(float)*5);
+    memcpy(&(_payload.pos_yaw), pos_yaw, sizeof(float)*5);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_TRAJECTORY_REPRESENTATION_BEZIER,
+        FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_trajectory_representation_bezier_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_trajectory_representation_bezier_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_TRAJECTORY_REPRESENTATION_BEZIER,
+        FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

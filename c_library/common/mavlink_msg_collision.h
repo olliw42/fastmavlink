@@ -44,6 +44,9 @@ typedef struct _fmav_collision_t {
 #define FASTMAVLINK_MSG_COLLISION_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_COLLISION_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_COLLISION_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_COLLISION_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_247_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_247_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message COLLISION packing routines, for sending
@@ -129,7 +132,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_collision_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_collision_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -142,6 +145,56 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_collision_encode_to_frame_buf(
         _payload->src, _payload->id, _payload->action, _payload->threat_level, _payload->time_to_minimum_delta, _payload->altitude_minimum_delta, _payload->horizontal_minimum_delta,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_collision_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t src, uint32_t id, uint8_t action, uint8_t threat_level, float time_to_minimum_delta, float altitude_minimum_delta, float horizontal_minimum_delta,
+    fmav_status_t* _status)
+{
+    fmav_collision_t _payload;
+
+    _payload.id = id;
+    _payload.time_to_minimum_delta = time_to_minimum_delta;
+    _payload.altitude_minimum_delta = altitude_minimum_delta;
+    _payload.horizontal_minimum_delta = horizontal_minimum_delta;
+    _payload.src = src;
+    _payload.action = action;
+    _payload.threat_level = threat_level;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_COLLISION,
+        FASTMAVLINK_MSG_COLLISION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_COLLISION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_COLLISION_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_collision_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_collision_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_COLLISION,
+        FASTMAVLINK_MSG_COLLISION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_COLLISION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_COLLISION_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

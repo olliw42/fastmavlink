@@ -47,6 +47,9 @@ typedef struct _fmav_uavcan_node_info_t {
 #define FASTMAVLINK_MSG_UAVCAN_NODE_INFO_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_UAVCAN_NODE_INFO_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_UAVCAN_NODE_INFO_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_UAVCAN_NODE_INFO_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_311_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_311_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message UAVCAN_NODE_INFO packing routines, for sending
@@ -134,7 +137,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavcan_node_info_pack_to_frame_
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavcan_node_info_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -147,6 +150,57 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavcan_node_info_encode_to_fram
         _payload->time_usec, _payload->uptime_sec, _payload->name, _payload->hw_version_major, _payload->hw_version_minor, _payload->hw_unique_id, _payload->sw_version_major, _payload->sw_version_minor, _payload->sw_vcs_commit,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavcan_node_info_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t time_usec, uint32_t uptime_sec, const char* name, uint8_t hw_version_major, uint8_t hw_version_minor, const uint8_t* hw_unique_id, uint8_t sw_version_major, uint8_t sw_version_minor, uint32_t sw_vcs_commit,
+    fmav_status_t* _status)
+{
+    fmav_uavcan_node_info_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.uptime_sec = uptime_sec;
+    _payload.sw_vcs_commit = sw_vcs_commit;
+    _payload.hw_version_major = hw_version_major;
+    _payload.hw_version_minor = hw_version_minor;
+    _payload.sw_version_major = sw_version_major;
+    _payload.sw_version_minor = sw_version_minor;
+    memcpy(&(_payload.name), name, sizeof(char)*80);
+    memcpy(&(_payload.hw_unique_id), hw_unique_id, sizeof(uint8_t)*16);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_UAVCAN_NODE_INFO,
+        FASTMAVLINK_MSG_UAVCAN_NODE_INFO_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_UAVCAN_NODE_INFO_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_UAVCAN_NODE_INFO_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavcan_node_info_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_uavcan_node_info_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_UAVCAN_NODE_INFO,
+        FASTMAVLINK_MSG_UAVCAN_NODE_INFO_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_UAVCAN_NODE_INFO_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_UAVCAN_NODE_INFO_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

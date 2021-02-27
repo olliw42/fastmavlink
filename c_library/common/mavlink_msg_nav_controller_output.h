@@ -45,6 +45,9 @@ typedef struct _fmav_nav_controller_output_t {
 #define FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_62_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_62_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message NAV_CONTROLLER_OUTPUT packing routines, for sending
@@ -132,7 +135,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_controller_output_pack_to_f
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_controller_output_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -145,6 +148,57 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_controller_output_encode_to
         _payload->nav_roll, _payload->nav_pitch, _payload->nav_bearing, _payload->target_bearing, _payload->wp_dist, _payload->alt_error, _payload->aspd_error, _payload->xtrack_error,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_controller_output_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    float nav_roll, float nav_pitch, int16_t nav_bearing, int16_t target_bearing, uint16_t wp_dist, float alt_error, float aspd_error, float xtrack_error,
+    fmav_status_t* _status)
+{
+    fmav_nav_controller_output_t _payload;
+
+    _payload.nav_roll = nav_roll;
+    _payload.nav_pitch = nav_pitch;
+    _payload.alt_error = alt_error;
+    _payload.aspd_error = aspd_error;
+    _payload.xtrack_error = xtrack_error;
+    _payload.nav_bearing = nav_bearing;
+    _payload.target_bearing = target_bearing;
+    _payload.wp_dist = wp_dist;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT,
+        FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_controller_output_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_nav_controller_output_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT,
+        FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

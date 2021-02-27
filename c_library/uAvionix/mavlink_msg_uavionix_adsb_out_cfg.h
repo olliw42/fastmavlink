@@ -45,6 +45,9 @@ typedef struct _fmav_uavionix_adsb_out_cfg_t {
 #define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_10001_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_10001_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message UAVIONIX_ADSB_OUT_CFG packing routines, for sending
@@ -130,7 +133,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_cfg_pack_to_f
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_cfg_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -143,6 +146,56 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_cfg_encode_to
         _payload->ICAO, _payload->callsign, _payload->emitterType, _payload->aircraftSize, _payload->gpsOffsetLat, _payload->gpsOffsetLon, _payload->stallSpeed, _payload->rfSelect,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_cfg_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint32_t ICAO, const char* callsign, uint8_t emitterType, uint8_t aircraftSize, uint8_t gpsOffsetLat, uint8_t gpsOffsetLon, uint16_t stallSpeed, uint8_t rfSelect,
+    fmav_status_t* _status)
+{
+    fmav_uavionix_adsb_out_cfg_t _payload;
+
+    _payload.ICAO = ICAO;
+    _payload.stallSpeed = stallSpeed;
+    _payload.emitterType = emitterType;
+    _payload.aircraftSize = aircraftSize;
+    _payload.gpsOffsetLat = gpsOffsetLat;
+    _payload.gpsOffsetLon = gpsOffsetLon;
+    _payload.rfSelect = rfSelect;
+    memcpy(&(_payload.callsign), callsign, sizeof(char)*9);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG,
+        FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_cfg_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_uavionix_adsb_out_cfg_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG,
+        FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

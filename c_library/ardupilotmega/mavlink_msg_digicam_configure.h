@@ -48,6 +48,9 @@ typedef struct _fmav_digicam_configure_t {
 #define FASTMAVLINK_MSG_DIGICAM_CONFIGURE_TARGET_SYSTEM_OFS  6
 #define FASTMAVLINK_MSG_DIGICAM_CONFIGURE_TARGET_COMPONENT_OFS  7
 
+#define FASTMAVLINK_MSG_DIGICAM_CONFIGURE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_DIGICAM_CONFIGURE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_154_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_154_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message DIGICAM_CONFIGURE packing routines, for sending
@@ -141,7 +144,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_digicam_configure_pack_to_frame
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_digicam_configure_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -154,6 +157,60 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_digicam_configure_encode_to_fra
         _payload->target_system, _payload->target_component, _payload->mode, _payload->shutter_speed, _payload->aperture, _payload->iso, _payload->exposure_type, _payload->command_id, _payload->engine_cut_off, _payload->extra_param, _payload->extra_value,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_digicam_configure_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component, uint8_t mode, uint16_t shutter_speed, uint8_t aperture, uint8_t iso, uint8_t exposure_type, uint8_t command_id, uint8_t engine_cut_off, uint8_t extra_param, float extra_value,
+    fmav_status_t* _status)
+{
+    fmav_digicam_configure_t _payload;
+
+    _payload.extra_value = extra_value;
+    _payload.shutter_speed = shutter_speed;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+    _payload.mode = mode;
+    _payload.aperture = aperture;
+    _payload.iso = iso;
+    _payload.exposure_type = exposure_type;
+    _payload.command_id = command_id;
+    _payload.engine_cut_off = engine_cut_off;
+    _payload.extra_param = extra_param;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_DIGICAM_CONFIGURE,
+        FASTMAVLINK_MSG_DIGICAM_CONFIGURE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_DIGICAM_CONFIGURE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_DIGICAM_CONFIGURE_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_digicam_configure_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_digicam_configure_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_DIGICAM_CONFIGURE,
+        FASTMAVLINK_MSG_DIGICAM_CONFIGURE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_DIGICAM_CONFIGURE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_DIGICAM_CONFIGURE_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

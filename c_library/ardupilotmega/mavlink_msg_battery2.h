@@ -39,6 +39,9 @@ typedef struct _fmav_battery2_t {
 #define FASTMAVLINK_MSG_BATTERY2_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_BATTERY2_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_BATTERY2_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_BATTERY2_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_181_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_181_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message BATTERY2 packing routines, for sending
@@ -114,7 +117,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_battery2_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_battery2_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -127,6 +130,51 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_battery2_encode_to_frame_buf(
         _payload->voltage, _payload->current_battery,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_battery2_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint16_t voltage, int16_t current_battery,
+    fmav_status_t* _status)
+{
+    fmav_battery2_t _payload;
+
+    _payload.voltage = voltage;
+    _payload.current_battery = current_battery;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_BATTERY2,
+        FASTMAVLINK_MSG_BATTERY2_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_BATTERY2_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_BATTERY2_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_battery2_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_battery2_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_BATTERY2,
+        FASTMAVLINK_MSG_BATTERY2_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_BATTERY2_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_BATTERY2_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

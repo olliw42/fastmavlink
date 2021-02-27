@@ -58,6 +58,9 @@ typedef struct _fmav_rc_channels_t {
 #define FASTMAVLINK_MSG_RC_CHANNELS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_RC_CHANNELS_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_RC_CHANNELS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_RC_CHANNELS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_65_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_65_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message RC_CHANNELS packing routines, for sending
@@ -171,7 +174,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -184,6 +187,70 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_encode_to_frame_buf
         _payload->time_boot_ms, _payload->chancount, _payload->chan1_raw, _payload->chan2_raw, _payload->chan3_raw, _payload->chan4_raw, _payload->chan5_raw, _payload->chan6_raw, _payload->chan7_raw, _payload->chan8_raw, _payload->chan9_raw, _payload->chan10_raw, _payload->chan11_raw, _payload->chan12_raw, _payload->chan13_raw, _payload->chan14_raw, _payload->chan15_raw, _payload->chan16_raw, _payload->chan17_raw, _payload->chan18_raw, _payload->rssi,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint32_t time_boot_ms, uint8_t chancount, uint16_t chan1_raw, uint16_t chan2_raw, uint16_t chan3_raw, uint16_t chan4_raw, uint16_t chan5_raw, uint16_t chan6_raw, uint16_t chan7_raw, uint16_t chan8_raw, uint16_t chan9_raw, uint16_t chan10_raw, uint16_t chan11_raw, uint16_t chan12_raw, uint16_t chan13_raw, uint16_t chan14_raw, uint16_t chan15_raw, uint16_t chan16_raw, uint16_t chan17_raw, uint16_t chan18_raw, uint8_t rssi,
+    fmav_status_t* _status)
+{
+    fmav_rc_channels_t _payload;
+
+    _payload.time_boot_ms = time_boot_ms;
+    _payload.chan1_raw = chan1_raw;
+    _payload.chan2_raw = chan2_raw;
+    _payload.chan3_raw = chan3_raw;
+    _payload.chan4_raw = chan4_raw;
+    _payload.chan5_raw = chan5_raw;
+    _payload.chan6_raw = chan6_raw;
+    _payload.chan7_raw = chan7_raw;
+    _payload.chan8_raw = chan8_raw;
+    _payload.chan9_raw = chan9_raw;
+    _payload.chan10_raw = chan10_raw;
+    _payload.chan11_raw = chan11_raw;
+    _payload.chan12_raw = chan12_raw;
+    _payload.chan13_raw = chan13_raw;
+    _payload.chan14_raw = chan14_raw;
+    _payload.chan15_raw = chan15_raw;
+    _payload.chan16_raw = chan16_raw;
+    _payload.chan17_raw = chan17_raw;
+    _payload.chan18_raw = chan18_raw;
+    _payload.chancount = chancount;
+    _payload.rssi = rssi;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_RC_CHANNELS,
+        FASTMAVLINK_MSG_RC_CHANNELS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_RC_CHANNELS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_RC_CHANNELS_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_rc_channels_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_RC_CHANNELS,
+        FASTMAVLINK_MSG_RC_CHANNELS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_RC_CHANNELS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_RC_CHANNELS_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

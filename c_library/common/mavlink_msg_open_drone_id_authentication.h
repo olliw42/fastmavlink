@@ -47,6 +47,9 @@ typedef struct _fmav_open_drone_id_authentication_t {
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_TARGET_SYSTEM_OFS  4
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_TARGET_COMPONENT_OFS  5
 
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_12902_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_12902_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message OPEN_DRONE_ID_AUTHENTICATION packing routines, for sending
@@ -134,7 +137,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_authentication_pa
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_authentication_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -147,6 +150,57 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_authentication_en
         _payload->target_system, _payload->target_component, _payload->id_or_mac, _payload->authentication_type, _payload->data_page, _payload->page_count, _payload->length, _payload->timestamp, _payload->authentication_data,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_authentication_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t authentication_type, uint8_t data_page, uint8_t page_count, uint8_t length, uint32_t timestamp, const uint8_t* authentication_data,
+    fmav_status_t* _status)
+{
+    fmav_open_drone_id_authentication_t _payload;
+
+    _payload.timestamp = timestamp;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+    _payload.authentication_type = authentication_type;
+    _payload.data_page = data_page;
+    _payload.page_count = page_count;
+    _payload.length = length;
+    memcpy(&(_payload.id_or_mac), id_or_mac, sizeof(uint8_t)*20);
+    memcpy(&(_payload.authentication_data), authentication_data, sizeof(uint8_t)*23);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_AUTHENTICATION,
+        FASTMAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_authentication_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_open_drone_id_authentication_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_AUTHENTICATION,
+        FASTMAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

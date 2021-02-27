@@ -42,6 +42,9 @@ typedef struct _fmav_param_ext_ack_t {
 #define FASTMAVLINK_MSG_PARAM_EXT_ACK_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_PARAM_EXT_ACK_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_PARAM_EXT_ACK_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_PARAM_EXT_ACK_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_324_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_324_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message PARAM_EXT_ACK packing routines, for sending
@@ -119,7 +122,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ext_ack_pack_to_frame_buf
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ext_ack_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -132,6 +135,52 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ext_ack_encode_to_frame_b
         _payload->param_id, _payload->param_value, _payload->param_type, _payload->param_result,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ext_ack_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const char* param_id, const char* param_value, uint8_t param_type, uint8_t param_result,
+    fmav_status_t* _status)
+{
+    fmav_param_ext_ack_t _payload;
+
+    _payload.param_type = param_type;
+    _payload.param_result = param_result;
+    memcpy(&(_payload.param_id), param_id, sizeof(char)*16);
+    memcpy(&(_payload.param_value), param_value, sizeof(char)*128);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_PARAM_EXT_ACK,
+        FASTMAVLINK_MSG_PARAM_EXT_ACK_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_PARAM_EXT_ACK_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_PARAM_EXT_ACK_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ext_ack_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_param_ext_ack_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_PARAM_EXT_ACK,
+        FASTMAVLINK_MSG_PARAM_EXT_ACK_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_PARAM_EXT_ACK_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_PARAM_EXT_ACK_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

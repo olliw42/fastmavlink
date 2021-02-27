@@ -40,6 +40,9 @@ typedef struct _fmav_change_operator_control_ack_t {
 #define FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_ACK_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_ACK_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_ACK_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_ACK_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_6_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_6_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message CHANGE_OPERATOR_CONTROL_ACK packing routines, for sending
@@ -117,7 +120,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_change_operator_control_ack_pac
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_change_operator_control_ack_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -130,6 +133,52 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_change_operator_control_ack_enc
         _payload->gcs_system_id, _payload->control_request, _payload->ack,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_change_operator_control_ack_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t gcs_system_id, uint8_t control_request, uint8_t ack,
+    fmav_status_t* _status)
+{
+    fmav_change_operator_control_ack_t _payload;
+
+    _payload.gcs_system_id = gcs_system_id;
+    _payload.control_request = control_request;
+    _payload.ack = ack;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK,
+        FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_ACK_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_ACK_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_ACK_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_change_operator_control_ack_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_change_operator_control_ack_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK,
+        FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_ACK_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_ACK_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_ACK_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

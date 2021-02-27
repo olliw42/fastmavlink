@@ -46,6 +46,9 @@ typedef struct _fmav_attitude_quaternion_t {
 #define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ATTITUDE_QUATERNION_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_31_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_31_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message ATTITUDE_QUATERNION packing routines, for sending
@@ -133,7 +136,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_attitude_quaternion_pack_to_fra
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_attitude_quaternion_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -146,6 +149,57 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_attitude_quaternion_encode_to_f
         _payload->time_boot_ms, _payload->q1, _payload->q2, _payload->q3, _payload->q4, _payload->rollspeed, _payload->pitchspeed, _payload->yawspeed, _payload->repr_offset_q,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_attitude_quaternion_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint32_t time_boot_ms, float q1, float q2, float q3, float q4, float rollspeed, float pitchspeed, float yawspeed, const float* repr_offset_q,
+    fmav_status_t* _status)
+{
+    fmav_attitude_quaternion_t _payload;
+
+    _payload.time_boot_ms = time_boot_ms;
+    _payload.q1 = q1;
+    _payload.q2 = q2;
+    _payload.q3 = q3;
+    _payload.q4 = q4;
+    _payload.rollspeed = rollspeed;
+    _payload.pitchspeed = pitchspeed;
+    _payload.yawspeed = yawspeed;
+    memcpy(&(_payload.repr_offset_q), repr_offset_q, sizeof(float)*4);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_ATTITUDE_QUATERNION,
+        FASTMAVLINK_MSG_ATTITUDE_QUATERNION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ATTITUDE_QUATERNION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ATTITUDE_QUATERNION_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_attitude_quaternion_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_attitude_quaternion_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_ATTITUDE_QUATERNION,
+        FASTMAVLINK_MSG_ATTITUDE_QUATERNION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ATTITUDE_QUATERNION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ATTITUDE_QUATERNION_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

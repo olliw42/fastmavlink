@@ -48,6 +48,9 @@ typedef struct _fmav_generator_status_t {
 #define FASTMAVLINK_MSG_GENERATOR_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_GENERATOR_STATUS_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_GENERATOR_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_GENERATOR_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_373_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_373_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message GENERATOR_STATUS packing routines, for sending
@@ -141,7 +144,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_generator_status_pack_to_frame_
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_generator_status_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -154,6 +157,60 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_generator_status_encode_to_fram
         _payload->status, _payload->generator_speed, _payload->battery_current, _payload->load_current, _payload->power_generated, _payload->bus_voltage, _payload->rectifier_temperature, _payload->bat_current_setpoint, _payload->generator_temperature, _payload->runtime, _payload->time_until_maintenance,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_generator_status_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t status, uint16_t generator_speed, float battery_current, float load_current, float power_generated, float bus_voltage, int16_t rectifier_temperature, float bat_current_setpoint, int16_t generator_temperature, uint32_t runtime, int32_t time_until_maintenance,
+    fmav_status_t* _status)
+{
+    fmav_generator_status_t _payload;
+
+    _payload.status = status;
+    _payload.battery_current = battery_current;
+    _payload.load_current = load_current;
+    _payload.power_generated = power_generated;
+    _payload.bus_voltage = bus_voltage;
+    _payload.bat_current_setpoint = bat_current_setpoint;
+    _payload.runtime = runtime;
+    _payload.time_until_maintenance = time_until_maintenance;
+    _payload.generator_speed = generator_speed;
+    _payload.rectifier_temperature = rectifier_temperature;
+    _payload.generator_temperature = generator_temperature;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_GENERATOR_STATUS,
+        FASTMAVLINK_MSG_GENERATOR_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_GENERATOR_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_GENERATOR_STATUS_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_generator_status_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_generator_status_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_GENERATOR_STATUS,
+        FASTMAVLINK_MSG_GENERATOR_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_GENERATOR_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_GENERATOR_STATUS_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

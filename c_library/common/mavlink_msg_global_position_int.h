@@ -46,6 +46,9 @@ typedef struct _fmav_global_position_int_t {
 #define FASTMAVLINK_MSG_GLOBAL_POSITION_INT_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_GLOBAL_POSITION_INT_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_GLOBAL_POSITION_INT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_GLOBAL_POSITION_INT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_33_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_33_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message GLOBAL_POSITION_INT packing routines, for sending
@@ -135,7 +138,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_global_position_int_pack_to_fra
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_global_position_int_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -148,6 +151,58 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_global_position_int_encode_to_f
         _payload->time_boot_ms, _payload->lat, _payload->lon, _payload->alt, _payload->relative_alt, _payload->vx, _payload->vy, _payload->vz, _payload->hdg,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_global_position_int_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint32_t time_boot_ms, int32_t lat, int32_t lon, int32_t alt, int32_t relative_alt, int16_t vx, int16_t vy, int16_t vz, uint16_t hdg,
+    fmav_status_t* _status)
+{
+    fmav_global_position_int_t _payload;
+
+    _payload.time_boot_ms = time_boot_ms;
+    _payload.lat = lat;
+    _payload.lon = lon;
+    _payload.alt = alt;
+    _payload.relative_alt = relative_alt;
+    _payload.vx = vx;
+    _payload.vy = vy;
+    _payload.vz = vz;
+    _payload.hdg = hdg;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_GLOBAL_POSITION_INT,
+        FASTMAVLINK_MSG_GLOBAL_POSITION_INT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_GLOBAL_POSITION_INT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_GLOBAL_POSITION_INT_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_global_position_int_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_global_position_int_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_GLOBAL_POSITION_INT,
+        FASTMAVLINK_MSG_GLOBAL_POSITION_INT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_GLOBAL_POSITION_INT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_GLOBAL_POSITION_INT_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

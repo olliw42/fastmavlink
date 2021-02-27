@@ -50,6 +50,9 @@ typedef struct _fmav_adap_tuning_t {
 #define FASTMAVLINK_MSG_ADAP_TUNING_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ADAP_TUNING_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_ADAP_TUNING_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ADAP_TUNING_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_11010_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_11010_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message ADAP_TUNING packing routines, for sending
@@ -147,7 +150,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adap_tuning_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adap_tuning_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -160,6 +163,62 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adap_tuning_encode_to_frame_buf
         _payload->axis, _payload->desired, _payload->achieved, _payload->error, _payload->theta, _payload->omega, _payload->sigma, _payload->theta_dot, _payload->omega_dot, _payload->sigma_dot, _payload->f, _payload->f_dot, _payload->u,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adap_tuning_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t axis, float desired, float achieved, float error, float theta, float omega, float sigma, float theta_dot, float omega_dot, float sigma_dot, float f, float f_dot, float u,
+    fmav_status_t* _status)
+{
+    fmav_adap_tuning_t _payload;
+
+    _payload.desired = desired;
+    _payload.achieved = achieved;
+    _payload.error = error;
+    _payload.theta = theta;
+    _payload.omega = omega;
+    _payload.sigma = sigma;
+    _payload.theta_dot = theta_dot;
+    _payload.omega_dot = omega_dot;
+    _payload.sigma_dot = sigma_dot;
+    _payload.f = f;
+    _payload.f_dot = f_dot;
+    _payload.u = u;
+    _payload.axis = axis;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_ADAP_TUNING,
+        FASTMAVLINK_MSG_ADAP_TUNING_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ADAP_TUNING_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ADAP_TUNING_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adap_tuning_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_adap_tuning_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_ADAP_TUNING,
+        FASTMAVLINK_MSG_ADAP_TUNING_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ADAP_TUNING_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ADAP_TUNING_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

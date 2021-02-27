@@ -55,6 +55,9 @@ typedef struct _fmav_ais_vessel_t {
 #define FASTMAVLINK_MSG_AIS_VESSEL_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_AIS_VESSEL_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_AIS_VESSEL_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_AIS_VESSEL_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_301_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_301_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message AIS_VESSEL packing routines, for sending
@@ -158,7 +161,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ais_vessel_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ais_vessel_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -171,6 +174,65 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ais_vessel_encode_to_frame_buf(
         _payload->MMSI, _payload->lat, _payload->lon, _payload->COG, _payload->heading, _payload->velocity, _payload->turn_rate, _payload->navigational_status, _payload->type, _payload->dimension_bow, _payload->dimension_stern, _payload->dimension_port, _payload->dimension_starboard, _payload->callsign, _payload->name, _payload->tslc, _payload->flags,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ais_vessel_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint32_t MMSI, int32_t lat, int32_t lon, uint16_t COG, uint16_t heading, uint16_t velocity, int8_t turn_rate, uint8_t navigational_status, uint8_t type, uint16_t dimension_bow, uint16_t dimension_stern, uint8_t dimension_port, uint8_t dimension_starboard, const char* callsign, const char* name, uint16_t tslc, uint16_t flags,
+    fmav_status_t* _status)
+{
+    fmav_ais_vessel_t _payload;
+
+    _payload.MMSI = MMSI;
+    _payload.lat = lat;
+    _payload.lon = lon;
+    _payload.COG = COG;
+    _payload.heading = heading;
+    _payload.velocity = velocity;
+    _payload.dimension_bow = dimension_bow;
+    _payload.dimension_stern = dimension_stern;
+    _payload.tslc = tslc;
+    _payload.flags = flags;
+    _payload.turn_rate = turn_rate;
+    _payload.navigational_status = navigational_status;
+    _payload.type = type;
+    _payload.dimension_port = dimension_port;
+    _payload.dimension_starboard = dimension_starboard;
+    memcpy(&(_payload.callsign), callsign, sizeof(char)*7);
+    memcpy(&(_payload.name), name, sizeof(char)*20);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_AIS_VESSEL,
+        FASTMAVLINK_MSG_AIS_VESSEL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_AIS_VESSEL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_AIS_VESSEL_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ais_vessel_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_ais_vessel_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_AIS_VESSEL,
+        FASTMAVLINK_MSG_AIS_VESSEL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_AIS_VESSEL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_AIS_VESSEL_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

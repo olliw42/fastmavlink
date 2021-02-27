@@ -44,6 +44,9 @@ typedef struct _fmav_ekf_status_report_t {
 #define FASTMAVLINK_MSG_EKF_STATUS_REPORT_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_EKF_STATUS_REPORT_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_EKF_STATUS_REPORT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_193_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_193_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message EKF_STATUS_REPORT packing routines, for sending
@@ -129,7 +132,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ekf_status_report_pack_to_frame
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ekf_status_report_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -142,6 +145,56 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ekf_status_report_encode_to_fra
         _payload->flags, _payload->velocity_variance, _payload->pos_horiz_variance, _payload->pos_vert_variance, _payload->compass_variance, _payload->terrain_alt_variance, _payload->airspeed_variance,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ekf_status_report_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint16_t flags, float velocity_variance, float pos_horiz_variance, float pos_vert_variance, float compass_variance, float terrain_alt_variance, float airspeed_variance,
+    fmav_status_t* _status)
+{
+    fmav_ekf_status_report_t _payload;
+
+    _payload.velocity_variance = velocity_variance;
+    _payload.pos_horiz_variance = pos_horiz_variance;
+    _payload.pos_vert_variance = pos_vert_variance;
+    _payload.compass_variance = compass_variance;
+    _payload.terrain_alt_variance = terrain_alt_variance;
+    _payload.flags = flags;
+    _payload.airspeed_variance = airspeed_variance;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_EKF_STATUS_REPORT,
+        FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_EKF_STATUS_REPORT_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ekf_status_report_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_ekf_status_report_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_EKF_STATUS_REPORT,
+        FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_EKF_STATUS_REPORT_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

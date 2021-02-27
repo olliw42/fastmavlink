@@ -43,6 +43,9 @@ typedef struct _fmav_manual_control_t {
 #define FASTMAVLINK_MSG_MANUAL_CONTROL_TARGET_SYSTEM_OFS  10
 #define FASTMAVLINK_MSG_MANUAL_CONTROL_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_MANUAL_CONTROL_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_MANUAL_CONTROL_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_69_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_69_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message MANUAL_CONTROL packing routines, for sending
@@ -126,7 +129,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_control_pack_to_frame_bu
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_control_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -139,6 +142,55 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_control_encode_to_frame_
         _payload->target, _payload->x, _payload->y, _payload->z, _payload->r, _payload->buttons,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_control_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target, int16_t x, int16_t y, int16_t z, int16_t r, uint16_t buttons,
+    fmav_status_t* _status)
+{
+    fmav_manual_control_t _payload;
+
+    _payload.x = x;
+    _payload.y = y;
+    _payload.z = z;
+    _payload.r = r;
+    _payload.buttons = buttons;
+    _payload.target = target;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_MANUAL_CONTROL,
+        FASTMAVLINK_MSG_MANUAL_CONTROL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_MANUAL_CONTROL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_MANUAL_CONTROL_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_control_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_manual_control_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_MANUAL_CONTROL,
+        FASTMAVLINK_MSG_MANUAL_CONTROL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_MANUAL_CONTROL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_MANUAL_CONTROL_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

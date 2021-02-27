@@ -56,6 +56,9 @@ typedef struct _fmav_gps_input_t {
 #define FASTMAVLINK_MSG_GPS_INPUT_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_GPS_INPUT_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_GPS_INPUT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_GPS_INPUT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_232_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_232_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message GPS_INPUT packing routines, for sending
@@ -165,7 +168,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_input_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_input_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -178,6 +181,68 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_input_encode_to_frame_buf(
         _payload->time_usec, _payload->gps_id, _payload->ignore_flags, _payload->time_week_ms, _payload->time_week, _payload->fix_type, _payload->lat, _payload->lon, _payload->alt, _payload->hdop, _payload->vdop, _payload->vn, _payload->ve, _payload->vd, _payload->speed_accuracy, _payload->horiz_accuracy, _payload->vert_accuracy, _payload->satellites_visible, _payload->yaw,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_input_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t time_usec, uint8_t gps_id, uint16_t ignore_flags, uint32_t time_week_ms, uint16_t time_week, uint8_t fix_type, int32_t lat, int32_t lon, float alt, float hdop, float vdop, float vn, float ve, float vd, float speed_accuracy, float horiz_accuracy, float vert_accuracy, uint8_t satellites_visible, uint16_t yaw,
+    fmav_status_t* _status)
+{
+    fmav_gps_input_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.time_week_ms = time_week_ms;
+    _payload.lat = lat;
+    _payload.lon = lon;
+    _payload.alt = alt;
+    _payload.hdop = hdop;
+    _payload.vdop = vdop;
+    _payload.vn = vn;
+    _payload.ve = ve;
+    _payload.vd = vd;
+    _payload.speed_accuracy = speed_accuracy;
+    _payload.horiz_accuracy = horiz_accuracy;
+    _payload.vert_accuracy = vert_accuracy;
+    _payload.ignore_flags = ignore_flags;
+    _payload.time_week = time_week;
+    _payload.gps_id = gps_id;
+    _payload.fix_type = fix_type;
+    _payload.satellites_visible = satellites_visible;
+    _payload.yaw = yaw;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_GPS_INPUT,
+        FASTMAVLINK_MSG_GPS_INPUT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_GPS_INPUT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_GPS_INPUT_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_input_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_gps_input_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_GPS_INPUT,
+        FASTMAVLINK_MSG_GPS_INPUT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_GPS_INPUT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_GPS_INPUT_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

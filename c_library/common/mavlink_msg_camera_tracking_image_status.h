@@ -47,6 +47,9 @@ typedef struct _fmav_camera_tracking_image_status_t {
 #define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_275_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_275_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message CAMERA_TRACKING_IMAGE_STATUS packing routines, for sending
@@ -138,7 +141,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_tracking_image_status_pa
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_tracking_image_status_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -151,6 +154,59 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_tracking_image_status_en
         _payload->tracking_status, _payload->tracking_mode, _payload->target_data, _payload->point_x, _payload->point_y, _payload->radius, _payload->rec_top_x, _payload->rec_top_y, _payload->rec_bottom_x, _payload->rec_bottom_y,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_tracking_image_status_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t tracking_status, uint8_t tracking_mode, uint8_t target_data, float point_x, float point_y, float radius, float rec_top_x, float rec_top_y, float rec_bottom_x, float rec_bottom_y,
+    fmav_status_t* _status)
+{
+    fmav_camera_tracking_image_status_t _payload;
+
+    _payload.point_x = point_x;
+    _payload.point_y = point_y;
+    _payload.radius = radius;
+    _payload.rec_top_x = rec_top_x;
+    _payload.rec_top_y = rec_top_y;
+    _payload.rec_bottom_x = rec_bottom_x;
+    _payload.rec_bottom_y = rec_bottom_y;
+    _payload.tracking_status = tracking_status;
+    _payload.tracking_mode = tracking_mode;
+    _payload.target_data = target_data;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_CAMERA_TRACKING_IMAGE_STATUS,
+        FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_tracking_image_status_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_camera_tracking_image_status_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_CAMERA_TRACKING_IMAGE_STATUS,
+        FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

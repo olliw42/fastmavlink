@@ -38,6 +38,9 @@ typedef struct _fmav_auth_key_t {
 #define FASTMAVLINK_MSG_AUTH_KEY_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_AUTH_KEY_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_AUTH_KEY_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_7_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_7_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message AUTH_KEY packing routines, for sending
@@ -111,7 +114,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_auth_key_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_auth_key_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -124,6 +127,50 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_auth_key_encode_to_frame_buf(
         _payload->key,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_auth_key_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const char* key,
+    fmav_status_t* _status)
+{
+    fmav_auth_key_t _payload;
+
+
+    memcpy(&(_payload.key), key, sizeof(char)*32);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_AUTH_KEY,
+        FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_AUTH_KEY_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_auth_key_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_auth_key_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_AUTH_KEY,
+        FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_AUTH_KEY_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

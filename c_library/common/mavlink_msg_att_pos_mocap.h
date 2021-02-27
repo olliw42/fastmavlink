@@ -44,6 +44,9 @@ typedef struct _fmav_att_pos_mocap_t {
 #define FASTMAVLINK_MSG_ATT_POS_MOCAP_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ATT_POS_MOCAP_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_ATT_POS_MOCAP_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_138_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_138_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message ATT_POS_MOCAP packing routines, for sending
@@ -125,7 +128,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_att_pos_mocap_pack_to_frame_buf
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_att_pos_mocap_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -138,6 +141,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_att_pos_mocap_encode_to_frame_b
         _payload->time_usec, _payload->q, _payload->x, _payload->y, _payload->z, _payload->covariance,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_att_pos_mocap_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t time_usec, const float* q, float x, float y, float z, const float* covariance,
+    fmav_status_t* _status)
+{
+    fmav_att_pos_mocap_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.x = x;
+    _payload.y = y;
+    _payload.z = z;
+    memcpy(&(_payload.q), q, sizeof(float)*4);
+    memcpy(&(_payload.covariance), covariance, sizeof(float)*21);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_ATT_POS_MOCAP,
+        FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ATT_POS_MOCAP_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_att_pos_mocap_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_att_pos_mocap_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_ATT_POS_MOCAP,
+        FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ATT_POS_MOCAP_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

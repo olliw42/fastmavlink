@@ -40,6 +40,9 @@ typedef struct _fmav_button_change_t {
 #define FASTMAVLINK_MSG_BUTTON_CHANGE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_BUTTON_CHANGE_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_BUTTON_CHANGE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_BUTTON_CHANGE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_257_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_257_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message BUTTON_CHANGE packing routines, for sending
@@ -117,7 +120,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_button_change_pack_to_frame_buf
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_button_change_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -130,6 +133,52 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_button_change_encode_to_frame_b
         _payload->time_boot_ms, _payload->last_change_ms, _payload->state,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_button_change_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint32_t time_boot_ms, uint32_t last_change_ms, uint8_t state,
+    fmav_status_t* _status)
+{
+    fmav_button_change_t _payload;
+
+    _payload.time_boot_ms = time_boot_ms;
+    _payload.last_change_ms = last_change_ms;
+    _payload.state = state;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_BUTTON_CHANGE,
+        FASTMAVLINK_MSG_BUTTON_CHANGE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_BUTTON_CHANGE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_BUTTON_CHANGE_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_button_change_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_button_change_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_BUTTON_CHANGE,
+        FASTMAVLINK_MSG_BUTTON_CHANGE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_BUTTON_CHANGE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_BUTTON_CHANGE_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

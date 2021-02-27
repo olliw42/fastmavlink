@@ -43,6 +43,9 @@ typedef struct _fmav_open_drone_id_self_id_t {
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_SELF_ID_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_SELF_ID_TARGET_COMPONENT_OFS  1
 
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SELF_ID_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_OPEN_DRONE_ID_SELF_ID_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_12903_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_12903_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message OPEN_DRONE_ID_SELF_ID packing routines, for sending
@@ -122,7 +125,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_self_id_pack_to_f
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_self_id_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -135,6 +138,53 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_self_id_encode_to
         _payload->target_system, _payload->target_component, _payload->id_or_mac, _payload->description_type, _payload->description,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_self_id_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t description_type, const char* description,
+    fmav_status_t* _status)
+{
+    fmav_open_drone_id_self_id_t _payload;
+
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+    _payload.description_type = description_type;
+    memcpy(&(_payload.id_or_mac), id_or_mac, sizeof(uint8_t)*20);
+    memcpy(&(_payload.description), description, sizeof(char)*23);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_SELF_ID,
+        FASTMAVLINK_MSG_OPEN_DRONE_ID_SELF_ID_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_OPEN_DRONE_ID_SELF_ID_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_OPEN_DRONE_ID_SELF_ID_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_self_id_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_open_drone_id_self_id_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_SELF_ID,
+        FASTMAVLINK_MSG_OPEN_DRONE_ID_SELF_ID_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_OPEN_DRONE_ID_SELF_ID_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_OPEN_DRONE_ID_SELF_ID_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

@@ -54,6 +54,9 @@ typedef struct _fmav_array_test_7_t {
 #define FASTMAVLINK_MSG_ARRAY_TEST_7_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ARRAY_TEST_7_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ARRAY_TEST_7_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_17157_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_17157_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message ARRAY_TEST_7 packing routines, for sending
@@ -143,7 +146,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_7_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_7_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -156,6 +159,58 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_7_encode_to_frame_bu
         _payload->ar_d, _payload->ar_f, _payload->ar_u32, _payload->ar_i32, _payload->ar_u16, _payload->ar_i16, _payload->ar_u8, _payload->ar_i8, _payload->ar_c,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_7_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const double* ar_d, const float* ar_f, const uint32_t* ar_u32, const int32_t* ar_i32, const uint16_t* ar_u16, const int16_t* ar_i16, const uint8_t* ar_u8, const int8_t* ar_i8, const char* ar_c,
+    fmav_status_t* _status)
+{
+    fmav_array_test_7_t _payload;
+
+
+    memcpy(&(_payload.ar_d), ar_d, sizeof(double)*2);
+    memcpy(&(_payload.ar_f), ar_f, sizeof(float)*2);
+    memcpy(&(_payload.ar_u32), ar_u32, sizeof(uint32_t)*2);
+    memcpy(&(_payload.ar_i32), ar_i32, sizeof(int32_t)*2);
+    memcpy(&(_payload.ar_u16), ar_u16, sizeof(uint16_t)*2);
+    memcpy(&(_payload.ar_i16), ar_i16, sizeof(int16_t)*2);
+    memcpy(&(_payload.ar_u8), ar_u8, sizeof(uint8_t)*2);
+    memcpy(&(_payload.ar_i8), ar_i8, sizeof(int8_t)*2);
+    memcpy(&(_payload.ar_c), ar_c, sizeof(char)*32);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_ARRAY_TEST_7,
+        FASTMAVLINK_MSG_ARRAY_TEST_7_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ARRAY_TEST_7_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ARRAY_TEST_7_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_7_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_array_test_7_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_ARRAY_TEST_7,
+        FASTMAVLINK_MSG_ARRAY_TEST_7_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ARRAY_TEST_7_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ARRAY_TEST_7_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

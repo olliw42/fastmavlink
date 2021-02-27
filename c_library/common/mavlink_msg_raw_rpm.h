@@ -39,6 +39,9 @@ typedef struct _fmav_raw_rpm_t {
 #define FASTMAVLINK_MSG_RAW_RPM_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_RAW_RPM_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_RAW_RPM_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_RAW_RPM_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_339_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_339_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message RAW_RPM packing routines, for sending
@@ -114,7 +117,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_rpm_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_rpm_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -127,6 +130,51 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_rpm_encode_to_frame_buf(
         _payload->index, _payload->frequency,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_rpm_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t index, float frequency,
+    fmav_status_t* _status)
+{
+    fmav_raw_rpm_t _payload;
+
+    _payload.frequency = frequency;
+    _payload.index = index;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_RAW_RPM,
+        FASTMAVLINK_MSG_RAW_RPM_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_RAW_RPM_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_RAW_RPM_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_rpm_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_raw_rpm_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_RAW_RPM,
+        FASTMAVLINK_MSG_RAW_RPM_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_RAW_RPM_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_RAW_RPM_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

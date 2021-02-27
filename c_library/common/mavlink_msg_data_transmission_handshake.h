@@ -44,6 +44,9 @@ typedef struct _fmav_data_transmission_handshake_t {
 #define FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_130_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_130_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message DATA_TRANSMISSION_HANDSHAKE packing routines, for sending
@@ -129,7 +132,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data_transmission_handshake_pac
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data_transmission_handshake_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -142,6 +145,56 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data_transmission_handshake_enc
         _payload->type, _payload->size, _payload->width, _payload->height, _payload->packets, _payload->payload, _payload->jpg_quality,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data_transmission_handshake_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t type, uint32_t size, uint16_t width, uint16_t height, uint16_t packets, uint8_t payload, uint8_t jpg_quality,
+    fmav_status_t* _status)
+{
+    fmav_data_transmission_handshake_t _payload;
+
+    _payload.size = size;
+    _payload.width = width;
+    _payload.height = height;
+    _payload.packets = packets;
+    _payload.type = type;
+    _payload.payload = payload;
+    _payload.jpg_quality = jpg_quality;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE,
+        FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data_transmission_handshake_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_data_transmission_handshake_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE,
+        FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

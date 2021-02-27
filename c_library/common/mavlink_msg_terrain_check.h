@@ -39,6 +39,9 @@ typedef struct _fmav_terrain_check_t {
 #define FASTMAVLINK_MSG_TERRAIN_CHECK_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_TERRAIN_CHECK_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_TERRAIN_CHECK_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_TERRAIN_CHECK_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_135_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_135_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message TERRAIN_CHECK packing routines, for sending
@@ -114,7 +117,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_check_pack_to_frame_buf
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_check_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -127,6 +130,51 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_check_encode_to_frame_b
         _payload->lat, _payload->lon,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_check_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    int32_t lat, int32_t lon,
+    fmav_status_t* _status)
+{
+    fmav_terrain_check_t _payload;
+
+    _payload.lat = lat;
+    _payload.lon = lon;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_TERRAIN_CHECK,
+        FASTMAVLINK_MSG_TERRAIN_CHECK_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_TERRAIN_CHECK_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_TERRAIN_CHECK_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_check_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_terrain_check_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_TERRAIN_CHECK,
+        FASTMAVLINK_MSG_TERRAIN_CHECK_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_TERRAIN_CHECK_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_TERRAIN_CHECK_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

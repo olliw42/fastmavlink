@@ -51,6 +51,9 @@ typedef struct _fmav_landing_target_t {
 #define FASTMAVLINK_MSG_LANDING_TARGET_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_LANDING_TARGET_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_LANDING_TARGET_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_LANDING_TARGET_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_149_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_149_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message LANDING_TARGET packing routines, for sending
@@ -148,7 +151,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_landing_target_pack_to_frame_bu
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_landing_target_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -161,6 +164,62 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_landing_target_encode_to_frame_
         _payload->time_usec, _payload->target_num, _payload->frame, _payload->angle_x, _payload->angle_y, _payload->distance, _payload->size_x, _payload->size_y, _payload->x, _payload->y, _payload->z, _payload->q, _payload->type, _payload->position_valid,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_landing_target_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t time_usec, uint8_t target_num, uint8_t frame, float angle_x, float angle_y, float distance, float size_x, float size_y, float x, float y, float z, const float* q, uint8_t type, uint8_t position_valid,
+    fmav_status_t* _status)
+{
+    fmav_landing_target_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.angle_x = angle_x;
+    _payload.angle_y = angle_y;
+    _payload.distance = distance;
+    _payload.size_x = size_x;
+    _payload.size_y = size_y;
+    _payload.target_num = target_num;
+    _payload.frame = frame;
+    _payload.x = x;
+    _payload.y = y;
+    _payload.z = z;
+    _payload.type = type;
+    _payload.position_valid = position_valid;
+    memcpy(&(_payload.q), q, sizeof(float)*4);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_LANDING_TARGET,
+        FASTMAVLINK_MSG_LANDING_TARGET_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_LANDING_TARGET_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_LANDING_TARGET_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_landing_target_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_landing_target_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_LANDING_TARGET,
+        FASTMAVLINK_MSG_LANDING_TARGET_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_LANDING_TARGET_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_LANDING_TARGET_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

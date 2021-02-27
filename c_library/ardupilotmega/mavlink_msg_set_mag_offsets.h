@@ -42,6 +42,9 @@ typedef struct _fmav_set_mag_offsets_t {
 #define FASTMAVLINK_MSG_SET_MAG_OFFSETS_TARGET_SYSTEM_OFS  6
 #define FASTMAVLINK_MSG_SET_MAG_OFFSETS_TARGET_COMPONENT_OFS  7
 
+#define FASTMAVLINK_MSG_SET_MAG_OFFSETS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_SET_MAG_OFFSETS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_151_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_151_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message SET_MAG_OFFSETS packing routines, for sending
@@ -123,7 +126,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_mag_offsets_pack_to_frame_b
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_mag_offsets_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -136,6 +139,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_mag_offsets_encode_to_frame
         _payload->target_system, _payload->target_component, _payload->mag_ofs_x, _payload->mag_ofs_y, _payload->mag_ofs_z,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_mag_offsets_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component, int16_t mag_ofs_x, int16_t mag_ofs_y, int16_t mag_ofs_z,
+    fmav_status_t* _status)
+{
+    fmav_set_mag_offsets_t _payload;
+
+    _payload.mag_ofs_x = mag_ofs_x;
+    _payload.mag_ofs_y = mag_ofs_y;
+    _payload.mag_ofs_z = mag_ofs_z;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_SET_MAG_OFFSETS,
+        FASTMAVLINK_MSG_SET_MAG_OFFSETS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_SET_MAG_OFFSETS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_SET_MAG_OFFSETS_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_mag_offsets_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_set_mag_offsets_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_SET_MAG_OFFSETS,
+        FASTMAVLINK_MSG_SET_MAG_OFFSETS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_SET_MAG_OFFSETS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_SET_MAG_OFFSETS_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

@@ -41,6 +41,9 @@ typedef struct _fmav_flight_information_t {
 #define FASTMAVLINK_MSG_FLIGHT_INFORMATION_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_FLIGHT_INFORMATION_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_FLIGHT_INFORMATION_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_FLIGHT_INFORMATION_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_264_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_264_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message FLIGHT_INFORMATION packing routines, for sending
@@ -120,7 +123,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_flight_information_pack_to_fram
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_flight_information_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -133,6 +136,53 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_flight_information_encode_to_fr
         _payload->time_boot_ms, _payload->arming_time_utc, _payload->takeoff_time_utc, _payload->flight_uuid,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_flight_information_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint32_t time_boot_ms, uint64_t arming_time_utc, uint64_t takeoff_time_utc, uint64_t flight_uuid,
+    fmav_status_t* _status)
+{
+    fmav_flight_information_t _payload;
+
+    _payload.arming_time_utc = arming_time_utc;
+    _payload.takeoff_time_utc = takeoff_time_utc;
+    _payload.flight_uuid = flight_uuid;
+    _payload.time_boot_ms = time_boot_ms;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_FLIGHT_INFORMATION,
+        FASTMAVLINK_MSG_FLIGHT_INFORMATION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_FLIGHT_INFORMATION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_FLIGHT_INFORMATION_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_flight_information_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_flight_information_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_FLIGHT_INFORMATION,
+        FASTMAVLINK_MSG_FLIGHT_INFORMATION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_FLIGHT_INFORMATION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_FLIGHT_INFORMATION_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

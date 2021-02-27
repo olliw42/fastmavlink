@@ -40,6 +40,9 @@ typedef struct _fmav_actuator_control_target_t {
 #define FASTMAVLINK_MSG_ACTUATOR_CONTROL_TARGET_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ACTUATOR_CONTROL_TARGET_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_ACTUATOR_CONTROL_TARGET_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_140_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_140_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message ACTUATOR_CONTROL_TARGET packing routines, for sending
@@ -115,7 +118,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_actuator_control_target_pack_to
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_actuator_control_target_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -128,6 +131,51 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_actuator_control_target_encode_
         _payload->time_usec, _payload->group_mlx, _payload->controls,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_actuator_control_target_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t time_usec, uint8_t group_mlx, const float* controls,
+    fmav_status_t* _status)
+{
+    fmav_actuator_control_target_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.group_mlx = group_mlx;
+    memcpy(&(_payload.controls), controls, sizeof(float)*8);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET,
+        FASTMAVLINK_MSG_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ACTUATOR_CONTROL_TARGET_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_actuator_control_target_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_actuator_control_target_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET,
+        FASTMAVLINK_MSG_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ACTUATOR_CONTROL_TARGET_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

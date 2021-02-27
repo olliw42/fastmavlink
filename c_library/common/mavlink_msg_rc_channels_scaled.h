@@ -48,6 +48,9 @@ typedef struct _fmav_rc_channels_scaled_t {
 #define FASTMAVLINK_MSG_RC_CHANNELS_SCALED_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_RC_CHANNELS_SCALED_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_RC_CHANNELS_SCALED_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_RC_CHANNELS_SCALED_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_34_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_34_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message RC_CHANNELS_SCALED packing routines, for sending
@@ -141,7 +144,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_scaled_pack_to_fram
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_scaled_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -154,6 +157,60 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_scaled_encode_to_fr
         _payload->time_boot_ms, _payload->port, _payload->chan1_scaled, _payload->chan2_scaled, _payload->chan3_scaled, _payload->chan4_scaled, _payload->chan5_scaled, _payload->chan6_scaled, _payload->chan7_scaled, _payload->chan8_scaled, _payload->rssi,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_scaled_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint32_t time_boot_ms, uint8_t port, int16_t chan1_scaled, int16_t chan2_scaled, int16_t chan3_scaled, int16_t chan4_scaled, int16_t chan5_scaled, int16_t chan6_scaled, int16_t chan7_scaled, int16_t chan8_scaled, uint8_t rssi,
+    fmav_status_t* _status)
+{
+    fmav_rc_channels_scaled_t _payload;
+
+    _payload.time_boot_ms = time_boot_ms;
+    _payload.chan1_scaled = chan1_scaled;
+    _payload.chan2_scaled = chan2_scaled;
+    _payload.chan3_scaled = chan3_scaled;
+    _payload.chan4_scaled = chan4_scaled;
+    _payload.chan5_scaled = chan5_scaled;
+    _payload.chan6_scaled = chan6_scaled;
+    _payload.chan7_scaled = chan7_scaled;
+    _payload.chan8_scaled = chan8_scaled;
+    _payload.port = port;
+    _payload.rssi = rssi;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_RC_CHANNELS_SCALED,
+        FASTMAVLINK_MSG_RC_CHANNELS_SCALED_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_RC_CHANNELS_SCALED_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_RC_CHANNELS_SCALED_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_scaled_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_rc_channels_scaled_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_RC_CHANNELS_SCALED,
+        FASTMAVLINK_MSG_RC_CHANNELS_SCALED_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_RC_CHANNELS_SCALED_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_RC_CHANNELS_SCALED_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

@@ -46,6 +46,9 @@ typedef struct _fmav_wind_cov_t {
 #define FASTMAVLINK_MSG_WIND_COV_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_WIND_COV_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_WIND_COV_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_WIND_COV_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_231_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_231_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message WIND_COV packing routines, for sending
@@ -135,7 +138,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wind_cov_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wind_cov_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -148,6 +151,58 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wind_cov_encode_to_frame_buf(
         _payload->time_usec, _payload->wind_x, _payload->wind_y, _payload->wind_z, _payload->var_horiz, _payload->var_vert, _payload->wind_alt, _payload->horiz_accuracy, _payload->vert_accuracy,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wind_cov_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t time_usec, float wind_x, float wind_y, float wind_z, float var_horiz, float var_vert, float wind_alt, float horiz_accuracy, float vert_accuracy,
+    fmav_status_t* _status)
+{
+    fmav_wind_cov_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.wind_x = wind_x;
+    _payload.wind_y = wind_y;
+    _payload.wind_z = wind_z;
+    _payload.var_horiz = var_horiz;
+    _payload.var_vert = var_vert;
+    _payload.wind_alt = wind_alt;
+    _payload.horiz_accuracy = horiz_accuracy;
+    _payload.vert_accuracy = vert_accuracy;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_WIND_COV,
+        FASTMAVLINK_MSG_WIND_COV_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_WIND_COV_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_WIND_COV_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wind_cov_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_wind_cov_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_WIND_COV,
+        FASTMAVLINK_MSG_WIND_COV_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_WIND_COV_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_WIND_COV_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

@@ -44,6 +44,9 @@ typedef struct _fmav_manual_setpoint_t {
 #define FASTMAVLINK_MSG_MANUAL_SETPOINT_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_MANUAL_SETPOINT_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_MANUAL_SETPOINT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_MANUAL_SETPOINT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_81_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_81_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message MANUAL_SETPOINT packing routines, for sending
@@ -129,7 +132,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_setpoint_pack_to_frame_b
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_setpoint_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -142,6 +145,56 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_setpoint_encode_to_frame
         _payload->time_boot_ms, _payload->roll, _payload->pitch, _payload->yaw, _payload->thrust, _payload->mode_switch, _payload->manual_override_switch,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_setpoint_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint32_t time_boot_ms, float roll, float pitch, float yaw, float thrust, uint8_t mode_switch, uint8_t manual_override_switch,
+    fmav_status_t* _status)
+{
+    fmav_manual_setpoint_t _payload;
+
+    _payload.time_boot_ms = time_boot_ms;
+    _payload.roll = roll;
+    _payload.pitch = pitch;
+    _payload.yaw = yaw;
+    _payload.thrust = thrust;
+    _payload.mode_switch = mode_switch;
+    _payload.manual_override_switch = manual_override_switch;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_MANUAL_SETPOINT,
+        FASTMAVLINK_MSG_MANUAL_SETPOINT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_MANUAL_SETPOINT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_MANUAL_SETPOINT_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_setpoint_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_manual_setpoint_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_MANUAL_SETPOINT,
+        FASTMAVLINK_MSG_MANUAL_SETPOINT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_MANUAL_SETPOINT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_MANUAL_SETPOINT_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

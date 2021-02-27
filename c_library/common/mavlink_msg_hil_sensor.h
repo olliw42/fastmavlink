@@ -53,6 +53,9 @@ typedef struct _fmav_hil_sensor_t {
 #define FASTMAVLINK_MSG_HIL_SENSOR_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_HIL_SENSOR_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_HIL_SENSOR_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_HIL_SENSOR_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_107_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_107_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message HIL_SENSOR packing routines, for sending
@@ -156,7 +159,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_sensor_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_sensor_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -169,6 +172,65 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_sensor_encode_to_frame_buf(
         _payload->time_usec, _payload->xacc, _payload->yacc, _payload->zacc, _payload->xgyro, _payload->ygyro, _payload->zgyro, _payload->xmag, _payload->ymag, _payload->zmag, _payload->abs_pressure, _payload->diff_pressure, _payload->pressure_alt, _payload->temperature, _payload->fields_updated, _payload->id,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_sensor_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t time_usec, float xacc, float yacc, float zacc, float xgyro, float ygyro, float zgyro, float xmag, float ymag, float zmag, float abs_pressure, float diff_pressure, float pressure_alt, float temperature, uint32_t fields_updated, uint8_t id,
+    fmav_status_t* _status)
+{
+    fmav_hil_sensor_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.xacc = xacc;
+    _payload.yacc = yacc;
+    _payload.zacc = zacc;
+    _payload.xgyro = xgyro;
+    _payload.ygyro = ygyro;
+    _payload.zgyro = zgyro;
+    _payload.xmag = xmag;
+    _payload.ymag = ymag;
+    _payload.zmag = zmag;
+    _payload.abs_pressure = abs_pressure;
+    _payload.diff_pressure = diff_pressure;
+    _payload.pressure_alt = pressure_alt;
+    _payload.temperature = temperature;
+    _payload.fields_updated = fields_updated;
+    _payload.id = id;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_HIL_SENSOR,
+        FASTMAVLINK_MSG_HIL_SENSOR_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_HIL_SENSOR_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_HIL_SENSOR_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_sensor_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_hil_sensor_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_HIL_SENSOR,
+        FASTMAVLINK_MSG_HIL_SENSOR_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_HIL_SENSOR_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_HIL_SENSOR_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

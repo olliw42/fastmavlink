@@ -41,6 +41,9 @@ typedef struct _fmav_log_data_t {
 #define FASTMAVLINK_MSG_LOG_DATA_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_LOG_DATA_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_LOG_DATA_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_LOG_DATA_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_120_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_120_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message LOG_DATA packing routines, for sending
@@ -118,7 +121,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_data_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_data_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -131,6 +134,52 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_data_encode_to_frame_buf(
         _payload->id, _payload->ofs, _payload->count, _payload->data,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_data_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint16_t id, uint32_t ofs, uint8_t count, const uint8_t* data,
+    fmav_status_t* _status)
+{
+    fmav_log_data_t _payload;
+
+    _payload.ofs = ofs;
+    _payload.id = id;
+    _payload.count = count;
+    memcpy(&(_payload.data), data, sizeof(uint8_t)*90);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_LOG_DATA,
+        FASTMAVLINK_MSG_LOG_DATA_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_LOG_DATA_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_LOG_DATA_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_data_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_log_data_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_LOG_DATA,
+        FASTMAVLINK_MSG_LOG_DATA_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_LOG_DATA_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_LOG_DATA_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

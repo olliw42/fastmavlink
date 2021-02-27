@@ -52,6 +52,9 @@ typedef struct _fmav_battery_status_t {
 #define FASTMAVLINK_MSG_BATTERY_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_BATTERY_STATUS_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_BATTERY_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_BATTERY_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_147_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_147_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message BATTERY_STATUS packing routines, for sending
@@ -149,7 +152,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_battery_status_pack_to_frame_bu
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_battery_status_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -162,6 +165,62 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_battery_status_encode_to_frame_
         _payload->id, _payload->battery_function, _payload->type, _payload->temperature, _payload->voltages, _payload->current_battery, _payload->current_consumed, _payload->energy_consumed, _payload->battery_remaining, _payload->time_remaining, _payload->charge_state, _payload->voltages_ext, _payload->mode, _payload->fault_bitmask,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_battery_status_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t id, uint8_t battery_function, uint8_t type, int16_t temperature, const uint16_t* voltages, int16_t current_battery, int32_t current_consumed, int32_t energy_consumed, int8_t battery_remaining, int32_t time_remaining, uint8_t charge_state, const uint16_t* voltages_ext, uint8_t mode, uint32_t fault_bitmask,
+    fmav_status_t* _status)
+{
+    fmav_battery_status_t _payload;
+
+    _payload.current_consumed = current_consumed;
+    _payload.energy_consumed = energy_consumed;
+    _payload.temperature = temperature;
+    _payload.current_battery = current_battery;
+    _payload.id = id;
+    _payload.battery_function = battery_function;
+    _payload.type = type;
+    _payload.battery_remaining = battery_remaining;
+    _payload.time_remaining = time_remaining;
+    _payload.charge_state = charge_state;
+    _payload.mode = mode;
+    _payload.fault_bitmask = fault_bitmask;
+    memcpy(&(_payload.voltages), voltages, sizeof(uint16_t)*10);
+    memcpy(&(_payload.voltages_ext), voltages_ext, sizeof(uint16_t)*4);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_BATTERY_STATUS,
+        FASTMAVLINK_MSG_BATTERY_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_BATTERY_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_BATTERY_STATUS_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_battery_status_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_battery_status_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_BATTERY_STATUS,
+        FASTMAVLINK_MSG_BATTERY_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_BATTERY_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_BATTERY_STATUS_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

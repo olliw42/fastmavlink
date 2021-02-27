@@ -42,6 +42,9 @@ typedef struct _fmav_mount_orientation_t {
 #define FASTMAVLINK_MSG_MOUNT_ORIENTATION_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_MOUNT_ORIENTATION_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_MOUNT_ORIENTATION_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_MOUNT_ORIENTATION_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_265_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_265_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message MOUNT_ORIENTATION packing routines, for sending
@@ -123,7 +126,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_orientation_pack_to_frame
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_orientation_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -136,6 +139,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_orientation_encode_to_fra
         _payload->time_boot_ms, _payload->roll, _payload->pitch, _payload->yaw, _payload->yaw_absolute,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_orientation_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint32_t time_boot_ms, float roll, float pitch, float yaw, float yaw_absolute,
+    fmav_status_t* _status)
+{
+    fmav_mount_orientation_t _payload;
+
+    _payload.time_boot_ms = time_boot_ms;
+    _payload.roll = roll;
+    _payload.pitch = pitch;
+    _payload.yaw = yaw;
+    _payload.yaw_absolute = yaw_absolute;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_MOUNT_ORIENTATION,
+        FASTMAVLINK_MSG_MOUNT_ORIENTATION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_MOUNT_ORIENTATION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_MOUNT_ORIENTATION_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_orientation_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_mount_orientation_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_MOUNT_ORIENTATION,
+        FASTMAVLINK_MSG_MOUNT_ORIENTATION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_MOUNT_ORIENTATION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_MOUNT_ORIENTATION_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

@@ -49,6 +49,9 @@ typedef struct _fmav_gimbal_report_t {
 #define FASTMAVLINK_MSG_GIMBAL_REPORT_TARGET_SYSTEM_OFS  40
 #define FASTMAVLINK_MSG_GIMBAL_REPORT_TARGET_COMPONENT_OFS  41
 
+#define FASTMAVLINK_MSG_GIMBAL_REPORT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_200_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_200_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message GIMBAL_REPORT packing routines, for sending
@@ -144,7 +147,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_report_pack_to_frame_buf
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_report_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -157,6 +160,61 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_report_encode_to_frame_b
         _payload->target_system, _payload->target_component, _payload->delta_time, _payload->delta_angle_x, _payload->delta_angle_y, _payload->delta_angle_z, _payload->delta_velocity_x, _payload->delta_velocity_y, _payload->delta_velocity_z, _payload->joint_roll, _payload->joint_el, _payload->joint_az,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_report_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component, float delta_time, float delta_angle_x, float delta_angle_y, float delta_angle_z, float delta_velocity_x, float delta_velocity_y, float delta_velocity_z, float joint_roll, float joint_el, float joint_az,
+    fmav_status_t* _status)
+{
+    fmav_gimbal_report_t _payload;
+
+    _payload.delta_time = delta_time;
+    _payload.delta_angle_x = delta_angle_x;
+    _payload.delta_angle_y = delta_angle_y;
+    _payload.delta_angle_z = delta_angle_z;
+    _payload.delta_velocity_x = delta_velocity_x;
+    _payload.delta_velocity_y = delta_velocity_y;
+    _payload.delta_velocity_z = delta_velocity_z;
+    _payload.joint_roll = joint_roll;
+    _payload.joint_el = joint_el;
+    _payload.joint_az = joint_az;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_GIMBAL_REPORT,
+        FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_GIMBAL_REPORT_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_report_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_gimbal_report_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_GIMBAL_REPORT,
+        FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_GIMBAL_REPORT_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

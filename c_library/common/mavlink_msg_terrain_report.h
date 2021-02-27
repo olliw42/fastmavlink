@@ -44,6 +44,9 @@ typedef struct _fmav_terrain_report_t {
 #define FASTMAVLINK_MSG_TERRAIN_REPORT_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_TERRAIN_REPORT_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_TERRAIN_REPORT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_136_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_136_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message TERRAIN_REPORT packing routines, for sending
@@ -129,7 +132,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_report_pack_to_frame_bu
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_report_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -142,6 +145,56 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_report_encode_to_frame_
         _payload->lat, _payload->lon, _payload->spacing, _payload->terrain_height, _payload->current_height, _payload->pending, _payload->loaded,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_report_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    int32_t lat, int32_t lon, uint16_t spacing, float terrain_height, float current_height, uint16_t pending, uint16_t loaded,
+    fmav_status_t* _status)
+{
+    fmav_terrain_report_t _payload;
+
+    _payload.lat = lat;
+    _payload.lon = lon;
+    _payload.terrain_height = terrain_height;
+    _payload.current_height = current_height;
+    _payload.spacing = spacing;
+    _payload.pending = pending;
+    _payload.loaded = loaded;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_TERRAIN_REPORT,
+        FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_TERRAIN_REPORT_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_report_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_terrain_report_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_TERRAIN_REPORT,
+        FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_TERRAIN_REPORT_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

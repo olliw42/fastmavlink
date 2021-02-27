@@ -47,6 +47,9 @@ typedef struct _fmav_rally_point_t {
 #define FASTMAVLINK_MSG_RALLY_POINT_TARGET_SYSTEM_OFS  14
 #define FASTMAVLINK_MSG_RALLY_POINT_TARGET_COMPONENT_OFS  15
 
+#define FASTMAVLINK_MSG_RALLY_POINT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_RALLY_POINT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_175_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_175_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message RALLY_POINT packing routines, for sending
@@ -138,7 +141,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rally_point_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rally_point_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -151,6 +154,59 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rally_point_encode_to_frame_buf
         _payload->target_system, _payload->target_component, _payload->idx, _payload->count, _payload->lat, _payload->lng, _payload->alt, _payload->break_alt, _payload->land_dir, _payload->flags,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rally_point_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component, uint8_t idx, uint8_t count, int32_t lat, int32_t lng, int16_t alt, int16_t break_alt, uint16_t land_dir, uint8_t flags,
+    fmav_status_t* _status)
+{
+    fmav_rally_point_t _payload;
+
+    _payload.lat = lat;
+    _payload.lng = lng;
+    _payload.alt = alt;
+    _payload.break_alt = break_alt;
+    _payload.land_dir = land_dir;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+    _payload.idx = idx;
+    _payload.count = count;
+    _payload.flags = flags;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_RALLY_POINT,
+        FASTMAVLINK_MSG_RALLY_POINT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_RALLY_POINT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_RALLY_POINT_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rally_point_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_rally_point_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_RALLY_POINT,
+        FASTMAVLINK_MSG_RALLY_POINT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_RALLY_POINT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_RALLY_POINT_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

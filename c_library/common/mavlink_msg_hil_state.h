@@ -53,6 +53,9 @@ typedef struct _fmav_hil_state_t {
 #define FASTMAVLINK_MSG_HIL_STATE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_HIL_STATE_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_HIL_STATE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_HIL_STATE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_90_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_90_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message HIL_STATE packing routines, for sending
@@ -156,7 +159,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_state_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_state_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -169,6 +172,65 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_state_encode_to_frame_buf(
         _payload->time_usec, _payload->roll, _payload->pitch, _payload->yaw, _payload->rollspeed, _payload->pitchspeed, _payload->yawspeed, _payload->lat, _payload->lon, _payload->alt, _payload->vx, _payload->vy, _payload->vz, _payload->xacc, _payload->yacc, _payload->zacc,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_state_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t time_usec, float roll, float pitch, float yaw, float rollspeed, float pitchspeed, float yawspeed, int32_t lat, int32_t lon, int32_t alt, int16_t vx, int16_t vy, int16_t vz, int16_t xacc, int16_t yacc, int16_t zacc,
+    fmav_status_t* _status)
+{
+    fmav_hil_state_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.roll = roll;
+    _payload.pitch = pitch;
+    _payload.yaw = yaw;
+    _payload.rollspeed = rollspeed;
+    _payload.pitchspeed = pitchspeed;
+    _payload.yawspeed = yawspeed;
+    _payload.lat = lat;
+    _payload.lon = lon;
+    _payload.alt = alt;
+    _payload.vx = vx;
+    _payload.vy = vy;
+    _payload.vz = vz;
+    _payload.xacc = xacc;
+    _payload.yacc = yacc;
+    _payload.zacc = zacc;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_HIL_STATE,
+        FASTMAVLINK_MSG_HIL_STATE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_HIL_STATE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_HIL_STATE_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_state_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_hil_state_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_HIL_STATE,
+        FASTMAVLINK_MSG_HIL_STATE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_HIL_STATE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_HIL_STATE_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

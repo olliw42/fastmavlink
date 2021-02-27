@@ -47,6 +47,9 @@ typedef struct _fmav_digicam_control_t {
 #define FASTMAVLINK_MSG_DIGICAM_CONTROL_TARGET_SYSTEM_OFS  4
 #define FASTMAVLINK_MSG_DIGICAM_CONTROL_TARGET_COMPONENT_OFS  5
 
+#define FASTMAVLINK_MSG_DIGICAM_CONTROL_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_DIGICAM_CONTROL_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_155_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_155_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message DIGICAM_CONTROL packing routines, for sending
@@ -138,7 +141,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_digicam_control_pack_to_frame_b
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_digicam_control_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -151,6 +154,59 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_digicam_control_encode_to_frame
         _payload->target_system, _payload->target_component, _payload->session, _payload->zoom_pos, _payload->zoom_step, _payload->focus_lock, _payload->shot, _payload->command_id, _payload->extra_param, _payload->extra_value,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_digicam_control_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component, uint8_t session, uint8_t zoom_pos, int8_t zoom_step, uint8_t focus_lock, uint8_t shot, uint8_t command_id, uint8_t extra_param, float extra_value,
+    fmav_status_t* _status)
+{
+    fmav_digicam_control_t _payload;
+
+    _payload.extra_value = extra_value;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+    _payload.session = session;
+    _payload.zoom_pos = zoom_pos;
+    _payload.zoom_step = zoom_step;
+    _payload.focus_lock = focus_lock;
+    _payload.shot = shot;
+    _payload.command_id = command_id;
+    _payload.extra_param = extra_param;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_DIGICAM_CONTROL,
+        FASTMAVLINK_MSG_DIGICAM_CONTROL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_DIGICAM_CONTROL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_DIGICAM_CONTROL_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_digicam_control_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_digicam_control_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_DIGICAM_CONTROL,
+        FASTMAVLINK_MSG_DIGICAM_CONTROL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_DIGICAM_CONTROL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_DIGICAM_CONTROL_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

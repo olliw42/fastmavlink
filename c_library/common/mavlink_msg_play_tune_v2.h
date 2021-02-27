@@ -41,6 +41,9 @@ typedef struct _fmav_play_tune_v2_t {
 #define FASTMAVLINK_MSG_PLAY_TUNE_V2_TARGET_SYSTEM_OFS  4
 #define FASTMAVLINK_MSG_PLAY_TUNE_V2_TARGET_COMPONENT_OFS  5
 
+#define FASTMAVLINK_MSG_PLAY_TUNE_V2_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_PLAY_TUNE_V2_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_400_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_400_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message PLAY_TUNE_V2 packing routines, for sending
@@ -118,7 +121,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_play_tune_v2_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_play_tune_v2_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -131,6 +134,52 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_play_tune_v2_encode_to_frame_bu
         _payload->target_system, _payload->target_component, _payload->format, _payload->tune,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_play_tune_v2_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component, uint32_t format, const char* tune,
+    fmav_status_t* _status)
+{
+    fmav_play_tune_v2_t _payload;
+
+    _payload.format = format;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+    memcpy(&(_payload.tune), tune, sizeof(char)*248);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_PLAY_TUNE_V2,
+        FASTMAVLINK_MSG_PLAY_TUNE_V2_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_PLAY_TUNE_V2_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_PLAY_TUNE_V2_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_play_tune_v2_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_play_tune_v2_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_PLAY_TUNE_V2,
+        FASTMAVLINK_MSG_PLAY_TUNE_V2_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_PLAY_TUNE_V2_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_PLAY_TUNE_V2_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

@@ -41,6 +41,9 @@ typedef struct _fmav_camera_settings_t {
 #define FASTMAVLINK_MSG_CAMERA_SETTINGS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_CAMERA_SETTINGS_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_CAMERA_SETTINGS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_CAMERA_SETTINGS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_260_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_260_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message CAMERA_SETTINGS packing routines, for sending
@@ -120,7 +123,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_settings_pack_to_frame_b
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_settings_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -133,6 +136,53 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_settings_encode_to_frame
         _payload->time_boot_ms, _payload->mode_id, _payload->zoomLevel, _payload->focusLevel,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_settings_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint32_t time_boot_ms, uint8_t mode_id, float zoomLevel, float focusLevel,
+    fmav_status_t* _status)
+{
+    fmav_camera_settings_t _payload;
+
+    _payload.time_boot_ms = time_boot_ms;
+    _payload.mode_id = mode_id;
+    _payload.zoomLevel = zoomLevel;
+    _payload.focusLevel = focusLevel;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_CAMERA_SETTINGS,
+        FASTMAVLINK_MSG_CAMERA_SETTINGS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_CAMERA_SETTINGS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_CAMERA_SETTINGS_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_settings_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_camera_settings_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_CAMERA_SETTINGS,
+        FASTMAVLINK_MSG_CAMERA_SETTINGS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_CAMERA_SETTINGS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_CAMERA_SETTINGS_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

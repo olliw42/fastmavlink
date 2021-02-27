@@ -41,6 +41,9 @@ typedef struct _fmav_terrain_request_t {
 #define FASTMAVLINK_MSG_TERRAIN_REQUEST_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_TERRAIN_REQUEST_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_TERRAIN_REQUEST_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_TERRAIN_REQUEST_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_133_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_133_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message TERRAIN_REQUEST packing routines, for sending
@@ -120,7 +123,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_request_pack_to_frame_b
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_request_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -133,6 +136,53 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_request_encode_to_frame
         _payload->lat, _payload->lon, _payload->grid_spacing, _payload->mask,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_request_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    int32_t lat, int32_t lon, uint16_t grid_spacing, uint64_t mask,
+    fmav_status_t* _status)
+{
+    fmav_terrain_request_t _payload;
+
+    _payload.mask = mask;
+    _payload.lat = lat;
+    _payload.lon = lon;
+    _payload.grid_spacing = grid_spacing;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_TERRAIN_REQUEST,
+        FASTMAVLINK_MSG_TERRAIN_REQUEST_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_TERRAIN_REQUEST_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_TERRAIN_REQUEST_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_request_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_terrain_request_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_TERRAIN_REQUEST,
+        FASTMAVLINK_MSG_TERRAIN_REQUEST_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_TERRAIN_REQUEST_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_TERRAIN_REQUEST_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

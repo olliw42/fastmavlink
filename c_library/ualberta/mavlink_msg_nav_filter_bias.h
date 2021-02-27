@@ -44,6 +44,9 @@ typedef struct _fmav_nav_filter_bias_t {
 #define FASTMAVLINK_MSG_NAV_FILTER_BIAS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_NAV_FILTER_BIAS_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_NAV_FILTER_BIAS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_NAV_FILTER_BIAS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_220_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_220_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message NAV_FILTER_BIAS packing routines, for sending
@@ -129,7 +132,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_filter_bias_pack_to_frame_b
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_filter_bias_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -142,6 +145,56 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_filter_bias_encode_to_frame
         _payload->usec, _payload->accel_0, _payload->accel_1, _payload->accel_2, _payload->gyro_0, _payload->gyro_1, _payload->gyro_2,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_filter_bias_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t usec, float accel_0, float accel_1, float accel_2, float gyro_0, float gyro_1, float gyro_2,
+    fmav_status_t* _status)
+{
+    fmav_nav_filter_bias_t _payload;
+
+    _payload.usec = usec;
+    _payload.accel_0 = accel_0;
+    _payload.accel_1 = accel_1;
+    _payload.accel_2 = accel_2;
+    _payload.gyro_0 = gyro_0;
+    _payload.gyro_1 = gyro_1;
+    _payload.gyro_2 = gyro_2;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_NAV_FILTER_BIAS,
+        FASTMAVLINK_MSG_NAV_FILTER_BIAS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_NAV_FILTER_BIAS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_NAV_FILTER_BIAS_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_filter_bias_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_nav_filter_bias_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_NAV_FILTER_BIAS,
+        FASTMAVLINK_MSG_NAV_FILTER_BIAS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_NAV_FILTER_BIAS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_NAV_FILTER_BIAS_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

@@ -44,6 +44,9 @@ typedef struct _fmav_pid_tuning_t {
 #define FASTMAVLINK_MSG_PID_TUNING_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_PID_TUNING_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_PID_TUNING_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_PID_TUNING_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_194_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_194_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message PID_TUNING packing routines, for sending
@@ -129,7 +132,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_pid_tuning_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_pid_tuning_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -142,6 +145,56 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_pid_tuning_encode_to_frame_buf(
         _payload->axis, _payload->desired, _payload->achieved, _payload->FF, _payload->P, _payload->I, _payload->D,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_pid_tuning_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t axis, float desired, float achieved, float FF, float P, float I, float D,
+    fmav_status_t* _status)
+{
+    fmav_pid_tuning_t _payload;
+
+    _payload.desired = desired;
+    _payload.achieved = achieved;
+    _payload.FF = FF;
+    _payload.P = P;
+    _payload.I = I;
+    _payload.D = D;
+    _payload.axis = axis;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_PID_TUNING,
+        FASTMAVLINK_MSG_PID_TUNING_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_PID_TUNING_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_PID_TUNING_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_pid_tuning_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_pid_tuning_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_PID_TUNING,
+        FASTMAVLINK_MSG_PID_TUNING_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_PID_TUNING_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_PID_TUNING_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

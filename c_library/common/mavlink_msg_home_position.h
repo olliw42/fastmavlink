@@ -48,6 +48,9 @@ typedef struct _fmav_home_position_t {
 #define FASTMAVLINK_MSG_HOME_POSITION_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_HOME_POSITION_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_HOME_POSITION_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_HOME_POSITION_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_242_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_242_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message HOME_POSITION packing routines, for sending
@@ -139,7 +142,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_home_position_pack_to_frame_buf
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_home_position_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -152,6 +155,59 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_home_position_encode_to_frame_b
         _payload->latitude, _payload->longitude, _payload->altitude, _payload->x, _payload->y, _payload->z, _payload->q, _payload->approach_x, _payload->approach_y, _payload->approach_z, _payload->time_usec,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_home_position_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    int32_t latitude, int32_t longitude, int32_t altitude, float x, float y, float z, const float* q, float approach_x, float approach_y, float approach_z, uint64_t time_usec,
+    fmav_status_t* _status)
+{
+    fmav_home_position_t _payload;
+
+    _payload.latitude = latitude;
+    _payload.longitude = longitude;
+    _payload.altitude = altitude;
+    _payload.x = x;
+    _payload.y = y;
+    _payload.z = z;
+    _payload.approach_x = approach_x;
+    _payload.approach_y = approach_y;
+    _payload.approach_z = approach_z;
+    _payload.time_usec = time_usec;
+    memcpy(&(_payload.q), q, sizeof(float)*4);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_HOME_POSITION,
+        FASTMAVLINK_MSG_HOME_POSITION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_HOME_POSITION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_HOME_POSITION_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_home_position_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_home_position_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_HOME_POSITION,
+        FASTMAVLINK_MSG_HOME_POSITION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_HOME_POSITION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_HOME_POSITION_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

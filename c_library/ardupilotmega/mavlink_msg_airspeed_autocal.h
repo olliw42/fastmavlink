@@ -49,6 +49,9 @@ typedef struct _fmav_airspeed_autocal_t {
 #define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_174_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_174_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message AIRSPEED_AUTOCAL packing routines, for sending
@@ -144,7 +147,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_airspeed_autocal_pack_to_frame_
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_airspeed_autocal_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -157,6 +160,61 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_airspeed_autocal_encode_to_fram
         _payload->vx, _payload->vy, _payload->vz, _payload->diff_pressure, _payload->EAS2TAS, _payload->ratio, _payload->state_x, _payload->state_y, _payload->state_z, _payload->Pax, _payload->Pby, _payload->Pcz,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_airspeed_autocal_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    float vx, float vy, float vz, float diff_pressure, float EAS2TAS, float ratio, float state_x, float state_y, float state_z, float Pax, float Pby, float Pcz,
+    fmav_status_t* _status)
+{
+    fmav_airspeed_autocal_t _payload;
+
+    _payload.vx = vx;
+    _payload.vy = vy;
+    _payload.vz = vz;
+    _payload.diff_pressure = diff_pressure;
+    _payload.EAS2TAS = EAS2TAS;
+    _payload.ratio = ratio;
+    _payload.state_x = state_x;
+    _payload.state_y = state_y;
+    _payload.state_z = state_z;
+    _payload.Pax = Pax;
+    _payload.Pby = Pby;
+    _payload.Pcz = Pcz;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_AIRSPEED_AUTOCAL,
+        FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_airspeed_autocal_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_airspeed_autocal_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_AIRSPEED_AUTOCAL,
+        FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

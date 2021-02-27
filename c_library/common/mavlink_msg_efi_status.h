@@ -54,6 +54,9 @@ typedef struct _fmav_efi_status_t {
 #define FASTMAVLINK_MSG_EFI_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_EFI_STATUS_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_EFI_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_EFI_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_225_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_225_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message EFI_STATUS packing routines, for sending
@@ -159,7 +162,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_efi_status_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_efi_status_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -172,6 +175,66 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_efi_status_encode_to_frame_buf(
         _payload->health, _payload->ecu_index, _payload->rpm, _payload->fuel_consumed, _payload->fuel_flow, _payload->engine_load, _payload->throttle_position, _payload->spark_dwell_time, _payload->barometric_pressure, _payload->intake_manifold_pressure, _payload->intake_manifold_temperature, _payload->cylinder_head_temperature, _payload->ignition_timing, _payload->injection_time, _payload->exhaust_gas_temperature, _payload->throttle_out, _payload->pt_compensation,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_efi_status_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t health, float ecu_index, float rpm, float fuel_consumed, float fuel_flow, float engine_load, float throttle_position, float spark_dwell_time, float barometric_pressure, float intake_manifold_pressure, float intake_manifold_temperature, float cylinder_head_temperature, float ignition_timing, float injection_time, float exhaust_gas_temperature, float throttle_out, float pt_compensation,
+    fmav_status_t* _status)
+{
+    fmav_efi_status_t _payload;
+
+    _payload.ecu_index = ecu_index;
+    _payload.rpm = rpm;
+    _payload.fuel_consumed = fuel_consumed;
+    _payload.fuel_flow = fuel_flow;
+    _payload.engine_load = engine_load;
+    _payload.throttle_position = throttle_position;
+    _payload.spark_dwell_time = spark_dwell_time;
+    _payload.barometric_pressure = barometric_pressure;
+    _payload.intake_manifold_pressure = intake_manifold_pressure;
+    _payload.intake_manifold_temperature = intake_manifold_temperature;
+    _payload.cylinder_head_temperature = cylinder_head_temperature;
+    _payload.ignition_timing = ignition_timing;
+    _payload.injection_time = injection_time;
+    _payload.exhaust_gas_temperature = exhaust_gas_temperature;
+    _payload.throttle_out = throttle_out;
+    _payload.pt_compensation = pt_compensation;
+    _payload.health = health;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_EFI_STATUS,
+        FASTMAVLINK_MSG_EFI_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_EFI_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_EFI_STATUS_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_efi_status_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_efi_status_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_EFI_STATUS,
+        FASTMAVLINK_MSG_EFI_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_EFI_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_EFI_STATUS_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

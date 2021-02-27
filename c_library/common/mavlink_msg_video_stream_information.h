@@ -50,6 +50,9 @@ typedef struct _fmav_video_stream_information_t {
 #define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_269_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_269_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message VIDEO_STREAM_INFORMATION packing routines, for sending
@@ -143,7 +146,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_information_pack_t
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_information_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -156,6 +159,60 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_information_encode
         _payload->stream_id, _payload->count, _payload->type, _payload->flags, _payload->framerate, _payload->resolution_h, _payload->resolution_v, _payload->bitrate, _payload->rotation, _payload->hfov, _payload->name, _payload->uri,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_information_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t stream_id, uint8_t count, uint8_t type, uint16_t flags, float framerate, uint16_t resolution_h, uint16_t resolution_v, uint32_t bitrate, uint16_t rotation, uint16_t hfov, const char* name, const char* uri,
+    fmav_status_t* _status)
+{
+    fmav_video_stream_information_t _payload;
+
+    _payload.framerate = framerate;
+    _payload.bitrate = bitrate;
+    _payload.flags = flags;
+    _payload.resolution_h = resolution_h;
+    _payload.resolution_v = resolution_v;
+    _payload.rotation = rotation;
+    _payload.hfov = hfov;
+    _payload.stream_id = stream_id;
+    _payload.count = count;
+    _payload.type = type;
+    memcpy(&(_payload.name), name, sizeof(char)*32);
+    memcpy(&(_payload.uri), uri, sizeof(char)*160);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_VIDEO_STREAM_INFORMATION,
+        FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_information_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_video_stream_information_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_VIDEO_STREAM_INFORMATION,
+        FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

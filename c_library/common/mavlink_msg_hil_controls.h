@@ -48,6 +48,9 @@ typedef struct _fmav_hil_controls_t {
 #define FASTMAVLINK_MSG_HIL_CONTROLS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_HIL_CONTROLS_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_HIL_CONTROLS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_HIL_CONTROLS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_91_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_91_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message HIL_CONTROLS packing routines, for sending
@@ -141,7 +144,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_controls_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_controls_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -154,6 +157,60 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_controls_encode_to_frame_bu
         _payload->time_usec, _payload->roll_ailerons, _payload->pitch_elevator, _payload->yaw_rudder, _payload->throttle, _payload->aux1, _payload->aux2, _payload->aux3, _payload->aux4, _payload->mode, _payload->nav_mode,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_controls_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t time_usec, float roll_ailerons, float pitch_elevator, float yaw_rudder, float throttle, float aux1, float aux2, float aux3, float aux4, uint8_t mode, uint8_t nav_mode,
+    fmav_status_t* _status)
+{
+    fmav_hil_controls_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.roll_ailerons = roll_ailerons;
+    _payload.pitch_elevator = pitch_elevator;
+    _payload.yaw_rudder = yaw_rudder;
+    _payload.throttle = throttle;
+    _payload.aux1 = aux1;
+    _payload.aux2 = aux2;
+    _payload.aux3 = aux3;
+    _payload.aux4 = aux4;
+    _payload.mode = mode;
+    _payload.nav_mode = nav_mode;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_HIL_CONTROLS,
+        FASTMAVLINK_MSG_HIL_CONTROLS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_HIL_CONTROLS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_HIL_CONTROLS_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_controls_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_hil_controls_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_HIL_CONTROLS,
+        FASTMAVLINK_MSG_HIL_CONTROLS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_HIL_CONTROLS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_HIL_CONTROLS_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

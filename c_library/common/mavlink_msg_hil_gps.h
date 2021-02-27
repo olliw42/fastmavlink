@@ -52,6 +52,9 @@ typedef struct _fmav_hil_gps_t {
 #define FASTMAVLINK_MSG_HIL_GPS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_HIL_GPS_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_HIL_GPS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_HIL_GPS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_113_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_113_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message HIL_GPS packing routines, for sending
@@ -153,7 +156,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_gps_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_gps_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -166,6 +169,64 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_gps_encode_to_frame_buf(
         _payload->time_usec, _payload->fix_type, _payload->lat, _payload->lon, _payload->alt, _payload->eph, _payload->epv, _payload->vel, _payload->vn, _payload->ve, _payload->vd, _payload->cog, _payload->satellites_visible, _payload->id, _payload->yaw,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_gps_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t time_usec, uint8_t fix_type, int32_t lat, int32_t lon, int32_t alt, uint16_t eph, uint16_t epv, uint16_t vel, int16_t vn, int16_t ve, int16_t vd, uint16_t cog, uint8_t satellites_visible, uint8_t id, uint16_t yaw,
+    fmav_status_t* _status)
+{
+    fmav_hil_gps_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.lat = lat;
+    _payload.lon = lon;
+    _payload.alt = alt;
+    _payload.eph = eph;
+    _payload.epv = epv;
+    _payload.vel = vel;
+    _payload.vn = vn;
+    _payload.ve = ve;
+    _payload.vd = vd;
+    _payload.cog = cog;
+    _payload.fix_type = fix_type;
+    _payload.satellites_visible = satellites_visible;
+    _payload.id = id;
+    _payload.yaw = yaw;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_HIL_GPS,
+        FASTMAVLINK_MSG_HIL_GPS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_HIL_GPS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_HIL_GPS_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_gps_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_hil_gps_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_HIL_GPS,
+        FASTMAVLINK_MSG_HIL_GPS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_HIL_GPS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_HIL_GPS_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

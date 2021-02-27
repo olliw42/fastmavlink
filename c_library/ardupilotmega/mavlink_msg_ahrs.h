@@ -44,6 +44,9 @@ typedef struct _fmav_ahrs_t {
 #define FASTMAVLINK_MSG_AHRS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_AHRS_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_AHRS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_163_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_163_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message AHRS packing routines, for sending
@@ -129,7 +132,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -142,6 +145,56 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs_encode_to_frame_buf(
         _payload->omegaIx, _payload->omegaIy, _payload->omegaIz, _payload->accel_weight, _payload->renorm_val, _payload->error_rp, _payload->error_yaw,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    float omegaIx, float omegaIy, float omegaIz, float accel_weight, float renorm_val, float error_rp, float error_yaw,
+    fmav_status_t* _status)
+{
+    fmav_ahrs_t _payload;
+
+    _payload.omegaIx = omegaIx;
+    _payload.omegaIy = omegaIy;
+    _payload.omegaIz = omegaIz;
+    _payload.accel_weight = accel_weight;
+    _payload.renorm_val = renorm_val;
+    _payload.error_rp = error_rp;
+    _payload.error_yaw = error_yaw;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_AHRS,
+        FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_AHRS_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_ahrs_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_AHRS,
+        FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_AHRS_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

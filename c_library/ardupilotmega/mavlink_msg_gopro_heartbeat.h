@@ -40,6 +40,9 @@ typedef struct _fmav_gopro_heartbeat_t {
 #define FASTMAVLINK_MSG_GOPRO_HEARTBEAT_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_GOPRO_HEARTBEAT_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_GOPRO_HEARTBEAT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_GOPRO_HEARTBEAT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_215_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_215_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message GOPRO_HEARTBEAT packing routines, for sending
@@ -117,7 +120,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gopro_heartbeat_pack_to_frame_b
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gopro_heartbeat_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -130,6 +133,52 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gopro_heartbeat_encode_to_frame
         _payload->status, _payload->capture_mode, _payload->flags,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gopro_heartbeat_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t status, uint8_t capture_mode, uint8_t flags,
+    fmav_status_t* _status)
+{
+    fmav_gopro_heartbeat_t _payload;
+
+    _payload.status = status;
+    _payload.capture_mode = capture_mode;
+    _payload.flags = flags;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_GOPRO_HEARTBEAT,
+        FASTMAVLINK_MSG_GOPRO_HEARTBEAT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_GOPRO_HEARTBEAT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_GOPRO_HEARTBEAT_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gopro_heartbeat_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_gopro_heartbeat_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_GOPRO_HEARTBEAT,
+        FASTMAVLINK_MSG_GOPRO_HEARTBEAT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_GOPRO_HEARTBEAT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_GOPRO_HEARTBEAT_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

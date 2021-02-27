@@ -47,6 +47,9 @@ typedef struct _fmav_ahrs3_t {
 #define FASTMAVLINK_MSG_AHRS3_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_AHRS3_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_AHRS3_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_AHRS3_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_182_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_182_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message AHRS3 packing routines, for sending
@@ -138,7 +141,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs3_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs3_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -151,6 +154,59 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs3_encode_to_frame_buf(
         _payload->roll, _payload->pitch, _payload->yaw, _payload->altitude, _payload->lat, _payload->lng, _payload->v1, _payload->v2, _payload->v3, _payload->v4,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs3_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    float roll, float pitch, float yaw, float altitude, int32_t lat, int32_t lng, float v1, float v2, float v3, float v4,
+    fmav_status_t* _status)
+{
+    fmav_ahrs3_t _payload;
+
+    _payload.roll = roll;
+    _payload.pitch = pitch;
+    _payload.yaw = yaw;
+    _payload.altitude = altitude;
+    _payload.lat = lat;
+    _payload.lng = lng;
+    _payload.v1 = v1;
+    _payload.v2 = v2;
+    _payload.v3 = v3;
+    _payload.v4 = v4;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_AHRS3,
+        FASTMAVLINK_MSG_AHRS3_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_AHRS3_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_AHRS3_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs3_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_ahrs3_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_AHRS3,
+        FASTMAVLINK_MSG_AHRS3_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_AHRS3_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_AHRS3_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

@@ -42,6 +42,9 @@ typedef struct _fmav_mount_status_t {
 #define FASTMAVLINK_MSG_MOUNT_STATUS_TARGET_SYSTEM_OFS  12
 #define FASTMAVLINK_MSG_MOUNT_STATUS_TARGET_COMPONENT_OFS  13
 
+#define FASTMAVLINK_MSG_MOUNT_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_MOUNT_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_158_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_158_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message MOUNT_STATUS packing routines, for sending
@@ -123,7 +126,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_status_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_status_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -136,6 +139,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_status_encode_to_frame_bu
         _payload->target_system, _payload->target_component, _payload->pointing_a, _payload->pointing_b, _payload->pointing_c,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_status_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component, int32_t pointing_a, int32_t pointing_b, int32_t pointing_c,
+    fmav_status_t* _status)
+{
+    fmav_mount_status_t _payload;
+
+    _payload.pointing_a = pointing_a;
+    _payload.pointing_b = pointing_b;
+    _payload.pointing_c = pointing_c;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_MOUNT_STATUS,
+        FASTMAVLINK_MSG_MOUNT_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_MOUNT_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_MOUNT_STATUS_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_status_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_mount_status_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_MOUNT_STATUS,
+        FASTMAVLINK_MSG_MOUNT_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_MOUNT_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_MOUNT_STATUS_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

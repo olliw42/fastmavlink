@@ -50,6 +50,9 @@ typedef struct _fmav_gps2_rtk_t {
 #define FASTMAVLINK_MSG_GPS2_RTK_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_GPS2_RTK_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_GPS2_RTK_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_GPS2_RTK_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_128_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_128_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message GPS2_RTK packing routines, for sending
@@ -147,7 +150,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_rtk_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_rtk_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -160,6 +163,62 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_rtk_encode_to_frame_buf(
         _payload->time_last_baseline_ms, _payload->rtk_receiver_id, _payload->wn, _payload->tow, _payload->rtk_health, _payload->rtk_rate, _payload->nsats, _payload->baseline_coords_type, _payload->baseline_a_mm, _payload->baseline_b_mm, _payload->baseline_c_mm, _payload->accuracy, _payload->iar_num_hypotheses,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_rtk_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint32_t time_last_baseline_ms, uint8_t rtk_receiver_id, uint16_t wn, uint32_t tow, uint8_t rtk_health, uint8_t rtk_rate, uint8_t nsats, uint8_t baseline_coords_type, int32_t baseline_a_mm, int32_t baseline_b_mm, int32_t baseline_c_mm, uint32_t accuracy, int32_t iar_num_hypotheses,
+    fmav_status_t* _status)
+{
+    fmav_gps2_rtk_t _payload;
+
+    _payload.time_last_baseline_ms = time_last_baseline_ms;
+    _payload.tow = tow;
+    _payload.baseline_a_mm = baseline_a_mm;
+    _payload.baseline_b_mm = baseline_b_mm;
+    _payload.baseline_c_mm = baseline_c_mm;
+    _payload.accuracy = accuracy;
+    _payload.iar_num_hypotheses = iar_num_hypotheses;
+    _payload.wn = wn;
+    _payload.rtk_receiver_id = rtk_receiver_id;
+    _payload.rtk_health = rtk_health;
+    _payload.rtk_rate = rtk_rate;
+    _payload.nsats = nsats;
+    _payload.baseline_coords_type = baseline_coords_type;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_GPS2_RTK,
+        FASTMAVLINK_MSG_GPS2_RTK_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_GPS2_RTK_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_GPS2_RTK_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_rtk_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_gps2_rtk_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_GPS2_RTK,
+        FASTMAVLINK_MSG_GPS2_RTK_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_GPS2_RTK_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_GPS2_RTK_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

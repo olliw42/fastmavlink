@@ -48,6 +48,9 @@ typedef struct _fmav_esc_telemetry_5_to_8_t {
 #define FASTMAVLINK_MSG_ESC_TELEMETRY_5_TO_8_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ESC_TELEMETRY_5_TO_8_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_ESC_TELEMETRY_5_TO_8_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ESC_TELEMETRY_5_TO_8_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_11031_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_11031_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message ESC_TELEMETRY_5_TO_8 packing routines, for sending
@@ -131,7 +134,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_telemetry_5_to_8_pack_to_fr
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_telemetry_5_to_8_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -144,6 +147,55 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_telemetry_5_to_8_encode_to_
         _payload->temperature, _payload->voltage, _payload->current, _payload->totalcurrent, _payload->rpm, _payload->count,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_telemetry_5_to_8_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const uint8_t* temperature, const uint16_t* voltage, const uint16_t* current, const uint16_t* totalcurrent, const uint16_t* rpm, const uint16_t* count,
+    fmav_status_t* _status)
+{
+    fmav_esc_telemetry_5_to_8_t _payload;
+
+
+    memcpy(&(_payload.voltage), voltage, sizeof(uint16_t)*4);
+    memcpy(&(_payload.current), current, sizeof(uint16_t)*4);
+    memcpy(&(_payload.totalcurrent), totalcurrent, sizeof(uint16_t)*4);
+    memcpy(&(_payload.rpm), rpm, sizeof(uint16_t)*4);
+    memcpy(&(_payload.count), count, sizeof(uint16_t)*4);
+    memcpy(&(_payload.temperature), temperature, sizeof(uint8_t)*4);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_ESC_TELEMETRY_5_TO_8,
+        FASTMAVLINK_MSG_ESC_TELEMETRY_5_TO_8_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ESC_TELEMETRY_5_TO_8_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ESC_TELEMETRY_5_TO_8_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_telemetry_5_to_8_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_esc_telemetry_5_to_8_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_ESC_TELEMETRY_5_TO_8,
+        FASTMAVLINK_MSG_ESC_TELEMETRY_5_TO_8_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ESC_TELEMETRY_5_TO_8_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ESC_TELEMETRY_5_TO_8_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

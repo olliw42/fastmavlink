@@ -49,6 +49,9 @@ typedef struct _fmav_camera_image_captured_t {
 #define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_263_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_263_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message CAMERA_IMAGE_CAPTURED packing routines, for sending
@@ -140,7 +143,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_image_captured_pack_to_f
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_image_captured_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -153,6 +156,59 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_image_captured_encode_to
         _payload->time_boot_ms, _payload->time_utc, _payload->camera_id, _payload->lat, _payload->lon, _payload->alt, _payload->relative_alt, _payload->q, _payload->image_index, _payload->capture_result, _payload->file_url,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_image_captured_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint32_t time_boot_ms, uint64_t time_utc, uint8_t camera_id, int32_t lat, int32_t lon, int32_t alt, int32_t relative_alt, const float* q, int32_t image_index, int8_t capture_result, const char* file_url,
+    fmav_status_t* _status)
+{
+    fmav_camera_image_captured_t _payload;
+
+    _payload.time_utc = time_utc;
+    _payload.time_boot_ms = time_boot_ms;
+    _payload.lat = lat;
+    _payload.lon = lon;
+    _payload.alt = alt;
+    _payload.relative_alt = relative_alt;
+    _payload.image_index = image_index;
+    _payload.camera_id = camera_id;
+    _payload.capture_result = capture_result;
+    memcpy(&(_payload.q), q, sizeof(float)*4);
+    memcpy(&(_payload.file_url), file_url, sizeof(char)*205);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED,
+        FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_image_captured_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_camera_image_captured_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED,
+        FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

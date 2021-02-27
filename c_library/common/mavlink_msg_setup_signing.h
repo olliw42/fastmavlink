@@ -41,6 +41,9 @@ typedef struct _fmav_setup_signing_t {
 #define FASTMAVLINK_MSG_SETUP_SIGNING_TARGET_SYSTEM_OFS  8
 #define FASTMAVLINK_MSG_SETUP_SIGNING_TARGET_COMPONENT_OFS  9
 
+#define FASTMAVLINK_MSG_SETUP_SIGNING_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_SETUP_SIGNING_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_256_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_256_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message SETUP_SIGNING packing routines, for sending
@@ -118,7 +121,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_setup_signing_pack_to_frame_buf
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_setup_signing_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -131,6 +134,52 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_setup_signing_encode_to_frame_b
         _payload->target_system, _payload->target_component, _payload->secret_key, _payload->initial_timestamp,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_setup_signing_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component, const uint8_t* secret_key, uint64_t initial_timestamp,
+    fmav_status_t* _status)
+{
+    fmav_setup_signing_t _payload;
+
+    _payload.initial_timestamp = initial_timestamp;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+    memcpy(&(_payload.secret_key), secret_key, sizeof(uint8_t)*32);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_SETUP_SIGNING,
+        FASTMAVLINK_MSG_SETUP_SIGNING_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_SETUP_SIGNING_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_SETUP_SIGNING_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_setup_signing_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_setup_signing_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_SETUP_SIGNING,
+        FASTMAVLINK_MSG_SETUP_SIGNING_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_SETUP_SIGNING_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_SETUP_SIGNING_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

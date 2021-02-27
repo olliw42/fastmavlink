@@ -48,6 +48,9 @@ typedef struct _fmav_esc_info_t {
 #define FASTMAVLINK_MSG_ESC_INFO_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ESC_INFO_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_ESC_INFO_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ESC_INFO_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_290_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_290_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message ESC_INFO packing routines, for sending
@@ -135,7 +138,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_info_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_info_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -148,6 +151,57 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_info_encode_to_frame_buf(
         _payload->index, _payload->time_usec, _payload->counter, _payload->count, _payload->connection_type, _payload->info, _payload->failure_flags, _payload->error_count, _payload->temperature,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_info_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t index, uint64_t time_usec, uint16_t counter, uint8_t count, uint8_t connection_type, uint8_t info, const uint16_t* failure_flags, const uint32_t* error_count, const uint8_t* temperature,
+    fmav_status_t* _status)
+{
+    fmav_esc_info_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.counter = counter;
+    _payload.index = index;
+    _payload.count = count;
+    _payload.connection_type = connection_type;
+    _payload.info = info;
+    memcpy(&(_payload.error_count), error_count, sizeof(uint32_t)*4);
+    memcpy(&(_payload.failure_flags), failure_flags, sizeof(uint16_t)*4);
+    memcpy(&(_payload.temperature), temperature, sizeof(uint8_t)*4);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_ESC_INFO,
+        FASTMAVLINK_MSG_ESC_INFO_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ESC_INFO_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ESC_INFO_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_info_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_esc_info_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_ESC_INFO,
+        FASTMAVLINK_MSG_ESC_INFO_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ESC_INFO_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ESC_INFO_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

@@ -48,6 +48,9 @@ typedef struct _fmav_link_node_status_t {
 #define FASTMAVLINK_MSG_LINK_NODE_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_LINK_NODE_STATUS_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_LINK_NODE_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_LINK_NODE_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_8_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_8_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message LINK_NODE_STATUS packing routines, for sending
@@ -141,7 +144,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_link_node_status_pack_to_frame_
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_link_node_status_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -154,6 +157,60 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_link_node_status_encode_to_fram
         _payload->timestamp, _payload->tx_buf, _payload->rx_buf, _payload->tx_rate, _payload->rx_rate, _payload->rx_parse_err, _payload->tx_overflows, _payload->rx_overflows, _payload->messages_sent, _payload->messages_received, _payload->messages_lost,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_link_node_status_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t timestamp, uint8_t tx_buf, uint8_t rx_buf, uint32_t tx_rate, uint32_t rx_rate, uint16_t rx_parse_err, uint16_t tx_overflows, uint16_t rx_overflows, uint32_t messages_sent, uint32_t messages_received, uint32_t messages_lost,
+    fmav_status_t* _status)
+{
+    fmav_link_node_status_t _payload;
+
+    _payload.timestamp = timestamp;
+    _payload.tx_rate = tx_rate;
+    _payload.rx_rate = rx_rate;
+    _payload.messages_sent = messages_sent;
+    _payload.messages_received = messages_received;
+    _payload.messages_lost = messages_lost;
+    _payload.rx_parse_err = rx_parse_err;
+    _payload.tx_overflows = tx_overflows;
+    _payload.rx_overflows = rx_overflows;
+    _payload.tx_buf = tx_buf;
+    _payload.rx_buf = rx_buf;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_LINK_NODE_STATUS,
+        FASTMAVLINK_MSG_LINK_NODE_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_LINK_NODE_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_LINK_NODE_STATUS_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_link_node_status_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_link_node_status_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_LINK_NODE_STATUS,
+        FASTMAVLINK_MSG_LINK_NODE_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_LINK_NODE_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_LINK_NODE_STATUS_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

@@ -49,6 +49,9 @@ typedef struct _fmav_distance_sensor_t {
 #define FASTMAVLINK_MSG_DISTANCE_SENSOR_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_DISTANCE_SENSOR_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_DISTANCE_SENSOR_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_132_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_132_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message DISTANCE_SENSOR packing routines, for sending
@@ -142,7 +145,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_pack_to_frame_b
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -155,6 +158,60 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_encode_to_frame
         _payload->time_boot_ms, _payload->min_distance, _payload->max_distance, _payload->current_distance, _payload->type, _payload->id, _payload->orientation, _payload->covariance, _payload->horizontal_fov, _payload->vertical_fov, _payload->quaternion, _payload->signal_quality,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint32_t time_boot_ms, uint16_t min_distance, uint16_t max_distance, uint16_t current_distance, uint8_t type, uint8_t id, uint8_t orientation, uint8_t covariance, float horizontal_fov, float vertical_fov, const float* quaternion, uint8_t signal_quality,
+    fmav_status_t* _status)
+{
+    fmav_distance_sensor_t _payload;
+
+    _payload.time_boot_ms = time_boot_ms;
+    _payload.min_distance = min_distance;
+    _payload.max_distance = max_distance;
+    _payload.current_distance = current_distance;
+    _payload.type = type;
+    _payload.id = id;
+    _payload.orientation = orientation;
+    _payload.covariance = covariance;
+    _payload.horizontal_fov = horizontal_fov;
+    _payload.vertical_fov = vertical_fov;
+    _payload.signal_quality = signal_quality;
+    memcpy(&(_payload.quaternion), quaternion, sizeof(float)*4);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_DISTANCE_SENSOR,
+        FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_DISTANCE_SENSOR_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_distance_sensor_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_DISTANCE_SENSOR,
+        FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_DISTANCE_SENSOR_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

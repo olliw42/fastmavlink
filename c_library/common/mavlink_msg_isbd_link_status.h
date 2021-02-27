@@ -45,6 +45,9 @@ typedef struct _fmav_isbd_link_status_t {
 #define FASTMAVLINK_MSG_ISBD_LINK_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ISBD_LINK_STATUS_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_ISBD_LINK_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ISBD_LINK_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_335_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_335_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message ISBD_LINK_STATUS packing routines, for sending
@@ -132,7 +135,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_isbd_link_status_pack_to_frame_
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_isbd_link_status_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -145,6 +148,57 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_isbd_link_status_encode_to_fram
         _payload->timestamp, _payload->last_heartbeat, _payload->failed_sessions, _payload->successful_sessions, _payload->signal_quality, _payload->ring_pending, _payload->tx_session_pending, _payload->rx_session_pending,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_isbd_link_status_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t timestamp, uint64_t last_heartbeat, uint16_t failed_sessions, uint16_t successful_sessions, uint8_t signal_quality, uint8_t ring_pending, uint8_t tx_session_pending, uint8_t rx_session_pending,
+    fmav_status_t* _status)
+{
+    fmav_isbd_link_status_t _payload;
+
+    _payload.timestamp = timestamp;
+    _payload.last_heartbeat = last_heartbeat;
+    _payload.failed_sessions = failed_sessions;
+    _payload.successful_sessions = successful_sessions;
+    _payload.signal_quality = signal_quality;
+    _payload.ring_pending = ring_pending;
+    _payload.tx_session_pending = tx_session_pending;
+    _payload.rx_session_pending = rx_session_pending;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_ISBD_LINK_STATUS,
+        FASTMAVLINK_MSG_ISBD_LINK_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ISBD_LINK_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ISBD_LINK_STATUS_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_isbd_link_status_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_isbd_link_status_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_ISBD_LINK_STATUS,
+        FASTMAVLINK_MSG_ISBD_LINK_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_ISBD_LINK_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_ISBD_LINK_STATUS_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

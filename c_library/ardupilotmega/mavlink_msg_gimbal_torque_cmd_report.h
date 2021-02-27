@@ -42,6 +42,9 @@ typedef struct _fmav_gimbal_torque_cmd_report_t {
 #define FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_TARGET_SYSTEM_OFS  6
 #define FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_TARGET_COMPONENT_OFS  7
 
+#define FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_214_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_214_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message GIMBAL_TORQUE_CMD_REPORT packing routines, for sending
@@ -123,7 +126,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_torque_cmd_report_pack_t
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_torque_cmd_report_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -136,6 +139,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_torque_cmd_report_encode
         _payload->target_system, _payload->target_component, _payload->rl_torque_cmd, _payload->el_torque_cmd, _payload->az_torque_cmd,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_torque_cmd_report_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component, int16_t rl_torque_cmd, int16_t el_torque_cmd, int16_t az_torque_cmd,
+    fmav_status_t* _status)
+{
+    fmav_gimbal_torque_cmd_report_t _payload;
+
+    _payload.rl_torque_cmd = rl_torque_cmd;
+    _payload.el_torque_cmd = el_torque_cmd;
+    _payload.az_torque_cmd = az_torque_cmd;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_GIMBAL_TORQUE_CMD_REPORT,
+        FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_torque_cmd_report_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_gimbal_torque_cmd_report_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_GIMBAL_TORQUE_CMD_REPORT,
+        FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

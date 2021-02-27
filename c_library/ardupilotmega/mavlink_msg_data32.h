@@ -40,6 +40,9 @@ typedef struct _fmav_data32_t {
 #define FASTMAVLINK_MSG_DATA32_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_DATA32_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_DATA32_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_DATA32_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_170_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_170_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message DATA32 packing routines, for sending
@@ -115,7 +118,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data32_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data32_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -128,6 +131,51 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data32_encode_to_frame_buf(
         _payload->type, _payload->len, _payload->data,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data32_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t type, uint8_t len, const uint8_t* data,
+    fmav_status_t* _status)
+{
+    fmav_data32_t _payload;
+
+    _payload.type = type;
+    _payload.len = len;
+    memcpy(&(_payload.data), data, sizeof(uint8_t)*32);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_DATA32,
+        FASTMAVLINK_MSG_DATA32_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_DATA32_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_DATA32_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data32_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_data32_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_DATA32,
+        FASTMAVLINK_MSG_DATA32_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_DATA32_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_DATA32_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

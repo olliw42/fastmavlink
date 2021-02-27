@@ -43,6 +43,9 @@ typedef struct _fmav_led_control_t {
 #define FASTMAVLINK_MSG_LED_CONTROL_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_LED_CONTROL_TARGET_COMPONENT_OFS  1
 
+#define FASTMAVLINK_MSG_LED_CONTROL_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_LED_CONTROL_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_186_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_186_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message LED_CONTROL packing routines, for sending
@@ -124,7 +127,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_led_control_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_led_control_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -137,6 +140,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_led_control_encode_to_frame_buf
         _payload->target_system, _payload->target_component, _payload->instance, _payload->pattern, _payload->custom_len, _payload->custom_bytes,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_led_control_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component, uint8_t instance, uint8_t pattern, uint8_t custom_len, const uint8_t* custom_bytes,
+    fmav_status_t* _status)
+{
+    fmav_led_control_t _payload;
+
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+    _payload.instance = instance;
+    _payload.pattern = pattern;
+    _payload.custom_len = custom_len;
+    memcpy(&(_payload.custom_bytes), custom_bytes, sizeof(uint8_t)*24);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_LED_CONTROL,
+        FASTMAVLINK_MSG_LED_CONTROL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_LED_CONTROL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_LED_CONTROL_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_led_control_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_led_control_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_LED_CONTROL,
+        FASTMAVLINK_MSG_LED_CONTROL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_LED_CONTROL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_LED_CONTROL_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

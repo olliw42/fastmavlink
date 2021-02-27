@@ -61,6 +61,9 @@ typedef struct _fmav_high_latency_t {
 #define FASTMAVLINK_MSG_HIGH_LATENCY_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_HIGH_LATENCY_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_HIGH_LATENCY_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_HIGH_LATENCY_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_234_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_234_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message HIGH_LATENCY packing routines, for sending
@@ -180,7 +183,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -193,6 +196,73 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency_encode_to_frame_bu
         _payload->base_mode, _payload->custom_mode, _payload->landed_state, _payload->roll, _payload->pitch, _payload->heading, _payload->throttle, _payload->heading_sp, _payload->latitude, _payload->longitude, _payload->altitude_amsl, _payload->altitude_sp, _payload->airspeed, _payload->airspeed_sp, _payload->groundspeed, _payload->climb_rate, _payload->gps_nsat, _payload->gps_fix_type, _payload->battery_remaining, _payload->temperature, _payload->temperature_air, _payload->failsafe, _payload->wp_num, _payload->wp_distance,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t base_mode, uint32_t custom_mode, uint8_t landed_state, int16_t roll, int16_t pitch, uint16_t heading, int8_t throttle, int16_t heading_sp, int32_t latitude, int32_t longitude, int16_t altitude_amsl, int16_t altitude_sp, uint8_t airspeed, uint8_t airspeed_sp, uint8_t groundspeed, int8_t climb_rate, uint8_t gps_nsat, uint8_t gps_fix_type, uint8_t battery_remaining, int8_t temperature, int8_t temperature_air, uint8_t failsafe, uint8_t wp_num, uint16_t wp_distance,
+    fmav_status_t* _status)
+{
+    fmav_high_latency_t _payload;
+
+    _payload.custom_mode = custom_mode;
+    _payload.latitude = latitude;
+    _payload.longitude = longitude;
+    _payload.roll = roll;
+    _payload.pitch = pitch;
+    _payload.heading = heading;
+    _payload.heading_sp = heading_sp;
+    _payload.altitude_amsl = altitude_amsl;
+    _payload.altitude_sp = altitude_sp;
+    _payload.wp_distance = wp_distance;
+    _payload.base_mode = base_mode;
+    _payload.landed_state = landed_state;
+    _payload.throttle = throttle;
+    _payload.airspeed = airspeed;
+    _payload.airspeed_sp = airspeed_sp;
+    _payload.groundspeed = groundspeed;
+    _payload.climb_rate = climb_rate;
+    _payload.gps_nsat = gps_nsat;
+    _payload.gps_fix_type = gps_fix_type;
+    _payload.battery_remaining = battery_remaining;
+    _payload.temperature = temperature;
+    _payload.temperature_air = temperature_air;
+    _payload.failsafe = failsafe;
+    _payload.wp_num = wp_num;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_HIGH_LATENCY,
+        FASTMAVLINK_MSG_HIGH_LATENCY_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_HIGH_LATENCY_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_HIGH_LATENCY_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_high_latency_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_HIGH_LATENCY,
+        FASTMAVLINK_MSG_HIGH_LATENCY_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_HIGH_LATENCY_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_HIGH_LATENCY_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

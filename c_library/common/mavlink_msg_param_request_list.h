@@ -39,6 +39,9 @@ typedef struct _fmav_param_request_list_t {
 #define FASTMAVLINK_MSG_PARAM_REQUEST_LIST_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_PARAM_REQUEST_LIST_TARGET_COMPONENT_OFS  1
 
+#define FASTMAVLINK_MSG_PARAM_REQUEST_LIST_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_PARAM_REQUEST_LIST_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_21_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_21_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message PARAM_REQUEST_LIST packing routines, for sending
@@ -114,7 +117,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_request_list_pack_to_fram
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_request_list_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -127,6 +130,51 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_request_list_encode_to_fr
         _payload->target_system, _payload->target_component,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_request_list_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component,
+    fmav_status_t* _status)
+{
+    fmav_param_request_list_t _payload;
+
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_PARAM_REQUEST_LIST,
+        FASTMAVLINK_MSG_PARAM_REQUEST_LIST_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_PARAM_REQUEST_LIST_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_PARAM_REQUEST_LIST_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_request_list_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_param_request_list_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_PARAM_REQUEST_LIST,
+        FASTMAVLINK_MSG_PARAM_REQUEST_LIST_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_PARAM_REQUEST_LIST_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_PARAM_REQUEST_LIST_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

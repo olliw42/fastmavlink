@@ -48,6 +48,9 @@ typedef struct _fmav_scaled_imu3_t {
 #define FASTMAVLINK_MSG_SCALED_IMU3_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_SCALED_IMU3_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_SCALED_IMU3_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_SCALED_IMU3_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_129_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_129_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message SCALED_IMU3 packing routines, for sending
@@ -141,7 +144,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_scaled_imu3_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_scaled_imu3_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -154,6 +157,60 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_scaled_imu3_encode_to_frame_buf
         _payload->time_boot_ms, _payload->xacc, _payload->yacc, _payload->zacc, _payload->xgyro, _payload->ygyro, _payload->zgyro, _payload->xmag, _payload->ymag, _payload->zmag, _payload->temperature,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_scaled_imu3_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint32_t time_boot_ms, int16_t xacc, int16_t yacc, int16_t zacc, int16_t xgyro, int16_t ygyro, int16_t zgyro, int16_t xmag, int16_t ymag, int16_t zmag, int16_t temperature,
+    fmav_status_t* _status)
+{
+    fmav_scaled_imu3_t _payload;
+
+    _payload.time_boot_ms = time_boot_ms;
+    _payload.xacc = xacc;
+    _payload.yacc = yacc;
+    _payload.zacc = zacc;
+    _payload.xgyro = xgyro;
+    _payload.ygyro = ygyro;
+    _payload.zgyro = zgyro;
+    _payload.xmag = xmag;
+    _payload.ymag = ymag;
+    _payload.zmag = zmag;
+    _payload.temperature = temperature;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_SCALED_IMU3,
+        FASTMAVLINK_MSG_SCALED_IMU3_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_SCALED_IMU3_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_SCALED_IMU3_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_scaled_imu3_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_scaled_imu3_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_SCALED_IMU3,
+        FASTMAVLINK_MSG_SCALED_IMU3_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_SCALED_IMU3_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_SCALED_IMU3_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

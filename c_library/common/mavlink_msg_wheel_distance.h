@@ -40,6 +40,9 @@ typedef struct _fmav_wheel_distance_t {
 #define FASTMAVLINK_MSG_WHEEL_DISTANCE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_WHEEL_DISTANCE_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_WHEEL_DISTANCE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_WHEEL_DISTANCE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_9000_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_9000_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message WHEEL_DISTANCE packing routines, for sending
@@ -115,7 +118,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wheel_distance_pack_to_frame_bu
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wheel_distance_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -128,6 +131,51 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wheel_distance_encode_to_frame_
         _payload->time_usec, _payload->count, _payload->distance,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wheel_distance_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t time_usec, uint8_t count, const double* distance,
+    fmav_status_t* _status)
+{
+    fmav_wheel_distance_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.count = count;
+    memcpy(&(_payload.distance), distance, sizeof(double)*16);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_WHEEL_DISTANCE,
+        FASTMAVLINK_MSG_WHEEL_DISTANCE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_WHEEL_DISTANCE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_WHEEL_DISTANCE_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wheel_distance_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_wheel_distance_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_WHEEL_DISTANCE,
+        FASTMAVLINK_MSG_WHEEL_DISTANCE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_WHEEL_DISTANCE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_WHEEL_DISTANCE_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

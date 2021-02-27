@@ -49,6 +49,9 @@ typedef struct _fmav_hil_optical_flow_t {
 #define FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_114_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_114_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message HIL_OPTICAL_FLOW packing routines, for sending
@@ -144,7 +147,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_optical_flow_pack_to_frame_
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_optical_flow_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -157,6 +160,61 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_optical_flow_encode_to_fram
         _payload->time_usec, _payload->sensor_id, _payload->integration_time_us, _payload->integrated_x, _payload->integrated_y, _payload->integrated_xgyro, _payload->integrated_ygyro, _payload->integrated_zgyro, _payload->temperature, _payload->quality, _payload->time_delta_distance_us, _payload->distance,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_optical_flow_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t time_usec, uint8_t sensor_id, uint32_t integration_time_us, float integrated_x, float integrated_y, float integrated_xgyro, float integrated_ygyro, float integrated_zgyro, int16_t temperature, uint8_t quality, uint32_t time_delta_distance_us, float distance,
+    fmav_status_t* _status)
+{
+    fmav_hil_optical_flow_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.integration_time_us = integration_time_us;
+    _payload.integrated_x = integrated_x;
+    _payload.integrated_y = integrated_y;
+    _payload.integrated_xgyro = integrated_xgyro;
+    _payload.integrated_ygyro = integrated_ygyro;
+    _payload.integrated_zgyro = integrated_zgyro;
+    _payload.time_delta_distance_us = time_delta_distance_us;
+    _payload.distance = distance;
+    _payload.temperature = temperature;
+    _payload.sensor_id = sensor_id;
+    _payload.quality = quality;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_HIL_OPTICAL_FLOW,
+        FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_optical_flow_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_hil_optical_flow_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_HIL_OPTICAL_FLOW,
+        FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

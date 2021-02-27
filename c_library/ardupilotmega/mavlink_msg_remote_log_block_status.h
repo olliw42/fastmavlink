@@ -41,6 +41,9 @@ typedef struct _fmav_remote_log_block_status_t {
 #define FASTMAVLINK_MSG_REMOTE_LOG_BLOCK_STATUS_TARGET_SYSTEM_OFS  4
 #define FASTMAVLINK_MSG_REMOTE_LOG_BLOCK_STATUS_TARGET_COMPONENT_OFS  5
 
+#define FASTMAVLINK_MSG_REMOTE_LOG_BLOCK_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_REMOTE_LOG_BLOCK_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_185_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_185_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message REMOTE_LOG_BLOCK_STATUS packing routines, for sending
@@ -120,7 +123,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_remote_log_block_status_pack_to
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_remote_log_block_status_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -133,6 +136,53 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_remote_log_block_status_encode_
         _payload->target_system, _payload->target_component, _payload->seqno, _payload->status,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_remote_log_block_status_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component, uint32_t seqno, uint8_t status,
+    fmav_status_t* _status)
+{
+    fmav_remote_log_block_status_t _payload;
+
+    _payload.seqno = seqno;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+    _payload.status = status;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_REMOTE_LOG_BLOCK_STATUS,
+        FASTMAVLINK_MSG_REMOTE_LOG_BLOCK_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_REMOTE_LOG_BLOCK_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_REMOTE_LOG_BLOCK_STATUS_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_remote_log_block_status_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_remote_log_block_status_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_REMOTE_LOG_BLOCK_STATUS,
+        FASTMAVLINK_MSG_REMOTE_LOG_BLOCK_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_REMOTE_LOG_BLOCK_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_REMOTE_LOG_BLOCK_STATUS_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

@@ -48,6 +48,9 @@ typedef struct _fmav_storage_information_t {
 #define FASTMAVLINK_MSG_STORAGE_INFORMATION_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_STORAGE_INFORMATION_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_STORAGE_INFORMATION_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_STORAGE_INFORMATION_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_261_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_261_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message STORAGE_INFORMATION packing routines, for sending
@@ -139,7 +142,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storage_information_pack_to_fra
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storage_information_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -152,6 +155,59 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storage_information_encode_to_f
         _payload->time_boot_ms, _payload->storage_id, _payload->storage_count, _payload->status, _payload->total_capacity, _payload->used_capacity, _payload->available_capacity, _payload->read_speed, _payload->write_speed, _payload->type, _payload->name,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storage_information_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint32_t time_boot_ms, uint8_t storage_id, uint8_t storage_count, uint8_t status, float total_capacity, float used_capacity, float available_capacity, float read_speed, float write_speed, uint8_t type, const char* name,
+    fmav_status_t* _status)
+{
+    fmav_storage_information_t _payload;
+
+    _payload.time_boot_ms = time_boot_ms;
+    _payload.total_capacity = total_capacity;
+    _payload.used_capacity = used_capacity;
+    _payload.available_capacity = available_capacity;
+    _payload.read_speed = read_speed;
+    _payload.write_speed = write_speed;
+    _payload.storage_id = storage_id;
+    _payload.storage_count = storage_count;
+    _payload.status = status;
+    _payload.type = type;
+    memcpy(&(_payload.name), name, sizeof(char)*32);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_STORAGE_INFORMATION,
+        FASTMAVLINK_MSG_STORAGE_INFORMATION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_STORAGE_INFORMATION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_STORAGE_INFORMATION_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storage_information_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_storage_information_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_STORAGE_INFORMATION,
+        FASTMAVLINK_MSG_STORAGE_INFORMATION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_STORAGE_INFORMATION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_STORAGE_INFORMATION_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

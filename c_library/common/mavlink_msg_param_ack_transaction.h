@@ -43,6 +43,9 @@ typedef struct _fmav_param_ack_transaction_t {
 #define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_TARGET_SYSTEM_OFS  4
 #define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_TARGET_COMPONENT_OFS  5
 
+#define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_19_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_19_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message PARAM_ACK_TRANSACTION packing routines, for sending
@@ -124,7 +127,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ack_transaction_pack_to_f
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ack_transaction_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -137,6 +140,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ack_transaction_encode_to
         _payload->target_system, _payload->target_component, _payload->param_id, _payload->param_value, _payload->param_type, _payload->param_result,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ack_transaction_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t target_system, uint8_t target_component, const char* param_id, float param_value, uint8_t param_type, uint8_t param_result,
+    fmav_status_t* _status)
+{
+    fmav_param_ack_transaction_t _payload;
+
+    _payload.param_value = param_value;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+    _payload.param_type = param_type;
+    _payload.param_result = param_result;
+    memcpy(&(_payload.param_id), param_id, sizeof(char)*16);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_PARAM_ACK_TRANSACTION,
+        FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ack_transaction_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_param_ack_transaction_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_PARAM_ACK_TRANSACTION,
+        FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

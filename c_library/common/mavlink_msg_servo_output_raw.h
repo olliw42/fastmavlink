@@ -55,6 +55,9 @@ typedef struct _fmav_servo_output_raw_t {
 #define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_36_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_36_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message SERVO_OUTPUT_RAW packing routines, for sending
@@ -162,7 +165,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_servo_output_raw_pack_to_frame_
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_servo_output_raw_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -175,6 +178,67 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_servo_output_raw_encode_to_fram
         _payload->time_usec, _payload->port, _payload->servo1_raw, _payload->servo2_raw, _payload->servo3_raw, _payload->servo4_raw, _payload->servo5_raw, _payload->servo6_raw, _payload->servo7_raw, _payload->servo8_raw, _payload->servo9_raw, _payload->servo10_raw, _payload->servo11_raw, _payload->servo12_raw, _payload->servo13_raw, _payload->servo14_raw, _payload->servo15_raw, _payload->servo16_raw,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_servo_output_raw_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint32_t time_usec, uint8_t port, uint16_t servo1_raw, uint16_t servo2_raw, uint16_t servo3_raw, uint16_t servo4_raw, uint16_t servo5_raw, uint16_t servo6_raw, uint16_t servo7_raw, uint16_t servo8_raw, uint16_t servo9_raw, uint16_t servo10_raw, uint16_t servo11_raw, uint16_t servo12_raw, uint16_t servo13_raw, uint16_t servo14_raw, uint16_t servo15_raw, uint16_t servo16_raw,
+    fmav_status_t* _status)
+{
+    fmav_servo_output_raw_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.servo1_raw = servo1_raw;
+    _payload.servo2_raw = servo2_raw;
+    _payload.servo3_raw = servo3_raw;
+    _payload.servo4_raw = servo4_raw;
+    _payload.servo5_raw = servo5_raw;
+    _payload.servo6_raw = servo6_raw;
+    _payload.servo7_raw = servo7_raw;
+    _payload.servo8_raw = servo8_raw;
+    _payload.port = port;
+    _payload.servo9_raw = servo9_raw;
+    _payload.servo10_raw = servo10_raw;
+    _payload.servo11_raw = servo11_raw;
+    _payload.servo12_raw = servo12_raw;
+    _payload.servo13_raw = servo13_raw;
+    _payload.servo14_raw = servo14_raw;
+    _payload.servo15_raw = servo15_raw;
+    _payload.servo16_raw = servo16_raw;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_SERVO_OUTPUT_RAW,
+        FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_servo_output_raw_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_servo_output_raw_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_SERVO_OUTPUT_RAW,
+        FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

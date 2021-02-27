@@ -42,6 +42,9 @@ typedef struct _fmav_raw_pressure_t {
 #define FASTMAVLINK_MSG_RAW_PRESSURE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_RAW_PRESSURE_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_RAW_PRESSURE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_RAW_PRESSURE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_28_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_28_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message RAW_PRESSURE packing routines, for sending
@@ -123,7 +126,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_pressure_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_pressure_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -136,6 +139,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_pressure_encode_to_frame_bu
         _payload->time_usec, _payload->press_abs, _payload->press_diff1, _payload->press_diff2, _payload->temperature,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_pressure_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t time_usec, int16_t press_abs, int16_t press_diff1, int16_t press_diff2, int16_t temperature,
+    fmav_status_t* _status)
+{
+    fmav_raw_pressure_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.press_abs = press_abs;
+    _payload.press_diff1 = press_diff1;
+    _payload.press_diff2 = press_diff2;
+    _payload.temperature = temperature;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_RAW_PRESSURE,
+        FASTMAVLINK_MSG_RAW_PRESSURE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_RAW_PRESSURE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_RAW_PRESSURE_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_pressure_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_raw_pressure_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_RAW_PRESSURE,
+        FASTMAVLINK_MSG_RAW_PRESSURE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_RAW_PRESSURE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_RAW_PRESSURE_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

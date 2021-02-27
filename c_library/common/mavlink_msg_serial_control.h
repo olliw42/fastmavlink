@@ -43,6 +43,9 @@ typedef struct _fmav_serial_control_t {
 #define FASTMAVLINK_MSG_SERIAL_CONTROL_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_SERIAL_CONTROL_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_SERIAL_CONTROL_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_SERIAL_CONTROL_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_126_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_126_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message SERIAL_CONTROL packing routines, for sending
@@ -124,7 +127,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_serial_control_pack_to_frame_bu
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_serial_control_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -137,6 +140,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_serial_control_encode_to_frame_
         _payload->device, _payload->flags, _payload->timeout, _payload->baudrate, _payload->count, _payload->data,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_serial_control_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t device, uint8_t flags, uint16_t timeout, uint32_t baudrate, uint8_t count, const uint8_t* data,
+    fmav_status_t* _status)
+{
+    fmav_serial_control_t _payload;
+
+    _payload.baudrate = baudrate;
+    _payload.timeout = timeout;
+    _payload.device = device;
+    _payload.flags = flags;
+    _payload.count = count;
+    memcpy(&(_payload.data), data, sizeof(uint8_t)*70);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_SERIAL_CONTROL,
+        FASTMAVLINK_MSG_SERIAL_CONTROL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_SERIAL_CONTROL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_SERIAL_CONTROL_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_serial_control_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_serial_control_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_SERIAL_CONTROL,
+        FASTMAVLINK_MSG_SERIAL_CONTROL_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_SERIAL_CONTROL_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_SERIAL_CONTROL_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

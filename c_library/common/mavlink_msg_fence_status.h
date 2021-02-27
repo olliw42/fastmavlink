@@ -42,6 +42,9 @@ typedef struct _fmav_fence_status_t {
 #define FASTMAVLINK_MSG_FENCE_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_FENCE_STATUS_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_FENCE_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_FENCE_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_162_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_162_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message FENCE_STATUS packing routines, for sending
@@ -123,7 +126,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_fence_status_pack_to_frame_buf(
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_fence_status_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -136,6 +139,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_fence_status_encode_to_frame_bu
         _payload->breach_status, _payload->breach_count, _payload->breach_type, _payload->breach_time, _payload->breach_mitigation,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_fence_status_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint8_t breach_status, uint16_t breach_count, uint8_t breach_type, uint32_t breach_time, uint8_t breach_mitigation,
+    fmav_status_t* _status)
+{
+    fmav_fence_status_t _payload;
+
+    _payload.breach_time = breach_time;
+    _payload.breach_count = breach_count;
+    _payload.breach_status = breach_status;
+    _payload.breach_type = breach_type;
+    _payload.breach_mitigation = breach_mitigation;
+
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_FENCE_STATUS,
+        FASTMAVLINK_MSG_FENCE_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_FENCE_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_FENCE_STATUS_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_fence_status_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_fence_status_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_FENCE_STATUS,
+        FASTMAVLINK_MSG_FENCE_STATUS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_FENCE_STATUS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_FENCE_STATUS_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

@@ -41,6 +41,9 @@ typedef struct _fmav_hil_actuator_controls_t {
 #define FASTMAVLINK_MSG_HIL_ACTUATOR_CONTROLS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_HIL_ACTUATOR_CONTROLS_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_HIL_ACTUATOR_CONTROLS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_HIL_ACTUATOR_CONTROLS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_93_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_93_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message HIL_ACTUATOR_CONTROLS packing routines, for sending
@@ -118,7 +121,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_actuator_controls_pack_to_f
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_actuator_controls_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -131,6 +134,52 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_actuator_controls_encode_to
         _payload->time_usec, _payload->controls, _payload->mode, _payload->flags,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_actuator_controls_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t time_usec, const float* controls, uint8_t mode, uint64_t flags,
+    fmav_status_t* _status)
+{
+    fmav_hil_actuator_controls_t _payload;
+
+    _payload.time_usec = time_usec;
+    _payload.flags = flags;
+    _payload.mode = mode;
+    memcpy(&(_payload.controls), controls, sizeof(float)*16);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_HIL_ACTUATOR_CONTROLS,
+        FASTMAVLINK_MSG_HIL_ACTUATOR_CONTROLS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_HIL_ACTUATOR_CONTROLS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_HIL_ACTUATOR_CONTROLS_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_actuator_controls_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_hil_actuator_controls_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_HIL_ACTUATOR_CONTROLS,
+        FASTMAVLINK_MSG_HIL_ACTUATOR_CONTROLS_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_HIL_ACTUATOR_CONTROLS_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_HIL_ACTUATOR_CONTROLS_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------

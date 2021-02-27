@@ -43,6 +43,9 @@ typedef struct _fmav_vision_speed_estimate_t {
 #define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_TARGET_COMPONENT_OFS  0
 
+#define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_103_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_103_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message VISION_SPEED_ESTIMATE packing routines, for sending
@@ -124,7 +127,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_speed_estimate_pack_to_f
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_speed_estimate_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -137,6 +140,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_speed_estimate_encode_to
         _payload->usec, _payload->x, _payload->y, _payload->z, _payload->covariance, _payload->reset_counter,
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_speed_estimate_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    uint64_t usec, float x, float y, float z, const float* covariance, uint8_t reset_counter,
+    fmav_status_t* _status)
+{
+    fmav_vision_speed_estimate_t _payload;
+
+    _payload.usec = usec;
+    _payload.x = x;
+    _payload.y = y;
+    _payload.z = z;
+    _payload.reset_counter = reset_counter;
+    memcpy(&(_payload.covariance), covariance, sizeof(float)*9);
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_VISION_SPEED_ESTIMATE,
+        FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_speed_estimate_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_vision_speed_estimate_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_VISION_SPEED_ESTIMATE,
+        FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------
