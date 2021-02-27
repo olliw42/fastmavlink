@@ -25,11 +25,10 @@ extern "C" {
 //-- crc, min length, max length, flag, target sysid offset, target compid offset
 //------------------------------
 
+#include "icarous_msg_entries.h"
+
 #ifndef FASTMAVLINK_MESSAGE_CRCS
-#define FASTMAVLINK_MESSAGE_CRCS {\
-    {42000, 227, 1, 1, 0, 0, 0},\
-    {42001, 239, 46, 46, 0, 0, 0}\
-}
+#define FASTMAVLINK_MESSAGE_CRCS  FASTMAVLINK_MESSAGE_ENTRIES
 #endif
 
 

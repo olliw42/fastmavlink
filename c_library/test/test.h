@@ -25,10 +25,10 @@ extern "C" {
 //-- crc, min length, max length, flag, target sysid offset, target compid offset
 //------------------------------
 
+#include "test_msg_entries.h"
+
 #ifndef FASTMAVLINK_MESSAGE_CRCS
-#define FASTMAVLINK_MESSAGE_CRCS {\
-    {17000, 103, 179, 179, 0, 0, 0}\
-}
+#define FASTMAVLINK_MESSAGE_CRCS  FASTMAVLINK_MESSAGE_ENTRIES
 #endif
 
 
