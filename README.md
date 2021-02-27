@@ -62,7 +62,7 @@ This ensures a most fast parsing and a minimal effort (= CPU time) for forwardin
 In the following the discrete tasks shall be analyzed, as this should help much to understand the fabric of the fastMavlink library.
 
 
-### Reading/Parsing
+### Receiving/Parsing
 
 Overview of primitive tasks:
 
@@ -70,7 +70,7 @@ Overview of primitive tasks:
 |---|---|---|---|---|---|---|---|---|---|---|
 |Rx |->| buf |->| check |->| msg_t |->| payload_t |->| data |
 
-Reading/parsing can be disected into (up to) 6 discrete steps: 
+Receiving/parsing can be disected into (up to) 6 discrete steps: 
 
 The received byte (Rx) is parsed into a working buffer (buf), the information in which is then checked (check), and if good converted into a message structure (msg_t), which can be passed on to the message handler. The message handler typically will decode the payload into a payload structure (payload_t), in order to access the data in the individual message fields (data). Importantly, it is not necessary that each step is explicitely executed, and in fact this is usually not optimal. For instance, in simpler applications one may want to parse the received bytes (Rx) directly into a message structure (msg_t), i.e., do Rx -> msg_t, and this would reduce RAM footprint as the working buffer (buf) is then not needed.
 
@@ -149,23 +149,24 @@ The data in the message fields (data) is encoded into a payload structure (paylo
 
 
 #### fmav_msg_xxx_pack_to_frame_buf():
-1 -> 4, data  ->  buf
+1 -> 4, data ->  buf
 - located in mavlink_msg_xxx.h
 
 
 #### fmav_msg_xxx_encode_to_frame_buf():
-2 -> 4, payload_t   ->  buf
+2 -> 4, payload_t ->  buf
 - located in mavlink_msg_xxx.h
 
 
 #### fmav_msg_xxx_pack_to_serial():
-1 -> 5, data  ->  Tx
+1 -> 2 -> 5, data -> payload_t ->  Tx
 - user has to provide a function fmav_serial_write_char()
+- is not directly packing into the Tx buffer but is using payload_t on stack
 - located in mavlink_msg_xxx.h
 
 
 #### fmav_msg_xxx_encode_to_serial():
-2 -> 5, payload_t   ->  Tx
+2 -> 5, payload_t -> Tx
 - user has to provide a function fmav_serial_write_char()
 - located in mavlink_msg_xxx.h
 
