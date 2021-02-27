@@ -73,12 +73,36 @@ uint8_t blink = 0;
 // For this example, common.xml is a good choice for the dialect,
 // but choose whichever dialect you prefer.
 
+
+// We modify the FASTMAVLINK_MESSAGE_CRC array, which is used to extract meta data
+// for received frames via a binary search, such that it includes only the meta data
+// for those messages which we are interested in, and not all messages in the dialect.
+// This can save lots of flash and lots of CPU cycles since the search data base can
+// be much smaller. Note that only the messages which we are interested in to receive
+// needed to be added, the messages which we want to send are irrelevant here.
+// ATTENTION: The MSG_ENTRY tokens need to be added in sequence (from low to high msgid),
+// since otherwise the binary search will be screwed up.
+// Valid incoming messages which are not in this array, will be parsed with result 
+// PARSE_RESULT_MSGID_UNKNOWN.
+
+#include "c_library/common/mavlink_msg_entries.h"
+
+// We are interested here in only receiving the HEARTBEAT message.
+// In our example, which is extreme as we want to receive only one message, this saves
+// 2640 bytes of flash for the common.xml dialect, and lots of CPU cycles.
+
+#define FASTMAVLINK_MESSAGE_CRCS {\
+  FASTMAVLINK_MSG_ENTRY_HEARTBEAT,\
+}
+
+
 // The "..../common/common.h" is the way how fastMavlink wants it to be.
 // If you would do ".../common/mavlink.h" like you would for the pymavlink-mavgen
 // library, you would enable fastMavlink's pymavlink-mavgen mimicry. The code would
 // still work, but we want to do fastMavlink here :).
 
 #include "c_library/common/common.h"
+
 
 // Arduino IDE does some automatic changes to the code. This prevents it inserting
 // a function prototype in the wrong place.
