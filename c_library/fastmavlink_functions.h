@@ -177,6 +177,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_finalize_serial(
 
     return len + FASTMAVLINK_HEADER_V2_LEN + FASTMAVLINK_CHECKSUM_LEN;
 }
+
 #endif
 
 
@@ -644,6 +645,51 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_to_frame_buf(uint8_t* buf, fmav
 
     return pos;
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_to_serial(fmav_message_t* msg)
+{
+    uint16_t pos = 0;
+
+    fmav_serial_write_char(msg->magic);
+    fmav_serial_write_char(msg->len);
+    if (msg->magic == FASTMAVLINK_MAGIC_V2) {
+        fmav_serial_write_char(msg->incompat_flags);
+        fmav_serial_write_char(msg->compat_flags);
+        fmav_serial_write_char(msg->seq);
+        fmav_serial_write_char(msg->sysid);
+        fmav_serial_write_char(msg->compid);
+        fmav_serial_write_char(msg->msgid);
+        fmav_serial_write_char((msg->msgid) >> 8);
+        fmav_serial_write_char((msg->msgid) >> 16);
+        pos = 10;
+    } else {
+        msg->incompat_flags = 0; // should be already so, but play it safe
+        fmav_serial_write_char(msg->seq);
+        fmav_serial_write_char(msg->sysid);
+        fmav_serial_write_char(msg->compid);
+        fmav_serial_write_char(msg->msgid);
+        pos = 6;
+    }
+    for (uint16_t i = 0; i < msg->len; i++) {
+        fmav_serial_write_char(msg->payload[i]);
+    }
+    pos += msg->len;
+    fmav_serial_write_char(msg->checksum);
+    fmav_serial_write_char((msg->checksum) >> 8);
+    if (msg->incompat_flags & FASTMAVLINK_INCOMPAT_FLAGS_SIGNED) {
+        for (uint16_t i = 0; i < FASTMAVLINK_SIGNATURE_LEN; i++) {
+            fmav_serial_write_char(msg->signature_a[i]);
+        }
+        pos += FASTMAVLINK_SIGNATURE_LEN;
+    }
+
+    return pos;
+}
+
+#endif
 
 
 //------------------------------
