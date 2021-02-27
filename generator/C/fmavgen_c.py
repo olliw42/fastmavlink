@@ -28,7 +28,7 @@ def generateMessageEntriesHeaderFile(dialectdir, xml):
     F = open(os.path.join(basedir, FASTMAVLINK_C_TEMPLATE_DIR, "msg_entries_template.h"), mode='r')
     H = F.read()
     F.close()
-    F = open(os.path.join(dialectdir, FASTMAVLINK_MSG_PREFIX+"_msg_entries.h"), mode='w')
+    F = open(os.path.join(dialectdir, xml.basename+"_msg_entries.h"), mode='w')
     t.write(F, H, xml)
     F.close()
 

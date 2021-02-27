@@ -85,7 +85,7 @@ uint8_t blink = 0;
 // Valid incoming messages which are not in this array, will be parsed with result 
 // PARSE_RESULT_MSGID_UNKNOWN.
 
-#include "c_library/common/mavlink_msg_entries.h"
+#include "c_library/common/common_msg_entries.h"
 
 // We are interested here in only receiving the HEARTBEAT message.
 // In our example, which is extreme as we want to receive only one message, this saves
