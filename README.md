@@ -171,8 +171,10 @@ The data in the message fields (data) is encoded into a payload structure (paylo
 - located in mavlink_msg_xxx.h
 
 
-missing:
-- msg_t -> Tx
+#### fmav_msg_to_serial():
+3 -> 5, msg_t -> Tx
+- user has to provide a function fmav_serial_write_char()
+- located in fastmavlink_functions.h
 
 
 ## Pymavlink-mavgen Mimicry ##
