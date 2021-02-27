@@ -105,13 +105,13 @@ The received byte (Rx) is parsed into a working buffer (buf), the information in
 
 
 #### fmav_parse_and_check_to_frame_buf():
-1 -> 3, Rx -> check
+1 -> 2 -> 3, Rx -> buf -> check
 - wrapper to the first two steps
 - located in fastmavlink_functions.h
 
 
 #### fmav_parse_to_msg_wbuf():
-1 -> 4, Rx -> msg_t
+1 -> 2 -> 3 -> 4, Rx -> buf -> check -> msg_t
 - wrapper to the first three steps
 - located in fastmavlink_functions.h
 
