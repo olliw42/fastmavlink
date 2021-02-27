@@ -9,13 +9,13 @@ This is not achieved by some magic vodoo coding tricks, but simply by a careful 
 
 To give an example: In order to parse a message, determine if it is targeted at the application, and send a response out to the proper link, the pymavlink-mavgen library requires you to search three (3!) times for the target id pairs which correspond to the respective message id. The fastMavlink library only requires one search, and this is the minimum which is logically needed. Searching is a comparatively costly process, and avoiding unnecessary searches obviously relates to a boost in performance. 
 
-Some of the drawbacks of the pymavlink-mavgen library were listed and addressed in https://github.com/mavlink/mavlink/pull/1127, which can serve to further demonstrate the point. However, fastMavlink's C code is not simply an improved version of pymavlink-mavgen's, but pretty much a complete rewrite from scratch. It is therefore also clean, logically structured, and cruft were removed. It inherits some ideas however, such as the header-only design and organization into dialect subfolders, and code for few basic functions.
+Some of the drawbacks of the pymavlink-mavgen library were listed and addressed in [mavlink/#1127](https://github.com/mavlink/mavlink/pull/1127), which can serve to further demonstrate the point. However, fastMavlink's C code is not simply an improved version of pymavlink-mavgen's, but pretty much a complete rewrite from scratch. It is therefore also clean, logically structured, and cruft were removed. It inherits some ideas however, such as the header-only design and organization into dialect subfolders, and code for few basic functions.
 
 In addition, the fastMavlink C library provides features not provided otherwise but which are quite missed. For instance, it has optimized routines for use in MAVLink routers as well as a MAVLink router library. It offers a pymavlink-mavgen mimicry capability, which can make changing to fastMavlink easy.
 
 Lastly, the C code is generated using a Python generator from the MAVLink protocol XML definition files, as it is common with MAVLink. The code generator is based off pymavlink-mavgen's, but has been massively renovated, cleaned up, and more logically structured. It also provides new capabilities. For instance, it provides consistent code generation across included dialects, which removes the hickups possible with pymavlink-mavgen. It therefore is well prepared to provide the means for the upcoming MAVLink governance policy, such as message overwrite for development and testing.
 
-You don't believe this all this can be true, you think it must be exaggerated? Well, when please check it out and judge :)
+You don't believe all this can be true, you think it must be exaggerated? Well, when please check it out and judge :)
 
 The fastMavlink library is used in two projects of mine, the [STorM32 gimbal controller](http://www.olliw.eu/2013/storm32bgc/) and the [MAVLink for OpenTx](http://www.olliw.eu/2020/olliwtelem/) projects. So, it can claim some maturity. Yet, obviously, the software is offered as is with no explicit or implied warranty, and there is plenty of room to further improve, extend and advance it. Suggestions are welcome.
 
@@ -28,6 +28,23 @@ Yet to be determined. It will be a permissive licence, along the ideas of the or
 The parser can read MAVLink v1 and v2 messages, including the signing packet, and forward them, but it cannot decode signed messages.
 
 Messages can be generated and emitted only in MAVLink v2 format and without signature. (The limitation of only v2 messages could be easily removed, but, frankly, there should be really no need for that nowadays)
+
+
+## C Code Usage ##
+
+Please see the following chapter on the [C Code Architecture](#c-code-architecture) for a general description. 
+
+For examples please go to [examples](examples/).
+
+
+In order to use the dialect dialect.xml, include 
+
+```C
+#include "path_to_code_generator_output/dialect/dialect.h"
+```
+
+into your project. Note that it is not `".../dialect/mavlink.h"` as it would be for pymavlink-mavgen. If you do so with fastMAvlink, it would enable the [pymavlink-mavgen mimicry](#pymavlink-mavgen-mimicry).
+
 
 ## C Code Architecture ##
 
@@ -141,18 +158,17 @@ The data in the message fields (data) is encoded into a payload structure (paylo
 - located in mavlink_msg_xxx.h
 
 
-## C Code Usage ##
-
-In order to use the dialect dialect.xml, include 
-
-```#include "path_to_code_generator_output/dialect/dialect.h"```
+missing:
+- msg_t -> Tx
 
 
 ## Pymavlink-mavgen Mimicry ##
 
 The fastMavlink C code library includes function wrappers which mimic those of the pymavlink-mavgen library. This allows us to easily port to fastMavlink, with no or little effort in many cases. The mimicry is activated by including
 
-```#include "path_to_code_generator_output/dialect/mavlink.h"```
+```C
+#include "path_to_code_generator_output/dialect/mavlink.h"
+```
 
 instead of `".../dialect/dialect.h"`. This defines the token `FASTMAVLINK_PYMAVLINK_ENABLED`, which in turn enables the related code. The mimicry works as drop-in-replacement. That is, fastMavlink's enums, structures, and functions are actually used, but simply presented with a different look. Additional work for converting to fastMavlink will hence be typically required if fields of pymavlink-mavgen's status and message structures are directly used, since they may not be present in fastMavlink's structures.
 
