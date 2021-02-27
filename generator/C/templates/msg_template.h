@@ -40,6 +40,9 @@ ${{array_fields:#define FASTMAVLINK_MSG_${msg_name}_FIELD_${name_upper}_LEN  ${a
 #define FASTMAVLINK_MSG_${name}_TARGET_SYSTEM_OFS  ${target_system_ofs}
 #define FASTMAVLINK_MSG_${name}_TARGET_COMPONENT_OFS  ${target_component_ofs}
 
+#define FASTMAVLINK_MSG_${name}_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ID_${id}_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_${id}_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+
 
 //----------------------------------------
 //-- Message ${name} packing routines, for sending
