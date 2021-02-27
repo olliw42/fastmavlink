@@ -34,7 +34,7 @@ Messages can be generated and emitted only in MAVLink v2 format and without sign
 
 Please see the following chapter on the [C Code Architecture](#c-code-architecture) for a general description. 
 
-For examples please go to [examples](examples/).
+For examples please go to [Examples](examples/).
 
 
 In order to use the dialect dialect.xml, include 
