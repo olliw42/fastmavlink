@@ -144,6 +144,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_finalize_frame_buf(
 }
 
 
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_finalize_serial(
+    uint8_t sysid, uint8_t compid, uint8_t* payload,
+    uint32_t msgid, uint16_t len_min, uint16_t len_max, uint8_t crc_extra, fmav_status_t* status)
+{
+    uint16_t len = fmav_payload_len_wo_trailing_zeros(payload, len_max);
+    uint16_t crc;
+    fmav_crc_init(&crc);
+
+    fmav_serial_write_char(FASTMAVLINK_MAGIC_V2);
+    fmav_serial_write_char(len);  fmav_crc_accumulate(&crc, len);
+    fmav_serial_write_char(0);  fmav_crc_accumulate(&crc, 0);
+    fmav_serial_write_char(0);  fmav_crc_accumulate(&crc, 0);
+    fmav_serial_write_char(status->tx_seq);  fmav_crc_accumulate(&crc, status->tx_seq);
+    status->tx_seq++;
+    fmav_serial_write_char(sysid);  fmav_crc_accumulate(&crc, sysid);
+    fmav_serial_write_char(compid);  fmav_crc_accumulate(&crc, compid);
+    fmav_serial_write_char(msgid);  fmav_crc_accumulate(&crc, msgid);
+    fmav_serial_write_char(msgid >> 8);  fmav_crc_accumulate(&crc, msgid >> 8);
+    fmav_serial_write_char(msgid >> 16);  fmav_crc_accumulate(&crc, msgid >> 16);
+
+    for(uint16_t i = 0; i < len; i++) {
+        fmav_serial_write_char(payload[i]);  fmav_crc_accumulate(&crc, payload[i]);
+    }
+
+    fmav_crc_accumulate(&crc, crc_extra);
+
+    fmav_serial_write_char(crc);
+    fmav_serial_write_char(crc >> 8);
+
+    return len + FASTMAVLINK_HEADER_V2_LEN + FASTMAVLINK_CHECKSUM_LEN;
+}
+#endif
+
+
 // returns MSGID_UNKNOWN, LENGTH_ERROR, CRC_ERROR, SIGNATURE_ERROR, or OK
 // the checks are only possible if msgid is known, else we need to assume broadcast
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_check_msg(fmav_message_t* msg, fmav_status_t* status)

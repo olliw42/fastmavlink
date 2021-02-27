@@ -117,7 +117,7 @@ ${{array_fields:    memcpy(&(_payload->${name}), ${name}, sizeof(${type})*${arra
         _status);
 }
 
-    
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_${name_lower}_encode_to_frame_buf(
     uint8_t* buf,
     uint8_t sysid,
@@ -130,6 +130,52 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_${name_lower}_encode_to_frame_b
         ${{arg_fields:_payload->${name}, }},
         _status);
 }
+
+
+#ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_${name_lower}_pack_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    ${{arg_fields:${array_const}${type}${array_prefix} ${name}, }},
+    fmav_status_t* _status)
+{
+    fmav_${name_lower}_t _payload;
+
+${{scalar_fields:    _payload.${name} = ${name_for_setting_payload};
+}}
+${{array_fields:    memcpy(&(_payload.${name}), ${name}, sizeof(${type})*${array_length});
+}}
+
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)&_payload,
+        FASTMAVLINK_MSG_ID_${name},
+        FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_${name}_CRCEXTRA,
+        _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_${name_lower}_encode_to_serial(
+    uint8_t sysid,
+    uint8_t compid,
+    const fmav_${name_lower}_t* _payload,
+    fmav_status_t* _status)
+{
+    return fmav_finalize_serial(
+        sysid,
+        compid,
+        (uint8_t*)_payload,
+        FASTMAVLINK_MSG_ID_${name},
+        FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MIN,
+        FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MAX,
+        FASTMAVLINK_MSG_${name}_CRCEXTRA,
+        _status);
+}
+#endif
 
 
 //----------------------------------------
