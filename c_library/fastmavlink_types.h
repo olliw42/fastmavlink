@@ -132,18 +132,25 @@ typedef struct _fmav_status {
 FASTMAVLINK_PACK(
 typedef struct _fmav_param_union {
     union {
-        float p_float; // not a type for PARAM, type = 9 = PARAM_EXT_TYPE_REAL32
-        int32_t p_int32; // type = 6 = PARAM_TYPE_INT32
-        uint32_t p_uint32; // type = 5 = PARAM_TYPE_UINT32
-        int16_t p_int16; // type = 4 = PARAM_TYPE_INT16
-        uint16_t p_uint16; // type = 3 = PARAM_TYPE_UINT16
-        int8_t p_int8; // type = 2 = PARAM_TYPE_INT8
-        uint8_t p_uint8; // type = 1 = PARAM_TYPE_UINT8
-        char p_char;
+        float p_float; // type = 9 = MAV_PARAM_TYPE_REAL32 = MAV_PARAM_EXT_TYPE_REAL32
+        int32_t p_int32; // type = 6 = MAV_PARAM_TYPE_INT32 = MAV_PARAM_EXT_TYPE_INT32
+        uint32_t p_uint32; // type = 5 = MAV_PARAM_TYPE_UINT32 = MAV_PARAM_EXT_TYPE_UINT32
+        int16_t p_int16; // type = 4 = MAV_PARAM_TYPE_INT16 = MAV_PARAM_EXT_TYPE_INT16
+        uint16_t p_uint16; // type = 3 = MAV_PARAM_TYPE_UINT16 = MAV_PARAM_EXT_TYPE_UINT16
+        int8_t p_int8; // type = 2 = MAV_PARAM_TYPE_INT8 = MAV_PARAM_EXT_TYPE_INT8
+        uint8_t p_uint8; // type = 1 = MAV_PARAM_TYPE_UINT8 = MAV_PARAM_EXT_TYPE_UINT8
         uint8_t a[4];
     };
     uint8_t type;
 }) fmav_param_union_t;
+
+
+// for the sake of convenience
+typedef struct _fmav_param_entry {
+    void* ptr;
+    uint8_t type;
+    const char* name;
+} fmav_param_entry_t;
 
 
 #endif // FASTMAVLINK_TYPES_H
