@@ -37,23 +37,36 @@ This is the simplest and probably most typical type of application. It consists 
 Go to [One Link - One Component](one-link-one-component/).
 
 
+## Parameters ##
+
+This example builds on the [One Link - One Component](/examples/one-link-one-component) example and adds parameters to the component, using the tool box provided by `fastmavlink_parameters.h`. 
+
+Go to [Parameters](parameters/).
+
+
 ## Several Links - No Component: MAVLink Router ##
 
 A MAVLink router is a device with several serial ports, which connect to the MAVLink network. It essentially plays the same role as routers do for Ethernet networks, i.e., forwards incoming messages on one link to the other links. It is not a MAVLink component itself. An example would be a device with a serial port connected to a telemetry unit such as 3DR radios or DragonLink, a bluetooth or wifi port to connect wirelessly, and a USB port to connect to a PC. This needs a 3-link router in order to establish communication between the ports. 
 
 This is not the most typical use case for the fastMavlink library, even though fastMavlink is very well suited for it. The example's major intention is to prepare the stage for the next example.
 
+Explore the next example, [Several Links - One Component](#several-links---one-component-component-with-routing-capabilities), it provides sufficient information and code examples to easily realize this.
 
 ## Several Links - One Component: Component with Routing Capabilities ##
 
 This is a component with several serial ports, which all sould be connectable to the MAVLink network. An example would be an autopilot like ArduPilot or PX4 flight controllers. The autopilot is a MAVLink component, which allows us to configure several serial ports for MAVLink. Another example would be an OpenTx transmitter loaded with firmware of the [MAVLink for OpenTx](http://www.olliw.eu/2020/olliwtelem/) project.
+
+Go to [Several Links - One Component](several-links-one-component/).
 
 
 ## One Link - Several Components ##
 
 In this application a physical device with only one serial port implements two or more distinct MAVLink components. That is the communication with the device's components all goes via one and the same serial port. An example would be the [STorM32 gimbal controller](http://www.olliw.eu/storm32bgc-wiki/MAVLink_Communication), which implements both a Gimbal component and a Camera component.
 
+TBD
 
 ## Code Generation ##
 
 It is shown how to use the Python GUI interface to generate code, as well as a Python script is suggested which allows one to conveniently generate the code, also for home-grown dialects.
+
+TBD

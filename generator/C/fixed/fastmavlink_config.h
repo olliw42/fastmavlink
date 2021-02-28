@@ -8,11 +8,6 @@
 #define FASTMAVLINK_CONFIG_H
 
 
-#ifndef FASTMAVLINK_CHANNEL_NUM
-  #define FASTMAVLINK_CHANNEL_NUM   0
-#endif
-
-
 #ifndef FASTMAVLINK_RAM_SECTION
   #define FASTMAVLINK_RAM_SECTION  static
 #endif

@@ -4,7 +4,7 @@
 //------------------------------
 // API:
 //
-// requires that these are defined intehoutside:
+// requires that these are defined in the outside:
 //   FASTMAVLINK_ROUTER_LINKS_MAX
 //   FASTMAVLINK_ROUTER_COMPONENTS_MAX
 //
@@ -25,6 +25,13 @@
 #pragma once
 #ifndef FASTMAVLINK_ROUTER_H
 #define FASTMAVLINK_ROUTER_H
+
+#ifndef FASTMAVLINK_ROUTER_COMPONENTS_MAX
+#error For fastmavlink_router.h, FASTMAVLINK_ROUTER_COMPONENTS_MAX needs to be defined
+#endif
+#ifndef FASTMAVLINK_ROUTER_LINKS_MAX
+#error For fastmavlink_router.h, FASTMAVLINK_ROUTER_LINKS_MAX needs to be defined
+#endif
 
 #ifdef __cplusplus
 extern "C" {

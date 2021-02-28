@@ -27,7 +27,7 @@ Yet to be determined. It will be a permissive licence, along the ideas of the or
 
 The parser can read MAVLink v1 and v2 messages, including the signing packet, and forward them, but it cannot decode signed messages.
 
-Messages can be generated and emitted only in MAVLink v2 format and without signature. (The limitation of only v2 messages could be easily removed, but, frankly, there should be really no need for wanting to sending v1 messages nowadays)
+Messages can be generated and emitted only in MAVLink v2 format and without signature. (It would be easy to extend the library to allow sending v1 messages, removing this limitation, but, frankly, there should be really no need for sending v1 messages nowadays)
 
 
 ## C Code Usage ##
