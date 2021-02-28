@@ -217,7 +217,7 @@ void spinOnce(void)
 
 See the Arduino sketch [arduino_one_link_one_component_elementary.ino](arduino_one_link_one_component_elementary.ino) for this implementation.
 
-The example is interesting as it shows in detail each and every single step which is involved, and might be helpful for approaching more complicated applications. For the given purpose it is however only of educational purpose, since the implementation can be significantly improved in several places:
+The example is interesting as it shows in detail each and every single step which is involved, and might be helpful for approaching more complicated applications. For the given purpose it is however only of educational value, since the implementation can be significantly improved in several places:
 
 
 - Instead of `fmav_parse_to_frame_buf()` and `fmav_check_frame_buf()` we could use the higher-level function `fmav_parse_and_check_to_frame_buf()`, which does the same. This code part would then much simplify and become

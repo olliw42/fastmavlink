@@ -43,7 +43,7 @@ In order to use the dialect dialect.xml, include
 #include "path_to_code_generator_output/dialect/dialect.h"
 ```
 
-into your project. Note that it is not `".../dialect/mavlink.h"` as it would be for pymavlink-mavgen. If you do so with fastMAvlink, it would enable the [pymavlink-mavgen mimicry](#pymavlink-mavgen-mimicry).
+into your project. Note that it is not `".../dialect/mavlink.h"` as it would be for pymavlink-mavgen. If you do so with fastMavlink, it would enable the [pymavlink-mavgen mimicry](#pymavlink-mavgen-mimicry).
 
 
 ## C Code Architecture ##
