@@ -22,26 +22,22 @@ ${{ordered_fields:    ${type} ${name}${array_suffix};
 
 #define FASTMAVLINK_MSG_ID_${name}  ${id}
 
-
 #define FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MIN  ${payload_min_length}
-#define FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MAX  ${payload_length}
-#define FASTMAVLINK_MSG_${name}_PAYLOAD_LEN  ${payload_length}
+#define FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MAX  ${payload_max_length}
 #define FASTMAVLINK_MSG_${name}_CRCEXTRA  ${crc_extra}
-
-#define FASTMAVLINK_MSG_ID_${id}_LEN_MIN  ${payload_min_length}
-#define FASTMAVLINK_MSG_ID_${id}_LEN_MAX  ${payload_length}
-#define FASTMAVLINK_MSG_ID_${id}_LEN  ${payload_length}
-#define FASTMAVLINK_MSG_ID_${id}_CRCEXTRA  ${crc_extra}
-
-${{array_fields:#define FASTMAVLINK_MSG_${msg_name}_FIELD_${name_upper}_LEN  ${array_length}
-}}
 
 #define FASTMAVLINK_MSG_${name}_FLAGS  ${message_flags}
 #define FASTMAVLINK_MSG_${name}_TARGET_SYSTEM_OFS  ${target_system_ofs}
 #define FASTMAVLINK_MSG_${name}_TARGET_COMPONENT_OFS  ${target_component_ofs}
 
-#define FASTMAVLINK_MSG_${name}_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_${id}_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_${id}_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_${name}_FRAME_LEN_MAX  ${frame_max_length}
+
+${{array_fields:#define FASTMAVLINK_MSG_${msg_name}_FIELD_${name_upper}_NUM  ${array_length} // number of elements in array
+#define FASTMAVLINK_MSG_${msg_name}_FIELD_${name_upper}_LEN  ${field_length} // length of array = number of bytes
+}}
+
+${{ordered_fields:#define FASTMAVLINK_MSG_${msg_name}_FIELD_${name_upper}_OFS  ${payload_offset}
+}}
 
 
 //----------------------------------------
@@ -194,6 +190,33 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_${name_lower}_decode(fmav_${name_lo
 }
 
 
+${{scalar_fields:FASTMAVLINK_FUNCTION_DECORATOR ${type} fmav_msg_${name_lower}_get_field_${name}(const fmav_message_t* msg)
+{
+    ${type} r; 
+    memcpy(&r, &(msg->payload[${payload_offset}]), sizeof(${type})); 
+    return r;     
+}
+
+
+}}
+
+
+${{array_fields:FASTMAVLINK_FUNCTION_DECORATOR ${type}* fmav_msg_${name_lower}_get_field_${name}_ptr(const fmav_message_t* msg)
+{
+    return (${type}*)&(msg->payload[${payload_offset}]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR ${type} fmav_msg_${name_lower}_get_field_${name}(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_${msg_name}_FIELD_${name_upper}_NUM) return 0;
+    return ((${type}*)&(msg->payload[${payload_offset}]))[index];     
+}
+
+
+}}
+
+
 //----------------------------------------
 //-- Pymavlink wrappers
 //----------------------------------------
@@ -203,9 +226,9 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_${name_lower}_decode(fmav_${name_lo
 
 #define mavlink_${name_lower}_t  fmav_${name_lower}_t
 
-#define MAVLINK_MSG_ID_${name}_LEN  ${payload_length}
+#define MAVLINK_MSG_ID_${name}_LEN  ${payload_max_length}
 #define MAVLINK_MSG_ID_${name}_MIN_LEN  ${payload_min_length}
-#define MAVLINK_MSG_ID_${id}_LEN  ${payload_length}
+#define MAVLINK_MSG_ID_${id}_LEN  ${payload_max_length}
 #define MAVLINK_MSG_ID_${id}_MIN_LEN  ${payload_min_length}
 
 #define MAVLINK_MSG_ID_${name}_CRC  ${crc_extra}
