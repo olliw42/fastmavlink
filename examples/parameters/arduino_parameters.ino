@@ -289,6 +289,7 @@ void handleMessage(fmav_message_t* msg)
       fmav_msg_param_set_decode(&payload, msg);
       uint16_t index;
       if (fmav_param_do_param_set(&index, &payload)) {
+        fmav_param_set_value(index, payload.param_value);
         param_send_param_value_trigger(index);
       }
       }break;

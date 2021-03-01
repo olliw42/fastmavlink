@@ -8,6 +8,7 @@
 #define FASTMAVLINK_TYPES_H
 
 
+#include "fastmavlink_config.h"
 #include "fastmavlink_protocol.h"
 
 
@@ -149,7 +150,7 @@ typedef struct _fmav_param_union {
 typedef struct _fmav_param_entry {
     void* ptr;
     uint8_t type;
-    const char* name;
+    const char* name; // this is a C string, including a terminating '\0'
 } fmav_param_entry_t;
 
 
