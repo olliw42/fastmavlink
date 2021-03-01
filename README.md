@@ -104,6 +104,11 @@ The received byte (Rx) is parsed into a working buffer (buf), the information in
 - located in mavlink_msg_xxx.h
 
 
+#### fmav_msg_xxx_get_field_yyy():
+4 -> 6, msg_t -> sata
+- located in mavlink_msg_xxx.h
+
+
 #### fmav_parse_and_check_to_frame_buf():
 1 -> 2 -> 3, Rx -> buf -> check
 - wrapper to the first two steps
@@ -115,9 +120,6 @@ The received byte (Rx) is parsed into a working buffer (buf), the information in
 - wrapper to the first three steps
 - located in fastmavlink_functions.h
 
-
-missing:
-- msg_t -> data
 
 
 ### Sending/Emitting
