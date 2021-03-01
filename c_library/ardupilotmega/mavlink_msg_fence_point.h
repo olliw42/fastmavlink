@@ -26,25 +26,24 @@ typedef struct _fmav_fence_point_t {
 
 #define FASTMAVLINK_MSG_ID_FENCE_POINT  160
 
-
 #define FASTMAVLINK_MSG_FENCE_POINT_PAYLOAD_LEN_MIN  12
 #define FASTMAVLINK_MSG_FENCE_POINT_PAYLOAD_LEN_MAX  12
-#define FASTMAVLINK_MSG_FENCE_POINT_PAYLOAD_LEN  12
 #define FASTMAVLINK_MSG_FENCE_POINT_CRCEXTRA  78
-
-#define FASTMAVLINK_MSG_ID_160_LEN_MIN  12
-#define FASTMAVLINK_MSG_ID_160_LEN_MAX  12
-#define FASTMAVLINK_MSG_ID_160_LEN  12
-#define FASTMAVLINK_MSG_ID_160_CRCEXTRA  78
-
-
 
 #define FASTMAVLINK_MSG_FENCE_POINT_FLAGS  3
 #define FASTMAVLINK_MSG_FENCE_POINT_TARGET_SYSTEM_OFS  8
 #define FASTMAVLINK_MSG_FENCE_POINT_TARGET_COMPONENT_OFS  9
 
-#define FASTMAVLINK_MSG_FENCE_POINT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_FENCE_POINT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_160_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_160_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_FENCE_POINT_FRAME_LEN_MAX  37
+
+
+
+#define FASTMAVLINK_MSG_FENCE_POINT_FIELD_LAT_OFS  0
+#define FASTMAVLINK_MSG_FENCE_POINT_FIELD_LNG_OFS  4
+#define FASTMAVLINK_MSG_FENCE_POINT_FIELD_TARGET_SYSTEM_OFS  8
+#define FASTMAVLINK_MSG_FENCE_POINT_FIELD_TARGET_COMPONENT_OFS  9
+#define FASTMAVLINK_MSG_FENCE_POINT_FIELD_IDX_OFS  10
+#define FASTMAVLINK_MSG_FENCE_POINT_FIELD_COUNT_OFS  11
 
 
 //----------------------------------------
@@ -204,6 +203,57 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_fence_point_decode(fmav_fence_point
     memset(payload, 0, FASTMAVLINK_MSG_FENCE_POINT_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_fence_point_get_field_lat(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_fence_point_get_field_lng(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_fence_point_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_fence_point_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[9]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_fence_point_get_field_idx(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[10]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_fence_point_get_field_count(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[11]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

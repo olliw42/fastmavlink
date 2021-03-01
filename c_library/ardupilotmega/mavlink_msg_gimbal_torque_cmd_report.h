@@ -25,25 +25,23 @@ typedef struct _fmav_gimbal_torque_cmd_report_t {
 
 #define FASTMAVLINK_MSG_ID_GIMBAL_TORQUE_CMD_REPORT  214
 
-
 #define FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MIN  8
 #define FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MAX  8
-#define FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN  8
 #define FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_CRCEXTRA  69
-
-#define FASTMAVLINK_MSG_ID_214_LEN_MIN  8
-#define FASTMAVLINK_MSG_ID_214_LEN_MAX  8
-#define FASTMAVLINK_MSG_ID_214_LEN  8
-#define FASTMAVLINK_MSG_ID_214_CRCEXTRA  69
-
-
 
 #define FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_FLAGS  3
 #define FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_TARGET_SYSTEM_OFS  6
 #define FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_TARGET_COMPONENT_OFS  7
 
-#define FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_214_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_214_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_FRAME_LEN_MAX  33
+
+
+
+#define FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_FIELD_RL_TORQUE_CMD_OFS  0
+#define FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_FIELD_EL_TORQUE_CMD_OFS  2
+#define FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_FIELD_AZ_TORQUE_CMD_OFS  4
+#define FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_FIELD_TARGET_SYSTEM_OFS  6
+#define FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_FIELD_TARGET_COMPONENT_OFS  7
 
 
 //----------------------------------------
@@ -200,6 +198,49 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gimbal_torque_cmd_report_decode(fma
     memset(payload, 0, FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_gimbal_torque_cmd_report_get_field_rl_torque_cmd(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_gimbal_torque_cmd_report_get_field_el_torque_cmd(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[2]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_gimbal_torque_cmd_report_get_field_az_torque_cmd(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gimbal_torque_cmd_report_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[6]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gimbal_torque_cmd_report_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[7]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

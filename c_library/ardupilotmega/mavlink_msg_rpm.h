@@ -22,25 +22,20 @@ typedef struct _fmav_rpm_t {
 
 #define FASTMAVLINK_MSG_ID_RPM  226
 
-
 #define FASTMAVLINK_MSG_RPM_PAYLOAD_LEN_MIN  8
 #define FASTMAVLINK_MSG_RPM_PAYLOAD_LEN_MAX  8
-#define FASTMAVLINK_MSG_RPM_PAYLOAD_LEN  8
 #define FASTMAVLINK_MSG_RPM_CRCEXTRA  207
-
-#define FASTMAVLINK_MSG_ID_226_LEN_MIN  8
-#define FASTMAVLINK_MSG_ID_226_LEN_MAX  8
-#define FASTMAVLINK_MSG_ID_226_LEN  8
-#define FASTMAVLINK_MSG_ID_226_CRCEXTRA  207
-
-
 
 #define FASTMAVLINK_MSG_RPM_FLAGS  0
 #define FASTMAVLINK_MSG_RPM_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_RPM_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_RPM_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_RPM_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_226_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_226_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_RPM_FRAME_LEN_MAX  33
+
+
+
+#define FASTMAVLINK_MSG_RPM_FIELD_RPM1_OFS  0
+#define FASTMAVLINK_MSG_RPM_FIELD_RPM2_OFS  4
 
 
 //----------------------------------------
@@ -188,6 +183,25 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_rpm_decode(fmav_rpm_t* payload, con
     memset(payload, 0, FASTMAVLINK_MSG_RPM_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_rpm_get_field_rpm1(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_rpm_get_field_rpm2(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

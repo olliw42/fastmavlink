@@ -27,29 +27,34 @@ typedef struct _fmav_trajectory_representation_bezier_t {
 
 #define FASTMAVLINK_MSG_ID_TRAJECTORY_REPRESENTATION_BEZIER  333
 
-
 #define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN_MIN  109
 #define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN_MAX  109
-#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN  109
 #define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_CRCEXTRA  231
-
-#define FASTMAVLINK_MSG_ID_333_LEN_MIN  109
-#define FASTMAVLINK_MSG_ID_333_LEN_MAX  109
-#define FASTMAVLINK_MSG_ID_333_LEN  109
-#define FASTMAVLINK_MSG_ID_333_CRCEXTRA  231
-
-#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_X_LEN  5
-#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_Y_LEN  5
-#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_Z_LEN  5
-#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_DELTA_LEN  5
-#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_YAW_LEN  5
 
 #define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FLAGS  0
 #define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_333_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_333_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FRAME_LEN_MAX  134
+
+#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_X_NUM  5 // number of elements in array
+#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_X_LEN  20 // length of array = number of bytes
+#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_Y_NUM  5 // number of elements in array
+#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_Y_LEN  20 // length of array = number of bytes
+#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_Z_NUM  5 // number of elements in array
+#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_Z_LEN  20 // length of array = number of bytes
+#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_DELTA_NUM  5 // number of elements in array
+#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_DELTA_LEN  20 // length of array = number of bytes
+#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_YAW_NUM  5 // number of elements in array
+#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_YAW_LEN  20 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_X_OFS  8
+#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_Y_OFS  28
+#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_Z_OFS  48
+#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_DELTA_OFS  68
+#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_YAW_OFS  88
+#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_VALID_POINTS_OFS  108
 
 
 //----------------------------------------
@@ -208,6 +213,87 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_trajectory_representation_bezier_de
 
     memset(payload, 0, FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_trajectory_representation_bezier_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_trajectory_representation_bezier_get_field_valid_points(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[108]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_trajectory_representation_bezier_get_field_pos_x_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[8]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_trajectory_representation_bezier_get_field_pos_x(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_X_NUM) return 0;
+    return ((float*)&(msg->payload[8]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_trajectory_representation_bezier_get_field_pos_y_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[28]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_trajectory_representation_bezier_get_field_pos_y(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_Y_NUM) return 0;
+    return ((float*)&(msg->payload[28]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_trajectory_representation_bezier_get_field_pos_z_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[48]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_trajectory_representation_bezier_get_field_pos_z(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_Z_NUM) return 0;
+    return ((float*)&(msg->payload[48]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_trajectory_representation_bezier_get_field_delta_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[68]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_trajectory_representation_bezier_get_field_delta(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_DELTA_NUM) return 0;
+    return ((float*)&(msg->payload[68]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_trajectory_representation_bezier_get_field_pos_yaw_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[88]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_trajectory_representation_bezier_get_field_pos_yaw(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_YAW_NUM) return 0;
+    return ((float*)&(msg->payload[88]))[index];     
 }
 
 

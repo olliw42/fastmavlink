@@ -30,25 +30,28 @@ typedef struct _fmav_digicam_control_t {
 
 #define FASTMAVLINK_MSG_ID_DIGICAM_CONTROL  155
 
-
 #define FASTMAVLINK_MSG_DIGICAM_CONTROL_PAYLOAD_LEN_MIN  13
 #define FASTMAVLINK_MSG_DIGICAM_CONTROL_PAYLOAD_LEN_MAX  13
-#define FASTMAVLINK_MSG_DIGICAM_CONTROL_PAYLOAD_LEN  13
 #define FASTMAVLINK_MSG_DIGICAM_CONTROL_CRCEXTRA  22
-
-#define FASTMAVLINK_MSG_ID_155_LEN_MIN  13
-#define FASTMAVLINK_MSG_ID_155_LEN_MAX  13
-#define FASTMAVLINK_MSG_ID_155_LEN  13
-#define FASTMAVLINK_MSG_ID_155_CRCEXTRA  22
-
-
 
 #define FASTMAVLINK_MSG_DIGICAM_CONTROL_FLAGS  3
 #define FASTMAVLINK_MSG_DIGICAM_CONTROL_TARGET_SYSTEM_OFS  4
 #define FASTMAVLINK_MSG_DIGICAM_CONTROL_TARGET_COMPONENT_OFS  5
 
-#define FASTMAVLINK_MSG_DIGICAM_CONTROL_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_DIGICAM_CONTROL_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_155_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_155_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_DIGICAM_CONTROL_FRAME_LEN_MAX  38
+
+
+
+#define FASTMAVLINK_MSG_DIGICAM_CONTROL_FIELD_EXTRA_VALUE_OFS  0
+#define FASTMAVLINK_MSG_DIGICAM_CONTROL_FIELD_TARGET_SYSTEM_OFS  4
+#define FASTMAVLINK_MSG_DIGICAM_CONTROL_FIELD_TARGET_COMPONENT_OFS  5
+#define FASTMAVLINK_MSG_DIGICAM_CONTROL_FIELD_SESSION_OFS  6
+#define FASTMAVLINK_MSG_DIGICAM_CONTROL_FIELD_ZOOM_POS_OFS  7
+#define FASTMAVLINK_MSG_DIGICAM_CONTROL_FIELD_ZOOM_STEP_OFS  8
+#define FASTMAVLINK_MSG_DIGICAM_CONTROL_FIELD_FOCUS_LOCK_OFS  9
+#define FASTMAVLINK_MSG_DIGICAM_CONTROL_FIELD_SHOT_OFS  10
+#define FASTMAVLINK_MSG_DIGICAM_CONTROL_FIELD_COMMAND_ID_OFS  11
+#define FASTMAVLINK_MSG_DIGICAM_CONTROL_FIELD_EXTRA_PARAM_OFS  12
 
 
 //----------------------------------------
@@ -220,6 +223,89 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_digicam_control_decode(fmav_digicam
     memset(payload, 0, FASTMAVLINK_MSG_DIGICAM_CONTROL_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_digicam_control_get_field_extra_value(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_digicam_control_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_digicam_control_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[5]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_digicam_control_get_field_session(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[6]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_digicam_control_get_field_zoom_pos(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[7]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_digicam_control_get_field_zoom_step(const fmav_message_t* msg)
+{
+    int8_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(int8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_digicam_control_get_field_focus_lock(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[9]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_digicam_control_get_field_shot(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[10]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_digicam_control_get_field_command_id(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[11]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_digicam_control_get_field_extra_param(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

@@ -36,25 +36,34 @@ typedef struct _fmav_hil_sensor_t {
 
 #define FASTMAVLINK_MSG_ID_HIL_SENSOR  107
 
-
 #define FASTMAVLINK_MSG_HIL_SENSOR_PAYLOAD_LEN_MIN  64
 #define FASTMAVLINK_MSG_HIL_SENSOR_PAYLOAD_LEN_MAX  65
-#define FASTMAVLINK_MSG_HIL_SENSOR_PAYLOAD_LEN  65
 #define FASTMAVLINK_MSG_HIL_SENSOR_CRCEXTRA  108
-
-#define FASTMAVLINK_MSG_ID_107_LEN_MIN  64
-#define FASTMAVLINK_MSG_ID_107_LEN_MAX  65
-#define FASTMAVLINK_MSG_ID_107_LEN  65
-#define FASTMAVLINK_MSG_ID_107_CRCEXTRA  108
-
-
 
 #define FASTMAVLINK_MSG_HIL_SENSOR_FLAGS  0
 #define FASTMAVLINK_MSG_HIL_SENSOR_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_HIL_SENSOR_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_HIL_SENSOR_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_HIL_SENSOR_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_107_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_107_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_HIL_SENSOR_FRAME_LEN_MAX  90
+
+
+
+#define FASTMAVLINK_MSG_HIL_SENSOR_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_HIL_SENSOR_FIELD_XACC_OFS  8
+#define FASTMAVLINK_MSG_HIL_SENSOR_FIELD_YACC_OFS  12
+#define FASTMAVLINK_MSG_HIL_SENSOR_FIELD_ZACC_OFS  16
+#define FASTMAVLINK_MSG_HIL_SENSOR_FIELD_XGYRO_OFS  20
+#define FASTMAVLINK_MSG_HIL_SENSOR_FIELD_YGYRO_OFS  24
+#define FASTMAVLINK_MSG_HIL_SENSOR_FIELD_ZGYRO_OFS  28
+#define FASTMAVLINK_MSG_HIL_SENSOR_FIELD_XMAG_OFS  32
+#define FASTMAVLINK_MSG_HIL_SENSOR_FIELD_YMAG_OFS  36
+#define FASTMAVLINK_MSG_HIL_SENSOR_FIELD_ZMAG_OFS  40
+#define FASTMAVLINK_MSG_HIL_SENSOR_FIELD_ABS_PRESSURE_OFS  44
+#define FASTMAVLINK_MSG_HIL_SENSOR_FIELD_DIFF_PRESSURE_OFS  48
+#define FASTMAVLINK_MSG_HIL_SENSOR_FIELD_PRESSURE_ALT_OFS  52
+#define FASTMAVLINK_MSG_HIL_SENSOR_FIELD_TEMPERATURE_OFS  56
+#define FASTMAVLINK_MSG_HIL_SENSOR_FIELD_FIELDS_UPDATED_OFS  60
+#define FASTMAVLINK_MSG_HIL_SENSOR_FIELD_ID_OFS  64
 
 
 //----------------------------------------
@@ -244,6 +253,137 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_hil_sensor_decode(fmav_hil_sensor_t
     memset(payload, 0, FASTMAVLINK_MSG_HIL_SENSOR_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_hil_sensor_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_sensor_get_field_xacc(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_sensor_get_field_yacc(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_sensor_get_field_zacc(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_sensor_get_field_xgyro(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_sensor_get_field_ygyro(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_sensor_get_field_zgyro(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_sensor_get_field_xmag(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_sensor_get_field_ymag(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_sensor_get_field_zmag(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[40]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_sensor_get_field_abs_pressure(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[44]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_sensor_get_field_diff_pressure(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[48]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_sensor_get_field_pressure_alt(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[52]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_sensor_get_field_temperature(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[56]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_hil_sensor_get_field_fields_updated(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[60]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_hil_sensor_get_field_id(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[64]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

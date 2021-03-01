@@ -30,25 +30,29 @@ typedef struct _fmav_storm32_gimbal_manager_control_t {
 
 #define FASTMAVLINK_MSG_ID_STORM32_GIMBAL_MANAGER_CONTROL  60012
 
-
 #define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_PAYLOAD_LEN_MIN  36
 #define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_PAYLOAD_LEN_MAX  36
-#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_PAYLOAD_LEN  36
 #define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_CRCEXTRA  99
-
-#define FASTMAVLINK_MSG_ID_60012_LEN_MIN  36
-#define FASTMAVLINK_MSG_ID_60012_LEN_MAX  36
-#define FASTMAVLINK_MSG_ID_60012_LEN  36
-#define FASTMAVLINK_MSG_ID_60012_CRCEXTRA  99
-
-#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_FIELD_Q_LEN  4
 
 #define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_FLAGS  3
 #define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_TARGET_SYSTEM_OFS  32
 #define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_TARGET_COMPONENT_OFS  33
 
-#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_60012_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_60012_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_FRAME_LEN_MAX  61
+
+#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_FIELD_Q_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_FIELD_Q_LEN  16 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_FIELD_Q_OFS  0
+#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_FIELD_ANGULAR_VELOCITY_X_OFS  16
+#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_FIELD_ANGULAR_VELOCITY_Y_OFS  20
+#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_FIELD_ANGULAR_VELOCITY_Z_OFS  24
+#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_FIELD_DEVICE_FLAGS_OFS  28
+#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_FIELD_MANAGER_FLAGS_OFS  30
+#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_FIELD_TARGET_SYSTEM_OFS  32
+#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_FIELD_TARGET_COMPONENT_OFS  33
+#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_FIELD_GIMBAL_ID_OFS  34
+#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_FIELD_CLIENT_OFS  35
 
 
 //----------------------------------------
@@ -216,6 +220,91 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_storm32_gimbal_manager_control_deco
 
     memset(payload, 0, FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_storm32_gimbal_manager_control_get_field_angular_velocity_x(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_storm32_gimbal_manager_control_get_field_angular_velocity_y(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_storm32_gimbal_manager_control_get_field_angular_velocity_z(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storm32_gimbal_manager_control_get_field_device_flags(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storm32_gimbal_manager_control_get_field_manager_flags(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[30]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_storm32_gimbal_manager_control_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_storm32_gimbal_manager_control_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[33]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_storm32_gimbal_manager_control_get_field_gimbal_id(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[34]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_storm32_gimbal_manager_control_get_field_client(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[35]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_storm32_gimbal_manager_control_get_field_q_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[0]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_storm32_gimbal_manager_control_get_field_q(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CONTROL_FIELD_Q_NUM) return 0;
+    return ((float*)&(msg->payload[0]))[index];     
 }
 
 

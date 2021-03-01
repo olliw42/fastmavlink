@@ -33,25 +33,31 @@ typedef struct _fmav_sys_status_t {
 
 #define FASTMAVLINK_MSG_ID_SYS_STATUS  1
 
-
 #define FASTMAVLINK_MSG_SYS_STATUS_PAYLOAD_LEN_MIN  31
 #define FASTMAVLINK_MSG_SYS_STATUS_PAYLOAD_LEN_MAX  31
-#define FASTMAVLINK_MSG_SYS_STATUS_PAYLOAD_LEN  31
 #define FASTMAVLINK_MSG_SYS_STATUS_CRCEXTRA  124
-
-#define FASTMAVLINK_MSG_ID_1_LEN_MIN  31
-#define FASTMAVLINK_MSG_ID_1_LEN_MAX  31
-#define FASTMAVLINK_MSG_ID_1_LEN  31
-#define FASTMAVLINK_MSG_ID_1_CRCEXTRA  124
-
-
 
 #define FASTMAVLINK_MSG_SYS_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_SYS_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_SYS_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_SYS_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_SYS_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_1_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_1_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_SYS_STATUS_FRAME_LEN_MAX  56
+
+
+
+#define FASTMAVLINK_MSG_SYS_STATUS_FIELD_ONBOARD_CONTROL_SENSORS_PRESENT_OFS  0
+#define FASTMAVLINK_MSG_SYS_STATUS_FIELD_ONBOARD_CONTROL_SENSORS_ENABLED_OFS  4
+#define FASTMAVLINK_MSG_SYS_STATUS_FIELD_ONBOARD_CONTROL_SENSORS_HEALTH_OFS  8
+#define FASTMAVLINK_MSG_SYS_STATUS_FIELD_LOAD_OFS  12
+#define FASTMAVLINK_MSG_SYS_STATUS_FIELD_VOLTAGE_BATTERY_OFS  14
+#define FASTMAVLINK_MSG_SYS_STATUS_FIELD_CURRENT_BATTERY_OFS  16
+#define FASTMAVLINK_MSG_SYS_STATUS_FIELD_DROP_RATE_COMM_OFS  18
+#define FASTMAVLINK_MSG_SYS_STATUS_FIELD_ERRORS_COMM_OFS  20
+#define FASTMAVLINK_MSG_SYS_STATUS_FIELD_ERRORS_COUNT1_OFS  22
+#define FASTMAVLINK_MSG_SYS_STATUS_FIELD_ERRORS_COUNT2_OFS  24
+#define FASTMAVLINK_MSG_SYS_STATUS_FIELD_ERRORS_COUNT3_OFS  26
+#define FASTMAVLINK_MSG_SYS_STATUS_FIELD_ERRORS_COUNT4_OFS  28
+#define FASTMAVLINK_MSG_SYS_STATUS_FIELD_BATTERY_REMAINING_OFS  30
 
 
 //----------------------------------------
@@ -232,6 +238,113 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_sys_status_decode(fmav_sys_status_t
     memset(payload, 0, FASTMAVLINK_MSG_SYS_STATUS_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_sys_status_get_field_onboard_control_sensors_present(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_sys_status_get_field_onboard_control_sensors_enabled(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_sys_status_get_field_onboard_control_sensors_health(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sys_status_get_field_load(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sys_status_get_field_voltage_battery(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[14]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_sys_status_get_field_current_battery(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sys_status_get_field_drop_rate_comm(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[18]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sys_status_get_field_errors_comm(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sys_status_get_field_errors_count1(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[22]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sys_status_get_field_errors_count2(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sys_status_get_field_errors_count3(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[26]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sys_status_get_field_errors_count4(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_sys_status_get_field_battery_remaining(const fmav_message_t* msg)
+{
+    int8_t r; 
+    memcpy(&r, &(msg->payload[30]), sizeof(int8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

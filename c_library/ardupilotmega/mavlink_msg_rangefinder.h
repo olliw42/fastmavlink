@@ -22,25 +22,20 @@ typedef struct _fmav_rangefinder_t {
 
 #define FASTMAVLINK_MSG_ID_RANGEFINDER  173
 
-
 #define FASTMAVLINK_MSG_RANGEFINDER_PAYLOAD_LEN_MIN  8
 #define FASTMAVLINK_MSG_RANGEFINDER_PAYLOAD_LEN_MAX  8
-#define FASTMAVLINK_MSG_RANGEFINDER_PAYLOAD_LEN  8
 #define FASTMAVLINK_MSG_RANGEFINDER_CRCEXTRA  83
-
-#define FASTMAVLINK_MSG_ID_173_LEN_MIN  8
-#define FASTMAVLINK_MSG_ID_173_LEN_MAX  8
-#define FASTMAVLINK_MSG_ID_173_LEN  8
-#define FASTMAVLINK_MSG_ID_173_CRCEXTRA  83
-
-
 
 #define FASTMAVLINK_MSG_RANGEFINDER_FLAGS  0
 #define FASTMAVLINK_MSG_RANGEFINDER_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_RANGEFINDER_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_RANGEFINDER_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_RANGEFINDER_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_173_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_173_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_RANGEFINDER_FRAME_LEN_MAX  33
+
+
+
+#define FASTMAVLINK_MSG_RANGEFINDER_FIELD_DISTANCE_OFS  0
+#define FASTMAVLINK_MSG_RANGEFINDER_FIELD_VOLTAGE_OFS  4
 
 
 //----------------------------------------
@@ -188,6 +183,25 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_rangefinder_decode(fmav_rangefinder
     memset(payload, 0, FASTMAVLINK_MSG_RANGEFINDER_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_rangefinder_get_field_distance(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_rangefinder_get_field_voltage(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

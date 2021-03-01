@@ -32,25 +32,30 @@ typedef struct _fmav_airspeed_autocal_t {
 
 #define FASTMAVLINK_MSG_ID_AIRSPEED_AUTOCAL  174
 
-
 #define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_PAYLOAD_LEN_MIN  48
 #define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_PAYLOAD_LEN_MAX  48
-#define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_PAYLOAD_LEN  48
 #define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_CRCEXTRA  167
-
-#define FASTMAVLINK_MSG_ID_174_LEN_MIN  48
-#define FASTMAVLINK_MSG_ID_174_LEN_MAX  48
-#define FASTMAVLINK_MSG_ID_174_LEN  48
-#define FASTMAVLINK_MSG_ID_174_CRCEXTRA  167
-
-
 
 #define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_FLAGS  0
 #define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_174_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_174_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_FRAME_LEN_MAX  73
+
+
+
+#define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_FIELD_VX_OFS  0
+#define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_FIELD_VY_OFS  4
+#define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_FIELD_VZ_OFS  8
+#define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_FIELD_DIFF_PRESSURE_OFS  12
+#define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_FIELD_EAS2TAS_OFS  16
+#define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_FIELD_RATIO_OFS  20
+#define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_FIELD_STATE_X_OFS  24
+#define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_FIELD_STATE_Y_OFS  28
+#define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_FIELD_STATE_Z_OFS  32
+#define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_FIELD_PAX_OFS  36
+#define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_FIELD_PBY_OFS  40
+#define FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_FIELD_PCZ_OFS  44
 
 
 //----------------------------------------
@@ -228,6 +233,105 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_airspeed_autocal_decode(fmav_airspe
     memset(payload, 0, FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_airspeed_autocal_get_field_vx(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_airspeed_autocal_get_field_vy(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_airspeed_autocal_get_field_vz(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_airspeed_autocal_get_field_diff_pressure(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_airspeed_autocal_get_field_EAS2TAS(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_airspeed_autocal_get_field_ratio(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_airspeed_autocal_get_field_state_x(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_airspeed_autocal_get_field_state_y(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_airspeed_autocal_get_field_state_z(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_airspeed_autocal_get_field_Pax(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_airspeed_autocal_get_field_Pby(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[40]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_airspeed_autocal_get_field_Pcz(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[44]), sizeof(float)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

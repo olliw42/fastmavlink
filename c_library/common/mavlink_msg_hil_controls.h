@@ -31,25 +31,29 @@ typedef struct _fmav_hil_controls_t {
 
 #define FASTMAVLINK_MSG_ID_HIL_CONTROLS  91
 
-
 #define FASTMAVLINK_MSG_HIL_CONTROLS_PAYLOAD_LEN_MIN  42
 #define FASTMAVLINK_MSG_HIL_CONTROLS_PAYLOAD_LEN_MAX  42
-#define FASTMAVLINK_MSG_HIL_CONTROLS_PAYLOAD_LEN  42
 #define FASTMAVLINK_MSG_HIL_CONTROLS_CRCEXTRA  63
-
-#define FASTMAVLINK_MSG_ID_91_LEN_MIN  42
-#define FASTMAVLINK_MSG_ID_91_LEN_MAX  42
-#define FASTMAVLINK_MSG_ID_91_LEN  42
-#define FASTMAVLINK_MSG_ID_91_CRCEXTRA  63
-
-
 
 #define FASTMAVLINK_MSG_HIL_CONTROLS_FLAGS  0
 #define FASTMAVLINK_MSG_HIL_CONTROLS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_HIL_CONTROLS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_HIL_CONTROLS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_HIL_CONTROLS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_91_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_91_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_HIL_CONTROLS_FRAME_LEN_MAX  67
+
+
+
+#define FASTMAVLINK_MSG_HIL_CONTROLS_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_HIL_CONTROLS_FIELD_ROLL_AILERONS_OFS  8
+#define FASTMAVLINK_MSG_HIL_CONTROLS_FIELD_PITCH_ELEVATOR_OFS  12
+#define FASTMAVLINK_MSG_HIL_CONTROLS_FIELD_YAW_RUDDER_OFS  16
+#define FASTMAVLINK_MSG_HIL_CONTROLS_FIELD_THROTTLE_OFS  20
+#define FASTMAVLINK_MSG_HIL_CONTROLS_FIELD_AUX1_OFS  24
+#define FASTMAVLINK_MSG_HIL_CONTROLS_FIELD_AUX2_OFS  28
+#define FASTMAVLINK_MSG_HIL_CONTROLS_FIELD_AUX3_OFS  32
+#define FASTMAVLINK_MSG_HIL_CONTROLS_FIELD_AUX4_OFS  36
+#define FASTMAVLINK_MSG_HIL_CONTROLS_FIELD_MODE_OFS  40
+#define FASTMAVLINK_MSG_HIL_CONTROLS_FIELD_NAV_MODE_OFS  41
 
 
 //----------------------------------------
@@ -224,6 +228,97 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_hil_controls_decode(fmav_hil_contro
     memset(payload, 0, FASTMAVLINK_MSG_HIL_CONTROLS_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_hil_controls_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_controls_get_field_roll_ailerons(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_controls_get_field_pitch_elevator(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_controls_get_field_yaw_rudder(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_controls_get_field_throttle(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_controls_get_field_aux1(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_controls_get_field_aux2(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_controls_get_field_aux3(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_controls_get_field_aux4(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_hil_controls_get_field_mode(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[40]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_hil_controls_get_field_nav_mode(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[41]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

@@ -29,33 +29,44 @@ typedef struct _fmav_array_test_7_t {
 
 #define FASTMAVLINK_MSG_ID_ARRAY_TEST_7  17157
 
-
 #define FASTMAVLINK_MSG_ARRAY_TEST_7_PAYLOAD_LEN_MIN  84
 #define FASTMAVLINK_MSG_ARRAY_TEST_7_PAYLOAD_LEN_MAX  84
-#define FASTMAVLINK_MSG_ARRAY_TEST_7_PAYLOAD_LEN  84
 #define FASTMAVLINK_MSG_ARRAY_TEST_7_CRCEXTRA  187
-
-#define FASTMAVLINK_MSG_ID_17157_LEN_MIN  84
-#define FASTMAVLINK_MSG_ID_17157_LEN_MAX  84
-#define FASTMAVLINK_MSG_ID_17157_LEN  84
-#define FASTMAVLINK_MSG_ID_17157_CRCEXTRA  187
-
-#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_D_LEN  2
-#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_F_LEN  2
-#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_U32_LEN  2
-#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_I32_LEN  2
-#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_U16_LEN  2
-#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_I16_LEN  2
-#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_U8_LEN  2
-#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_I8_LEN  2
-#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_C_LEN  32
 
 #define FASTMAVLINK_MSG_ARRAY_TEST_7_FLAGS  0
 #define FASTMAVLINK_MSG_ARRAY_TEST_7_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ARRAY_TEST_7_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_ARRAY_TEST_7_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ARRAY_TEST_7_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_17157_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_17157_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FRAME_LEN_MAX  109
+
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_D_NUM  2 // number of elements in array
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_D_LEN  16 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_F_NUM  2 // number of elements in array
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_F_LEN  8 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_U32_NUM  2 // number of elements in array
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_U32_LEN  8 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_I32_NUM  2 // number of elements in array
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_I32_LEN  8 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_U16_NUM  2 // number of elements in array
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_U16_LEN  4 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_I16_NUM  2 // number of elements in array
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_I16_LEN  4 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_U8_NUM  2 // number of elements in array
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_U8_LEN  2 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_I8_NUM  2 // number of elements in array
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_I8_LEN  2 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_C_NUM  32 // number of elements in array
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_C_LEN  32 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_D_OFS  0
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_F_OFS  16
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_U32_OFS  24
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_I32_OFS  32
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_U16_OFS  40
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_I16_OFS  44
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_U8_OFS  48
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_I8_OFS  50
+#define FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_C_OFS  52
 
 
 //----------------------------------------
@@ -223,6 +234,126 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_array_test_7_decode(fmav_array_test
 
     memset(payload, 0, FASTMAVLINK_MSG_ARRAY_TEST_7_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+
+
+
+FASTMAVLINK_FUNCTION_DECORATOR double* fmav_msg_array_test_7_get_field_ar_d_ptr(const fmav_message_t* msg)
+{
+    return (double*)&(msg->payload[0]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR double fmav_msg_array_test_7_get_field_ar_d(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_D_NUM) return 0;
+    return ((double*)&(msg->payload[0]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_array_test_7_get_field_ar_f_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[16]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_array_test_7_get_field_ar_f(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_F_NUM) return 0;
+    return ((float*)&(msg->payload[16]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t* fmav_msg_array_test_7_get_field_ar_u32_ptr(const fmav_message_t* msg)
+{
+    return (uint32_t*)&(msg->payload[24]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_array_test_7_get_field_ar_u32(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_U32_NUM) return 0;
+    return ((uint32_t*)&(msg->payload[24]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t* fmav_msg_array_test_7_get_field_ar_i32_ptr(const fmav_message_t* msg)
+{
+    return (int32_t*)&(msg->payload[32]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_array_test_7_get_field_ar_i32(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_I32_NUM) return 0;
+    return ((int32_t*)&(msg->payload[32]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_array_test_7_get_field_ar_u16_ptr(const fmav_message_t* msg)
+{
+    return (uint16_t*)&(msg->payload[40]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_7_get_field_ar_u16(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_U16_NUM) return 0;
+    return ((uint16_t*)&(msg->payload[40]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t* fmav_msg_array_test_7_get_field_ar_i16_ptr(const fmav_message_t* msg)
+{
+    return (int16_t*)&(msg->payload[44]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_array_test_7_get_field_ar_i16(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_I16_NUM) return 0;
+    return ((int16_t*)&(msg->payload[44]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_array_test_7_get_field_ar_u8_ptr(const fmav_message_t* msg)
+{
+    return (uint8_t*)&(msg->payload[48]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_array_test_7_get_field_ar_u8(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_U8_NUM) return 0;
+    return ((uint8_t*)&(msg->payload[48]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int8_t* fmav_msg_array_test_7_get_field_ar_i8_ptr(const fmav_message_t* msg)
+{
+    return (int8_t*)&(msg->payload[50]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_array_test_7_get_field_ar_i8(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_I8_NUM) return 0;
+    return ((int8_t*)&(msg->payload[50]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_array_test_7_get_field_ar_c_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[52]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_array_test_7_get_field_ar_c(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ARRAY_TEST_7_FIELD_AR_C_NUM) return 0;
+    return ((char*)&(msg->payload[52]))[index];     
 }
 
 

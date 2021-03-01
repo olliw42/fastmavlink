@@ -24,25 +24,23 @@ typedef struct _fmav_remote_log_data_block_t {
 
 #define FASTMAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK  184
 
-
 #define FASTMAVLINK_MSG_REMOTE_LOG_DATA_BLOCK_PAYLOAD_LEN_MIN  206
 #define FASTMAVLINK_MSG_REMOTE_LOG_DATA_BLOCK_PAYLOAD_LEN_MAX  206
-#define FASTMAVLINK_MSG_REMOTE_LOG_DATA_BLOCK_PAYLOAD_LEN  206
 #define FASTMAVLINK_MSG_REMOTE_LOG_DATA_BLOCK_CRCEXTRA  159
-
-#define FASTMAVLINK_MSG_ID_184_LEN_MIN  206
-#define FASTMAVLINK_MSG_ID_184_LEN_MAX  206
-#define FASTMAVLINK_MSG_ID_184_LEN  206
-#define FASTMAVLINK_MSG_ID_184_CRCEXTRA  159
-
-#define FASTMAVLINK_MSG_REMOTE_LOG_DATA_BLOCK_FIELD_DATA_LEN  200
 
 #define FASTMAVLINK_MSG_REMOTE_LOG_DATA_BLOCK_FLAGS  3
 #define FASTMAVLINK_MSG_REMOTE_LOG_DATA_BLOCK_TARGET_SYSTEM_OFS  4
 #define FASTMAVLINK_MSG_REMOTE_LOG_DATA_BLOCK_TARGET_COMPONENT_OFS  5
 
-#define FASTMAVLINK_MSG_REMOTE_LOG_DATA_BLOCK_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_REMOTE_LOG_DATA_BLOCK_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_184_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_184_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_REMOTE_LOG_DATA_BLOCK_FRAME_LEN_MAX  231
+
+#define FASTMAVLINK_MSG_REMOTE_LOG_DATA_BLOCK_FIELD_DATA_NUM  200 // number of elements in array
+#define FASTMAVLINK_MSG_REMOTE_LOG_DATA_BLOCK_FIELD_DATA_LEN  200 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_REMOTE_LOG_DATA_BLOCK_FIELD_SEQNO_OFS  0
+#define FASTMAVLINK_MSG_REMOTE_LOG_DATA_BLOCK_FIELD_TARGET_SYSTEM_OFS  4
+#define FASTMAVLINK_MSG_REMOTE_LOG_DATA_BLOCK_FIELD_TARGET_COMPONENT_OFS  5
+#define FASTMAVLINK_MSG_REMOTE_LOG_DATA_BLOCK_FIELD_DATA_OFS  6
 
 
 //----------------------------------------
@@ -192,6 +190,43 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_remote_log_data_block_decode(fmav_r
 
     memset(payload, 0, FASTMAVLINK_MSG_REMOTE_LOG_DATA_BLOCK_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_remote_log_data_block_get_field_seqno(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_remote_log_data_block_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_remote_log_data_block_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[5]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_remote_log_data_block_get_field_data_ptr(const fmav_message_t* msg)
+{
+    return (uint8_t*)&(msg->payload[6]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_remote_log_data_block_get_field_data(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_REMOTE_LOG_DATA_BLOCK_FIELD_DATA_NUM) return 0;
+    return ((uint8_t*)&(msg->payload[6]))[index];     
 }
 
 

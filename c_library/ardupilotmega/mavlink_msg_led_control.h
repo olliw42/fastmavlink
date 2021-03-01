@@ -26,25 +26,25 @@ typedef struct _fmav_led_control_t {
 
 #define FASTMAVLINK_MSG_ID_LED_CONTROL  186
 
-
 #define FASTMAVLINK_MSG_LED_CONTROL_PAYLOAD_LEN_MIN  29
 #define FASTMAVLINK_MSG_LED_CONTROL_PAYLOAD_LEN_MAX  29
-#define FASTMAVLINK_MSG_LED_CONTROL_PAYLOAD_LEN  29
 #define FASTMAVLINK_MSG_LED_CONTROL_CRCEXTRA  72
-
-#define FASTMAVLINK_MSG_ID_186_LEN_MIN  29
-#define FASTMAVLINK_MSG_ID_186_LEN_MAX  29
-#define FASTMAVLINK_MSG_ID_186_LEN  29
-#define FASTMAVLINK_MSG_ID_186_CRCEXTRA  72
-
-#define FASTMAVLINK_MSG_LED_CONTROL_FIELD_CUSTOM_BYTES_LEN  24
 
 #define FASTMAVLINK_MSG_LED_CONTROL_FLAGS  3
 #define FASTMAVLINK_MSG_LED_CONTROL_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_LED_CONTROL_TARGET_COMPONENT_OFS  1
 
-#define FASTMAVLINK_MSG_LED_CONTROL_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_LED_CONTROL_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_186_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_186_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_LED_CONTROL_FRAME_LEN_MAX  54
+
+#define FASTMAVLINK_MSG_LED_CONTROL_FIELD_CUSTOM_BYTES_NUM  24 // number of elements in array
+#define FASTMAVLINK_MSG_LED_CONTROL_FIELD_CUSTOM_BYTES_LEN  24 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_LED_CONTROL_FIELD_TARGET_SYSTEM_OFS  0
+#define FASTMAVLINK_MSG_LED_CONTROL_FIELD_TARGET_COMPONENT_OFS  1
+#define FASTMAVLINK_MSG_LED_CONTROL_FIELD_INSTANCE_OFS  2
+#define FASTMAVLINK_MSG_LED_CONTROL_FIELD_PATTERN_OFS  3
+#define FASTMAVLINK_MSG_LED_CONTROL_FIELD_CUSTOM_LEN_OFS  4
+#define FASTMAVLINK_MSG_LED_CONTROL_FIELD_CUSTOM_BYTES_OFS  5
 
 
 //----------------------------------------
@@ -200,6 +200,59 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_led_control_decode(fmav_led_control
 
     memset(payload, 0, FASTMAVLINK_MSG_LED_CONTROL_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_led_control_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_led_control_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[1]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_led_control_get_field_instance(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[2]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_led_control_get_field_pattern(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[3]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_led_control_get_field_custom_len(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_led_control_get_field_custom_bytes_ptr(const fmav_message_t* msg)
+{
+    return (uint8_t*)&(msg->payload[5]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_led_control_get_field_custom_bytes(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_LED_CONTROL_FIELD_CUSTOM_BYTES_NUM) return 0;
+    return ((uint8_t*)&(msg->payload[5]))[index];     
 }
 
 

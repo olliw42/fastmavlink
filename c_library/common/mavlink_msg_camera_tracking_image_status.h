@@ -30,25 +30,28 @@ typedef struct _fmav_camera_tracking_image_status_t {
 
 #define FASTMAVLINK_MSG_ID_CAMERA_TRACKING_IMAGE_STATUS  275
 
-
 #define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_PAYLOAD_LEN_MIN  31
 #define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_PAYLOAD_LEN_MAX  31
-#define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_PAYLOAD_LEN  31
 #define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_CRCEXTRA  126
-
-#define FASTMAVLINK_MSG_ID_275_LEN_MIN  31
-#define FASTMAVLINK_MSG_ID_275_LEN_MAX  31
-#define FASTMAVLINK_MSG_ID_275_LEN  31
-#define FASTMAVLINK_MSG_ID_275_CRCEXTRA  126
-
-
 
 #define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_275_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_275_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_FRAME_LEN_MAX  56
+
+
+
+#define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_FIELD_POINT_X_OFS  0
+#define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_FIELD_POINT_Y_OFS  4
+#define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_FIELD_RADIUS_OFS  8
+#define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_FIELD_REC_TOP_X_OFS  12
+#define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_FIELD_REC_TOP_Y_OFS  16
+#define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_FIELD_REC_BOTTOM_X_OFS  20
+#define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_FIELD_REC_BOTTOM_Y_OFS  24
+#define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_FIELD_TRACKING_STATUS_OFS  28
+#define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_FIELD_TRACKING_MODE_OFS  29
+#define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_FIELD_TARGET_DATA_OFS  30
 
 
 //----------------------------------------
@@ -220,6 +223,89 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_camera_tracking_image_status_decode
     memset(payload, 0, FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_tracking_image_status_get_field_point_x(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_tracking_image_status_get_field_point_y(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_tracking_image_status_get_field_radius(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_tracking_image_status_get_field_rec_top_x(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_tracking_image_status_get_field_rec_top_y(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_tracking_image_status_get_field_rec_bottom_x(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_tracking_image_status_get_field_rec_bottom_y(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_camera_tracking_image_status_get_field_tracking_status(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_camera_tracking_image_status_get_field_tracking_mode(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[29]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_camera_tracking_image_status_get_field_target_data(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[30]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

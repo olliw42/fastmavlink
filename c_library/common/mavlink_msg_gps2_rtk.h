@@ -33,25 +33,31 @@ typedef struct _fmav_gps2_rtk_t {
 
 #define FASTMAVLINK_MSG_ID_GPS2_RTK  128
 
-
 #define FASTMAVLINK_MSG_GPS2_RTK_PAYLOAD_LEN_MIN  35
 #define FASTMAVLINK_MSG_GPS2_RTK_PAYLOAD_LEN_MAX  35
-#define FASTMAVLINK_MSG_GPS2_RTK_PAYLOAD_LEN  35
 #define FASTMAVLINK_MSG_GPS2_RTK_CRCEXTRA  226
-
-#define FASTMAVLINK_MSG_ID_128_LEN_MIN  35
-#define FASTMAVLINK_MSG_ID_128_LEN_MAX  35
-#define FASTMAVLINK_MSG_ID_128_LEN  35
-#define FASTMAVLINK_MSG_ID_128_CRCEXTRA  226
-
-
 
 #define FASTMAVLINK_MSG_GPS2_RTK_FLAGS  0
 #define FASTMAVLINK_MSG_GPS2_RTK_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_GPS2_RTK_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_GPS2_RTK_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_GPS2_RTK_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_128_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_128_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_GPS2_RTK_FRAME_LEN_MAX  60
+
+
+
+#define FASTMAVLINK_MSG_GPS2_RTK_FIELD_TIME_LAST_BASELINE_MS_OFS  0
+#define FASTMAVLINK_MSG_GPS2_RTK_FIELD_TOW_OFS  4
+#define FASTMAVLINK_MSG_GPS2_RTK_FIELD_BASELINE_A_MM_OFS  8
+#define FASTMAVLINK_MSG_GPS2_RTK_FIELD_BASELINE_B_MM_OFS  12
+#define FASTMAVLINK_MSG_GPS2_RTK_FIELD_BASELINE_C_MM_OFS  16
+#define FASTMAVLINK_MSG_GPS2_RTK_FIELD_ACCURACY_OFS  20
+#define FASTMAVLINK_MSG_GPS2_RTK_FIELD_IAR_NUM_HYPOTHESES_OFS  24
+#define FASTMAVLINK_MSG_GPS2_RTK_FIELD_WN_OFS  28
+#define FASTMAVLINK_MSG_GPS2_RTK_FIELD_RTK_RECEIVER_ID_OFS  30
+#define FASTMAVLINK_MSG_GPS2_RTK_FIELD_RTK_HEALTH_OFS  31
+#define FASTMAVLINK_MSG_GPS2_RTK_FIELD_RTK_RATE_OFS  32
+#define FASTMAVLINK_MSG_GPS2_RTK_FIELD_NSATS_OFS  33
+#define FASTMAVLINK_MSG_GPS2_RTK_FIELD_BASELINE_COORDS_TYPE_OFS  34
 
 
 //----------------------------------------
@@ -232,6 +238,113 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gps2_rtk_decode(fmav_gps2_rtk_t* pa
     memset(payload, 0, FASTMAVLINK_MSG_GPS2_RTK_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_gps2_rtk_get_field_time_last_baseline_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_gps2_rtk_get_field_tow(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_gps2_rtk_get_field_baseline_a_mm(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_gps2_rtk_get_field_baseline_b_mm(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_gps2_rtk_get_field_baseline_c_mm(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_gps2_rtk_get_field_accuracy(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_gps2_rtk_get_field_iar_num_hypotheses(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_rtk_get_field_wn(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gps2_rtk_get_field_rtk_receiver_id(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[30]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gps2_rtk_get_field_rtk_health(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[31]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gps2_rtk_get_field_rtk_rate(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gps2_rtk_get_field_nsats(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[33]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gps2_rtk_get_field_baseline_coords_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[34]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

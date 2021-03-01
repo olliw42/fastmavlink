@@ -36,25 +36,34 @@ typedef struct _fmav_uavionix_adsb_out_dynamic_t {
 
 #define FASTMAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_DYNAMIC  10002
 
-
 #define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_PAYLOAD_LEN_MIN  41
 #define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_PAYLOAD_LEN_MAX  41
-#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_PAYLOAD_LEN  41
 #define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_CRCEXTRA  186
-
-#define FASTMAVLINK_MSG_ID_10002_LEN_MIN  41
-#define FASTMAVLINK_MSG_ID_10002_LEN_MAX  41
-#define FASTMAVLINK_MSG_ID_10002_LEN  41
-#define FASTMAVLINK_MSG_ID_10002_CRCEXTRA  186
-
-
 
 #define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_FLAGS  0
 #define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_10002_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_10002_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_FRAME_LEN_MAX  66
+
+
+
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_FIELD_UTCTIME_OFS  0
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_FIELD_GPSLAT_OFS  4
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_FIELD_GPSLON_OFS  8
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_FIELD_GPSALT_OFS  12
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_FIELD_BAROALTMSL_OFS  16
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_FIELD_ACCURACYHOR_OFS  20
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_FIELD_ACCURACYVERT_OFS  24
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_FIELD_ACCURACYVEL_OFS  26
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_FIELD_VELVERT_OFS  28
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_FIELD_VELNS_OFS  30
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_FIELD_VELEW_OFS  32
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_FIELD_STATE_OFS  34
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_FIELD_SQUAWK_OFS  36
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_FIELD_GPSFIX_OFS  38
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_FIELD_NUMSATS_OFS  39
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_FIELD_EMERGENCYSTATUS_OFS  40
 
 
 //----------------------------------------
@@ -244,6 +253,137 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_uavionix_adsb_out_dynamic_decode(fm
     memset(payload, 0, FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_uavionix_adsb_out_dynamic_get_field_utcTime(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_uavionix_adsb_out_dynamic_get_field_gpsLat(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_uavionix_adsb_out_dynamic_get_field_gpsLon(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_uavionix_adsb_out_dynamic_get_field_gpsAlt(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_uavionix_adsb_out_dynamic_get_field_baroAltMSL(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_uavionix_adsb_out_dynamic_get_field_accuracyHor(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_dynamic_get_field_accuracyVert(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_dynamic_get_field_accuracyVel(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[26]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_uavionix_adsb_out_dynamic_get_field_velVert(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_uavionix_adsb_out_dynamic_get_field_velNS(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[30]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_uavionix_adsb_out_dynamic_get_field_VelEW(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_dynamic_get_field_state(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[34]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_dynamic_get_field_squawk(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_uavionix_adsb_out_dynamic_get_field_gpsFix(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[38]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_uavionix_adsb_out_dynamic_get_field_numSats(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[39]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_uavionix_adsb_out_dynamic_get_field_emergencyStatus(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[40]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

@@ -23,25 +23,22 @@ typedef struct _fmav_gps_rtcm_data_t {
 
 #define FASTMAVLINK_MSG_ID_GPS_RTCM_DATA  233
 
-
 #define FASTMAVLINK_MSG_GPS_RTCM_DATA_PAYLOAD_LEN_MIN  182
 #define FASTMAVLINK_MSG_GPS_RTCM_DATA_PAYLOAD_LEN_MAX  182
-#define FASTMAVLINK_MSG_GPS_RTCM_DATA_PAYLOAD_LEN  182
 #define FASTMAVLINK_MSG_GPS_RTCM_DATA_CRCEXTRA  35
-
-#define FASTMAVLINK_MSG_ID_233_LEN_MIN  182
-#define FASTMAVLINK_MSG_ID_233_LEN_MAX  182
-#define FASTMAVLINK_MSG_ID_233_LEN  182
-#define FASTMAVLINK_MSG_ID_233_CRCEXTRA  35
-
-#define FASTMAVLINK_MSG_GPS_RTCM_DATA_FIELD_DATA_LEN  180
 
 #define FASTMAVLINK_MSG_GPS_RTCM_DATA_FLAGS  0
 #define FASTMAVLINK_MSG_GPS_RTCM_DATA_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_GPS_RTCM_DATA_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_GPS_RTCM_DATA_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_GPS_RTCM_DATA_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_233_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_233_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_GPS_RTCM_DATA_FRAME_LEN_MAX  207
+
+#define FASTMAVLINK_MSG_GPS_RTCM_DATA_FIELD_DATA_NUM  180 // number of elements in array
+#define FASTMAVLINK_MSG_GPS_RTCM_DATA_FIELD_DATA_LEN  180 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_GPS_RTCM_DATA_FIELD_FLAGS_OFS  0
+#define FASTMAVLINK_MSG_GPS_RTCM_DATA_FIELD_LEN_OFS  1
+#define FASTMAVLINK_MSG_GPS_RTCM_DATA_FIELD_DATA_OFS  2
 
 
 //----------------------------------------
@@ -188,6 +185,35 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gps_rtcm_data_decode(fmav_gps_rtcm_
 
     memset(payload, 0, FASTMAVLINK_MSG_GPS_RTCM_DATA_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gps_rtcm_data_get_field_flags(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gps_rtcm_data_get_field_len(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[1]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_gps_rtcm_data_get_field_data_ptr(const fmav_message_t* msg)
+{
+    return (uint8_t*)&(msg->payload[2]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gps_rtcm_data_get_field_data(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_GPS_RTCM_DATA_FIELD_DATA_NUM) return 0;
+    return ((uint8_t*)&(msg->payload[2]))[index];     
 }
 
 

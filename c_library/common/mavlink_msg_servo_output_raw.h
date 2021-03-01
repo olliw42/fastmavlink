@@ -38,25 +38,36 @@ typedef struct _fmav_servo_output_raw_t {
 
 #define FASTMAVLINK_MSG_ID_SERVO_OUTPUT_RAW  36
 
-
 #define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_PAYLOAD_LEN_MIN  21
 #define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_PAYLOAD_LEN_MAX  37
-#define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_PAYLOAD_LEN  37
 #define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_CRCEXTRA  222
-
-#define FASTMAVLINK_MSG_ID_36_LEN_MIN  21
-#define FASTMAVLINK_MSG_ID_36_LEN_MAX  37
-#define FASTMAVLINK_MSG_ID_36_LEN  37
-#define FASTMAVLINK_MSG_ID_36_CRCEXTRA  222
-
-
 
 #define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_FLAGS  0
 #define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_36_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_36_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_FRAME_LEN_MAX  62
+
+
+
+#define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_FIELD_SERVO1_RAW_OFS  4
+#define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_FIELD_SERVO2_RAW_OFS  6
+#define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_FIELD_SERVO3_RAW_OFS  8
+#define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_FIELD_SERVO4_RAW_OFS  10
+#define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_FIELD_SERVO5_RAW_OFS  12
+#define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_FIELD_SERVO6_RAW_OFS  14
+#define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_FIELD_SERVO7_RAW_OFS  16
+#define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_FIELD_SERVO8_RAW_OFS  18
+#define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_FIELD_PORT_OFS  20
+#define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_FIELD_SERVO9_RAW_OFS  21
+#define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_FIELD_SERVO10_RAW_OFS  23
+#define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_FIELD_SERVO11_RAW_OFS  25
+#define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_FIELD_SERVO12_RAW_OFS  27
+#define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_FIELD_SERVO13_RAW_OFS  29
+#define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_FIELD_SERVO14_RAW_OFS  31
+#define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_FIELD_SERVO15_RAW_OFS  33
+#define FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_FIELD_SERVO16_RAW_OFS  35
 
 
 //----------------------------------------
@@ -252,6 +263,153 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_servo_output_raw_decode(fmav_servo_
     memset(payload, 0, FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_servo_output_raw_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_servo_output_raw_get_field_servo1_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_servo_output_raw_get_field_servo2_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[6]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_servo_output_raw_get_field_servo3_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_servo_output_raw_get_field_servo4_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[10]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_servo_output_raw_get_field_servo5_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_servo_output_raw_get_field_servo6_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[14]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_servo_output_raw_get_field_servo7_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_servo_output_raw_get_field_servo8_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[18]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_servo_output_raw_get_field_port(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_servo_output_raw_get_field_servo9_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[21]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_servo_output_raw_get_field_servo10_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[23]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_servo_output_raw_get_field_servo11_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[25]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_servo_output_raw_get_field_servo12_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[27]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_servo_output_raw_get_field_servo13_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[29]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_servo_output_raw_get_field_servo14_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[31]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_servo_output_raw_get_field_servo15_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[33]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_servo_output_raw_get_field_servo16_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[35]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

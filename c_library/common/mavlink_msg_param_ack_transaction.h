@@ -26,25 +26,25 @@ typedef struct _fmav_param_ack_transaction_t {
 
 #define FASTMAVLINK_MSG_ID_PARAM_ACK_TRANSACTION  19
 
-
 #define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN_MIN  24
 #define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN_MAX  24
-#define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN  24
 #define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_CRCEXTRA  137
-
-#define FASTMAVLINK_MSG_ID_19_LEN_MIN  24
-#define FASTMAVLINK_MSG_ID_19_LEN_MAX  24
-#define FASTMAVLINK_MSG_ID_19_LEN  24
-#define FASTMAVLINK_MSG_ID_19_CRCEXTRA  137
-
-#define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_FIELD_PARAM_ID_LEN  16
 
 #define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_FLAGS  3
 #define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_TARGET_SYSTEM_OFS  4
 #define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_TARGET_COMPONENT_OFS  5
 
-#define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_19_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_19_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_FRAME_LEN_MAX  49
+
+#define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_FIELD_PARAM_ID_NUM  16 // number of elements in array
+#define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_FIELD_PARAM_ID_LEN  16 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_FIELD_PARAM_VALUE_OFS  0
+#define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_FIELD_TARGET_SYSTEM_OFS  4
+#define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_FIELD_TARGET_COMPONENT_OFS  5
+#define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_FIELD_PARAM_ID_OFS  6
+#define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_FIELD_PARAM_TYPE_OFS  22
+#define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_FIELD_PARAM_RESULT_OFS  23
 
 
 //----------------------------------------
@@ -200,6 +200,59 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_param_ack_transaction_decode(fmav_p
 
     memset(payload, 0, FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_param_ack_transaction_get_field_param_value(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_param_ack_transaction_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_param_ack_transaction_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[5]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_param_ack_transaction_get_field_param_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[22]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_param_ack_transaction_get_field_param_result(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[23]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_param_ack_transaction_get_field_param_id_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[6]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_param_ack_transaction_get_field_param_id(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_FIELD_PARAM_ID_NUM) return 0;
+    return ((char*)&(msg->payload[6]))[index];     
 }
 
 

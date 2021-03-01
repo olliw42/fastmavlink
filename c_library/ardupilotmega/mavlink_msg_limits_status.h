@@ -29,25 +29,27 @@ typedef struct _fmav_limits_status_t {
 
 #define FASTMAVLINK_MSG_ID_LIMITS_STATUS  167
 
-
 #define FASTMAVLINK_MSG_LIMITS_STATUS_PAYLOAD_LEN_MIN  22
 #define FASTMAVLINK_MSG_LIMITS_STATUS_PAYLOAD_LEN_MAX  22
-#define FASTMAVLINK_MSG_LIMITS_STATUS_PAYLOAD_LEN  22
 #define FASTMAVLINK_MSG_LIMITS_STATUS_CRCEXTRA  144
-
-#define FASTMAVLINK_MSG_ID_167_LEN_MIN  22
-#define FASTMAVLINK_MSG_ID_167_LEN_MAX  22
-#define FASTMAVLINK_MSG_ID_167_LEN  22
-#define FASTMAVLINK_MSG_ID_167_CRCEXTRA  144
-
-
 
 #define FASTMAVLINK_MSG_LIMITS_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_LIMITS_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_LIMITS_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_LIMITS_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_LIMITS_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_167_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_167_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_LIMITS_STATUS_FRAME_LEN_MAX  47
+
+
+
+#define FASTMAVLINK_MSG_LIMITS_STATUS_FIELD_LAST_TRIGGER_OFS  0
+#define FASTMAVLINK_MSG_LIMITS_STATUS_FIELD_LAST_ACTION_OFS  4
+#define FASTMAVLINK_MSG_LIMITS_STATUS_FIELD_LAST_RECOVERY_OFS  8
+#define FASTMAVLINK_MSG_LIMITS_STATUS_FIELD_LAST_CLEAR_OFS  12
+#define FASTMAVLINK_MSG_LIMITS_STATUS_FIELD_BREACH_COUNT_OFS  16
+#define FASTMAVLINK_MSG_LIMITS_STATUS_FIELD_LIMITS_STATE_OFS  18
+#define FASTMAVLINK_MSG_LIMITS_STATUS_FIELD_MODS_ENABLED_OFS  19
+#define FASTMAVLINK_MSG_LIMITS_STATUS_FIELD_MODS_REQUIRED_OFS  20
+#define FASTMAVLINK_MSG_LIMITS_STATUS_FIELD_MODS_TRIGGERED_OFS  21
 
 
 //----------------------------------------
@@ -216,6 +218,81 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_limits_status_decode(fmav_limits_st
     memset(payload, 0, FASTMAVLINK_MSG_LIMITS_STATUS_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_limits_status_get_field_last_trigger(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_limits_status_get_field_last_action(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_limits_status_get_field_last_recovery(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_limits_status_get_field_last_clear(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_limits_status_get_field_breach_count(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_limits_status_get_field_limits_state(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[18]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_limits_status_get_field_mods_enabled(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[19]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_limits_status_get_field_mods_required(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_limits_status_get_field_mods_triggered(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[21]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

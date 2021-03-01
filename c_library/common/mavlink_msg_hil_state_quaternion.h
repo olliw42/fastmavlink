@@ -36,25 +36,35 @@ typedef struct _fmav_hil_state_quaternion_t {
 
 #define FASTMAVLINK_MSG_ID_HIL_STATE_QUATERNION  115
 
-
 #define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_PAYLOAD_LEN_MIN  64
 #define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_PAYLOAD_LEN_MAX  64
-#define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_PAYLOAD_LEN  64
 #define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_CRCEXTRA  4
-
-#define FASTMAVLINK_MSG_ID_115_LEN_MIN  64
-#define FASTMAVLINK_MSG_ID_115_LEN_MAX  64
-#define FASTMAVLINK_MSG_ID_115_LEN  64
-#define FASTMAVLINK_MSG_ID_115_CRCEXTRA  4
-
-#define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_FIELD_ATTITUDE_QUATERNION_LEN  4
 
 #define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_FLAGS  0
 #define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_HIL_STATE_QUATERNION_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_115_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_115_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_FRAME_LEN_MAX  89
+
+#define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_FIELD_ATTITUDE_QUATERNION_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_FIELD_ATTITUDE_QUATERNION_LEN  16 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_FIELD_ATTITUDE_QUATERNION_OFS  8
+#define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_FIELD_ROLLSPEED_OFS  24
+#define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_FIELD_PITCHSPEED_OFS  28
+#define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_FIELD_YAWSPEED_OFS  32
+#define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_FIELD_LAT_OFS  36
+#define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_FIELD_LON_OFS  40
+#define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_FIELD_ALT_OFS  44
+#define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_FIELD_VX_OFS  48
+#define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_FIELD_VY_OFS  50
+#define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_FIELD_VZ_OFS  52
+#define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_FIELD_IND_AIRSPEED_OFS  54
+#define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_FIELD_TRUE_AIRSPEED_OFS  56
+#define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_FIELD_XACC_OFS  58
+#define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_FIELD_YACC_OFS  60
+#define FASTMAVLINK_MSG_HIL_STATE_QUATERNION_FIELD_ZACC_OFS  62
 
 
 //----------------------------------------
@@ -240,6 +250,139 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_hil_state_quaternion_decode(fmav_hi
 
     memset(payload, 0, FASTMAVLINK_MSG_HIL_STATE_QUATERNION_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_hil_state_quaternion_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_state_quaternion_get_field_rollspeed(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_state_quaternion_get_field_pitchspeed(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_state_quaternion_get_field_yawspeed(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_hil_state_quaternion_get_field_lat(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_hil_state_quaternion_get_field_lon(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[40]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_hil_state_quaternion_get_field_alt(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[44]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_hil_state_quaternion_get_field_vx(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[48]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_hil_state_quaternion_get_field_vy(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[50]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_hil_state_quaternion_get_field_vz(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[52]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_state_quaternion_get_field_ind_airspeed(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[54]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_state_quaternion_get_field_true_airspeed(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[56]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_hil_state_quaternion_get_field_xacc(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[58]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_hil_state_quaternion_get_field_yacc(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[60]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_hil_state_quaternion_get_field_zacc(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[62]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_hil_state_quaternion_get_field_attitude_quaternion_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[8]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_state_quaternion_get_field_attitude_quaternion(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_HIL_STATE_QUATERNION_FIELD_ATTITUDE_QUATERNION_NUM) return 0;
+    return ((float*)&(msg->payload[8]))[index];     
 }
 
 

@@ -25,25 +25,24 @@ typedef struct _fmav_param_value_t {
 
 #define FASTMAVLINK_MSG_ID_PARAM_VALUE  22
 
-
 #define FASTMAVLINK_MSG_PARAM_VALUE_PAYLOAD_LEN_MIN  25
 #define FASTMAVLINK_MSG_PARAM_VALUE_PAYLOAD_LEN_MAX  25
-#define FASTMAVLINK_MSG_PARAM_VALUE_PAYLOAD_LEN  25
 #define FASTMAVLINK_MSG_PARAM_VALUE_CRCEXTRA  220
-
-#define FASTMAVLINK_MSG_ID_22_LEN_MIN  25
-#define FASTMAVLINK_MSG_ID_22_LEN_MAX  25
-#define FASTMAVLINK_MSG_ID_22_LEN  25
-#define FASTMAVLINK_MSG_ID_22_CRCEXTRA  220
-
-#define FASTMAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN  16
 
 #define FASTMAVLINK_MSG_PARAM_VALUE_FLAGS  0
 #define FASTMAVLINK_MSG_PARAM_VALUE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_PARAM_VALUE_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_PARAM_VALUE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_PARAM_VALUE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_22_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_22_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_PARAM_VALUE_FRAME_LEN_MAX  50
+
+#define FASTMAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_NUM  16 // number of elements in array
+#define FASTMAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN  16 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_VALUE_OFS  0
+#define FASTMAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_COUNT_OFS  4
+#define FASTMAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_INDEX_OFS  6
+#define FASTMAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_OFS  8
+#define FASTMAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_TYPE_OFS  24
 
 
 //----------------------------------------
@@ -196,6 +195,51 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_param_value_decode(fmav_param_value
 
     memset(payload, 0, FASTMAVLINK_MSG_PARAM_VALUE_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_param_value_get_field_param_value(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_value_get_field_param_count(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_value_get_field_param_index(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[6]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_param_value_get_field_param_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_param_value_get_field_param_id_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[8]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_param_value_get_field_param_id(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_NUM) return 0;
+    return ((char*)&(msg->payload[8]))[index];     
 }
 
 

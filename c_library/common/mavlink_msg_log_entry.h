@@ -25,25 +25,23 @@ typedef struct _fmav_log_entry_t {
 
 #define FASTMAVLINK_MSG_ID_LOG_ENTRY  118
 
-
 #define FASTMAVLINK_MSG_LOG_ENTRY_PAYLOAD_LEN_MIN  14
 #define FASTMAVLINK_MSG_LOG_ENTRY_PAYLOAD_LEN_MAX  14
-#define FASTMAVLINK_MSG_LOG_ENTRY_PAYLOAD_LEN  14
 #define FASTMAVLINK_MSG_LOG_ENTRY_CRCEXTRA  56
-
-#define FASTMAVLINK_MSG_ID_118_LEN_MIN  14
-#define FASTMAVLINK_MSG_ID_118_LEN_MAX  14
-#define FASTMAVLINK_MSG_ID_118_LEN  14
-#define FASTMAVLINK_MSG_ID_118_CRCEXTRA  56
-
-
 
 #define FASTMAVLINK_MSG_LOG_ENTRY_FLAGS  0
 #define FASTMAVLINK_MSG_LOG_ENTRY_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_LOG_ENTRY_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_LOG_ENTRY_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_LOG_ENTRY_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_118_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_118_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_LOG_ENTRY_FRAME_LEN_MAX  39
+
+
+
+#define FASTMAVLINK_MSG_LOG_ENTRY_FIELD_TIME_UTC_OFS  0
+#define FASTMAVLINK_MSG_LOG_ENTRY_FIELD_SIZE_OFS  4
+#define FASTMAVLINK_MSG_LOG_ENTRY_FIELD_ID_OFS  8
+#define FASTMAVLINK_MSG_LOG_ENTRY_FIELD_NUM_LOGS_OFS  10
+#define FASTMAVLINK_MSG_LOG_ENTRY_FIELD_LAST_LOG_NUM_OFS  12
 
 
 //----------------------------------------
@@ -200,6 +198,49 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_log_entry_decode(fmav_log_entry_t* 
     memset(payload, 0, FASTMAVLINK_MSG_LOG_ENTRY_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_log_entry_get_field_time_utc(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_log_entry_get_field_size(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_entry_get_field_id(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_entry_get_field_num_logs(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[10]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_entry_get_field_last_log_num(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

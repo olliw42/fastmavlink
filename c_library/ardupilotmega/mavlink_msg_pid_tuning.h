@@ -27,25 +27,25 @@ typedef struct _fmav_pid_tuning_t {
 
 #define FASTMAVLINK_MSG_ID_PID_TUNING  194
 
-
 #define FASTMAVLINK_MSG_PID_TUNING_PAYLOAD_LEN_MIN  25
 #define FASTMAVLINK_MSG_PID_TUNING_PAYLOAD_LEN_MAX  25
-#define FASTMAVLINK_MSG_PID_TUNING_PAYLOAD_LEN  25
 #define FASTMAVLINK_MSG_PID_TUNING_CRCEXTRA  98
-
-#define FASTMAVLINK_MSG_ID_194_LEN_MIN  25
-#define FASTMAVLINK_MSG_ID_194_LEN_MAX  25
-#define FASTMAVLINK_MSG_ID_194_LEN  25
-#define FASTMAVLINK_MSG_ID_194_CRCEXTRA  98
-
-
 
 #define FASTMAVLINK_MSG_PID_TUNING_FLAGS  0
 #define FASTMAVLINK_MSG_PID_TUNING_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_PID_TUNING_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_PID_TUNING_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_PID_TUNING_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_194_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_194_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_PID_TUNING_FRAME_LEN_MAX  50
+
+
+
+#define FASTMAVLINK_MSG_PID_TUNING_FIELD_DESIRED_OFS  0
+#define FASTMAVLINK_MSG_PID_TUNING_FIELD_ACHIEVED_OFS  4
+#define FASTMAVLINK_MSG_PID_TUNING_FIELD_FF_OFS  8
+#define FASTMAVLINK_MSG_PID_TUNING_FIELD_P_OFS  12
+#define FASTMAVLINK_MSG_PID_TUNING_FIELD_I_OFS  16
+#define FASTMAVLINK_MSG_PID_TUNING_FIELD_D_OFS  20
+#define FASTMAVLINK_MSG_PID_TUNING_FIELD_AXIS_OFS  24
 
 
 //----------------------------------------
@@ -208,6 +208,65 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_pid_tuning_decode(fmav_pid_tuning_t
     memset(payload, 0, FASTMAVLINK_MSG_PID_TUNING_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_pid_tuning_get_field_desired(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_pid_tuning_get_field_achieved(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_pid_tuning_get_field_FF(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_pid_tuning_get_field_P(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_pid_tuning_get_field_I(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_pid_tuning_get_field_D(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_pid_tuning_get_field_axis(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

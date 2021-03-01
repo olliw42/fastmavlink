@@ -27,25 +27,25 @@ typedef struct _fmav_camera_capture_status_t {
 
 #define FASTMAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS  262
 
-
 #define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_PAYLOAD_LEN_MIN  18
 #define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_PAYLOAD_LEN_MAX  22
-#define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_PAYLOAD_LEN  22
 #define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_CRCEXTRA  12
-
-#define FASTMAVLINK_MSG_ID_262_LEN_MIN  18
-#define FASTMAVLINK_MSG_ID_262_LEN_MAX  22
-#define FASTMAVLINK_MSG_ID_262_LEN  22
-#define FASTMAVLINK_MSG_ID_262_CRCEXTRA  12
-
-
 
 #define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_262_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_262_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_FRAME_LEN_MAX  47
+
+
+
+#define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_FIELD_TIME_BOOT_MS_OFS  0
+#define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_FIELD_IMAGE_INTERVAL_OFS  4
+#define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_FIELD_RECORDING_TIME_MS_OFS  8
+#define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_FIELD_AVAILABLE_CAPACITY_OFS  12
+#define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_FIELD_IMAGE_STATUS_OFS  16
+#define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_FIELD_VIDEO_STATUS_OFS  17
+#define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_FIELD_IMAGE_COUNT_OFS  18
 
 
 //----------------------------------------
@@ -208,6 +208,65 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_camera_capture_status_decode(fmav_c
     memset(payload, 0, FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_camera_capture_status_get_field_time_boot_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_capture_status_get_field_image_interval(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_camera_capture_status_get_field_recording_time_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_capture_status_get_field_available_capacity(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_camera_capture_status_get_field_image_status(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_camera_capture_status_get_field_video_status(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[17]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_camera_capture_status_get_field_image_count(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[18]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

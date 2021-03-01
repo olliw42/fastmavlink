@@ -25,26 +25,26 @@ typedef struct _fmav_vision_position_delta_t {
 
 #define FASTMAVLINK_MSG_ID_VISION_POSITION_DELTA  11011
 
-
 #define FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN_MIN  44
 #define FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN_MAX  44
-#define FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN  44
 #define FASTMAVLINK_MSG_VISION_POSITION_DELTA_CRCEXTRA  106
-
-#define FASTMAVLINK_MSG_ID_11011_LEN_MIN  44
-#define FASTMAVLINK_MSG_ID_11011_LEN_MAX  44
-#define FASTMAVLINK_MSG_ID_11011_LEN  44
-#define FASTMAVLINK_MSG_ID_11011_CRCEXTRA  106
-
-#define FASTMAVLINK_MSG_VISION_POSITION_DELTA_FIELD_ANGLE_DELTA_LEN  3
-#define FASTMAVLINK_MSG_VISION_POSITION_DELTA_FIELD_POSITION_DELTA_LEN  3
 
 #define FASTMAVLINK_MSG_VISION_POSITION_DELTA_FLAGS  0
 #define FASTMAVLINK_MSG_VISION_POSITION_DELTA_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_VISION_POSITION_DELTA_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_VISION_POSITION_DELTA_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_11011_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_11011_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_VISION_POSITION_DELTA_FRAME_LEN_MAX  69
+
+#define FASTMAVLINK_MSG_VISION_POSITION_DELTA_FIELD_ANGLE_DELTA_NUM  3 // number of elements in array
+#define FASTMAVLINK_MSG_VISION_POSITION_DELTA_FIELD_ANGLE_DELTA_LEN  12 // length of array = number of bytes
+#define FASTMAVLINK_MSG_VISION_POSITION_DELTA_FIELD_POSITION_DELTA_NUM  3 // number of elements in array
+#define FASTMAVLINK_MSG_VISION_POSITION_DELTA_FIELD_POSITION_DELTA_LEN  12 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_VISION_POSITION_DELTA_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_VISION_POSITION_DELTA_FIELD_TIME_DELTA_USEC_OFS  8
+#define FASTMAVLINK_MSG_VISION_POSITION_DELTA_FIELD_ANGLE_DELTA_OFS  16
+#define FASTMAVLINK_MSG_VISION_POSITION_DELTA_FIELD_POSITION_DELTA_OFS  28
+#define FASTMAVLINK_MSG_VISION_POSITION_DELTA_FIELD_CONFIDENCE_OFS  40
 
 
 //----------------------------------------
@@ -197,6 +197,56 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_vision_position_delta_decode(fmav_v
 
     memset(payload, 0, FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_vision_position_delta_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_vision_position_delta_get_field_time_delta_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vision_position_delta_get_field_confidence(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[40]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_vision_position_delta_get_field_angle_delta_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[16]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vision_position_delta_get_field_angle_delta(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_VISION_POSITION_DELTA_FIELD_ANGLE_DELTA_NUM) return 0;
+    return ((float*)&(msg->payload[16]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_vision_position_delta_get_field_position_delta_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[28]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vision_position_delta_get_field_position_delta(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_VISION_POSITION_DELTA_FIELD_POSITION_DELTA_NUM) return 0;
+    return ((float*)&(msg->payload[28]))[index];     
 }
 
 

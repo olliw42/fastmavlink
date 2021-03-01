@@ -25,25 +25,23 @@ typedef struct _fmav_mount_orientation_t {
 
 #define FASTMAVLINK_MSG_ID_MOUNT_ORIENTATION  265
 
-
 #define FASTMAVLINK_MSG_MOUNT_ORIENTATION_PAYLOAD_LEN_MIN  16
 #define FASTMAVLINK_MSG_MOUNT_ORIENTATION_PAYLOAD_LEN_MAX  20
-#define FASTMAVLINK_MSG_MOUNT_ORIENTATION_PAYLOAD_LEN  20
 #define FASTMAVLINK_MSG_MOUNT_ORIENTATION_CRCEXTRA  26
-
-#define FASTMAVLINK_MSG_ID_265_LEN_MIN  16
-#define FASTMAVLINK_MSG_ID_265_LEN_MAX  20
-#define FASTMAVLINK_MSG_ID_265_LEN  20
-#define FASTMAVLINK_MSG_ID_265_CRCEXTRA  26
-
-
 
 #define FASTMAVLINK_MSG_MOUNT_ORIENTATION_FLAGS  0
 #define FASTMAVLINK_MSG_MOUNT_ORIENTATION_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_MOUNT_ORIENTATION_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_MOUNT_ORIENTATION_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_MOUNT_ORIENTATION_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_265_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_265_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_MOUNT_ORIENTATION_FRAME_LEN_MAX  45
+
+
+
+#define FASTMAVLINK_MSG_MOUNT_ORIENTATION_FIELD_TIME_BOOT_MS_OFS  0
+#define FASTMAVLINK_MSG_MOUNT_ORIENTATION_FIELD_ROLL_OFS  4
+#define FASTMAVLINK_MSG_MOUNT_ORIENTATION_FIELD_PITCH_OFS  8
+#define FASTMAVLINK_MSG_MOUNT_ORIENTATION_FIELD_YAW_OFS  12
+#define FASTMAVLINK_MSG_MOUNT_ORIENTATION_FIELD_YAW_ABSOLUTE_OFS  16
 
 
 //----------------------------------------
@@ -200,6 +198,49 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_mount_orientation_decode(fmav_mount
     memset(payload, 0, FASTMAVLINK_MSG_MOUNT_ORIENTATION_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_mount_orientation_get_field_time_boot_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_mount_orientation_get_field_roll(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_mount_orientation_get_field_pitch(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_mount_orientation_get_field_yaw(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_mount_orientation_get_field_yaw_absolute(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

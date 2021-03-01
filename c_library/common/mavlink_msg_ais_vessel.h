@@ -37,26 +37,38 @@ typedef struct _fmav_ais_vessel_t {
 
 #define FASTMAVLINK_MSG_ID_AIS_VESSEL  301
 
-
 #define FASTMAVLINK_MSG_AIS_VESSEL_PAYLOAD_LEN_MIN  58
 #define FASTMAVLINK_MSG_AIS_VESSEL_PAYLOAD_LEN_MAX  58
-#define FASTMAVLINK_MSG_AIS_VESSEL_PAYLOAD_LEN  58
 #define FASTMAVLINK_MSG_AIS_VESSEL_CRCEXTRA  243
-
-#define FASTMAVLINK_MSG_ID_301_LEN_MIN  58
-#define FASTMAVLINK_MSG_ID_301_LEN_MAX  58
-#define FASTMAVLINK_MSG_ID_301_LEN  58
-#define FASTMAVLINK_MSG_ID_301_CRCEXTRA  243
-
-#define FASTMAVLINK_MSG_AIS_VESSEL_FIELD_CALLSIGN_LEN  7
-#define FASTMAVLINK_MSG_AIS_VESSEL_FIELD_NAME_LEN  20
 
 #define FASTMAVLINK_MSG_AIS_VESSEL_FLAGS  0
 #define FASTMAVLINK_MSG_AIS_VESSEL_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_AIS_VESSEL_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_AIS_VESSEL_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_AIS_VESSEL_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_301_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_301_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_AIS_VESSEL_FRAME_LEN_MAX  83
+
+#define FASTMAVLINK_MSG_AIS_VESSEL_FIELD_CALLSIGN_NUM  7 // number of elements in array
+#define FASTMAVLINK_MSG_AIS_VESSEL_FIELD_CALLSIGN_LEN  7 // length of array = number of bytes
+#define FASTMAVLINK_MSG_AIS_VESSEL_FIELD_NAME_NUM  20 // number of elements in array
+#define FASTMAVLINK_MSG_AIS_VESSEL_FIELD_NAME_LEN  20 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_AIS_VESSEL_FIELD_MMSI_OFS  0
+#define FASTMAVLINK_MSG_AIS_VESSEL_FIELD_LAT_OFS  4
+#define FASTMAVLINK_MSG_AIS_VESSEL_FIELD_LON_OFS  8
+#define FASTMAVLINK_MSG_AIS_VESSEL_FIELD_COG_OFS  12
+#define FASTMAVLINK_MSG_AIS_VESSEL_FIELD_HEADING_OFS  14
+#define FASTMAVLINK_MSG_AIS_VESSEL_FIELD_VELOCITY_OFS  16
+#define FASTMAVLINK_MSG_AIS_VESSEL_FIELD_DIMENSION_BOW_OFS  18
+#define FASTMAVLINK_MSG_AIS_VESSEL_FIELD_DIMENSION_STERN_OFS  20
+#define FASTMAVLINK_MSG_AIS_VESSEL_FIELD_TSLC_OFS  22
+#define FASTMAVLINK_MSG_AIS_VESSEL_FIELD_FLAGS_OFS  24
+#define FASTMAVLINK_MSG_AIS_VESSEL_FIELD_TURN_RATE_OFS  26
+#define FASTMAVLINK_MSG_AIS_VESSEL_FIELD_NAVIGATIONAL_STATUS_OFS  27
+#define FASTMAVLINK_MSG_AIS_VESSEL_FIELD_TYPE_OFS  28
+#define FASTMAVLINK_MSG_AIS_VESSEL_FIELD_DIMENSION_PORT_OFS  29
+#define FASTMAVLINK_MSG_AIS_VESSEL_FIELD_DIMENSION_STARBOARD_OFS  30
+#define FASTMAVLINK_MSG_AIS_VESSEL_FIELD_CALLSIGN_OFS  31
+#define FASTMAVLINK_MSG_AIS_VESSEL_FIELD_NAME_OFS  38
 
 
 //----------------------------------------
@@ -245,6 +257,152 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_ais_vessel_decode(fmav_ais_vessel_t
 
     memset(payload, 0, FASTMAVLINK_MSG_AIS_VESSEL_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_ais_vessel_get_field_MMSI(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_ais_vessel_get_field_lat(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_ais_vessel_get_field_lon(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ais_vessel_get_field_COG(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ais_vessel_get_field_heading(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[14]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ais_vessel_get_field_velocity(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ais_vessel_get_field_dimension_bow(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[18]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ais_vessel_get_field_dimension_stern(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ais_vessel_get_field_tslc(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[22]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ais_vessel_get_field_flags(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_ais_vessel_get_field_turn_rate(const fmav_message_t* msg)
+{
+    int8_t r; 
+    memcpy(&r, &(msg->payload[26]), sizeof(int8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_ais_vessel_get_field_navigational_status(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[27]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_ais_vessel_get_field_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_ais_vessel_get_field_dimension_port(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[29]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_ais_vessel_get_field_dimension_starboard(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[30]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_ais_vessel_get_field_callsign_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[31]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_ais_vessel_get_field_callsign(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_AIS_VESSEL_FIELD_CALLSIGN_NUM) return 0;
+    return ((char*)&(msg->payload[31]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_ais_vessel_get_field_name_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[38]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_ais_vessel_get_field_name(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_AIS_VESSEL_FIELD_NAME_NUM) return 0;
+    return ((char*)&(msg->payload[38]))[index];     
 }
 
 

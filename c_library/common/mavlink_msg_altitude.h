@@ -27,25 +27,25 @@ typedef struct _fmav_altitude_t {
 
 #define FASTMAVLINK_MSG_ID_ALTITUDE  141
 
-
 #define FASTMAVLINK_MSG_ALTITUDE_PAYLOAD_LEN_MIN  32
 #define FASTMAVLINK_MSG_ALTITUDE_PAYLOAD_LEN_MAX  32
-#define FASTMAVLINK_MSG_ALTITUDE_PAYLOAD_LEN  32
 #define FASTMAVLINK_MSG_ALTITUDE_CRCEXTRA  47
-
-#define FASTMAVLINK_MSG_ID_141_LEN_MIN  32
-#define FASTMAVLINK_MSG_ID_141_LEN_MAX  32
-#define FASTMAVLINK_MSG_ID_141_LEN  32
-#define FASTMAVLINK_MSG_ID_141_CRCEXTRA  47
-
-
 
 #define FASTMAVLINK_MSG_ALTITUDE_FLAGS  0
 #define FASTMAVLINK_MSG_ALTITUDE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ALTITUDE_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_ALTITUDE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ALTITUDE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_141_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_141_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ALTITUDE_FRAME_LEN_MAX  57
+
+
+
+#define FASTMAVLINK_MSG_ALTITUDE_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_ALTITUDE_FIELD_ALTITUDE_MONOTONIC_OFS  8
+#define FASTMAVLINK_MSG_ALTITUDE_FIELD_ALTITUDE_AMSL_OFS  12
+#define FASTMAVLINK_MSG_ALTITUDE_FIELD_ALTITUDE_LOCAL_OFS  16
+#define FASTMAVLINK_MSG_ALTITUDE_FIELD_ALTITUDE_RELATIVE_OFS  20
+#define FASTMAVLINK_MSG_ALTITUDE_FIELD_ALTITUDE_TERRAIN_OFS  24
+#define FASTMAVLINK_MSG_ALTITUDE_FIELD_BOTTOM_CLEARANCE_OFS  28
 
 
 //----------------------------------------
@@ -208,6 +208,65 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_altitude_decode(fmav_altitude_t* pa
     memset(payload, 0, FASTMAVLINK_MSG_ALTITUDE_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_altitude_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_altitude_get_field_altitude_monotonic(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_altitude_get_field_altitude_amsl(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_altitude_get_field_altitude_local(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_altitude_get_field_altitude_relative(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_altitude_get_field_altitude_terrain(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_altitude_get_field_bottom_clearance(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

@@ -22,25 +22,20 @@ typedef struct _fmav_timesync_t {
 
 #define FASTMAVLINK_MSG_ID_TIMESYNC  111
 
-
 #define FASTMAVLINK_MSG_TIMESYNC_PAYLOAD_LEN_MIN  16
 #define FASTMAVLINK_MSG_TIMESYNC_PAYLOAD_LEN_MAX  16
-#define FASTMAVLINK_MSG_TIMESYNC_PAYLOAD_LEN  16
 #define FASTMAVLINK_MSG_TIMESYNC_CRCEXTRA  34
-
-#define FASTMAVLINK_MSG_ID_111_LEN_MIN  16
-#define FASTMAVLINK_MSG_ID_111_LEN_MAX  16
-#define FASTMAVLINK_MSG_ID_111_LEN  16
-#define FASTMAVLINK_MSG_ID_111_CRCEXTRA  34
-
-
 
 #define FASTMAVLINK_MSG_TIMESYNC_FLAGS  0
 #define FASTMAVLINK_MSG_TIMESYNC_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_TIMESYNC_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_TIMESYNC_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_TIMESYNC_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_111_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_111_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_TIMESYNC_FRAME_LEN_MAX  41
+
+
+
+#define FASTMAVLINK_MSG_TIMESYNC_FIELD_TC1_OFS  0
+#define FASTMAVLINK_MSG_TIMESYNC_FIELD_TS1_OFS  8
 
 
 //----------------------------------------
@@ -188,6 +183,25 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_timesync_decode(fmav_timesync_t* pa
     memset(payload, 0, FASTMAVLINK_MSG_TIMESYNC_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int64_t fmav_msg_timesync_get_field_tc1(const fmav_message_t* msg)
+{
+    int64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(int64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int64_t fmav_msg_timesync_get_field_ts1(const fmav_message_t* msg)
+{
+    int64_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(int64_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

@@ -27,25 +27,25 @@ typedef struct _fmav_ahrs_t {
 
 #define FASTMAVLINK_MSG_ID_AHRS  163
 
-
 #define FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MIN  28
 #define FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MAX  28
-#define FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN  28
 #define FASTMAVLINK_MSG_AHRS_CRCEXTRA  127
-
-#define FASTMAVLINK_MSG_ID_163_LEN_MIN  28
-#define FASTMAVLINK_MSG_ID_163_LEN_MAX  28
-#define FASTMAVLINK_MSG_ID_163_LEN  28
-#define FASTMAVLINK_MSG_ID_163_CRCEXTRA  127
-
-
 
 #define FASTMAVLINK_MSG_AHRS_FLAGS  0
 #define FASTMAVLINK_MSG_AHRS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_AHRS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_AHRS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_163_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_163_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_AHRS_FRAME_LEN_MAX  53
+
+
+
+#define FASTMAVLINK_MSG_AHRS_FIELD_OMEGAIX_OFS  0
+#define FASTMAVLINK_MSG_AHRS_FIELD_OMEGAIY_OFS  4
+#define FASTMAVLINK_MSG_AHRS_FIELD_OMEGAIZ_OFS  8
+#define FASTMAVLINK_MSG_AHRS_FIELD_ACCEL_WEIGHT_OFS  12
+#define FASTMAVLINK_MSG_AHRS_FIELD_RENORM_VAL_OFS  16
+#define FASTMAVLINK_MSG_AHRS_FIELD_ERROR_RP_OFS  20
+#define FASTMAVLINK_MSG_AHRS_FIELD_ERROR_YAW_OFS  24
 
 
 //----------------------------------------
@@ -208,6 +208,65 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_ahrs_decode(fmav_ahrs_t* payload, c
     memset(payload, 0, FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ahrs_get_field_omegaIx(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ahrs_get_field_omegaIy(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ahrs_get_field_omegaIz(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ahrs_get_field_accel_weight(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ahrs_get_field_renorm_val(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ahrs_get_field_error_rp(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ahrs_get_field_error_yaw(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

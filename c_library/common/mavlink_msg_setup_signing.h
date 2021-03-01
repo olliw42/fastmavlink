@@ -24,25 +24,23 @@ typedef struct _fmav_setup_signing_t {
 
 #define FASTMAVLINK_MSG_ID_SETUP_SIGNING  256
 
-
 #define FASTMAVLINK_MSG_SETUP_SIGNING_PAYLOAD_LEN_MIN  42
 #define FASTMAVLINK_MSG_SETUP_SIGNING_PAYLOAD_LEN_MAX  42
-#define FASTMAVLINK_MSG_SETUP_SIGNING_PAYLOAD_LEN  42
 #define FASTMAVLINK_MSG_SETUP_SIGNING_CRCEXTRA  71
-
-#define FASTMAVLINK_MSG_ID_256_LEN_MIN  42
-#define FASTMAVLINK_MSG_ID_256_LEN_MAX  42
-#define FASTMAVLINK_MSG_ID_256_LEN  42
-#define FASTMAVLINK_MSG_ID_256_CRCEXTRA  71
-
-#define FASTMAVLINK_MSG_SETUP_SIGNING_FIELD_SECRET_KEY_LEN  32
 
 #define FASTMAVLINK_MSG_SETUP_SIGNING_FLAGS  3
 #define FASTMAVLINK_MSG_SETUP_SIGNING_TARGET_SYSTEM_OFS  8
 #define FASTMAVLINK_MSG_SETUP_SIGNING_TARGET_COMPONENT_OFS  9
 
-#define FASTMAVLINK_MSG_SETUP_SIGNING_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_SETUP_SIGNING_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_256_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_256_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_SETUP_SIGNING_FRAME_LEN_MAX  67
+
+#define FASTMAVLINK_MSG_SETUP_SIGNING_FIELD_SECRET_KEY_NUM  32 // number of elements in array
+#define FASTMAVLINK_MSG_SETUP_SIGNING_FIELD_SECRET_KEY_LEN  32 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_SETUP_SIGNING_FIELD_INITIAL_TIMESTAMP_OFS  0
+#define FASTMAVLINK_MSG_SETUP_SIGNING_FIELD_TARGET_SYSTEM_OFS  8
+#define FASTMAVLINK_MSG_SETUP_SIGNING_FIELD_TARGET_COMPONENT_OFS  9
+#define FASTMAVLINK_MSG_SETUP_SIGNING_FIELD_SECRET_KEY_OFS  10
 
 
 //----------------------------------------
@@ -192,6 +190,43 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_setup_signing_decode(fmav_setup_sig
 
     memset(payload, 0, FASTMAVLINK_MSG_SETUP_SIGNING_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_setup_signing_get_field_initial_timestamp(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_setup_signing_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_setup_signing_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[9]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_setup_signing_get_field_secret_key_ptr(const fmav_message_t* msg)
+{
+    return (uint8_t*)&(msg->payload[10]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_setup_signing_get_field_secret_key(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_SETUP_SIGNING_FIELD_SECRET_KEY_NUM) return 0;
+    return ((uint8_t*)&(msg->payload[10]))[index];     
 }
 
 

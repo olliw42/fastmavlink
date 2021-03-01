@@ -22,25 +22,20 @@ typedef struct _fmav_qshot_status_t {
 
 #define FASTMAVLINK_MSG_ID_QSHOT_STATUS  60020
 
-
 #define FASTMAVLINK_MSG_QSHOT_STATUS_PAYLOAD_LEN_MIN  4
 #define FASTMAVLINK_MSG_QSHOT_STATUS_PAYLOAD_LEN_MAX  4
-#define FASTMAVLINK_MSG_QSHOT_STATUS_PAYLOAD_LEN  4
 #define FASTMAVLINK_MSG_QSHOT_STATUS_CRCEXTRA  202
-
-#define FASTMAVLINK_MSG_ID_60020_LEN_MIN  4
-#define FASTMAVLINK_MSG_ID_60020_LEN_MAX  4
-#define FASTMAVLINK_MSG_ID_60020_LEN  4
-#define FASTMAVLINK_MSG_ID_60020_CRCEXTRA  202
-
-
 
 #define FASTMAVLINK_MSG_QSHOT_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_QSHOT_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_QSHOT_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_QSHOT_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_QSHOT_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_60020_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_60020_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_QSHOT_STATUS_FRAME_LEN_MAX  29
+
+
+
+#define FASTMAVLINK_MSG_QSHOT_STATUS_FIELD_MODE_OFS  0
+#define FASTMAVLINK_MSG_QSHOT_STATUS_FIELD_SHOT_STATE_OFS  2
 
 
 //----------------------------------------
@@ -188,6 +183,25 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_qshot_status_decode(fmav_qshot_stat
     memset(payload, 0, FASTMAVLINK_MSG_QSHOT_STATUS_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_qshot_status_get_field_mode(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_qshot_status_get_field_shot_state(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[2]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

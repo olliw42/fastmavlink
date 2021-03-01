@@ -34,25 +34,32 @@ typedef struct _fmav_position_target_global_int_t {
 
 #define FASTMAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT  87
 
-
 #define FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_PAYLOAD_LEN_MIN  51
 #define FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_PAYLOAD_LEN_MAX  51
-#define FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_PAYLOAD_LEN  51
 #define FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_CRCEXTRA  150
-
-#define FASTMAVLINK_MSG_ID_87_LEN_MIN  51
-#define FASTMAVLINK_MSG_ID_87_LEN_MAX  51
-#define FASTMAVLINK_MSG_ID_87_LEN  51
-#define FASTMAVLINK_MSG_ID_87_CRCEXTRA  150
-
-
 
 #define FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_FLAGS  0
 #define FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_87_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_87_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_FRAME_LEN_MAX  76
+
+
+
+#define FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_FIELD_TIME_BOOT_MS_OFS  0
+#define FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_FIELD_LAT_INT_OFS  4
+#define FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_FIELD_LON_INT_OFS  8
+#define FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_FIELD_ALT_OFS  12
+#define FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_FIELD_VX_OFS  16
+#define FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_FIELD_VY_OFS  20
+#define FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_FIELD_VZ_OFS  24
+#define FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_FIELD_AFX_OFS  28
+#define FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_FIELD_AFY_OFS  32
+#define FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_FIELD_AFZ_OFS  36
+#define FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_FIELD_YAW_OFS  40
+#define FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_FIELD_YAW_RATE_OFS  44
+#define FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_FIELD_TYPE_MASK_OFS  48
+#define FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_FIELD_COORDINATE_FRAME_OFS  50
 
 
 //----------------------------------------
@@ -236,6 +243,121 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_position_target_global_int_decode(f
     memset(payload, 0, FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_position_target_global_int_get_field_time_boot_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_position_target_global_int_get_field_lat_int(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_position_target_global_int_get_field_lon_int(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_position_target_global_int_get_field_alt(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_position_target_global_int_get_field_vx(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_position_target_global_int_get_field_vy(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_position_target_global_int_get_field_vz(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_position_target_global_int_get_field_afx(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_position_target_global_int_get_field_afy(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_position_target_global_int_get_field_afz(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_position_target_global_int_get_field_yaw(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[40]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_position_target_global_int_get_field_yaw_rate(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[44]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_position_target_global_int_get_field_type_mask(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[48]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_position_target_global_int_get_field_coordinate_frame(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[50]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

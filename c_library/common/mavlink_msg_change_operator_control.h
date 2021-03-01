@@ -24,25 +24,23 @@ typedef struct _fmav_change_operator_control_t {
 
 #define FASTMAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL  5
 
-
 #define FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_PAYLOAD_LEN_MIN  28
 #define FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_PAYLOAD_LEN_MAX  28
-#define FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_PAYLOAD_LEN  28
 #define FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_CRCEXTRA  217
-
-#define FASTMAVLINK_MSG_ID_5_LEN_MIN  28
-#define FASTMAVLINK_MSG_ID_5_LEN_MAX  28
-#define FASTMAVLINK_MSG_ID_5_LEN  28
-#define FASTMAVLINK_MSG_ID_5_CRCEXTRA  217
-
-#define FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_FIELD_PASSKEY_LEN  25
 
 #define FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_FLAGS  1
 #define FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_5_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_5_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_FRAME_LEN_MAX  53
+
+#define FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_FIELD_PASSKEY_NUM  25 // number of elements in array
+#define FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_FIELD_PASSKEY_LEN  25 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_FIELD_TARGET_SYSTEM_OFS  0
+#define FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_FIELD_CONTROL_REQUEST_OFS  1
+#define FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_FIELD_VERSION_OFS  2
+#define FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_FIELD_PASSKEY_OFS  3
 
 
 //----------------------------------------
@@ -192,6 +190,43 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_change_operator_control_decode(fmav
 
     memset(payload, 0, FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_change_operator_control_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_change_operator_control_get_field_control_request(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[1]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_change_operator_control_get_field_version(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[2]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_change_operator_control_get_field_passkey_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[3]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_change_operator_control_get_field_passkey(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_CHANGE_OPERATOR_CONTROL_FIELD_PASSKEY_NUM) return 0;
+    return ((char*)&(msg->payload[3]))[index];     
 }
 
 

@@ -22,25 +22,20 @@ typedef struct _fmav_camera_trigger_t {
 
 #define FASTMAVLINK_MSG_ID_CAMERA_TRIGGER  112
 
-
 #define FASTMAVLINK_MSG_CAMERA_TRIGGER_PAYLOAD_LEN_MIN  12
 #define FASTMAVLINK_MSG_CAMERA_TRIGGER_PAYLOAD_LEN_MAX  12
-#define FASTMAVLINK_MSG_CAMERA_TRIGGER_PAYLOAD_LEN  12
 #define FASTMAVLINK_MSG_CAMERA_TRIGGER_CRCEXTRA  174
-
-#define FASTMAVLINK_MSG_ID_112_LEN_MIN  12
-#define FASTMAVLINK_MSG_ID_112_LEN_MAX  12
-#define FASTMAVLINK_MSG_ID_112_LEN  12
-#define FASTMAVLINK_MSG_ID_112_CRCEXTRA  174
-
-
 
 #define FASTMAVLINK_MSG_CAMERA_TRIGGER_FLAGS  0
 #define FASTMAVLINK_MSG_CAMERA_TRIGGER_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_CAMERA_TRIGGER_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_CAMERA_TRIGGER_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_CAMERA_TRIGGER_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_112_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_112_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_CAMERA_TRIGGER_FRAME_LEN_MAX  37
+
+
+
+#define FASTMAVLINK_MSG_CAMERA_TRIGGER_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_CAMERA_TRIGGER_FIELD_SEQ_OFS  8
 
 
 //----------------------------------------
@@ -188,6 +183,25 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_camera_trigger_decode(fmav_camera_t
     memset(payload, 0, FASTMAVLINK_MSG_CAMERA_TRIGGER_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_camera_trigger_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_camera_trigger_get_field_seq(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

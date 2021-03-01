@@ -31,25 +31,29 @@ typedef struct _fmav_digicam_configure_t {
 
 #define FASTMAVLINK_MSG_ID_DIGICAM_CONFIGURE  154
 
-
 #define FASTMAVLINK_MSG_DIGICAM_CONFIGURE_PAYLOAD_LEN_MIN  15
 #define FASTMAVLINK_MSG_DIGICAM_CONFIGURE_PAYLOAD_LEN_MAX  15
-#define FASTMAVLINK_MSG_DIGICAM_CONFIGURE_PAYLOAD_LEN  15
 #define FASTMAVLINK_MSG_DIGICAM_CONFIGURE_CRCEXTRA  84
-
-#define FASTMAVLINK_MSG_ID_154_LEN_MIN  15
-#define FASTMAVLINK_MSG_ID_154_LEN_MAX  15
-#define FASTMAVLINK_MSG_ID_154_LEN  15
-#define FASTMAVLINK_MSG_ID_154_CRCEXTRA  84
-
-
 
 #define FASTMAVLINK_MSG_DIGICAM_CONFIGURE_FLAGS  3
 #define FASTMAVLINK_MSG_DIGICAM_CONFIGURE_TARGET_SYSTEM_OFS  6
 #define FASTMAVLINK_MSG_DIGICAM_CONFIGURE_TARGET_COMPONENT_OFS  7
 
-#define FASTMAVLINK_MSG_DIGICAM_CONFIGURE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_DIGICAM_CONFIGURE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_154_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_154_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_DIGICAM_CONFIGURE_FRAME_LEN_MAX  40
+
+
+
+#define FASTMAVLINK_MSG_DIGICAM_CONFIGURE_FIELD_EXTRA_VALUE_OFS  0
+#define FASTMAVLINK_MSG_DIGICAM_CONFIGURE_FIELD_SHUTTER_SPEED_OFS  4
+#define FASTMAVLINK_MSG_DIGICAM_CONFIGURE_FIELD_TARGET_SYSTEM_OFS  6
+#define FASTMAVLINK_MSG_DIGICAM_CONFIGURE_FIELD_TARGET_COMPONENT_OFS  7
+#define FASTMAVLINK_MSG_DIGICAM_CONFIGURE_FIELD_MODE_OFS  8
+#define FASTMAVLINK_MSG_DIGICAM_CONFIGURE_FIELD_APERTURE_OFS  9
+#define FASTMAVLINK_MSG_DIGICAM_CONFIGURE_FIELD_ISO_OFS  10
+#define FASTMAVLINK_MSG_DIGICAM_CONFIGURE_FIELD_EXPOSURE_TYPE_OFS  11
+#define FASTMAVLINK_MSG_DIGICAM_CONFIGURE_FIELD_COMMAND_ID_OFS  12
+#define FASTMAVLINK_MSG_DIGICAM_CONFIGURE_FIELD_ENGINE_CUT_OFF_OFS  13
+#define FASTMAVLINK_MSG_DIGICAM_CONFIGURE_FIELD_EXTRA_PARAM_OFS  14
 
 
 //----------------------------------------
@@ -224,6 +228,97 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_digicam_configure_decode(fmav_digic
     memset(payload, 0, FASTMAVLINK_MSG_DIGICAM_CONFIGURE_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_digicam_configure_get_field_extra_value(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_digicam_configure_get_field_shutter_speed(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_digicam_configure_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[6]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_digicam_configure_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[7]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_digicam_configure_get_field_mode(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_digicam_configure_get_field_aperture(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[9]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_digicam_configure_get_field_iso(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[10]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_digicam_configure_get_field_exposure_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[11]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_digicam_configure_get_field_command_id(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_digicam_configure_get_field_engine_cut_off(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[13]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_digicam_configure_get_field_extra_param(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[14]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

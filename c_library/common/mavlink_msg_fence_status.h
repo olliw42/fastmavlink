@@ -25,25 +25,23 @@ typedef struct _fmav_fence_status_t {
 
 #define FASTMAVLINK_MSG_ID_FENCE_STATUS  162
 
-
 #define FASTMAVLINK_MSG_FENCE_STATUS_PAYLOAD_LEN_MIN  8
 #define FASTMAVLINK_MSG_FENCE_STATUS_PAYLOAD_LEN_MAX  9
-#define FASTMAVLINK_MSG_FENCE_STATUS_PAYLOAD_LEN  9
 #define FASTMAVLINK_MSG_FENCE_STATUS_CRCEXTRA  189
-
-#define FASTMAVLINK_MSG_ID_162_LEN_MIN  8
-#define FASTMAVLINK_MSG_ID_162_LEN_MAX  9
-#define FASTMAVLINK_MSG_ID_162_LEN  9
-#define FASTMAVLINK_MSG_ID_162_CRCEXTRA  189
-
-
 
 #define FASTMAVLINK_MSG_FENCE_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_FENCE_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_FENCE_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_FENCE_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_FENCE_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_162_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_162_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_FENCE_STATUS_FRAME_LEN_MAX  34
+
+
+
+#define FASTMAVLINK_MSG_FENCE_STATUS_FIELD_BREACH_TIME_OFS  0
+#define FASTMAVLINK_MSG_FENCE_STATUS_FIELD_BREACH_COUNT_OFS  4
+#define FASTMAVLINK_MSG_FENCE_STATUS_FIELD_BREACH_STATUS_OFS  6
+#define FASTMAVLINK_MSG_FENCE_STATUS_FIELD_BREACH_TYPE_OFS  7
+#define FASTMAVLINK_MSG_FENCE_STATUS_FIELD_BREACH_MITIGATION_OFS  8
 
 
 //----------------------------------------
@@ -200,6 +198,49 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_fence_status_decode(fmav_fence_stat
     memset(payload, 0, FASTMAVLINK_MSG_FENCE_STATUS_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_fence_status_get_field_breach_time(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_fence_status_get_field_breach_count(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_fence_status_get_field_breach_status(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[6]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_fence_status_get_field_breach_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[7]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_fence_status_get_field_breach_mitigation(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

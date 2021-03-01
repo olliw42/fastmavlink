@@ -29,25 +29,28 @@ typedef struct _fmav_param_map_rc_t {
 
 #define FASTMAVLINK_MSG_ID_PARAM_MAP_RC  50
 
-
 #define FASTMAVLINK_MSG_PARAM_MAP_RC_PAYLOAD_LEN_MIN  37
 #define FASTMAVLINK_MSG_PARAM_MAP_RC_PAYLOAD_LEN_MAX  37
-#define FASTMAVLINK_MSG_PARAM_MAP_RC_PAYLOAD_LEN  37
 #define FASTMAVLINK_MSG_PARAM_MAP_RC_CRCEXTRA  78
-
-#define FASTMAVLINK_MSG_ID_50_LEN_MIN  37
-#define FASTMAVLINK_MSG_ID_50_LEN_MAX  37
-#define FASTMAVLINK_MSG_ID_50_LEN  37
-#define FASTMAVLINK_MSG_ID_50_CRCEXTRA  78
-
-#define FASTMAVLINK_MSG_PARAM_MAP_RC_FIELD_PARAM_ID_LEN  16
 
 #define FASTMAVLINK_MSG_PARAM_MAP_RC_FLAGS  3
 #define FASTMAVLINK_MSG_PARAM_MAP_RC_TARGET_SYSTEM_OFS  18
 #define FASTMAVLINK_MSG_PARAM_MAP_RC_TARGET_COMPONENT_OFS  19
 
-#define FASTMAVLINK_MSG_PARAM_MAP_RC_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_PARAM_MAP_RC_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_50_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_50_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_PARAM_MAP_RC_FRAME_LEN_MAX  62
+
+#define FASTMAVLINK_MSG_PARAM_MAP_RC_FIELD_PARAM_ID_NUM  16 // number of elements in array
+#define FASTMAVLINK_MSG_PARAM_MAP_RC_FIELD_PARAM_ID_LEN  16 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_PARAM_MAP_RC_FIELD_PARAM_VALUE0_OFS  0
+#define FASTMAVLINK_MSG_PARAM_MAP_RC_FIELD_SCALE_OFS  4
+#define FASTMAVLINK_MSG_PARAM_MAP_RC_FIELD_PARAM_VALUE_MIN_OFS  8
+#define FASTMAVLINK_MSG_PARAM_MAP_RC_FIELD_PARAM_VALUE_MAX_OFS  12
+#define FASTMAVLINK_MSG_PARAM_MAP_RC_FIELD_PARAM_INDEX_OFS  16
+#define FASTMAVLINK_MSG_PARAM_MAP_RC_FIELD_TARGET_SYSTEM_OFS  18
+#define FASTMAVLINK_MSG_PARAM_MAP_RC_FIELD_TARGET_COMPONENT_OFS  19
+#define FASTMAVLINK_MSG_PARAM_MAP_RC_FIELD_PARAM_ID_OFS  20
+#define FASTMAVLINK_MSG_PARAM_MAP_RC_FIELD_PARAMETER_RC_CHANNEL_INDEX_OFS  36
 
 
 //----------------------------------------
@@ -212,6 +215,83 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_param_map_rc_decode(fmav_param_map_
 
     memset(payload, 0, FASTMAVLINK_MSG_PARAM_MAP_RC_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_param_map_rc_get_field_param_value0(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_param_map_rc_get_field_scale(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_param_map_rc_get_field_param_value_min(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_param_map_rc_get_field_param_value_max(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_param_map_rc_get_field_param_index(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_param_map_rc_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[18]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_param_map_rc_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[19]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_param_map_rc_get_field_parameter_rc_channel_index(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_param_map_rc_get_field_param_id_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[20]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_param_map_rc_get_field_param_id(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_PARAM_MAP_RC_FIELD_PARAM_ID_NUM) return 0;
+    return ((char*)&(msg->payload[20]))[index];     
 }
 
 

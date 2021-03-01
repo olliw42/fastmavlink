@@ -26,25 +26,24 @@ typedef struct _fmav_command_ack_t {
 
 #define FASTMAVLINK_MSG_ID_COMMAND_ACK  77
 
-
 #define FASTMAVLINK_MSG_COMMAND_ACK_PAYLOAD_LEN_MIN  3
 #define FASTMAVLINK_MSG_COMMAND_ACK_PAYLOAD_LEN_MAX  10
-#define FASTMAVLINK_MSG_COMMAND_ACK_PAYLOAD_LEN  10
 #define FASTMAVLINK_MSG_COMMAND_ACK_CRCEXTRA  143
-
-#define FASTMAVLINK_MSG_ID_77_LEN_MIN  3
-#define FASTMAVLINK_MSG_ID_77_LEN_MAX  10
-#define FASTMAVLINK_MSG_ID_77_LEN  10
-#define FASTMAVLINK_MSG_ID_77_CRCEXTRA  143
-
-
 
 #define FASTMAVLINK_MSG_COMMAND_ACK_FLAGS  3
 #define FASTMAVLINK_MSG_COMMAND_ACK_TARGET_SYSTEM_OFS  8
 #define FASTMAVLINK_MSG_COMMAND_ACK_TARGET_COMPONENT_OFS  9
 
-#define FASTMAVLINK_MSG_COMMAND_ACK_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_COMMAND_ACK_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_77_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_77_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_COMMAND_ACK_FRAME_LEN_MAX  35
+
+
+
+#define FASTMAVLINK_MSG_COMMAND_ACK_FIELD_COMMAND_OFS  0
+#define FASTMAVLINK_MSG_COMMAND_ACK_FIELD_RESULT_OFS  2
+#define FASTMAVLINK_MSG_COMMAND_ACK_FIELD_PROGRESS_OFS  3
+#define FASTMAVLINK_MSG_COMMAND_ACK_FIELD_RESULT_PARAM2_OFS  4
+#define FASTMAVLINK_MSG_COMMAND_ACK_FIELD_TARGET_SYSTEM_OFS  8
+#define FASTMAVLINK_MSG_COMMAND_ACK_FIELD_TARGET_COMPONENT_OFS  9
 
 
 //----------------------------------------
@@ -204,6 +203,57 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_command_ack_decode(fmav_command_ack
     memset(payload, 0, FASTMAVLINK_MSG_COMMAND_ACK_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_ack_get_field_command(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_command_ack_get_field_result(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[2]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_command_ack_get_field_progress(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[3]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_command_ack_get_field_result_param2(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_command_ack_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_command_ack_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[9]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

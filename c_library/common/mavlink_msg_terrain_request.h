@@ -24,25 +24,22 @@ typedef struct _fmav_terrain_request_t {
 
 #define FASTMAVLINK_MSG_ID_TERRAIN_REQUEST  133
 
-
 #define FASTMAVLINK_MSG_TERRAIN_REQUEST_PAYLOAD_LEN_MIN  18
 #define FASTMAVLINK_MSG_TERRAIN_REQUEST_PAYLOAD_LEN_MAX  18
-#define FASTMAVLINK_MSG_TERRAIN_REQUEST_PAYLOAD_LEN  18
 #define FASTMAVLINK_MSG_TERRAIN_REQUEST_CRCEXTRA  6
-
-#define FASTMAVLINK_MSG_ID_133_LEN_MIN  18
-#define FASTMAVLINK_MSG_ID_133_LEN_MAX  18
-#define FASTMAVLINK_MSG_ID_133_LEN  18
-#define FASTMAVLINK_MSG_ID_133_CRCEXTRA  6
-
-
 
 #define FASTMAVLINK_MSG_TERRAIN_REQUEST_FLAGS  0
 #define FASTMAVLINK_MSG_TERRAIN_REQUEST_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_TERRAIN_REQUEST_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_TERRAIN_REQUEST_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_TERRAIN_REQUEST_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_133_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_133_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_TERRAIN_REQUEST_FRAME_LEN_MAX  43
+
+
+
+#define FASTMAVLINK_MSG_TERRAIN_REQUEST_FIELD_MASK_OFS  0
+#define FASTMAVLINK_MSG_TERRAIN_REQUEST_FIELD_LAT_OFS  8
+#define FASTMAVLINK_MSG_TERRAIN_REQUEST_FIELD_LON_OFS  12
+#define FASTMAVLINK_MSG_TERRAIN_REQUEST_FIELD_GRID_SPACING_OFS  16
 
 
 //----------------------------------------
@@ -196,6 +193,41 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_terrain_request_decode(fmav_terrain
     memset(payload, 0, FASTMAVLINK_MSG_TERRAIN_REQUEST_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_terrain_request_get_field_mask(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_terrain_request_get_field_lat(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_terrain_request_get_field_lon(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_request_get_field_grid_spacing(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

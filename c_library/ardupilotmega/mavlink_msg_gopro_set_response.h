@@ -22,25 +22,20 @@ typedef struct _fmav_gopro_set_response_t {
 
 #define FASTMAVLINK_MSG_ID_GOPRO_SET_RESPONSE  219
 
-
 #define FASTMAVLINK_MSG_GOPRO_SET_RESPONSE_PAYLOAD_LEN_MIN  2
 #define FASTMAVLINK_MSG_GOPRO_SET_RESPONSE_PAYLOAD_LEN_MAX  2
-#define FASTMAVLINK_MSG_GOPRO_SET_RESPONSE_PAYLOAD_LEN  2
 #define FASTMAVLINK_MSG_GOPRO_SET_RESPONSE_CRCEXTRA  162
-
-#define FASTMAVLINK_MSG_ID_219_LEN_MIN  2
-#define FASTMAVLINK_MSG_ID_219_LEN_MAX  2
-#define FASTMAVLINK_MSG_ID_219_LEN  2
-#define FASTMAVLINK_MSG_ID_219_CRCEXTRA  162
-
-
 
 #define FASTMAVLINK_MSG_GOPRO_SET_RESPONSE_FLAGS  0
 #define FASTMAVLINK_MSG_GOPRO_SET_RESPONSE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_GOPRO_SET_RESPONSE_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_GOPRO_SET_RESPONSE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_GOPRO_SET_RESPONSE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_219_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_219_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_GOPRO_SET_RESPONSE_FRAME_LEN_MAX  27
+
+
+
+#define FASTMAVLINK_MSG_GOPRO_SET_RESPONSE_FIELD_CMD_ID_OFS  0
+#define FASTMAVLINK_MSG_GOPRO_SET_RESPONSE_FIELD_STATUS_OFS  1
 
 
 //----------------------------------------
@@ -188,6 +183,25 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gopro_set_response_decode(fmav_gopr
     memset(payload, 0, FASTMAVLINK_MSG_GOPRO_SET_RESPONSE_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gopro_set_response_get_field_cmd_id(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gopro_set_response_get_field_status(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[1]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

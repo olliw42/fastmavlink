@@ -25,26 +25,26 @@ typedef struct _fmav_param_ext_set_t {
 
 #define FASTMAVLINK_MSG_ID_PARAM_EXT_SET  323
 
-
 #define FASTMAVLINK_MSG_PARAM_EXT_SET_PAYLOAD_LEN_MIN  147
 #define FASTMAVLINK_MSG_PARAM_EXT_SET_PAYLOAD_LEN_MAX  147
-#define FASTMAVLINK_MSG_PARAM_EXT_SET_PAYLOAD_LEN  147
 #define FASTMAVLINK_MSG_PARAM_EXT_SET_CRCEXTRA  78
-
-#define FASTMAVLINK_MSG_ID_323_LEN_MIN  147
-#define FASTMAVLINK_MSG_ID_323_LEN_MAX  147
-#define FASTMAVLINK_MSG_ID_323_LEN  147
-#define FASTMAVLINK_MSG_ID_323_CRCEXTRA  78
-
-#define FASTMAVLINK_MSG_PARAM_EXT_SET_FIELD_PARAM_ID_LEN  16
-#define FASTMAVLINK_MSG_PARAM_EXT_SET_FIELD_PARAM_VALUE_LEN  128
 
 #define FASTMAVLINK_MSG_PARAM_EXT_SET_FLAGS  3
 #define FASTMAVLINK_MSG_PARAM_EXT_SET_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_PARAM_EXT_SET_TARGET_COMPONENT_OFS  1
 
-#define FASTMAVLINK_MSG_PARAM_EXT_SET_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_PARAM_EXT_SET_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_323_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_323_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_PARAM_EXT_SET_FRAME_LEN_MAX  172
+
+#define FASTMAVLINK_MSG_PARAM_EXT_SET_FIELD_PARAM_ID_NUM  16 // number of elements in array
+#define FASTMAVLINK_MSG_PARAM_EXT_SET_FIELD_PARAM_ID_LEN  16 // length of array = number of bytes
+#define FASTMAVLINK_MSG_PARAM_EXT_SET_FIELD_PARAM_VALUE_NUM  128 // number of elements in array
+#define FASTMAVLINK_MSG_PARAM_EXT_SET_FIELD_PARAM_VALUE_LEN  128 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_PARAM_EXT_SET_FIELD_TARGET_SYSTEM_OFS  0
+#define FASTMAVLINK_MSG_PARAM_EXT_SET_FIELD_TARGET_COMPONENT_OFS  1
+#define FASTMAVLINK_MSG_PARAM_EXT_SET_FIELD_PARAM_ID_OFS  2
+#define FASTMAVLINK_MSG_PARAM_EXT_SET_FIELD_PARAM_VALUE_OFS  18
+#define FASTMAVLINK_MSG_PARAM_EXT_SET_FIELD_PARAM_TYPE_OFS  146
 
 
 //----------------------------------------
@@ -197,6 +197,56 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_param_ext_set_decode(fmav_param_ext
 
     memset(payload, 0, FASTMAVLINK_MSG_PARAM_EXT_SET_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_param_ext_set_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_param_ext_set_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[1]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_param_ext_set_get_field_param_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[146]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_param_ext_set_get_field_param_id_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[2]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_param_ext_set_get_field_param_id(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_PARAM_EXT_SET_FIELD_PARAM_ID_NUM) return 0;
+    return ((char*)&(msg->payload[2]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_param_ext_set_get_field_param_value_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[18]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_param_ext_set_get_field_param_value(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_PARAM_EXT_SET_FIELD_PARAM_VALUE_NUM) return 0;
+    return ((char*)&(msg->payload[18]))[index];     
 }
 
 

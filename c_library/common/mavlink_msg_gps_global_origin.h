@@ -24,25 +24,22 @@ typedef struct _fmav_gps_global_origin_t {
 
 #define FASTMAVLINK_MSG_ID_GPS_GLOBAL_ORIGIN  49
 
-
 #define FASTMAVLINK_MSG_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN_MIN  12
 #define FASTMAVLINK_MSG_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN_MAX  20
-#define FASTMAVLINK_MSG_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN  20
 #define FASTMAVLINK_MSG_GPS_GLOBAL_ORIGIN_CRCEXTRA  39
-
-#define FASTMAVLINK_MSG_ID_49_LEN_MIN  12
-#define FASTMAVLINK_MSG_ID_49_LEN_MAX  20
-#define FASTMAVLINK_MSG_ID_49_LEN  20
-#define FASTMAVLINK_MSG_ID_49_CRCEXTRA  39
-
-
 
 #define FASTMAVLINK_MSG_GPS_GLOBAL_ORIGIN_FLAGS  0
 #define FASTMAVLINK_MSG_GPS_GLOBAL_ORIGIN_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_GPS_GLOBAL_ORIGIN_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_GPS_GLOBAL_ORIGIN_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_49_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_49_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_GPS_GLOBAL_ORIGIN_FRAME_LEN_MAX  45
+
+
+
+#define FASTMAVLINK_MSG_GPS_GLOBAL_ORIGIN_FIELD_LATITUDE_OFS  0
+#define FASTMAVLINK_MSG_GPS_GLOBAL_ORIGIN_FIELD_LONGITUDE_OFS  4
+#define FASTMAVLINK_MSG_GPS_GLOBAL_ORIGIN_FIELD_ALTITUDE_OFS  8
+#define FASTMAVLINK_MSG_GPS_GLOBAL_ORIGIN_FIELD_TIME_USEC_OFS  12
 
 
 //----------------------------------------
@@ -196,6 +193,41 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gps_global_origin_decode(fmav_gps_g
     memset(payload, 0, FASTMAVLINK_MSG_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_gps_global_origin_get_field_latitude(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_gps_global_origin_get_field_longitude(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_gps_global_origin_get_field_altitude(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_gps_global_origin_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

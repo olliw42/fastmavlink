@@ -31,26 +31,32 @@ typedef struct _fmav_camera_image_captured_t {
 
 #define FASTMAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED  263
 
-
 #define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_PAYLOAD_LEN_MIN  255
 #define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_PAYLOAD_LEN_MAX  255
-#define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_PAYLOAD_LEN  255
 #define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_CRCEXTRA  133
-
-#define FASTMAVLINK_MSG_ID_263_LEN_MIN  255
-#define FASTMAVLINK_MSG_ID_263_LEN_MAX  255
-#define FASTMAVLINK_MSG_ID_263_LEN  255
-#define FASTMAVLINK_MSG_ID_263_CRCEXTRA  133
-
-#define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_FIELD_Q_LEN  4
-#define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_FIELD_FILE_URL_LEN  205
 
 #define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_FLAGS  0
 #define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_263_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_263_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_FRAME_LEN_MAX  280
+
+#define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_FIELD_Q_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_FIELD_Q_LEN  16 // length of array = number of bytes
+#define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_FIELD_FILE_URL_NUM  205 // number of elements in array
+#define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_FIELD_FILE_URL_LEN  205 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_FIELD_TIME_UTC_OFS  0
+#define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_FIELD_TIME_BOOT_MS_OFS  8
+#define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_FIELD_LAT_OFS  12
+#define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_FIELD_LON_OFS  16
+#define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_FIELD_ALT_OFS  20
+#define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_FIELD_RELATIVE_ALT_OFS  24
+#define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_FIELD_Q_OFS  28
+#define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_FIELD_IMAGE_INDEX_OFS  44
+#define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_FIELD_CAMERA_ID_OFS  48
+#define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_FIELD_CAPTURE_RESULT_OFS  49
+#define FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_FIELD_FILE_URL_OFS  50
 
 
 //----------------------------------------
@@ -221,6 +227,104 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_camera_image_captured_decode(fmav_c
 
     memset(payload, 0, FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_camera_image_captured_get_field_time_utc(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_camera_image_captured_get_field_time_boot_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_camera_image_captured_get_field_lat(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_camera_image_captured_get_field_lon(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_camera_image_captured_get_field_alt(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_camera_image_captured_get_field_relative_alt(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_camera_image_captured_get_field_image_index(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[44]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_camera_image_captured_get_field_camera_id(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[48]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_camera_image_captured_get_field_capture_result(const fmav_message_t* msg)
+{
+    int8_t r; 
+    memcpy(&r, &(msg->payload[49]), sizeof(int8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_camera_image_captured_get_field_q_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[28]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_image_captured_get_field_q(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_FIELD_Q_NUM) return 0;
+    return ((float*)&(msg->payload[28]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_camera_image_captured_get_field_file_url_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[50]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_camera_image_captured_get_field_file_url(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_FIELD_FILE_URL_NUM) return 0;
+    return ((char*)&(msg->payload[50]))[index];     
 }
 
 

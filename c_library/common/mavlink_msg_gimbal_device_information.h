@@ -35,27 +35,38 @@ typedef struct _fmav_gimbal_device_information_t {
 
 #define FASTMAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION  283
 
-
 #define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_PAYLOAD_LEN_MIN  144
 #define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_PAYLOAD_LEN_MAX  144
-#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_PAYLOAD_LEN  144
 #define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_CRCEXTRA  74
-
-#define FASTMAVLINK_MSG_ID_283_LEN_MIN  144
-#define FASTMAVLINK_MSG_ID_283_LEN_MAX  144
-#define FASTMAVLINK_MSG_ID_283_LEN  144
-#define FASTMAVLINK_MSG_ID_283_CRCEXTRA  74
-
-#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_VENDOR_NAME_LEN  32
-#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_MODEL_NAME_LEN  32
-#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_CUSTOM_NAME_LEN  32
 
 #define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FLAGS  0
 #define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_283_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_283_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FRAME_LEN_MAX  169
+
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_VENDOR_NAME_NUM  32 // number of elements in array
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_VENDOR_NAME_LEN  32 // length of array = number of bytes
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_MODEL_NAME_NUM  32 // number of elements in array
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_MODEL_NAME_LEN  32 // length of array = number of bytes
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_CUSTOM_NAME_NUM  32 // number of elements in array
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_CUSTOM_NAME_LEN  32 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_UID_OFS  0
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_TIME_BOOT_MS_OFS  8
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_FIRMWARE_VERSION_OFS  12
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_HARDWARE_VERSION_OFS  16
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_ROLL_MIN_OFS  20
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_ROLL_MAX_OFS  24
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_PITCH_MIN_OFS  28
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_PITCH_MAX_OFS  32
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_YAW_MIN_OFS  36
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_YAW_MAX_OFS  40
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_CAP_FLAGS_OFS  44
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_CUSTOM_CAP_FLAGS_OFS  46
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_VENDOR_NAME_OFS  48
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_MODEL_NAME_OFS  80
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_CUSTOM_NAME_OFS  112
 
 
 //----------------------------------------
@@ -238,6 +249,141 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gimbal_device_information_decode(fm
 
     memset(payload, 0, FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_gimbal_device_information_get_field_uid(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_gimbal_device_information_get_field_time_boot_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_gimbal_device_information_get_field_firmware_version(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_gimbal_device_information_get_field_hardware_version(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_device_information_get_field_roll_min(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_device_information_get_field_roll_max(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_device_information_get_field_pitch_min(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_device_information_get_field_pitch_max(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_device_information_get_field_yaw_min(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_device_information_get_field_yaw_max(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[40]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_device_information_get_field_cap_flags(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[44]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_device_information_get_field_custom_cap_flags(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[46]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_gimbal_device_information_get_field_vendor_name_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[48]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_gimbal_device_information_get_field_vendor_name(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_VENDOR_NAME_NUM) return 0;
+    return ((char*)&(msg->payload[48]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_gimbal_device_information_get_field_model_name_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[80]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_gimbal_device_information_get_field_model_name(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_MODEL_NAME_NUM) return 0;
+    return ((char*)&(msg->payload[80]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_gimbal_device_information_get_field_custom_name_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[112]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_gimbal_device_information_get_field_custom_name(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_CUSTOM_NAME_NUM) return 0;
+    return ((char*)&(msg->payload[112]))[index];     
 }
 
 

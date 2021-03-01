@@ -31,25 +31,29 @@ typedef struct _fmav_scaled_imu2_t {
 
 #define FASTMAVLINK_MSG_ID_SCALED_IMU2  116
 
-
 #define FASTMAVLINK_MSG_SCALED_IMU2_PAYLOAD_LEN_MIN  22
 #define FASTMAVLINK_MSG_SCALED_IMU2_PAYLOAD_LEN_MAX  24
-#define FASTMAVLINK_MSG_SCALED_IMU2_PAYLOAD_LEN  24
 #define FASTMAVLINK_MSG_SCALED_IMU2_CRCEXTRA  76
-
-#define FASTMAVLINK_MSG_ID_116_LEN_MIN  22
-#define FASTMAVLINK_MSG_ID_116_LEN_MAX  24
-#define FASTMAVLINK_MSG_ID_116_LEN  24
-#define FASTMAVLINK_MSG_ID_116_CRCEXTRA  76
-
-
 
 #define FASTMAVLINK_MSG_SCALED_IMU2_FLAGS  0
 #define FASTMAVLINK_MSG_SCALED_IMU2_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_SCALED_IMU2_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_SCALED_IMU2_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_SCALED_IMU2_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_116_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_116_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_SCALED_IMU2_FRAME_LEN_MAX  49
+
+
+
+#define FASTMAVLINK_MSG_SCALED_IMU2_FIELD_TIME_BOOT_MS_OFS  0
+#define FASTMAVLINK_MSG_SCALED_IMU2_FIELD_XACC_OFS  4
+#define FASTMAVLINK_MSG_SCALED_IMU2_FIELD_YACC_OFS  6
+#define FASTMAVLINK_MSG_SCALED_IMU2_FIELD_ZACC_OFS  8
+#define FASTMAVLINK_MSG_SCALED_IMU2_FIELD_XGYRO_OFS  10
+#define FASTMAVLINK_MSG_SCALED_IMU2_FIELD_YGYRO_OFS  12
+#define FASTMAVLINK_MSG_SCALED_IMU2_FIELD_ZGYRO_OFS  14
+#define FASTMAVLINK_MSG_SCALED_IMU2_FIELD_XMAG_OFS  16
+#define FASTMAVLINK_MSG_SCALED_IMU2_FIELD_YMAG_OFS  18
+#define FASTMAVLINK_MSG_SCALED_IMU2_FIELD_ZMAG_OFS  20
+#define FASTMAVLINK_MSG_SCALED_IMU2_FIELD_TEMPERATURE_OFS  22
 
 
 //----------------------------------------
@@ -224,6 +228,97 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_scaled_imu2_decode(fmav_scaled_imu2
     memset(payload, 0, FASTMAVLINK_MSG_SCALED_IMU2_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_scaled_imu2_get_field_time_boot_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_scaled_imu2_get_field_xacc(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_scaled_imu2_get_field_yacc(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[6]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_scaled_imu2_get_field_zacc(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_scaled_imu2_get_field_xgyro(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[10]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_scaled_imu2_get_field_ygyro(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_scaled_imu2_get_field_zgyro(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[14]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_scaled_imu2_get_field_xmag(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_scaled_imu2_get_field_ymag(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[18]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_scaled_imu2_get_field_zmag(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_scaled_imu2_get_field_temperature(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[22]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

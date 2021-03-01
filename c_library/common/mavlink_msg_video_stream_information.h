@@ -32,26 +32,33 @@ typedef struct _fmav_video_stream_information_t {
 
 #define FASTMAVLINK_MSG_ID_VIDEO_STREAM_INFORMATION  269
 
-
 #define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_PAYLOAD_LEN_MIN  213
 #define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_PAYLOAD_LEN_MAX  213
-#define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_PAYLOAD_LEN  213
 #define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_CRCEXTRA  109
-
-#define FASTMAVLINK_MSG_ID_269_LEN_MIN  213
-#define FASTMAVLINK_MSG_ID_269_LEN_MAX  213
-#define FASTMAVLINK_MSG_ID_269_LEN  213
-#define FASTMAVLINK_MSG_ID_269_CRCEXTRA  109
-
-#define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FIELD_NAME_LEN  32
-#define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FIELD_URI_LEN  160
 
 #define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FLAGS  0
 #define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_269_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_269_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FRAME_LEN_MAX  238
+
+#define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FIELD_NAME_NUM  32 // number of elements in array
+#define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FIELD_NAME_LEN  32 // length of array = number of bytes
+#define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FIELD_URI_NUM  160 // number of elements in array
+#define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FIELD_URI_LEN  160 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FIELD_FRAMERATE_OFS  0
+#define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FIELD_BITRATE_OFS  4
+#define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FIELD_FLAGS_OFS  8
+#define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FIELD_RESOLUTION_H_OFS  10
+#define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FIELD_RESOLUTION_V_OFS  12
+#define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FIELD_ROTATION_OFS  14
+#define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FIELD_HFOV_OFS  16
+#define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FIELD_STREAM_ID_OFS  18
+#define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FIELD_COUNT_OFS  19
+#define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FIELD_TYPE_OFS  20
+#define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FIELD_NAME_OFS  21
+#define FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FIELD_URI_OFS  53
 
 
 //----------------------------------------
@@ -225,6 +232,112 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_video_stream_information_decode(fma
 
     memset(payload, 0, FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_video_stream_information_get_field_framerate(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_video_stream_information_get_field_bitrate(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_information_get_field_flags(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_information_get_field_resolution_h(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[10]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_information_get_field_resolution_v(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_information_get_field_rotation(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[14]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_information_get_field_hfov(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_video_stream_information_get_field_stream_id(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[18]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_video_stream_information_get_field_count(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[19]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_video_stream_information_get_field_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_video_stream_information_get_field_name_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[21]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_video_stream_information_get_field_name(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FIELD_NAME_NUM) return 0;
+    return ((char*)&(msg->payload[21]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_video_stream_information_get_field_uri_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[53]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_video_stream_information_get_field_uri(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_FIELD_URI_NUM) return 0;
+    return ((char*)&(msg->payload[53]))[index];     
 }
 
 

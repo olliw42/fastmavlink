@@ -25,25 +25,23 @@ typedef struct _fmav_mission_write_partial_list_t {
 
 #define FASTMAVLINK_MSG_ID_MISSION_WRITE_PARTIAL_LIST  38
 
-
 #define FASTMAVLINK_MSG_MISSION_WRITE_PARTIAL_LIST_PAYLOAD_LEN_MIN  6
 #define FASTMAVLINK_MSG_MISSION_WRITE_PARTIAL_LIST_PAYLOAD_LEN_MAX  7
-#define FASTMAVLINK_MSG_MISSION_WRITE_PARTIAL_LIST_PAYLOAD_LEN  7
 #define FASTMAVLINK_MSG_MISSION_WRITE_PARTIAL_LIST_CRCEXTRA  9
-
-#define FASTMAVLINK_MSG_ID_38_LEN_MIN  6
-#define FASTMAVLINK_MSG_ID_38_LEN_MAX  7
-#define FASTMAVLINK_MSG_ID_38_LEN  7
-#define FASTMAVLINK_MSG_ID_38_CRCEXTRA  9
-
-
 
 #define FASTMAVLINK_MSG_MISSION_WRITE_PARTIAL_LIST_FLAGS  3
 #define FASTMAVLINK_MSG_MISSION_WRITE_PARTIAL_LIST_TARGET_SYSTEM_OFS  4
 #define FASTMAVLINK_MSG_MISSION_WRITE_PARTIAL_LIST_TARGET_COMPONENT_OFS  5
 
-#define FASTMAVLINK_MSG_MISSION_WRITE_PARTIAL_LIST_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_MISSION_WRITE_PARTIAL_LIST_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_38_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_38_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_MISSION_WRITE_PARTIAL_LIST_FRAME_LEN_MAX  32
+
+
+
+#define FASTMAVLINK_MSG_MISSION_WRITE_PARTIAL_LIST_FIELD_START_INDEX_OFS  0
+#define FASTMAVLINK_MSG_MISSION_WRITE_PARTIAL_LIST_FIELD_END_INDEX_OFS  2
+#define FASTMAVLINK_MSG_MISSION_WRITE_PARTIAL_LIST_FIELD_TARGET_SYSTEM_OFS  4
+#define FASTMAVLINK_MSG_MISSION_WRITE_PARTIAL_LIST_FIELD_TARGET_COMPONENT_OFS  5
+#define FASTMAVLINK_MSG_MISSION_WRITE_PARTIAL_LIST_FIELD_MISSION_TYPE_OFS  6
 
 
 //----------------------------------------
@@ -200,6 +198,49 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_mission_write_partial_list_decode(f
     memset(payload, 0, FASTMAVLINK_MSG_MISSION_WRITE_PARTIAL_LIST_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_mission_write_partial_list_get_field_start_index(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_mission_write_partial_list_get_field_end_index(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[2]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mission_write_partial_list_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mission_write_partial_list_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[5]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mission_write_partial_list_get_field_mission_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[6]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

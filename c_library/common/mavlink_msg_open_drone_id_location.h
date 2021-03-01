@@ -39,25 +39,38 @@ typedef struct _fmav_open_drone_id_location_t {
 
 #define FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_LOCATION  12901
 
-
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_PAYLOAD_LEN_MIN  59
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_PAYLOAD_LEN_MAX  59
-#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_PAYLOAD_LEN  59
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_CRCEXTRA  254
-
-#define FASTMAVLINK_MSG_ID_12901_LEN_MIN  59
-#define FASTMAVLINK_MSG_ID_12901_LEN_MAX  59
-#define FASTMAVLINK_MSG_ID_12901_LEN  59
-#define FASTMAVLINK_MSG_ID_12901_CRCEXTRA  254
-
-#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FIELD_ID_OR_MAC_LEN  20
 
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FLAGS  3
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_TARGET_SYSTEM_OFS  30
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_TARGET_COMPONENT_OFS  31
 
-#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_12901_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_12901_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FRAME_LEN_MAX  84
+
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FIELD_ID_OR_MAC_NUM  20 // number of elements in array
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FIELD_ID_OR_MAC_LEN  20 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FIELD_LATITUDE_OFS  0
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FIELD_LONGITUDE_OFS  4
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FIELD_ALTITUDE_BAROMETRIC_OFS  8
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FIELD_ALTITUDE_GEODETIC_OFS  12
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FIELD_HEIGHT_OFS  16
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FIELD_TIMESTAMP_OFS  20
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FIELD_DIRECTION_OFS  24
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FIELD_SPEED_HORIZONTAL_OFS  26
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FIELD_SPEED_VERTICAL_OFS  28
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FIELD_TARGET_SYSTEM_OFS  30
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FIELD_TARGET_COMPONENT_OFS  31
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FIELD_ID_OR_MAC_OFS  32
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FIELD_STATUS_OFS  52
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FIELD_HEIGHT_REFERENCE_OFS  53
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FIELD_HORIZONTAL_ACCURACY_OFS  54
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FIELD_VERTICAL_ACCURACY_OFS  55
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FIELD_BAROMETER_ACCURACY_OFS  56
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FIELD_SPEED_ACCURACY_OFS  57
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FIELD_TIMESTAMP_ACCURACY_OFS  58
 
 
 //----------------------------------------
@@ -252,6 +265,163 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_open_drone_id_location_decode(fmav_
 
     memset(payload, 0, FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_open_drone_id_location_get_field_latitude(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_open_drone_id_location_get_field_longitude(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_open_drone_id_location_get_field_altitude_barometric(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_open_drone_id_location_get_field_altitude_geodetic(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_open_drone_id_location_get_field_height(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_open_drone_id_location_get_field_timestamp(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_location_get_field_direction(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_location_get_field_speed_horizontal(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[26]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_open_drone_id_location_get_field_speed_vertical(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_location_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[30]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_location_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[31]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_location_get_field_status(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[52]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_location_get_field_height_reference(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[53]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_location_get_field_horizontal_accuracy(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[54]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_location_get_field_vertical_accuracy(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[55]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_location_get_field_barometer_accuracy(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[56]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_location_get_field_speed_accuracy(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[57]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_location_get_field_timestamp_accuracy(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[58]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_open_drone_id_location_get_field_id_or_mac_ptr(const fmav_message_t* msg)
+{
+    return (uint8_t*)&(msg->payload[32]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_location_get_field_id_or_mac(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_FIELD_ID_OR_MAC_NUM) return 0;
+    return ((uint8_t*)&(msg->payload[32]))[index];     
 }
 
 

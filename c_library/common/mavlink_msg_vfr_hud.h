@@ -26,25 +26,24 @@ typedef struct _fmav_vfr_hud_t {
 
 #define FASTMAVLINK_MSG_ID_VFR_HUD  74
 
-
 #define FASTMAVLINK_MSG_VFR_HUD_PAYLOAD_LEN_MIN  20
 #define FASTMAVLINK_MSG_VFR_HUD_PAYLOAD_LEN_MAX  20
-#define FASTMAVLINK_MSG_VFR_HUD_PAYLOAD_LEN  20
 #define FASTMAVLINK_MSG_VFR_HUD_CRCEXTRA  20
-
-#define FASTMAVLINK_MSG_ID_74_LEN_MIN  20
-#define FASTMAVLINK_MSG_ID_74_LEN_MAX  20
-#define FASTMAVLINK_MSG_ID_74_LEN  20
-#define FASTMAVLINK_MSG_ID_74_CRCEXTRA  20
-
-
 
 #define FASTMAVLINK_MSG_VFR_HUD_FLAGS  0
 #define FASTMAVLINK_MSG_VFR_HUD_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_VFR_HUD_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_VFR_HUD_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_VFR_HUD_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_74_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_74_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_VFR_HUD_FRAME_LEN_MAX  45
+
+
+
+#define FASTMAVLINK_MSG_VFR_HUD_FIELD_AIRSPEED_OFS  0
+#define FASTMAVLINK_MSG_VFR_HUD_FIELD_GROUNDSPEED_OFS  4
+#define FASTMAVLINK_MSG_VFR_HUD_FIELD_ALT_OFS  8
+#define FASTMAVLINK_MSG_VFR_HUD_FIELD_CLIMB_OFS  12
+#define FASTMAVLINK_MSG_VFR_HUD_FIELD_HEADING_OFS  16
+#define FASTMAVLINK_MSG_VFR_HUD_FIELD_THROTTLE_OFS  18
 
 
 //----------------------------------------
@@ -204,6 +203,57 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_vfr_hud_decode(fmav_vfr_hud_t* payl
     memset(payload, 0, FASTMAVLINK_MSG_VFR_HUD_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vfr_hud_get_field_airspeed(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vfr_hud_get_field_groundspeed(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vfr_hud_get_field_alt(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vfr_hud_get_field_climb(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_vfr_hud_get_field_heading(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vfr_hud_get_field_throttle(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[18]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

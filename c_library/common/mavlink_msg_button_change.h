@@ -23,25 +23,21 @@ typedef struct _fmav_button_change_t {
 
 #define FASTMAVLINK_MSG_ID_BUTTON_CHANGE  257
 
-
 #define FASTMAVLINK_MSG_BUTTON_CHANGE_PAYLOAD_LEN_MIN  9
 #define FASTMAVLINK_MSG_BUTTON_CHANGE_PAYLOAD_LEN_MAX  9
-#define FASTMAVLINK_MSG_BUTTON_CHANGE_PAYLOAD_LEN  9
 #define FASTMAVLINK_MSG_BUTTON_CHANGE_CRCEXTRA  131
-
-#define FASTMAVLINK_MSG_ID_257_LEN_MIN  9
-#define FASTMAVLINK_MSG_ID_257_LEN_MAX  9
-#define FASTMAVLINK_MSG_ID_257_LEN  9
-#define FASTMAVLINK_MSG_ID_257_CRCEXTRA  131
-
-
 
 #define FASTMAVLINK_MSG_BUTTON_CHANGE_FLAGS  0
 #define FASTMAVLINK_MSG_BUTTON_CHANGE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_BUTTON_CHANGE_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_BUTTON_CHANGE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_BUTTON_CHANGE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_257_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_257_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_BUTTON_CHANGE_FRAME_LEN_MAX  34
+
+
+
+#define FASTMAVLINK_MSG_BUTTON_CHANGE_FIELD_TIME_BOOT_MS_OFS  0
+#define FASTMAVLINK_MSG_BUTTON_CHANGE_FIELD_LAST_CHANGE_MS_OFS  4
+#define FASTMAVLINK_MSG_BUTTON_CHANGE_FIELD_STATE_OFS  8
 
 
 //----------------------------------------
@@ -192,6 +188,33 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_button_change_decode(fmav_button_ch
     memset(payload, 0, FASTMAVLINK_MSG_BUTTON_CHANGE_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_button_change_get_field_time_boot_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_button_change_get_field_last_change_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_button_change_get_field_state(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

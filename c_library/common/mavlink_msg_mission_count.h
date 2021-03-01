@@ -24,25 +24,22 @@ typedef struct _fmav_mission_count_t {
 
 #define FASTMAVLINK_MSG_ID_MISSION_COUNT  44
 
-
 #define FASTMAVLINK_MSG_MISSION_COUNT_PAYLOAD_LEN_MIN  4
 #define FASTMAVLINK_MSG_MISSION_COUNT_PAYLOAD_LEN_MAX  5
-#define FASTMAVLINK_MSG_MISSION_COUNT_PAYLOAD_LEN  5
 #define FASTMAVLINK_MSG_MISSION_COUNT_CRCEXTRA  221
-
-#define FASTMAVLINK_MSG_ID_44_LEN_MIN  4
-#define FASTMAVLINK_MSG_ID_44_LEN_MAX  5
-#define FASTMAVLINK_MSG_ID_44_LEN  5
-#define FASTMAVLINK_MSG_ID_44_CRCEXTRA  221
-
-
 
 #define FASTMAVLINK_MSG_MISSION_COUNT_FLAGS  3
 #define FASTMAVLINK_MSG_MISSION_COUNT_TARGET_SYSTEM_OFS  2
 #define FASTMAVLINK_MSG_MISSION_COUNT_TARGET_COMPONENT_OFS  3
 
-#define FASTMAVLINK_MSG_MISSION_COUNT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_MISSION_COUNT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_44_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_44_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_MISSION_COUNT_FRAME_LEN_MAX  30
+
+
+
+#define FASTMAVLINK_MSG_MISSION_COUNT_FIELD_COUNT_OFS  0
+#define FASTMAVLINK_MSG_MISSION_COUNT_FIELD_TARGET_SYSTEM_OFS  2
+#define FASTMAVLINK_MSG_MISSION_COUNT_FIELD_TARGET_COMPONENT_OFS  3
+#define FASTMAVLINK_MSG_MISSION_COUNT_FIELD_MISSION_TYPE_OFS  4
 
 
 //----------------------------------------
@@ -196,6 +193,41 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_mission_count_decode(fmav_mission_c
     memset(payload, 0, FASTMAVLINK_MSG_MISSION_COUNT_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_count_get_field_count(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mission_count_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[2]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mission_count_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[3]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mission_count_get_field_mission_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

@@ -25,25 +25,23 @@ typedef struct _fmav_log_request_data_t {
 
 #define FASTMAVLINK_MSG_ID_LOG_REQUEST_DATA  119
 
-
 #define FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN_MIN  12
 #define FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN_MAX  12
-#define FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN  12
 #define FASTMAVLINK_MSG_LOG_REQUEST_DATA_CRCEXTRA  116
-
-#define FASTMAVLINK_MSG_ID_119_LEN_MIN  12
-#define FASTMAVLINK_MSG_ID_119_LEN_MAX  12
-#define FASTMAVLINK_MSG_ID_119_LEN  12
-#define FASTMAVLINK_MSG_ID_119_CRCEXTRA  116
-
-
 
 #define FASTMAVLINK_MSG_LOG_REQUEST_DATA_FLAGS  3
 #define FASTMAVLINK_MSG_LOG_REQUEST_DATA_TARGET_SYSTEM_OFS  10
 #define FASTMAVLINK_MSG_LOG_REQUEST_DATA_TARGET_COMPONENT_OFS  11
 
-#define FASTMAVLINK_MSG_LOG_REQUEST_DATA_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_119_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_119_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_LOG_REQUEST_DATA_FRAME_LEN_MAX  37
+
+
+
+#define FASTMAVLINK_MSG_LOG_REQUEST_DATA_FIELD_OFS_OFS  0
+#define FASTMAVLINK_MSG_LOG_REQUEST_DATA_FIELD_COUNT_OFS  4
+#define FASTMAVLINK_MSG_LOG_REQUEST_DATA_FIELD_ID_OFS  8
+#define FASTMAVLINK_MSG_LOG_REQUEST_DATA_FIELD_TARGET_SYSTEM_OFS  10
+#define FASTMAVLINK_MSG_LOG_REQUEST_DATA_FIELD_TARGET_COMPONENT_OFS  11
 
 
 //----------------------------------------
@@ -200,6 +198,49 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_log_request_data_decode(fmav_log_re
     memset(payload, 0, FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_log_request_data_get_field_ofs(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_log_request_data_get_field_count(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_request_data_get_field_id(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_log_request_data_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[10]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_log_request_data_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[11]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

@@ -24,25 +24,22 @@ typedef struct _fmav_camera_settings_t {
 
 #define FASTMAVLINK_MSG_ID_CAMERA_SETTINGS  260
 
-
 #define FASTMAVLINK_MSG_CAMERA_SETTINGS_PAYLOAD_LEN_MIN  5
 #define FASTMAVLINK_MSG_CAMERA_SETTINGS_PAYLOAD_LEN_MAX  13
-#define FASTMAVLINK_MSG_CAMERA_SETTINGS_PAYLOAD_LEN  13
 #define FASTMAVLINK_MSG_CAMERA_SETTINGS_CRCEXTRA  146
-
-#define FASTMAVLINK_MSG_ID_260_LEN_MIN  5
-#define FASTMAVLINK_MSG_ID_260_LEN_MAX  13
-#define FASTMAVLINK_MSG_ID_260_LEN  13
-#define FASTMAVLINK_MSG_ID_260_CRCEXTRA  146
-
-
 
 #define FASTMAVLINK_MSG_CAMERA_SETTINGS_FLAGS  0
 #define FASTMAVLINK_MSG_CAMERA_SETTINGS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_CAMERA_SETTINGS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_CAMERA_SETTINGS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_CAMERA_SETTINGS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_260_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_260_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_CAMERA_SETTINGS_FRAME_LEN_MAX  38
+
+
+
+#define FASTMAVLINK_MSG_CAMERA_SETTINGS_FIELD_TIME_BOOT_MS_OFS  0
+#define FASTMAVLINK_MSG_CAMERA_SETTINGS_FIELD_MODE_ID_OFS  4
+#define FASTMAVLINK_MSG_CAMERA_SETTINGS_FIELD_ZOOMLEVEL_OFS  5
+#define FASTMAVLINK_MSG_CAMERA_SETTINGS_FIELD_FOCUSLEVEL_OFS  9
 
 
 //----------------------------------------
@@ -196,6 +193,41 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_camera_settings_decode(fmav_camera_
     memset(payload, 0, FASTMAVLINK_MSG_CAMERA_SETTINGS_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_camera_settings_get_field_time_boot_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_camera_settings_get_field_mode_id(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_settings_get_field_zoomLevel(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[5]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_settings_get_field_focusLevel(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[9]), sizeof(float)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

@@ -36,25 +36,34 @@ typedef struct _fmav_highres_imu_t {
 
 #define FASTMAVLINK_MSG_ID_HIGHRES_IMU  105
 
-
 #define FASTMAVLINK_MSG_HIGHRES_IMU_PAYLOAD_LEN_MIN  62
 #define FASTMAVLINK_MSG_HIGHRES_IMU_PAYLOAD_LEN_MAX  63
-#define FASTMAVLINK_MSG_HIGHRES_IMU_PAYLOAD_LEN  63
 #define FASTMAVLINK_MSG_HIGHRES_IMU_CRCEXTRA  93
-
-#define FASTMAVLINK_MSG_ID_105_LEN_MIN  62
-#define FASTMAVLINK_MSG_ID_105_LEN_MAX  63
-#define FASTMAVLINK_MSG_ID_105_LEN  63
-#define FASTMAVLINK_MSG_ID_105_CRCEXTRA  93
-
-
 
 #define FASTMAVLINK_MSG_HIGHRES_IMU_FLAGS  0
 #define FASTMAVLINK_MSG_HIGHRES_IMU_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_HIGHRES_IMU_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_HIGHRES_IMU_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_HIGHRES_IMU_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_105_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_105_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_HIGHRES_IMU_FRAME_LEN_MAX  88
+
+
+
+#define FASTMAVLINK_MSG_HIGHRES_IMU_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_HIGHRES_IMU_FIELD_XACC_OFS  8
+#define FASTMAVLINK_MSG_HIGHRES_IMU_FIELD_YACC_OFS  12
+#define FASTMAVLINK_MSG_HIGHRES_IMU_FIELD_ZACC_OFS  16
+#define FASTMAVLINK_MSG_HIGHRES_IMU_FIELD_XGYRO_OFS  20
+#define FASTMAVLINK_MSG_HIGHRES_IMU_FIELD_YGYRO_OFS  24
+#define FASTMAVLINK_MSG_HIGHRES_IMU_FIELD_ZGYRO_OFS  28
+#define FASTMAVLINK_MSG_HIGHRES_IMU_FIELD_XMAG_OFS  32
+#define FASTMAVLINK_MSG_HIGHRES_IMU_FIELD_YMAG_OFS  36
+#define FASTMAVLINK_MSG_HIGHRES_IMU_FIELD_ZMAG_OFS  40
+#define FASTMAVLINK_MSG_HIGHRES_IMU_FIELD_ABS_PRESSURE_OFS  44
+#define FASTMAVLINK_MSG_HIGHRES_IMU_FIELD_DIFF_PRESSURE_OFS  48
+#define FASTMAVLINK_MSG_HIGHRES_IMU_FIELD_PRESSURE_ALT_OFS  52
+#define FASTMAVLINK_MSG_HIGHRES_IMU_FIELD_TEMPERATURE_OFS  56
+#define FASTMAVLINK_MSG_HIGHRES_IMU_FIELD_FIELDS_UPDATED_OFS  60
+#define FASTMAVLINK_MSG_HIGHRES_IMU_FIELD_ID_OFS  62
 
 
 //----------------------------------------
@@ -244,6 +253,137 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_highres_imu_decode(fmav_highres_imu
     memset(payload, 0, FASTMAVLINK_MSG_HIGHRES_IMU_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_highres_imu_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_highres_imu_get_field_xacc(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_highres_imu_get_field_yacc(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_highres_imu_get_field_zacc(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_highres_imu_get_field_xgyro(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_highres_imu_get_field_ygyro(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_highres_imu_get_field_zgyro(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_highres_imu_get_field_xmag(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_highres_imu_get_field_ymag(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_highres_imu_get_field_zmag(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[40]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_highres_imu_get_field_abs_pressure(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[44]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_highres_imu_get_field_diff_pressure(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[48]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_highres_imu_get_field_pressure_alt(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[52]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_highres_imu_get_field_temperature(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[56]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_highres_imu_get_field_fields_updated(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[60]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_highres_imu_get_field_id(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[62]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

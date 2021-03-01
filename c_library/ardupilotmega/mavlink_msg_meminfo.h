@@ -23,25 +23,21 @@ typedef struct _fmav_meminfo_t {
 
 #define FASTMAVLINK_MSG_ID_MEMINFO  152
 
-
 #define FASTMAVLINK_MSG_MEMINFO_PAYLOAD_LEN_MIN  4
 #define FASTMAVLINK_MSG_MEMINFO_PAYLOAD_LEN_MAX  8
-#define FASTMAVLINK_MSG_MEMINFO_PAYLOAD_LEN  8
 #define FASTMAVLINK_MSG_MEMINFO_CRCEXTRA  208
-
-#define FASTMAVLINK_MSG_ID_152_LEN_MIN  4
-#define FASTMAVLINK_MSG_ID_152_LEN_MAX  8
-#define FASTMAVLINK_MSG_ID_152_LEN  8
-#define FASTMAVLINK_MSG_ID_152_CRCEXTRA  208
-
-
 
 #define FASTMAVLINK_MSG_MEMINFO_FLAGS  0
 #define FASTMAVLINK_MSG_MEMINFO_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_MEMINFO_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_MEMINFO_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_MEMINFO_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_152_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_152_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_MEMINFO_FRAME_LEN_MAX  33
+
+
+
+#define FASTMAVLINK_MSG_MEMINFO_FIELD_BRKVAL_OFS  0
+#define FASTMAVLINK_MSG_MEMINFO_FIELD_FREEMEM_OFS  2
+#define FASTMAVLINK_MSG_MEMINFO_FIELD_FREEMEM32_OFS  4
 
 
 //----------------------------------------
@@ -192,6 +188,33 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_meminfo_decode(fmav_meminfo_t* payl
     memset(payload, 0, FASTMAVLINK_MSG_MEMINFO_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_meminfo_get_field_brkval(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_meminfo_get_field_freemem(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[2]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_meminfo_get_field_freemem32(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

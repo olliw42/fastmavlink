@@ -37,25 +37,35 @@ typedef struct _fmav_efi_status_t {
 
 #define FASTMAVLINK_MSG_ID_EFI_STATUS  225
 
-
 #define FASTMAVLINK_MSG_EFI_STATUS_PAYLOAD_LEN_MIN  65
 #define FASTMAVLINK_MSG_EFI_STATUS_PAYLOAD_LEN_MAX  65
-#define FASTMAVLINK_MSG_EFI_STATUS_PAYLOAD_LEN  65
 #define FASTMAVLINK_MSG_EFI_STATUS_CRCEXTRA  208
-
-#define FASTMAVLINK_MSG_ID_225_LEN_MIN  65
-#define FASTMAVLINK_MSG_ID_225_LEN_MAX  65
-#define FASTMAVLINK_MSG_ID_225_LEN  65
-#define FASTMAVLINK_MSG_ID_225_CRCEXTRA  208
-
-
 
 #define FASTMAVLINK_MSG_EFI_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_EFI_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_EFI_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_EFI_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_EFI_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_225_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_225_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_EFI_STATUS_FRAME_LEN_MAX  90
+
+
+
+#define FASTMAVLINK_MSG_EFI_STATUS_FIELD_ECU_INDEX_OFS  0
+#define FASTMAVLINK_MSG_EFI_STATUS_FIELD_RPM_OFS  4
+#define FASTMAVLINK_MSG_EFI_STATUS_FIELD_FUEL_CONSUMED_OFS  8
+#define FASTMAVLINK_MSG_EFI_STATUS_FIELD_FUEL_FLOW_OFS  12
+#define FASTMAVLINK_MSG_EFI_STATUS_FIELD_ENGINE_LOAD_OFS  16
+#define FASTMAVLINK_MSG_EFI_STATUS_FIELD_THROTTLE_POSITION_OFS  20
+#define FASTMAVLINK_MSG_EFI_STATUS_FIELD_SPARK_DWELL_TIME_OFS  24
+#define FASTMAVLINK_MSG_EFI_STATUS_FIELD_BAROMETRIC_PRESSURE_OFS  28
+#define FASTMAVLINK_MSG_EFI_STATUS_FIELD_INTAKE_MANIFOLD_PRESSURE_OFS  32
+#define FASTMAVLINK_MSG_EFI_STATUS_FIELD_INTAKE_MANIFOLD_TEMPERATURE_OFS  36
+#define FASTMAVLINK_MSG_EFI_STATUS_FIELD_CYLINDER_HEAD_TEMPERATURE_OFS  40
+#define FASTMAVLINK_MSG_EFI_STATUS_FIELD_IGNITION_TIMING_OFS  44
+#define FASTMAVLINK_MSG_EFI_STATUS_FIELD_INJECTION_TIME_OFS  48
+#define FASTMAVLINK_MSG_EFI_STATUS_FIELD_EXHAUST_GAS_TEMPERATURE_OFS  52
+#define FASTMAVLINK_MSG_EFI_STATUS_FIELD_THROTTLE_OUT_OFS  56
+#define FASTMAVLINK_MSG_EFI_STATUS_FIELD_PT_COMPENSATION_OFS  60
+#define FASTMAVLINK_MSG_EFI_STATUS_FIELD_HEALTH_OFS  64
 
 
 //----------------------------------------
@@ -248,6 +258,145 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_efi_status_decode(fmav_efi_status_t
     memset(payload, 0, FASTMAVLINK_MSG_EFI_STATUS_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_efi_status_get_field_ecu_index(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_efi_status_get_field_rpm(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_efi_status_get_field_fuel_consumed(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_efi_status_get_field_fuel_flow(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_efi_status_get_field_engine_load(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_efi_status_get_field_throttle_position(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_efi_status_get_field_spark_dwell_time(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_efi_status_get_field_barometric_pressure(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_efi_status_get_field_intake_manifold_pressure(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_efi_status_get_field_intake_manifold_temperature(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_efi_status_get_field_cylinder_head_temperature(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[40]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_efi_status_get_field_ignition_timing(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[44]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_efi_status_get_field_injection_time(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[48]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_efi_status_get_field_exhaust_gas_temperature(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[52]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_efi_status_get_field_throttle_out(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[56]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_efi_status_get_field_pt_compensation(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[60]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_efi_status_get_field_health(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[64]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

@@ -23,25 +23,21 @@ typedef struct _fmav_rally_fetch_point_t {
 
 #define FASTMAVLINK_MSG_ID_RALLY_FETCH_POINT  176
 
-
 #define FASTMAVLINK_MSG_RALLY_FETCH_POINT_PAYLOAD_LEN_MIN  3
 #define FASTMAVLINK_MSG_RALLY_FETCH_POINT_PAYLOAD_LEN_MAX  3
-#define FASTMAVLINK_MSG_RALLY_FETCH_POINT_PAYLOAD_LEN  3
 #define FASTMAVLINK_MSG_RALLY_FETCH_POINT_CRCEXTRA  234
-
-#define FASTMAVLINK_MSG_ID_176_LEN_MIN  3
-#define FASTMAVLINK_MSG_ID_176_LEN_MAX  3
-#define FASTMAVLINK_MSG_ID_176_LEN  3
-#define FASTMAVLINK_MSG_ID_176_CRCEXTRA  234
-
-
 
 #define FASTMAVLINK_MSG_RALLY_FETCH_POINT_FLAGS  3
 #define FASTMAVLINK_MSG_RALLY_FETCH_POINT_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_RALLY_FETCH_POINT_TARGET_COMPONENT_OFS  1
 
-#define FASTMAVLINK_MSG_RALLY_FETCH_POINT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_RALLY_FETCH_POINT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_176_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_176_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_RALLY_FETCH_POINT_FRAME_LEN_MAX  28
+
+
+
+#define FASTMAVLINK_MSG_RALLY_FETCH_POINT_FIELD_TARGET_SYSTEM_OFS  0
+#define FASTMAVLINK_MSG_RALLY_FETCH_POINT_FIELD_TARGET_COMPONENT_OFS  1
+#define FASTMAVLINK_MSG_RALLY_FETCH_POINT_FIELD_IDX_OFS  2
 
 
 //----------------------------------------
@@ -192,6 +188,33 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_rally_fetch_point_decode(fmav_rally
     memset(payload, 0, FASTMAVLINK_MSG_RALLY_FETCH_POINT_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_rally_fetch_point_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_rally_fetch_point_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[1]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_rally_fetch_point_get_field_idx(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[2]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

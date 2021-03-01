@@ -32,25 +32,30 @@ typedef struct _fmav_gimbal_report_t {
 
 #define FASTMAVLINK_MSG_ID_GIMBAL_REPORT  200
 
-
 #define FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN_MIN  42
 #define FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN_MAX  42
-#define FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN  42
 #define FASTMAVLINK_MSG_GIMBAL_REPORT_CRCEXTRA  134
-
-#define FASTMAVLINK_MSG_ID_200_LEN_MIN  42
-#define FASTMAVLINK_MSG_ID_200_LEN_MAX  42
-#define FASTMAVLINK_MSG_ID_200_LEN  42
-#define FASTMAVLINK_MSG_ID_200_CRCEXTRA  134
-
-
 
 #define FASTMAVLINK_MSG_GIMBAL_REPORT_FLAGS  3
 #define FASTMAVLINK_MSG_GIMBAL_REPORT_TARGET_SYSTEM_OFS  40
 #define FASTMAVLINK_MSG_GIMBAL_REPORT_TARGET_COMPONENT_OFS  41
 
-#define FASTMAVLINK_MSG_GIMBAL_REPORT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_200_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_200_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_GIMBAL_REPORT_FRAME_LEN_MAX  67
+
+
+
+#define FASTMAVLINK_MSG_GIMBAL_REPORT_FIELD_DELTA_TIME_OFS  0
+#define FASTMAVLINK_MSG_GIMBAL_REPORT_FIELD_DELTA_ANGLE_X_OFS  4
+#define FASTMAVLINK_MSG_GIMBAL_REPORT_FIELD_DELTA_ANGLE_Y_OFS  8
+#define FASTMAVLINK_MSG_GIMBAL_REPORT_FIELD_DELTA_ANGLE_Z_OFS  12
+#define FASTMAVLINK_MSG_GIMBAL_REPORT_FIELD_DELTA_VELOCITY_X_OFS  16
+#define FASTMAVLINK_MSG_GIMBAL_REPORT_FIELD_DELTA_VELOCITY_Y_OFS  20
+#define FASTMAVLINK_MSG_GIMBAL_REPORT_FIELD_DELTA_VELOCITY_Z_OFS  24
+#define FASTMAVLINK_MSG_GIMBAL_REPORT_FIELD_JOINT_ROLL_OFS  28
+#define FASTMAVLINK_MSG_GIMBAL_REPORT_FIELD_JOINT_EL_OFS  32
+#define FASTMAVLINK_MSG_GIMBAL_REPORT_FIELD_JOINT_AZ_OFS  36
+#define FASTMAVLINK_MSG_GIMBAL_REPORT_FIELD_TARGET_SYSTEM_OFS  40
+#define FASTMAVLINK_MSG_GIMBAL_REPORT_FIELD_TARGET_COMPONENT_OFS  41
 
 
 //----------------------------------------
@@ -228,6 +233,105 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gimbal_report_decode(fmav_gimbal_re
     memset(payload, 0, FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_report_get_field_delta_time(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_report_get_field_delta_angle_x(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_report_get_field_delta_angle_y(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_report_get_field_delta_angle_z(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_report_get_field_delta_velocity_x(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_report_get_field_delta_velocity_y(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_report_get_field_delta_velocity_z(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_report_get_field_joint_roll(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_report_get_field_joint_el(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_report_get_field_joint_az(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gimbal_report_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[40]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gimbal_report_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[41]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

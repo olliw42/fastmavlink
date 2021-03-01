@@ -26,25 +26,25 @@ typedef struct _fmav_vision_speed_estimate_t {
 
 #define FASTMAVLINK_MSG_ID_VISION_SPEED_ESTIMATE  103
 
-
 #define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MIN  20
 #define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MAX  57
-#define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN  57
 #define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_CRCEXTRA  208
-
-#define FASTMAVLINK_MSG_ID_103_LEN_MIN  20
-#define FASTMAVLINK_MSG_ID_103_LEN_MAX  57
-#define FASTMAVLINK_MSG_ID_103_LEN  57
-#define FASTMAVLINK_MSG_ID_103_CRCEXTRA  208
-
-#define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_FIELD_COVARIANCE_LEN  9
 
 #define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_FLAGS  0
 #define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_103_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_103_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_FRAME_LEN_MAX  82
+
+#define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_FIELD_COVARIANCE_NUM  9 // number of elements in array
+#define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_FIELD_COVARIANCE_LEN  36 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_FIELD_USEC_OFS  0
+#define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_FIELD_X_OFS  8
+#define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_FIELD_Y_OFS  12
+#define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_FIELD_Z_OFS  16
+#define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_FIELD_COVARIANCE_OFS  20
+#define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_FIELD_RESET_COUNTER_OFS  56
 
 
 //----------------------------------------
@@ -200,6 +200,59 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_vision_speed_estimate_decode(fmav_v
 
     memset(payload, 0, FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_vision_speed_estimate_get_field_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vision_speed_estimate_get_field_x(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vision_speed_estimate_get_field_y(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vision_speed_estimate_get_field_z(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_vision_speed_estimate_get_field_reset_counter(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[56]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_vision_speed_estimate_get_field_covariance_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[20]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vision_speed_estimate_get_field_covariance(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_FIELD_COVARIANCE_NUM) return 0;
+    return ((float*)&(msg->payload[20]))[index];     
 }
 
 

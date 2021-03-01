@@ -23,26 +23,24 @@ typedef struct _fmav_array_test_8_t {
 
 #define FASTMAVLINK_MSG_ID_ARRAY_TEST_8  17158
 
-
 #define FASTMAVLINK_MSG_ARRAY_TEST_8_PAYLOAD_LEN_MIN  24
 #define FASTMAVLINK_MSG_ARRAY_TEST_8_PAYLOAD_LEN_MAX  24
-#define FASTMAVLINK_MSG_ARRAY_TEST_8_PAYLOAD_LEN  24
 #define FASTMAVLINK_MSG_ARRAY_TEST_8_CRCEXTRA  106
-
-#define FASTMAVLINK_MSG_ID_17158_LEN_MIN  24
-#define FASTMAVLINK_MSG_ID_17158_LEN_MAX  24
-#define FASTMAVLINK_MSG_ID_17158_LEN  24
-#define FASTMAVLINK_MSG_ID_17158_CRCEXTRA  106
-
-#define FASTMAVLINK_MSG_ARRAY_TEST_8_FIELD_AR_D_LEN  2
-#define FASTMAVLINK_MSG_ARRAY_TEST_8_FIELD_AR_U16_LEN  2
 
 #define FASTMAVLINK_MSG_ARRAY_TEST_8_FLAGS  0
 #define FASTMAVLINK_MSG_ARRAY_TEST_8_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ARRAY_TEST_8_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_ARRAY_TEST_8_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ARRAY_TEST_8_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_17158_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_17158_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ARRAY_TEST_8_FRAME_LEN_MAX  49
+
+#define FASTMAVLINK_MSG_ARRAY_TEST_8_FIELD_AR_D_NUM  2 // number of elements in array
+#define FASTMAVLINK_MSG_ARRAY_TEST_8_FIELD_AR_D_LEN  16 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ARRAY_TEST_8_FIELD_AR_U16_NUM  2 // number of elements in array
+#define FASTMAVLINK_MSG_ARRAY_TEST_8_FIELD_AR_U16_LEN  4 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_ARRAY_TEST_8_FIELD_AR_D_OFS  0
+#define FASTMAVLINK_MSG_ARRAY_TEST_8_FIELD_V3_OFS  16
+#define FASTMAVLINK_MSG_ARRAY_TEST_8_FIELD_AR_U16_OFS  20
 
 
 //----------------------------------------
@@ -189,6 +187,40 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_array_test_8_decode(fmav_array_test
 
     memset(payload, 0, FASTMAVLINK_MSG_ARRAY_TEST_8_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_array_test_8_get_field_v3(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR double* fmav_msg_array_test_8_get_field_ar_d_ptr(const fmav_message_t* msg)
+{
+    return (double*)&(msg->payload[0]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR double fmav_msg_array_test_8_get_field_ar_d(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ARRAY_TEST_8_FIELD_AR_D_NUM) return 0;
+    return ((double*)&(msg->payload[0]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_array_test_8_get_field_ar_u16_ptr(const fmav_message_t* msg)
+{
+    return (uint16_t*)&(msg->payload[20]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_8_get_field_ar_u16(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ARRAY_TEST_8_FIELD_AR_U16_NUM) return 0;
+    return ((uint16_t*)&(msg->payload[20]))[index];     
 }
 
 

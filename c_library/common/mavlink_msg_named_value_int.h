@@ -23,25 +23,22 @@ typedef struct _fmav_named_value_int_t {
 
 #define FASTMAVLINK_MSG_ID_NAMED_VALUE_INT  252
 
-
 #define FASTMAVLINK_MSG_NAMED_VALUE_INT_PAYLOAD_LEN_MIN  18
 #define FASTMAVLINK_MSG_NAMED_VALUE_INT_PAYLOAD_LEN_MAX  18
-#define FASTMAVLINK_MSG_NAMED_VALUE_INT_PAYLOAD_LEN  18
 #define FASTMAVLINK_MSG_NAMED_VALUE_INT_CRCEXTRA  44
-
-#define FASTMAVLINK_MSG_ID_252_LEN_MIN  18
-#define FASTMAVLINK_MSG_ID_252_LEN_MAX  18
-#define FASTMAVLINK_MSG_ID_252_LEN  18
-#define FASTMAVLINK_MSG_ID_252_CRCEXTRA  44
-
-#define FASTMAVLINK_MSG_NAMED_VALUE_INT_FIELD_NAME_LEN  10
 
 #define FASTMAVLINK_MSG_NAMED_VALUE_INT_FLAGS  0
 #define FASTMAVLINK_MSG_NAMED_VALUE_INT_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_NAMED_VALUE_INT_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_NAMED_VALUE_INT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_NAMED_VALUE_INT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_252_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_252_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_NAMED_VALUE_INT_FRAME_LEN_MAX  43
+
+#define FASTMAVLINK_MSG_NAMED_VALUE_INT_FIELD_NAME_NUM  10 // number of elements in array
+#define FASTMAVLINK_MSG_NAMED_VALUE_INT_FIELD_NAME_LEN  10 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_NAMED_VALUE_INT_FIELD_TIME_BOOT_MS_OFS  0
+#define FASTMAVLINK_MSG_NAMED_VALUE_INT_FIELD_VALUE_OFS  4
+#define FASTMAVLINK_MSG_NAMED_VALUE_INT_FIELD_NAME_OFS  8
 
 
 //----------------------------------------
@@ -188,6 +185,35 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_named_value_int_decode(fmav_named_v
 
     memset(payload, 0, FASTMAVLINK_MSG_NAMED_VALUE_INT_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_named_value_int_get_field_time_boot_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_named_value_int_get_field_value(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_named_value_int_get_field_name_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[8]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_named_value_int_get_field_name(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_NAMED_VALUE_INT_FIELD_NAME_NUM) return 0;
+    return ((char*)&(msg->payload[8]))[index];     
 }
 
 

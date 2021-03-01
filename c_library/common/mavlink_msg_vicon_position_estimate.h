@@ -28,25 +28,27 @@ typedef struct _fmav_vicon_position_estimate_t {
 
 #define FASTMAVLINK_MSG_ID_VICON_POSITION_ESTIMATE  104
 
-
 #define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MIN  32
 #define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MAX  116
-#define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN  116
 #define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_CRCEXTRA  56
-
-#define FASTMAVLINK_MSG_ID_104_LEN_MIN  32
-#define FASTMAVLINK_MSG_ID_104_LEN_MAX  116
-#define FASTMAVLINK_MSG_ID_104_LEN  116
-#define FASTMAVLINK_MSG_ID_104_CRCEXTRA  56
-
-#define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_FIELD_COVARIANCE_LEN  21
 
 #define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_FLAGS  0
 #define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_104_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_104_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_FRAME_LEN_MAX  141
+
+#define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_FIELD_COVARIANCE_NUM  21 // number of elements in array
+#define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_FIELD_COVARIANCE_LEN  84 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_FIELD_USEC_OFS  0
+#define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_FIELD_X_OFS  8
+#define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_FIELD_Y_OFS  12
+#define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_FIELD_Z_OFS  16
+#define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_FIELD_ROLL_OFS  20
+#define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_FIELD_PITCH_OFS  24
+#define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_FIELD_YAW_OFS  28
+#define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_FIELD_COVARIANCE_OFS  32
 
 
 //----------------------------------------
@@ -208,6 +210,75 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_vicon_position_estimate_decode(fmav
 
     memset(payload, 0, FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_vicon_position_estimate_get_field_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vicon_position_estimate_get_field_x(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vicon_position_estimate_get_field_y(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vicon_position_estimate_get_field_z(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vicon_position_estimate_get_field_roll(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vicon_position_estimate_get_field_pitch(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vicon_position_estimate_get_field_yaw(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_vicon_position_estimate_get_field_covariance_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[32]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vicon_position_estimate_get_field_covariance(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_FIELD_COVARIANCE_NUM) return 0;
+    return ((float*)&(msg->payload[32]))[index];     
 }
 
 

@@ -25,25 +25,24 @@ typedef struct _fmav_set_actuator_control_target_t {
 
 #define FASTMAVLINK_MSG_ID_SET_ACTUATOR_CONTROL_TARGET  139
 
-
 #define FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MIN  43
 #define FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MAX  43
-#define FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN  43
 #define FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_CRCEXTRA  168
-
-#define FASTMAVLINK_MSG_ID_139_LEN_MIN  43
-#define FASTMAVLINK_MSG_ID_139_LEN_MAX  43
-#define FASTMAVLINK_MSG_ID_139_LEN  43
-#define FASTMAVLINK_MSG_ID_139_CRCEXTRA  168
-
-#define FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_FIELD_CONTROLS_LEN  8
 
 #define FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_FLAGS  3
 #define FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_TARGET_SYSTEM_OFS  41
 #define FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_TARGET_COMPONENT_OFS  42
 
-#define FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_139_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_139_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_FRAME_LEN_MAX  68
+
+#define FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_FIELD_CONTROLS_NUM  8 // number of elements in array
+#define FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_FIELD_CONTROLS_LEN  32 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_FIELD_CONTROLS_OFS  8
+#define FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_FIELD_GROUP_MLX_OFS  40
+#define FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_FIELD_TARGET_SYSTEM_OFS  41
+#define FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_FIELD_TARGET_COMPONENT_OFS  42
 
 
 //----------------------------------------
@@ -196,6 +195,51 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_set_actuator_control_target_decode(
 
     memset(payload, 0, FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_set_actuator_control_target_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_set_actuator_control_target_get_field_group_mlx(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[40]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_set_actuator_control_target_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[41]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_set_actuator_control_target_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[42]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_set_actuator_control_target_get_field_controls_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[8]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_set_actuator_control_target_get_field_controls(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_FIELD_CONTROLS_NUM) return 0;
+    return ((float*)&(msg->payload[8]))[index];     
 }
 
 

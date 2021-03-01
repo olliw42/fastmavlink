@@ -29,25 +29,28 @@ typedef struct _fmav_gimbal_device_attitude_status_t {
 
 #define FASTMAVLINK_MSG_ID_GIMBAL_DEVICE_ATTITUDE_STATUS  285
 
-
 #define FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_PAYLOAD_LEN_MIN  40
 #define FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_PAYLOAD_LEN_MAX  40
-#define FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_PAYLOAD_LEN  40
 #define FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_CRCEXTRA  137
-
-#define FASTMAVLINK_MSG_ID_285_LEN_MIN  40
-#define FASTMAVLINK_MSG_ID_285_LEN_MAX  40
-#define FASTMAVLINK_MSG_ID_285_LEN  40
-#define FASTMAVLINK_MSG_ID_285_CRCEXTRA  137
-
-#define FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_FIELD_Q_LEN  4
 
 #define FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_FLAGS  3
 #define FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_TARGET_SYSTEM_OFS  38
 #define FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_TARGET_COMPONENT_OFS  39
 
-#define FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_285_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_285_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_FRAME_LEN_MAX  65
+
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_FIELD_Q_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_FIELD_Q_LEN  16 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_FIELD_TIME_BOOT_MS_OFS  0
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_FIELD_Q_OFS  4
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_FIELD_ANGULAR_VELOCITY_X_OFS  20
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_FIELD_ANGULAR_VELOCITY_Y_OFS  24
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_FIELD_ANGULAR_VELOCITY_Z_OFS  28
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_FIELD_FAILURE_FLAGS_OFS  32
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_FIELD_FLAGS_OFS  36
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_FIELD_TARGET_SYSTEM_OFS  38
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_FIELD_TARGET_COMPONENT_OFS  39
 
 
 //----------------------------------------
@@ -212,6 +215,83 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gimbal_device_attitude_status_decod
 
     memset(payload, 0, FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_gimbal_device_attitude_status_get_field_time_boot_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_device_attitude_status_get_field_angular_velocity_x(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_device_attitude_status_get_field_angular_velocity_y(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_device_attitude_status_get_field_angular_velocity_z(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_gimbal_device_attitude_status_get_field_failure_flags(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_device_attitude_status_get_field_flags(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gimbal_device_attitude_status_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[38]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gimbal_device_attitude_status_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[39]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_gimbal_device_attitude_status_get_field_q_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[4]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_device_attitude_status_get_field_q(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_GIMBAL_DEVICE_ATTITUDE_STATUS_FIELD_Q_NUM) return 0;
+    return ((float*)&(msg->payload[4]))[index];     
 }
 
 

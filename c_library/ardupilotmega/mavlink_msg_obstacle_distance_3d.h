@@ -29,25 +29,27 @@ typedef struct _fmav_obstacle_distance_3d_t {
 
 #define FASTMAVLINK_MSG_ID_OBSTACLE_DISTANCE_3D  11037
 
-
 #define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_3D_PAYLOAD_LEN_MIN  28
 #define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_3D_PAYLOAD_LEN_MAX  28
-#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_3D_PAYLOAD_LEN  28
 #define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_3D_CRCEXTRA  130
-
-#define FASTMAVLINK_MSG_ID_11037_LEN_MIN  28
-#define FASTMAVLINK_MSG_ID_11037_LEN_MAX  28
-#define FASTMAVLINK_MSG_ID_11037_LEN  28
-#define FASTMAVLINK_MSG_ID_11037_CRCEXTRA  130
-
-
 
 #define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_3D_FLAGS  0
 #define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_3D_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_3D_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_3D_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_OBSTACLE_DISTANCE_3D_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_11037_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_11037_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_3D_FRAME_LEN_MAX  53
+
+
+
+#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_3D_FIELD_TIME_BOOT_MS_OFS  0
+#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_3D_FIELD_X_OFS  4
+#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_3D_FIELD_Y_OFS  8
+#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_3D_FIELD_Z_OFS  12
+#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_3D_FIELD_MIN_DISTANCE_OFS  16
+#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_3D_FIELD_MAX_DISTANCE_OFS  20
+#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_3D_FIELD_OBSTACLE_ID_OFS  24
+#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_3D_FIELD_SENSOR_TYPE_OFS  26
+#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_3D_FIELD_FRAME_OFS  27
 
 
 //----------------------------------------
@@ -216,6 +218,81 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_obstacle_distance_3d_decode(fmav_ob
     memset(payload, 0, FASTMAVLINK_MSG_OBSTACLE_DISTANCE_3D_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_obstacle_distance_3d_get_field_time_boot_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_obstacle_distance_3d_get_field_x(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_obstacle_distance_3d_get_field_y(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_obstacle_distance_3d_get_field_z(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_obstacle_distance_3d_get_field_min_distance(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_obstacle_distance_3d_get_field_max_distance(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_obstacle_distance_3d_get_field_obstacle_id(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_obstacle_distance_3d_get_field_sensor_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[26]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_obstacle_distance_3d_get_field_frame(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[27]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

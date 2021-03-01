@@ -26,25 +26,24 @@ typedef struct _fmav_uavcan_node_status_t {
 
 #define FASTMAVLINK_MSG_ID_UAVCAN_NODE_STATUS  310
 
-
 #define FASTMAVLINK_MSG_UAVCAN_NODE_STATUS_PAYLOAD_LEN_MIN  17
 #define FASTMAVLINK_MSG_UAVCAN_NODE_STATUS_PAYLOAD_LEN_MAX  17
-#define FASTMAVLINK_MSG_UAVCAN_NODE_STATUS_PAYLOAD_LEN  17
 #define FASTMAVLINK_MSG_UAVCAN_NODE_STATUS_CRCEXTRA  28
-
-#define FASTMAVLINK_MSG_ID_310_LEN_MIN  17
-#define FASTMAVLINK_MSG_ID_310_LEN_MAX  17
-#define FASTMAVLINK_MSG_ID_310_LEN  17
-#define FASTMAVLINK_MSG_ID_310_CRCEXTRA  28
-
-
 
 #define FASTMAVLINK_MSG_UAVCAN_NODE_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_UAVCAN_NODE_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_UAVCAN_NODE_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_UAVCAN_NODE_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_UAVCAN_NODE_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_310_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_310_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_UAVCAN_NODE_STATUS_FRAME_LEN_MAX  42
+
+
+
+#define FASTMAVLINK_MSG_UAVCAN_NODE_STATUS_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_UAVCAN_NODE_STATUS_FIELD_UPTIME_SEC_OFS  8
+#define FASTMAVLINK_MSG_UAVCAN_NODE_STATUS_FIELD_VENDOR_SPECIFIC_STATUS_CODE_OFS  12
+#define FASTMAVLINK_MSG_UAVCAN_NODE_STATUS_FIELD_HEALTH_OFS  14
+#define FASTMAVLINK_MSG_UAVCAN_NODE_STATUS_FIELD_MODE_OFS  15
+#define FASTMAVLINK_MSG_UAVCAN_NODE_STATUS_FIELD_SUB_MODE_OFS  16
 
 
 //----------------------------------------
@@ -204,6 +203,57 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_uavcan_node_status_decode(fmav_uavc
     memset(payload, 0, FASTMAVLINK_MSG_UAVCAN_NODE_STATUS_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_uavcan_node_status_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_uavcan_node_status_get_field_uptime_sec(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavcan_node_status_get_field_vendor_specific_status_code(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_uavcan_node_status_get_field_health(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[14]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_uavcan_node_status_get_field_mode(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[15]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_uavcan_node_status_get_field_sub_mode(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

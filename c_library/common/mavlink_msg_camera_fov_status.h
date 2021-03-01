@@ -30,25 +30,29 @@ typedef struct _fmav_camera_fov_status_t {
 
 #define FASTMAVLINK_MSG_ID_CAMERA_FOV_STATUS  271
 
-
 #define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_PAYLOAD_LEN_MIN  52
 #define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_PAYLOAD_LEN_MAX  52
-#define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_PAYLOAD_LEN  52
 #define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_CRCEXTRA  22
-
-#define FASTMAVLINK_MSG_ID_271_LEN_MIN  52
-#define FASTMAVLINK_MSG_ID_271_LEN_MAX  52
-#define FASTMAVLINK_MSG_ID_271_LEN  52
-#define FASTMAVLINK_MSG_ID_271_CRCEXTRA  22
-
-#define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FIELD_Q_LEN  4
 
 #define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_CAMERA_FOV_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_271_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_271_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FRAME_LEN_MAX  77
+
+#define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FIELD_Q_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FIELD_Q_LEN  16 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FIELD_TIME_BOOT_MS_OFS  0
+#define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FIELD_LAT_CAMERA_OFS  4
+#define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FIELD_LON_CAMERA_OFS  8
+#define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FIELD_ALT_CAMERA_OFS  12
+#define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FIELD_LAT_IMAGE_OFS  16
+#define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FIELD_LON_IMAGE_OFS  20
+#define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FIELD_ALT_IMAGE_OFS  24
+#define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FIELD_Q_OFS  28
+#define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FIELD_HFOV_OFS  44
+#define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FIELD_VFOV_OFS  48
 
 
 //----------------------------------------
@@ -216,6 +220,91 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_camera_fov_status_decode(fmav_camer
 
     memset(payload, 0, FASTMAVLINK_MSG_CAMERA_FOV_STATUS_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_camera_fov_status_get_field_time_boot_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_camera_fov_status_get_field_lat_camera(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_camera_fov_status_get_field_lon_camera(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_camera_fov_status_get_field_alt_camera(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_camera_fov_status_get_field_lat_image(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_camera_fov_status_get_field_lon_image(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_camera_fov_status_get_field_alt_image(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_fov_status_get_field_hfov(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[44]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_fov_status_get_field_vfov(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[48]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_camera_fov_status_get_field_q_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[28]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_fov_status_get_field_q(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FIELD_Q_NUM) return 0;
+    return ((float*)&(msg->payload[28]))[index];     
 }
 
 

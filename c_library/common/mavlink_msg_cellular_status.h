@@ -27,25 +27,25 @@ typedef struct _fmav_cellular_status_t {
 
 #define FASTMAVLINK_MSG_ID_CELLULAR_STATUS  334
 
-
 #define FASTMAVLINK_MSG_CELLULAR_STATUS_PAYLOAD_LEN_MIN  10
 #define FASTMAVLINK_MSG_CELLULAR_STATUS_PAYLOAD_LEN_MAX  10
-#define FASTMAVLINK_MSG_CELLULAR_STATUS_PAYLOAD_LEN  10
 #define FASTMAVLINK_MSG_CELLULAR_STATUS_CRCEXTRA  72
-
-#define FASTMAVLINK_MSG_ID_334_LEN_MIN  10
-#define FASTMAVLINK_MSG_ID_334_LEN_MAX  10
-#define FASTMAVLINK_MSG_ID_334_LEN  10
-#define FASTMAVLINK_MSG_ID_334_CRCEXTRA  72
-
-
 
 #define FASTMAVLINK_MSG_CELLULAR_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_CELLULAR_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_CELLULAR_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_CELLULAR_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_CELLULAR_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_334_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_334_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_CELLULAR_STATUS_FRAME_LEN_MAX  35
+
+
+
+#define FASTMAVLINK_MSG_CELLULAR_STATUS_FIELD_MCC_OFS  0
+#define FASTMAVLINK_MSG_CELLULAR_STATUS_FIELD_MNC_OFS  2
+#define FASTMAVLINK_MSG_CELLULAR_STATUS_FIELD_LAC_OFS  4
+#define FASTMAVLINK_MSG_CELLULAR_STATUS_FIELD_STATUS_OFS  6
+#define FASTMAVLINK_MSG_CELLULAR_STATUS_FIELD_FAILURE_REASON_OFS  7
+#define FASTMAVLINK_MSG_CELLULAR_STATUS_FIELD_TYPE_OFS  8
+#define FASTMAVLINK_MSG_CELLULAR_STATUS_FIELD_QUALITY_OFS  9
 
 
 //----------------------------------------
@@ -208,6 +208,65 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_cellular_status_decode(fmav_cellula
     memset(payload, 0, FASTMAVLINK_MSG_CELLULAR_STATUS_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_cellular_status_get_field_mcc(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_cellular_status_get_field_mnc(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[2]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_cellular_status_get_field_lac(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_cellular_status_get_field_status(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[6]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_cellular_status_get_field_failure_reason(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[7]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_cellular_status_get_field_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_cellular_status_get_field_quality(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[9]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

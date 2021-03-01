@@ -31,29 +31,38 @@ typedef struct _fmav_follow_target_t {
 
 #define FASTMAVLINK_MSG_ID_FOLLOW_TARGET  144
 
-
 #define FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN_MIN  93
 #define FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN_MAX  93
-#define FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN  93
 #define FASTMAVLINK_MSG_FOLLOW_TARGET_CRCEXTRA  127
-
-#define FASTMAVLINK_MSG_ID_144_LEN_MIN  93
-#define FASTMAVLINK_MSG_ID_144_LEN_MAX  93
-#define FASTMAVLINK_MSG_ID_144_LEN  93
-#define FASTMAVLINK_MSG_ID_144_CRCEXTRA  127
-
-#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_VEL_LEN  3
-#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_ACC_LEN  3
-#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_ATTITUDE_Q_LEN  4
-#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_RATES_LEN  3
-#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_POSITION_COV_LEN  3
 
 #define FASTMAVLINK_MSG_FOLLOW_TARGET_FLAGS  0
 #define FASTMAVLINK_MSG_FOLLOW_TARGET_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_FOLLOW_TARGET_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_FOLLOW_TARGET_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_144_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_144_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_FOLLOW_TARGET_FRAME_LEN_MAX  118
+
+#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_VEL_NUM  3 // number of elements in array
+#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_VEL_LEN  12 // length of array = number of bytes
+#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_ACC_NUM  3 // number of elements in array
+#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_ACC_LEN  12 // length of array = number of bytes
+#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_ATTITUDE_Q_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_ATTITUDE_Q_LEN  16 // length of array = number of bytes
+#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_RATES_NUM  3 // number of elements in array
+#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_RATES_LEN  12 // length of array = number of bytes
+#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_POSITION_COV_NUM  3 // number of elements in array
+#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_POSITION_COV_LEN  12 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_TIMESTAMP_OFS  0
+#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_CUSTOM_STATE_OFS  8
+#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_LAT_OFS  16
+#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_LON_OFS  20
+#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_ALT_OFS  24
+#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_VEL_OFS  28
+#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_ACC_OFS  40
+#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_ATTITUDE_Q_OFS  52
+#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_RATES_OFS  68
+#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_POSITION_COV_OFS  80
+#define FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_EST_CAPABILITIES_OFS  92
 
 
 //----------------------------------------
@@ -224,6 +233,119 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_follow_target_decode(fmav_follow_ta
 
     memset(payload, 0, FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_follow_target_get_field_timestamp(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_follow_target_get_field_custom_state(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_follow_target_get_field_lat(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_follow_target_get_field_lon(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_follow_target_get_field_alt(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_follow_target_get_field_est_capabilities(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[92]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_follow_target_get_field_vel_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[28]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_follow_target_get_field_vel(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_VEL_NUM) return 0;
+    return ((float*)&(msg->payload[28]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_follow_target_get_field_acc_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[40]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_follow_target_get_field_acc(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_ACC_NUM) return 0;
+    return ((float*)&(msg->payload[40]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_follow_target_get_field_attitude_q_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[52]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_follow_target_get_field_attitude_q(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_ATTITUDE_Q_NUM) return 0;
+    return ((float*)&(msg->payload[52]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_follow_target_get_field_rates_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[68]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_follow_target_get_field_rates(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_RATES_NUM) return 0;
+    return ((float*)&(msg->payload[68]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_follow_target_get_field_position_cov_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[80]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_follow_target_get_field_position_cov(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_POSITION_COV_NUM) return 0;
+    return ((float*)&(msg->payload[80]))[index];     
 }
 
 

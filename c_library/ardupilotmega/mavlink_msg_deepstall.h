@@ -30,25 +30,28 @@ typedef struct _fmav_deepstall_t {
 
 #define FASTMAVLINK_MSG_ID_DEEPSTALL  195
 
-
 #define FASTMAVLINK_MSG_DEEPSTALL_PAYLOAD_LEN_MIN  37
 #define FASTMAVLINK_MSG_DEEPSTALL_PAYLOAD_LEN_MAX  37
-#define FASTMAVLINK_MSG_DEEPSTALL_PAYLOAD_LEN  37
 #define FASTMAVLINK_MSG_DEEPSTALL_CRCEXTRA  120
-
-#define FASTMAVLINK_MSG_ID_195_LEN_MIN  37
-#define FASTMAVLINK_MSG_ID_195_LEN_MAX  37
-#define FASTMAVLINK_MSG_ID_195_LEN  37
-#define FASTMAVLINK_MSG_ID_195_CRCEXTRA  120
-
-
 
 #define FASTMAVLINK_MSG_DEEPSTALL_FLAGS  0
 #define FASTMAVLINK_MSG_DEEPSTALL_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_DEEPSTALL_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_DEEPSTALL_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_DEEPSTALL_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_195_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_195_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_DEEPSTALL_FRAME_LEN_MAX  62
+
+
+
+#define FASTMAVLINK_MSG_DEEPSTALL_FIELD_LANDING_LAT_OFS  0
+#define FASTMAVLINK_MSG_DEEPSTALL_FIELD_LANDING_LON_OFS  4
+#define FASTMAVLINK_MSG_DEEPSTALL_FIELD_PATH_LAT_OFS  8
+#define FASTMAVLINK_MSG_DEEPSTALL_FIELD_PATH_LON_OFS  12
+#define FASTMAVLINK_MSG_DEEPSTALL_FIELD_ARC_ENTRY_LAT_OFS  16
+#define FASTMAVLINK_MSG_DEEPSTALL_FIELD_ARC_ENTRY_LON_OFS  20
+#define FASTMAVLINK_MSG_DEEPSTALL_FIELD_ALTITUDE_OFS  24
+#define FASTMAVLINK_MSG_DEEPSTALL_FIELD_EXPECTED_TRAVEL_DISTANCE_OFS  28
+#define FASTMAVLINK_MSG_DEEPSTALL_FIELD_CROSS_TRACK_ERROR_OFS  32
+#define FASTMAVLINK_MSG_DEEPSTALL_FIELD_STAGE_OFS  36
 
 
 //----------------------------------------
@@ -220,6 +223,89 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_deepstall_decode(fmav_deepstall_t* 
     memset(payload, 0, FASTMAVLINK_MSG_DEEPSTALL_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_deepstall_get_field_landing_lat(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_deepstall_get_field_landing_lon(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_deepstall_get_field_path_lat(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_deepstall_get_field_path_lon(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_deepstall_get_field_arc_entry_lat(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_deepstall_get_field_arc_entry_lon(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_deepstall_get_field_altitude(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_deepstall_get_field_expected_travel_distance(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_deepstall_get_field_cross_track_error(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_deepstall_get_field_stage(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

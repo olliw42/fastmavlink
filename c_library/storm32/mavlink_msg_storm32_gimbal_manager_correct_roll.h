@@ -25,25 +25,23 @@ typedef struct _fmav_storm32_gimbal_manager_correct_roll_t {
 
 #define FASTMAVLINK_MSG_ID_STORM32_GIMBAL_MANAGER_CORRECT_ROLL  60014
 
-
 #define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_PAYLOAD_LEN_MIN  8
 #define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_PAYLOAD_LEN_MAX  8
-#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_PAYLOAD_LEN  8
 #define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_CRCEXTRA  134
-
-#define FASTMAVLINK_MSG_ID_60014_LEN_MIN  8
-#define FASTMAVLINK_MSG_ID_60014_LEN_MAX  8
-#define FASTMAVLINK_MSG_ID_60014_LEN  8
-#define FASTMAVLINK_MSG_ID_60014_CRCEXTRA  134
-
-
 
 #define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_FLAGS  3
 #define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_TARGET_SYSTEM_OFS  4
 #define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_TARGET_COMPONENT_OFS  5
 
-#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_60014_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_60014_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_FRAME_LEN_MAX  33
+
+
+
+#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_FIELD_ROLL_OFS  0
+#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_FIELD_TARGET_SYSTEM_OFS  4
+#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_FIELD_TARGET_COMPONENT_OFS  5
+#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_FIELD_GIMBAL_ID_OFS  6
+#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_FIELD_CLIENT_OFS  7
 
 
 //----------------------------------------
@@ -200,6 +198,49 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_storm32_gimbal_manager_correct_roll
     memset(payload, 0, FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_CORRECT_ROLL_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_storm32_gimbal_manager_correct_roll_get_field_roll(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_storm32_gimbal_manager_correct_roll_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_storm32_gimbal_manager_correct_roll_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[5]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_storm32_gimbal_manager_correct_roll_get_field_gimbal_id(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[6]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_storm32_gimbal_manager_correct_roll_get_field_client(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[7]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

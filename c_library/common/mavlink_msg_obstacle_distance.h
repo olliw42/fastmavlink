@@ -29,25 +29,28 @@ typedef struct _fmav_obstacle_distance_t {
 
 #define FASTMAVLINK_MSG_ID_OBSTACLE_DISTANCE  330
 
-
 #define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_PAYLOAD_LEN_MIN  158
 #define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_PAYLOAD_LEN_MAX  167
-#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_PAYLOAD_LEN  167
 #define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_CRCEXTRA  23
-
-#define FASTMAVLINK_MSG_ID_330_LEN_MIN  158
-#define FASTMAVLINK_MSG_ID_330_LEN_MAX  167
-#define FASTMAVLINK_MSG_ID_330_LEN  167
-#define FASTMAVLINK_MSG_ID_330_CRCEXTRA  23
-
-#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_FIELD_DISTANCES_LEN  72
 
 #define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_FLAGS  0
 #define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_OBSTACLE_DISTANCE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_330_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_330_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_FRAME_LEN_MAX  192
+
+#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_FIELD_DISTANCES_NUM  72 // number of elements in array
+#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_FIELD_DISTANCES_LEN  144 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_FIELD_DISTANCES_OFS  8
+#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_FIELD_MIN_DISTANCE_OFS  152
+#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_FIELD_MAX_DISTANCE_OFS  154
+#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_FIELD_SENSOR_TYPE_OFS  156
+#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_FIELD_INCREMENT_OFS  157
+#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_FIELD_INCREMENT_F_OFS  158
+#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_FIELD_ANGLE_OFFSET_OFS  162
+#define FASTMAVLINK_MSG_OBSTACLE_DISTANCE_FIELD_FRAME_OFS  166
 
 
 //----------------------------------------
@@ -212,6 +215,83 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_obstacle_distance_decode(fmav_obsta
 
     memset(payload, 0, FASTMAVLINK_MSG_OBSTACLE_DISTANCE_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_obstacle_distance_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_obstacle_distance_get_field_min_distance(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[152]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_obstacle_distance_get_field_max_distance(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[154]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_obstacle_distance_get_field_sensor_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[156]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_obstacle_distance_get_field_increment(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[157]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_obstacle_distance_get_field_increment_f(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[158]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_obstacle_distance_get_field_angle_offset(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[162]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_obstacle_distance_get_field_frame(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[166]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_obstacle_distance_get_field_distances_ptr(const fmav_message_t* msg)
+{
+    return (uint16_t*)&(msg->payload[8]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_obstacle_distance_get_field_distances(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_OBSTACLE_DISTANCE_FIELD_DISTANCES_NUM) return 0;
+    return ((uint16_t*)&(msg->payload[8]))[index];     
 }
 
 

@@ -26,26 +26,27 @@ typedef struct _fmav_attitude_quaternion_cov_t {
 
 #define FASTMAVLINK_MSG_ID_ATTITUDE_QUATERNION_COV  61
 
-
 #define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_PAYLOAD_LEN_MIN  72
 #define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_PAYLOAD_LEN_MAX  72
-#define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_PAYLOAD_LEN  72
 #define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_CRCEXTRA  167
-
-#define FASTMAVLINK_MSG_ID_61_LEN_MIN  72
-#define FASTMAVLINK_MSG_ID_61_LEN_MAX  72
-#define FASTMAVLINK_MSG_ID_61_LEN  72
-#define FASTMAVLINK_MSG_ID_61_CRCEXTRA  167
-
-#define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_FIELD_Q_LEN  4
-#define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_FIELD_COVARIANCE_LEN  9
 
 #define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_FLAGS  0
 #define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_61_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_61_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_FRAME_LEN_MAX  97
+
+#define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_FIELD_Q_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_FIELD_Q_LEN  16 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_FIELD_COVARIANCE_NUM  9 // number of elements in array
+#define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_FIELD_COVARIANCE_LEN  36 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_FIELD_Q_OFS  8
+#define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_FIELD_ROLLSPEED_OFS  24
+#define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_FIELD_PITCHSPEED_OFS  28
+#define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_FIELD_YAWSPEED_OFS  32
+#define FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_FIELD_COVARIANCE_OFS  36
 
 
 //----------------------------------------
@@ -201,6 +202,64 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_attitude_quaternion_cov_decode(fmav
 
     memset(payload, 0, FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_attitude_quaternion_cov_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_attitude_quaternion_cov_get_field_rollspeed(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_attitude_quaternion_cov_get_field_pitchspeed(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_attitude_quaternion_cov_get_field_yawspeed(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_attitude_quaternion_cov_get_field_q_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[8]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_attitude_quaternion_cov_get_field_q(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_FIELD_Q_NUM) return 0;
+    return ((float*)&(msg->payload[8]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_attitude_quaternion_cov_get_field_covariance_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[36]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_attitude_quaternion_cov_get_field_covariance(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ATTITUDE_QUATERNION_COV_FIELD_COVARIANCE_NUM) return 0;
+    return ((float*)&(msg->payload[36]))[index];     
 }
 
 

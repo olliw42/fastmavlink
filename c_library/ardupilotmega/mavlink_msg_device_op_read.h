@@ -30,25 +30,29 @@ typedef struct _fmav_device_op_read_t {
 
 #define FASTMAVLINK_MSG_ID_DEVICE_OP_READ  11000
 
-
 #define FASTMAVLINK_MSG_DEVICE_OP_READ_PAYLOAD_LEN_MIN  51
 #define FASTMAVLINK_MSG_DEVICE_OP_READ_PAYLOAD_LEN_MAX  52
-#define FASTMAVLINK_MSG_DEVICE_OP_READ_PAYLOAD_LEN  52
 #define FASTMAVLINK_MSG_DEVICE_OP_READ_CRCEXTRA  134
-
-#define FASTMAVLINK_MSG_ID_11000_LEN_MIN  51
-#define FASTMAVLINK_MSG_ID_11000_LEN_MAX  52
-#define FASTMAVLINK_MSG_ID_11000_LEN  52
-#define FASTMAVLINK_MSG_ID_11000_CRCEXTRA  134
-
-#define FASTMAVLINK_MSG_DEVICE_OP_READ_FIELD_BUSNAME_LEN  40
 
 #define FASTMAVLINK_MSG_DEVICE_OP_READ_FLAGS  3
 #define FASTMAVLINK_MSG_DEVICE_OP_READ_TARGET_SYSTEM_OFS  4
 #define FASTMAVLINK_MSG_DEVICE_OP_READ_TARGET_COMPONENT_OFS  5
 
-#define FASTMAVLINK_MSG_DEVICE_OP_READ_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_DEVICE_OP_READ_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_11000_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_11000_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_DEVICE_OP_READ_FRAME_LEN_MAX  77
+
+#define FASTMAVLINK_MSG_DEVICE_OP_READ_FIELD_BUSNAME_NUM  40 // number of elements in array
+#define FASTMAVLINK_MSG_DEVICE_OP_READ_FIELD_BUSNAME_LEN  40 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_DEVICE_OP_READ_FIELD_REQUEST_ID_OFS  0
+#define FASTMAVLINK_MSG_DEVICE_OP_READ_FIELD_TARGET_SYSTEM_OFS  4
+#define FASTMAVLINK_MSG_DEVICE_OP_READ_FIELD_TARGET_COMPONENT_OFS  5
+#define FASTMAVLINK_MSG_DEVICE_OP_READ_FIELD_BUSTYPE_OFS  6
+#define FASTMAVLINK_MSG_DEVICE_OP_READ_FIELD_BUS_OFS  7
+#define FASTMAVLINK_MSG_DEVICE_OP_READ_FIELD_ADDRESS_OFS  8
+#define FASTMAVLINK_MSG_DEVICE_OP_READ_FIELD_BUSNAME_OFS  9
+#define FASTMAVLINK_MSG_DEVICE_OP_READ_FIELD_REGSTART_OFS  49
+#define FASTMAVLINK_MSG_DEVICE_OP_READ_FIELD_COUNT_OFS  50
+#define FASTMAVLINK_MSG_DEVICE_OP_READ_FIELD_BANK_OFS  51
 
 
 //----------------------------------------
@@ -216,6 +220,91 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_device_op_read_decode(fmav_device_o
 
     memset(payload, 0, FASTMAVLINK_MSG_DEVICE_OP_READ_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_device_op_read_get_field_request_id(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_device_op_read_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_device_op_read_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[5]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_device_op_read_get_field_bustype(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[6]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_device_op_read_get_field_bus(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[7]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_device_op_read_get_field_address(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_device_op_read_get_field_regstart(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[49]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_device_op_read_get_field_count(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[50]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_device_op_read_get_field_bank(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[51]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_device_op_read_get_field_busname_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[9]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_device_op_read_get_field_busname(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_DEVICE_OP_READ_FIELD_BUSNAME_NUM) return 0;
+    return ((char*)&(msg->payload[9]))[index];     
 }
 
 

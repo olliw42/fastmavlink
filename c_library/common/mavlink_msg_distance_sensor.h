@@ -32,25 +32,31 @@ typedef struct _fmav_distance_sensor_t {
 
 #define FASTMAVLINK_MSG_ID_DISTANCE_SENSOR  132
 
-
 #define FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MIN  14
 #define FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MAX  39
-#define FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN  39
 #define FASTMAVLINK_MSG_DISTANCE_SENSOR_CRCEXTRA  85
-
-#define FASTMAVLINK_MSG_ID_132_LEN_MIN  14
-#define FASTMAVLINK_MSG_ID_132_LEN_MAX  39
-#define FASTMAVLINK_MSG_ID_132_LEN  39
-#define FASTMAVLINK_MSG_ID_132_CRCEXTRA  85
-
-#define FASTMAVLINK_MSG_DISTANCE_SENSOR_FIELD_QUATERNION_LEN  4
 
 #define FASTMAVLINK_MSG_DISTANCE_SENSOR_FLAGS  0
 #define FASTMAVLINK_MSG_DISTANCE_SENSOR_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_DISTANCE_SENSOR_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_DISTANCE_SENSOR_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_132_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_132_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_DISTANCE_SENSOR_FRAME_LEN_MAX  64
+
+#define FASTMAVLINK_MSG_DISTANCE_SENSOR_FIELD_QUATERNION_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_DISTANCE_SENSOR_FIELD_QUATERNION_LEN  16 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_DISTANCE_SENSOR_FIELD_TIME_BOOT_MS_OFS  0
+#define FASTMAVLINK_MSG_DISTANCE_SENSOR_FIELD_MIN_DISTANCE_OFS  4
+#define FASTMAVLINK_MSG_DISTANCE_SENSOR_FIELD_MAX_DISTANCE_OFS  6
+#define FASTMAVLINK_MSG_DISTANCE_SENSOR_FIELD_CURRENT_DISTANCE_OFS  8
+#define FASTMAVLINK_MSG_DISTANCE_SENSOR_FIELD_TYPE_OFS  10
+#define FASTMAVLINK_MSG_DISTANCE_SENSOR_FIELD_ID_OFS  11
+#define FASTMAVLINK_MSG_DISTANCE_SENSOR_FIELD_ORIENTATION_OFS  12
+#define FASTMAVLINK_MSG_DISTANCE_SENSOR_FIELD_COVARIANCE_OFS  13
+#define FASTMAVLINK_MSG_DISTANCE_SENSOR_FIELD_HORIZONTAL_FOV_OFS  14
+#define FASTMAVLINK_MSG_DISTANCE_SENSOR_FIELD_VERTICAL_FOV_OFS  18
+#define FASTMAVLINK_MSG_DISTANCE_SENSOR_FIELD_QUATERNION_OFS  22
+#define FASTMAVLINK_MSG_DISTANCE_SENSOR_FIELD_SIGNAL_QUALITY_OFS  38
 
 
 //----------------------------------------
@@ -224,6 +230,107 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_distance_sensor_decode(fmav_distanc
 
     memset(payload, 0, FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_distance_sensor_get_field_time_boot_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_get_field_min_distance(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_get_field_max_distance(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[6]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_get_field_current_distance(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_distance_sensor_get_field_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[10]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_distance_sensor_get_field_id(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[11]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_distance_sensor_get_field_orientation(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_distance_sensor_get_field_covariance(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[13]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_distance_sensor_get_field_horizontal_fov(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[14]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_distance_sensor_get_field_vertical_fov(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[18]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_distance_sensor_get_field_signal_quality(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[38]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_distance_sensor_get_field_quaternion_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[22]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_distance_sensor_get_field_quaternion(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_DISTANCE_SENSOR_FIELD_QUATERNION_NUM) return 0;
+    return ((float*)&(msg->payload[22]))[index];     
 }
 
 

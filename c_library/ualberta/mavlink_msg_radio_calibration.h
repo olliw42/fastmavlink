@@ -26,30 +26,35 @@ typedef struct _fmav_radio_calibration_t {
 
 #define FASTMAVLINK_MSG_ID_RADIO_CALIBRATION  221
 
-
 #define FASTMAVLINK_MSG_RADIO_CALIBRATION_PAYLOAD_LEN_MIN  42
 #define FASTMAVLINK_MSG_RADIO_CALIBRATION_PAYLOAD_LEN_MAX  42
-#define FASTMAVLINK_MSG_RADIO_CALIBRATION_PAYLOAD_LEN  42
 #define FASTMAVLINK_MSG_RADIO_CALIBRATION_CRCEXTRA  71
-
-#define FASTMAVLINK_MSG_ID_221_LEN_MIN  42
-#define FASTMAVLINK_MSG_ID_221_LEN_MAX  42
-#define FASTMAVLINK_MSG_ID_221_LEN  42
-#define FASTMAVLINK_MSG_ID_221_CRCEXTRA  71
-
-#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_AILERON_LEN  3
-#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_ELEVATOR_LEN  3
-#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_RUDDER_LEN  3
-#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_GYRO_LEN  2
-#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_PITCH_LEN  5
-#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_THROTTLE_LEN  5
 
 #define FASTMAVLINK_MSG_RADIO_CALIBRATION_FLAGS  0
 #define FASTMAVLINK_MSG_RADIO_CALIBRATION_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_RADIO_CALIBRATION_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_RADIO_CALIBRATION_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_221_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_221_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FRAME_LEN_MAX  67
+
+#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_AILERON_NUM  3 // number of elements in array
+#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_AILERON_LEN  6 // length of array = number of bytes
+#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_ELEVATOR_NUM  3 // number of elements in array
+#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_ELEVATOR_LEN  6 // length of array = number of bytes
+#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_RUDDER_NUM  3 // number of elements in array
+#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_RUDDER_LEN  6 // length of array = number of bytes
+#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_GYRO_NUM  2 // number of elements in array
+#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_GYRO_LEN  4 // length of array = number of bytes
+#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_PITCH_NUM  5 // number of elements in array
+#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_PITCH_LEN  10 // length of array = number of bytes
+#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_THROTTLE_NUM  5 // number of elements in array
+#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_THROTTLE_LEN  10 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_AILERON_OFS  0
+#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_ELEVATOR_OFS  6
+#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_RUDDER_OFS  12
+#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_GYRO_OFS  18
+#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_PITCH_OFS  22
+#define FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_THROTTLE_OFS  32
 
 
 //----------------------------------------
@@ -208,6 +213,87 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_radio_calibration_decode(fmav_radio
 
     memset(payload, 0, FASTMAVLINK_MSG_RADIO_CALIBRATION_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_radio_calibration_get_field_aileron_ptr(const fmav_message_t* msg)
+{
+    return (uint16_t*)&(msg->payload[0]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_calibration_get_field_aileron(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_AILERON_NUM) return 0;
+    return ((uint16_t*)&(msg->payload[0]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_radio_calibration_get_field_elevator_ptr(const fmav_message_t* msg)
+{
+    return (uint16_t*)&(msg->payload[6]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_calibration_get_field_elevator(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_ELEVATOR_NUM) return 0;
+    return ((uint16_t*)&(msg->payload[6]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_radio_calibration_get_field_rudder_ptr(const fmav_message_t* msg)
+{
+    return (uint16_t*)&(msg->payload[12]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_calibration_get_field_rudder(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_RUDDER_NUM) return 0;
+    return ((uint16_t*)&(msg->payload[12]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_radio_calibration_get_field_gyro_ptr(const fmav_message_t* msg)
+{
+    return (uint16_t*)&(msg->payload[18]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_calibration_get_field_gyro(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_GYRO_NUM) return 0;
+    return ((uint16_t*)&(msg->payload[18]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_radio_calibration_get_field_pitch_ptr(const fmav_message_t* msg)
+{
+    return (uint16_t*)&(msg->payload[22]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_calibration_get_field_pitch(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_PITCH_NUM) return 0;
+    return ((uint16_t*)&(msg->payload[22]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_radio_calibration_get_field_throttle_ptr(const fmav_message_t* msg)
+{
+    return (uint16_t*)&(msg->payload[32]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_calibration_get_field_throttle(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_THROTTLE_NUM) return 0;
+    return ((uint16_t*)&(msg->payload[32]))[index];     
 }
 
 

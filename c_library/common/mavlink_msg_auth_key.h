@@ -21,25 +21,20 @@ typedef struct _fmav_auth_key_t {
 
 #define FASTMAVLINK_MSG_ID_AUTH_KEY  7
 
-
 #define FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN_MIN  32
 #define FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN_MAX  32
-#define FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN  32
 #define FASTMAVLINK_MSG_AUTH_KEY_CRCEXTRA  119
-
-#define FASTMAVLINK_MSG_ID_7_LEN_MIN  32
-#define FASTMAVLINK_MSG_ID_7_LEN_MAX  32
-#define FASTMAVLINK_MSG_ID_7_LEN  32
-#define FASTMAVLINK_MSG_ID_7_CRCEXTRA  119
-
-#define FASTMAVLINK_MSG_AUTH_KEY_FIELD_KEY_LEN  32
 
 #define FASTMAVLINK_MSG_AUTH_KEY_FLAGS  0
 #define FASTMAVLINK_MSG_AUTH_KEY_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_AUTH_KEY_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_AUTH_KEY_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_7_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_7_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_AUTH_KEY_FRAME_LEN_MAX  57
+
+#define FASTMAVLINK_MSG_AUTH_KEY_FIELD_KEY_NUM  32 // number of elements in array
+#define FASTMAVLINK_MSG_AUTH_KEY_FIELD_KEY_LEN  32 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_AUTH_KEY_FIELD_KEY_OFS  0
 
 
 //----------------------------------------
@@ -183,6 +178,22 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_auth_key_decode(fmav_auth_key_t* pa
 
     memset(payload, 0, FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_auth_key_get_field_key_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[0]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_auth_key_get_field_key(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_AUTH_KEY_FIELD_KEY_NUM) return 0;
+    return ((char*)&(msg->payload[0]))[index];     
 }
 
 

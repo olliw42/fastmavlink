@@ -23,25 +23,22 @@ typedef struct _fmav_data32_t {
 
 #define FASTMAVLINK_MSG_ID_DATA32  170
 
-
 #define FASTMAVLINK_MSG_DATA32_PAYLOAD_LEN_MIN  34
 #define FASTMAVLINK_MSG_DATA32_PAYLOAD_LEN_MAX  34
-#define FASTMAVLINK_MSG_DATA32_PAYLOAD_LEN  34
 #define FASTMAVLINK_MSG_DATA32_CRCEXTRA  73
-
-#define FASTMAVLINK_MSG_ID_170_LEN_MIN  34
-#define FASTMAVLINK_MSG_ID_170_LEN_MAX  34
-#define FASTMAVLINK_MSG_ID_170_LEN  34
-#define FASTMAVLINK_MSG_ID_170_CRCEXTRA  73
-
-#define FASTMAVLINK_MSG_DATA32_FIELD_DATA_LEN  32
 
 #define FASTMAVLINK_MSG_DATA32_FLAGS  0
 #define FASTMAVLINK_MSG_DATA32_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_DATA32_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_DATA32_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_DATA32_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_170_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_170_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_DATA32_FRAME_LEN_MAX  59
+
+#define FASTMAVLINK_MSG_DATA32_FIELD_DATA_NUM  32 // number of elements in array
+#define FASTMAVLINK_MSG_DATA32_FIELD_DATA_LEN  32 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_DATA32_FIELD_TYPE_OFS  0
+#define FASTMAVLINK_MSG_DATA32_FIELD_LEN_OFS  1
+#define FASTMAVLINK_MSG_DATA32_FIELD_DATA_OFS  2
 
 
 //----------------------------------------
@@ -188,6 +185,35 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_data32_decode(fmav_data32_t* payloa
 
     memset(payload, 0, FASTMAVLINK_MSG_DATA32_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_data32_get_field_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_data32_get_field_len(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[1]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_data32_get_field_data_ptr(const fmav_message_t* msg)
+{
+    return (uint8_t*)&(msg->payload[2]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_data32_get_field_data(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_DATA32_FIELD_DATA_NUM) return 0;
+    return ((uint8_t*)&(msg->payload[2]))[index];     
 }
 
 

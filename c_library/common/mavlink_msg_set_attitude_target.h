@@ -29,25 +29,28 @@ typedef struct _fmav_set_attitude_target_t {
 
 #define FASTMAVLINK_MSG_ID_SET_ATTITUDE_TARGET  82
 
-
 #define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_PAYLOAD_LEN_MIN  39
 #define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_PAYLOAD_LEN_MAX  39
-#define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_PAYLOAD_LEN  39
 #define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_CRCEXTRA  49
-
-#define FASTMAVLINK_MSG_ID_82_LEN_MIN  39
-#define FASTMAVLINK_MSG_ID_82_LEN_MAX  39
-#define FASTMAVLINK_MSG_ID_82_LEN  39
-#define FASTMAVLINK_MSG_ID_82_CRCEXTRA  49
-
-#define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_Q_LEN  4
 
 #define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FLAGS  3
 #define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_TARGET_SYSTEM_OFS  36
 #define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_TARGET_COMPONENT_OFS  37
 
-#define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_82_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_82_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FRAME_LEN_MAX  64
+
+#define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_Q_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_Q_LEN  16 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_TIME_BOOT_MS_OFS  0
+#define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_Q_OFS  4
+#define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_BODY_ROLL_RATE_OFS  20
+#define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_BODY_PITCH_RATE_OFS  24
+#define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_BODY_YAW_RATE_OFS  28
+#define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_THRUST_OFS  32
+#define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_TARGET_SYSTEM_OFS  36
+#define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_TARGET_COMPONENT_OFS  37
+#define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_TYPE_MASK_OFS  38
 
 
 //----------------------------------------
@@ -212,6 +215,83 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_set_attitude_target_decode(fmav_set
 
     memset(payload, 0, FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_set_attitude_target_get_field_time_boot_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_set_attitude_target_get_field_body_roll_rate(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_set_attitude_target_get_field_body_pitch_rate(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_set_attitude_target_get_field_body_yaw_rate(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_set_attitude_target_get_field_thrust(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_set_attitude_target_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_set_attitude_target_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[37]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_set_attitude_target_get_field_type_mask(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[38]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_set_attitude_target_get_field_q_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[4]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_set_attitude_target_get_field_q(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_Q_NUM) return 0;
+    return ((float*)&(msg->payload[4]))[index];     
 }
 
 

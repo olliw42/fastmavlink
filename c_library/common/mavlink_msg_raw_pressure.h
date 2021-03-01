@@ -25,25 +25,23 @@ typedef struct _fmav_raw_pressure_t {
 
 #define FASTMAVLINK_MSG_ID_RAW_PRESSURE  28
 
-
 #define FASTMAVLINK_MSG_RAW_PRESSURE_PAYLOAD_LEN_MIN  16
 #define FASTMAVLINK_MSG_RAW_PRESSURE_PAYLOAD_LEN_MAX  16
-#define FASTMAVLINK_MSG_RAW_PRESSURE_PAYLOAD_LEN  16
 #define FASTMAVLINK_MSG_RAW_PRESSURE_CRCEXTRA  67
-
-#define FASTMAVLINK_MSG_ID_28_LEN_MIN  16
-#define FASTMAVLINK_MSG_ID_28_LEN_MAX  16
-#define FASTMAVLINK_MSG_ID_28_LEN  16
-#define FASTMAVLINK_MSG_ID_28_CRCEXTRA  67
-
-
 
 #define FASTMAVLINK_MSG_RAW_PRESSURE_FLAGS  0
 #define FASTMAVLINK_MSG_RAW_PRESSURE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_RAW_PRESSURE_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_RAW_PRESSURE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_RAW_PRESSURE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_28_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_28_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_RAW_PRESSURE_FRAME_LEN_MAX  41
+
+
+
+#define FASTMAVLINK_MSG_RAW_PRESSURE_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_RAW_PRESSURE_FIELD_PRESS_ABS_OFS  8
+#define FASTMAVLINK_MSG_RAW_PRESSURE_FIELD_PRESS_DIFF1_OFS  10
+#define FASTMAVLINK_MSG_RAW_PRESSURE_FIELD_PRESS_DIFF2_OFS  12
+#define FASTMAVLINK_MSG_RAW_PRESSURE_FIELD_TEMPERATURE_OFS  14
 
 
 //----------------------------------------
@@ -200,6 +198,49 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_raw_pressure_decode(fmav_raw_pressu
     memset(payload, 0, FASTMAVLINK_MSG_RAW_PRESSURE_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_raw_pressure_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_raw_pressure_get_field_press_abs(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_raw_pressure_get_field_press_diff1(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[10]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_raw_pressure_get_field_press_diff2(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_raw_pressure_get_field_temperature(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[14]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

@@ -26,30 +26,35 @@ typedef struct _fmav_esc_telemetry_9_to_12_t {
 
 #define FASTMAVLINK_MSG_ID_ESC_TELEMETRY_9_TO_12  11032
 
-
 #define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_PAYLOAD_LEN_MIN  44
 #define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_PAYLOAD_LEN_MAX  44
-#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_PAYLOAD_LEN  44
 #define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_CRCEXTRA  85
-
-#define FASTMAVLINK_MSG_ID_11032_LEN_MIN  44
-#define FASTMAVLINK_MSG_ID_11032_LEN_MAX  44
-#define FASTMAVLINK_MSG_ID_11032_LEN  44
-#define FASTMAVLINK_MSG_ID_11032_CRCEXTRA  85
-
-#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_VOLTAGE_LEN  4
-#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_CURRENT_LEN  4
-#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_TOTALCURRENT_LEN  4
-#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_RPM_LEN  4
-#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_COUNT_LEN  4
-#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_TEMPERATURE_LEN  4
 
 #define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FLAGS  0
 #define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_11032_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_11032_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FRAME_LEN_MAX  69
+
+#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_VOLTAGE_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_VOLTAGE_LEN  8 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_CURRENT_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_CURRENT_LEN  8 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_TOTALCURRENT_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_TOTALCURRENT_LEN  8 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_RPM_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_RPM_LEN  8 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_COUNT_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_COUNT_LEN  8 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_TEMPERATURE_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_TEMPERATURE_LEN  4 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_VOLTAGE_OFS  0
+#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_CURRENT_OFS  8
+#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_TOTALCURRENT_OFS  16
+#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_RPM_OFS  24
+#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_COUNT_OFS  32
+#define FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_TEMPERATURE_OFS  40
 
 
 //----------------------------------------
@@ -208,6 +213,87 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_esc_telemetry_9_to_12_decode(fmav_e
 
     memset(payload, 0, FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_esc_telemetry_9_to_12_get_field_voltage_ptr(const fmav_message_t* msg)
+{
+    return (uint16_t*)&(msg->payload[0]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_telemetry_9_to_12_get_field_voltage(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_VOLTAGE_NUM) return 0;
+    return ((uint16_t*)&(msg->payload[0]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_esc_telemetry_9_to_12_get_field_current_ptr(const fmav_message_t* msg)
+{
+    return (uint16_t*)&(msg->payload[8]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_telemetry_9_to_12_get_field_current(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_CURRENT_NUM) return 0;
+    return ((uint16_t*)&(msg->payload[8]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_esc_telemetry_9_to_12_get_field_totalcurrent_ptr(const fmav_message_t* msg)
+{
+    return (uint16_t*)&(msg->payload[16]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_telemetry_9_to_12_get_field_totalcurrent(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_TOTALCURRENT_NUM) return 0;
+    return ((uint16_t*)&(msg->payload[16]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_esc_telemetry_9_to_12_get_field_rpm_ptr(const fmav_message_t* msg)
+{
+    return (uint16_t*)&(msg->payload[24]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_telemetry_9_to_12_get_field_rpm(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_RPM_NUM) return 0;
+    return ((uint16_t*)&(msg->payload[24]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_esc_telemetry_9_to_12_get_field_count_ptr(const fmav_message_t* msg)
+{
+    return (uint16_t*)&(msg->payload[32]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_telemetry_9_to_12_get_field_count(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_COUNT_NUM) return 0;
+    return ((uint16_t*)&(msg->payload[32]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_esc_telemetry_9_to_12_get_field_temperature_ptr(const fmav_message_t* msg)
+{
+    return (uint8_t*)&(msg->payload[40]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_esc_telemetry_9_to_12_get_field_temperature(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_FIELD_TEMPERATURE_NUM) return 0;
+    return ((uint8_t*)&(msg->payload[40]))[index];     
 }
 
 

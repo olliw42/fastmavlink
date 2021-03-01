@@ -23,25 +23,21 @@ typedef struct _fmav_wind_t {
 
 #define FASTMAVLINK_MSG_ID_WIND  168
 
-
 #define FASTMAVLINK_MSG_WIND_PAYLOAD_LEN_MIN  12
 #define FASTMAVLINK_MSG_WIND_PAYLOAD_LEN_MAX  12
-#define FASTMAVLINK_MSG_WIND_PAYLOAD_LEN  12
 #define FASTMAVLINK_MSG_WIND_CRCEXTRA  1
-
-#define FASTMAVLINK_MSG_ID_168_LEN_MIN  12
-#define FASTMAVLINK_MSG_ID_168_LEN_MAX  12
-#define FASTMAVLINK_MSG_ID_168_LEN  12
-#define FASTMAVLINK_MSG_ID_168_CRCEXTRA  1
-
-
 
 #define FASTMAVLINK_MSG_WIND_FLAGS  0
 #define FASTMAVLINK_MSG_WIND_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_WIND_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_WIND_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_WIND_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_168_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_168_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_WIND_FRAME_LEN_MAX  37
+
+
+
+#define FASTMAVLINK_MSG_WIND_FIELD_DIRECTION_OFS  0
+#define FASTMAVLINK_MSG_WIND_FIELD_SPEED_OFS  4
+#define FASTMAVLINK_MSG_WIND_FIELD_SPEED_Z_OFS  8
 
 
 //----------------------------------------
@@ -192,6 +188,33 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_wind_decode(fmav_wind_t* payload, c
     memset(payload, 0, FASTMAVLINK_MSG_WIND_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_wind_get_field_direction(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_wind_get_field_speed(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_wind_get_field_speed_z(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

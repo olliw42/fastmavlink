@@ -27,25 +27,25 @@ typedef struct _fmav_ekf_status_report_t {
 
 #define FASTMAVLINK_MSG_ID_EKF_STATUS_REPORT  193
 
-
 #define FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MIN  22
 #define FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MAX  26
-#define FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN  26
 #define FASTMAVLINK_MSG_EKF_STATUS_REPORT_CRCEXTRA  71
-
-#define FASTMAVLINK_MSG_ID_193_LEN_MIN  22
-#define FASTMAVLINK_MSG_ID_193_LEN_MAX  26
-#define FASTMAVLINK_MSG_ID_193_LEN  26
-#define FASTMAVLINK_MSG_ID_193_CRCEXTRA  71
-
-
 
 #define FASTMAVLINK_MSG_EKF_STATUS_REPORT_FLAGS  0
 #define FASTMAVLINK_MSG_EKF_STATUS_REPORT_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_EKF_STATUS_REPORT_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_EKF_STATUS_REPORT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_193_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_193_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_EKF_STATUS_REPORT_FRAME_LEN_MAX  51
+
+
+
+#define FASTMAVLINK_MSG_EKF_STATUS_REPORT_FIELD_VELOCITY_VARIANCE_OFS  0
+#define FASTMAVLINK_MSG_EKF_STATUS_REPORT_FIELD_POS_HORIZ_VARIANCE_OFS  4
+#define FASTMAVLINK_MSG_EKF_STATUS_REPORT_FIELD_POS_VERT_VARIANCE_OFS  8
+#define FASTMAVLINK_MSG_EKF_STATUS_REPORT_FIELD_COMPASS_VARIANCE_OFS  12
+#define FASTMAVLINK_MSG_EKF_STATUS_REPORT_FIELD_TERRAIN_ALT_VARIANCE_OFS  16
+#define FASTMAVLINK_MSG_EKF_STATUS_REPORT_FIELD_FLAGS_OFS  20
+#define FASTMAVLINK_MSG_EKF_STATUS_REPORT_FIELD_AIRSPEED_VARIANCE_OFS  22
 
 
 //----------------------------------------
@@ -208,6 +208,65 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_ekf_status_report_decode(fmav_ekf_s
     memset(payload, 0, FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ekf_status_report_get_field_velocity_variance(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ekf_status_report_get_field_pos_horiz_variance(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ekf_status_report_get_field_pos_vert_variance(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ekf_status_report_get_field_compass_variance(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ekf_status_report_get_field_terrain_alt_variance(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ekf_status_report_get_field_flags(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ekf_status_report_get_field_airspeed_variance(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[22]), sizeof(float)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

@@ -24,25 +24,22 @@ typedef struct _fmav_flight_information_t {
 
 #define FASTMAVLINK_MSG_ID_FLIGHT_INFORMATION  264
 
-
 #define FASTMAVLINK_MSG_FLIGHT_INFORMATION_PAYLOAD_LEN_MIN  28
 #define FASTMAVLINK_MSG_FLIGHT_INFORMATION_PAYLOAD_LEN_MAX  28
-#define FASTMAVLINK_MSG_FLIGHT_INFORMATION_PAYLOAD_LEN  28
 #define FASTMAVLINK_MSG_FLIGHT_INFORMATION_CRCEXTRA  49
-
-#define FASTMAVLINK_MSG_ID_264_LEN_MIN  28
-#define FASTMAVLINK_MSG_ID_264_LEN_MAX  28
-#define FASTMAVLINK_MSG_ID_264_LEN  28
-#define FASTMAVLINK_MSG_ID_264_CRCEXTRA  49
-
-
 
 #define FASTMAVLINK_MSG_FLIGHT_INFORMATION_FLAGS  0
 #define FASTMAVLINK_MSG_FLIGHT_INFORMATION_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_FLIGHT_INFORMATION_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_FLIGHT_INFORMATION_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_FLIGHT_INFORMATION_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_264_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_264_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_FLIGHT_INFORMATION_FRAME_LEN_MAX  53
+
+
+
+#define FASTMAVLINK_MSG_FLIGHT_INFORMATION_FIELD_ARMING_TIME_UTC_OFS  0
+#define FASTMAVLINK_MSG_FLIGHT_INFORMATION_FIELD_TAKEOFF_TIME_UTC_OFS  8
+#define FASTMAVLINK_MSG_FLIGHT_INFORMATION_FIELD_FLIGHT_UUID_OFS  16
+#define FASTMAVLINK_MSG_FLIGHT_INFORMATION_FIELD_TIME_BOOT_MS_OFS  24
 
 
 //----------------------------------------
@@ -196,6 +193,41 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_flight_information_decode(fmav_flig
     memset(payload, 0, FASTMAVLINK_MSG_FLIGHT_INFORMATION_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_flight_information_get_field_arming_time_utc(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_flight_information_get_field_takeoff_time_utc(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_flight_information_get_field_flight_uuid(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_flight_information_get_field_time_boot_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

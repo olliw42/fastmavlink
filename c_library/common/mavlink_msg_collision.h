@@ -27,25 +27,25 @@ typedef struct _fmav_collision_t {
 
 #define FASTMAVLINK_MSG_ID_COLLISION  247
 
-
 #define FASTMAVLINK_MSG_COLLISION_PAYLOAD_LEN_MIN  19
 #define FASTMAVLINK_MSG_COLLISION_PAYLOAD_LEN_MAX  19
-#define FASTMAVLINK_MSG_COLLISION_PAYLOAD_LEN  19
 #define FASTMAVLINK_MSG_COLLISION_CRCEXTRA  81
-
-#define FASTMAVLINK_MSG_ID_247_LEN_MIN  19
-#define FASTMAVLINK_MSG_ID_247_LEN_MAX  19
-#define FASTMAVLINK_MSG_ID_247_LEN  19
-#define FASTMAVLINK_MSG_ID_247_CRCEXTRA  81
-
-
 
 #define FASTMAVLINK_MSG_COLLISION_FLAGS  0
 #define FASTMAVLINK_MSG_COLLISION_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_COLLISION_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_COLLISION_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_COLLISION_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_247_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_247_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_COLLISION_FRAME_LEN_MAX  44
+
+
+
+#define FASTMAVLINK_MSG_COLLISION_FIELD_ID_OFS  0
+#define FASTMAVLINK_MSG_COLLISION_FIELD_TIME_TO_MINIMUM_DELTA_OFS  4
+#define FASTMAVLINK_MSG_COLLISION_FIELD_ALTITUDE_MINIMUM_DELTA_OFS  8
+#define FASTMAVLINK_MSG_COLLISION_FIELD_HORIZONTAL_MINIMUM_DELTA_OFS  12
+#define FASTMAVLINK_MSG_COLLISION_FIELD_SRC_OFS  16
+#define FASTMAVLINK_MSG_COLLISION_FIELD_ACTION_OFS  17
+#define FASTMAVLINK_MSG_COLLISION_FIELD_THREAT_LEVEL_OFS  18
 
 
 //----------------------------------------
@@ -208,6 +208,65 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_collision_decode(fmav_collision_t* 
     memset(payload, 0, FASTMAVLINK_MSG_COLLISION_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_collision_get_field_id(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_collision_get_field_time_to_minimum_delta(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_collision_get_field_altitude_minimum_delta(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_collision_get_field_horizontal_minimum_delta(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_collision_get_field_src(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_collision_get_field_action(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[17]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_collision_get_field_threat_level(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[18]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

@@ -32,26 +32,33 @@ typedef struct _fmav_smart_battery_info_t {
 
 #define FASTMAVLINK_MSG_ID_SMART_BATTERY_INFO  370
 
-
 #define FASTMAVLINK_MSG_SMART_BATTERY_INFO_PAYLOAD_LEN_MIN  87
 #define FASTMAVLINK_MSG_SMART_BATTERY_INFO_PAYLOAD_LEN_MAX  87
-#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_PAYLOAD_LEN  87
 #define FASTMAVLINK_MSG_SMART_BATTERY_INFO_CRCEXTRA  75
-
-#define FASTMAVLINK_MSG_ID_370_LEN_MIN  87
-#define FASTMAVLINK_MSG_ID_370_LEN_MAX  87
-#define FASTMAVLINK_MSG_ID_370_LEN  87
-#define FASTMAVLINK_MSG_ID_370_CRCEXTRA  75
-
-#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_SERIAL_NUMBER_LEN  16
-#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_DEVICE_NAME_LEN  50
 
 #define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FLAGS  0
 #define FASTMAVLINK_MSG_SMART_BATTERY_INFO_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_SMART_BATTERY_INFO_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_SMART_BATTERY_INFO_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_370_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_370_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FRAME_LEN_MAX  112
+
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_SERIAL_NUMBER_NUM  16 // number of elements in array
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_SERIAL_NUMBER_LEN  16 // length of array = number of bytes
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_DEVICE_NAME_NUM  50 // number of elements in array
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_DEVICE_NAME_LEN  50 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_CAPACITY_FULL_SPECIFICATION_OFS  0
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_CAPACITY_FULL_OFS  4
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_CYCLE_COUNT_OFS  8
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_WEIGHT_OFS  10
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_DISCHARGE_MINIMUM_VOLTAGE_OFS  12
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_CHARGING_MINIMUM_VOLTAGE_OFS  14
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_RESTING_MINIMUM_VOLTAGE_OFS  16
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_ID_OFS  18
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_BATTERY_FUNCTION_OFS  19
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_TYPE_OFS  20
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_SERIAL_NUMBER_OFS  21
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_DEVICE_NAME_OFS  37
 
 
 //----------------------------------------
@@ -225,6 +232,112 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_smart_battery_info_decode(fmav_smar
 
     memset(payload, 0, FASTMAVLINK_MSG_SMART_BATTERY_INFO_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_smart_battery_info_get_field_capacity_full_specification(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_smart_battery_info_get_field_capacity_full(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_smart_battery_info_get_field_cycle_count(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_smart_battery_info_get_field_weight(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[10]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_smart_battery_info_get_field_discharge_minimum_voltage(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_smart_battery_info_get_field_charging_minimum_voltage(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[14]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_smart_battery_info_get_field_resting_minimum_voltage(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_smart_battery_info_get_field_id(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[18]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_smart_battery_info_get_field_battery_function(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[19]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_smart_battery_info_get_field_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_smart_battery_info_get_field_serial_number_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[21]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_smart_battery_info_get_field_serial_number(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_SERIAL_NUMBER_NUM) return 0;
+    return ((char*)&(msg->payload[21]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_smart_battery_info_get_field_device_name_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[37]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_smart_battery_info_get_field_device_name(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_DEVICE_NAME_NUM) return 0;
+    return ((char*)&(msg->payload[37]))[index];     
 }
 
 

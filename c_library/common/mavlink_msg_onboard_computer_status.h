@@ -40,38 +40,65 @@ typedef struct _fmav_onboard_computer_status_t {
 
 #define FASTMAVLINK_MSG_ID_ONBOARD_COMPUTER_STATUS  390
 
-
 #define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_PAYLOAD_LEN_MIN  238
 #define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_PAYLOAD_LEN_MAX  238
-#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_PAYLOAD_LEN  238
 #define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_CRCEXTRA  156
-
-#define FASTMAVLINK_MSG_ID_390_LEN_MIN  238
-#define FASTMAVLINK_MSG_ID_390_LEN_MAX  238
-#define FASTMAVLINK_MSG_ID_390_LEN  238
-#define FASTMAVLINK_MSG_ID_390_CRCEXTRA  156
-
-#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_STORAGE_TYPE_LEN  4
-#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_STORAGE_USAGE_LEN  4
-#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_STORAGE_TOTAL_LEN  4
-#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_TYPE_LEN  6
-#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_TX_RATE_LEN  6
-#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_RX_RATE_LEN  6
-#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_TX_MAX_LEN  6
-#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_RX_MAX_LEN  6
-#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_FAN_SPEED_LEN  4
-#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_CPU_CORES_LEN  8
-#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_CPU_COMBINED_LEN  10
-#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_GPU_CORES_LEN  4
-#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_GPU_COMBINED_LEN  10
-#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_TEMPERATURE_CORE_LEN  8
 
 #define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_390_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_390_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FRAME_LEN_MAX  263
+
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_STORAGE_TYPE_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_STORAGE_TYPE_LEN  16 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_STORAGE_USAGE_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_STORAGE_USAGE_LEN  16 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_STORAGE_TOTAL_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_STORAGE_TOTAL_LEN  16 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_TYPE_NUM  6 // number of elements in array
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_TYPE_LEN  24 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_TX_RATE_NUM  6 // number of elements in array
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_TX_RATE_LEN  24 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_RX_RATE_NUM  6 // number of elements in array
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_RX_RATE_LEN  24 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_TX_MAX_NUM  6 // number of elements in array
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_TX_MAX_LEN  24 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_RX_MAX_NUM  6 // number of elements in array
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_RX_MAX_LEN  24 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_FAN_SPEED_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_FAN_SPEED_LEN  8 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_CPU_CORES_NUM  8 // number of elements in array
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_CPU_CORES_LEN  8 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_CPU_COMBINED_NUM  10 // number of elements in array
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_CPU_COMBINED_LEN  10 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_GPU_CORES_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_GPU_CORES_LEN  4 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_GPU_COMBINED_NUM  10 // number of elements in array
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_GPU_COMBINED_LEN  10 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_TEMPERATURE_CORE_NUM  8 // number of elements in array
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_TEMPERATURE_CORE_LEN  8 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_UPTIME_OFS  8
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_RAM_USAGE_OFS  12
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_RAM_TOTAL_OFS  16
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_STORAGE_TYPE_OFS  20
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_STORAGE_USAGE_OFS  36
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_STORAGE_TOTAL_OFS  52
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_TYPE_OFS  68
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_TX_RATE_OFS  92
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_RX_RATE_OFS  116
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_TX_MAX_OFS  140
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_RX_MAX_OFS  164
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_FAN_SPEED_OFS  188
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_TYPE_OFS  196
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_CPU_CORES_OFS  197
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_CPU_COMBINED_OFS  205
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_GPU_CORES_OFS  215
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_GPU_COMBINED_OFS  219
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_TEMPERATURE_BOARD_OFS  229
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_TEMPERATURE_CORE_OFS  230
 
 
 //----------------------------------------
@@ -269,6 +296,236 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_onboard_computer_status_decode(fmav
 
     memset(payload, 0, FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_onboard_computer_status_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_onboard_computer_status_get_field_uptime(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_onboard_computer_status_get_field_ram_usage(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_onboard_computer_status_get_field_ram_total(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_onboard_computer_status_get_field_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[196]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_onboard_computer_status_get_field_temperature_board(const fmav_message_t* msg)
+{
+    int8_t r; 
+    memcpy(&r, &(msg->payload[229]), sizeof(int8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t* fmav_msg_onboard_computer_status_get_field_storage_type_ptr(const fmav_message_t* msg)
+{
+    return (uint32_t*)&(msg->payload[20]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_onboard_computer_status_get_field_storage_type(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_STORAGE_TYPE_NUM) return 0;
+    return ((uint32_t*)&(msg->payload[20]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t* fmav_msg_onboard_computer_status_get_field_storage_usage_ptr(const fmav_message_t* msg)
+{
+    return (uint32_t*)&(msg->payload[36]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_onboard_computer_status_get_field_storage_usage(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_STORAGE_USAGE_NUM) return 0;
+    return ((uint32_t*)&(msg->payload[36]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t* fmav_msg_onboard_computer_status_get_field_storage_total_ptr(const fmav_message_t* msg)
+{
+    return (uint32_t*)&(msg->payload[52]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_onboard_computer_status_get_field_storage_total(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_STORAGE_TOTAL_NUM) return 0;
+    return ((uint32_t*)&(msg->payload[52]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t* fmav_msg_onboard_computer_status_get_field_link_type_ptr(const fmav_message_t* msg)
+{
+    return (uint32_t*)&(msg->payload[68]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_onboard_computer_status_get_field_link_type(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_TYPE_NUM) return 0;
+    return ((uint32_t*)&(msg->payload[68]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t* fmav_msg_onboard_computer_status_get_field_link_tx_rate_ptr(const fmav_message_t* msg)
+{
+    return (uint32_t*)&(msg->payload[92]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_onboard_computer_status_get_field_link_tx_rate(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_TX_RATE_NUM) return 0;
+    return ((uint32_t*)&(msg->payload[92]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t* fmav_msg_onboard_computer_status_get_field_link_rx_rate_ptr(const fmav_message_t* msg)
+{
+    return (uint32_t*)&(msg->payload[116]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_onboard_computer_status_get_field_link_rx_rate(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_RX_RATE_NUM) return 0;
+    return ((uint32_t*)&(msg->payload[116]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t* fmav_msg_onboard_computer_status_get_field_link_tx_max_ptr(const fmav_message_t* msg)
+{
+    return (uint32_t*)&(msg->payload[140]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_onboard_computer_status_get_field_link_tx_max(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_TX_MAX_NUM) return 0;
+    return ((uint32_t*)&(msg->payload[140]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t* fmav_msg_onboard_computer_status_get_field_link_rx_max_ptr(const fmav_message_t* msg)
+{
+    return (uint32_t*)&(msg->payload[164]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_onboard_computer_status_get_field_link_rx_max(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_RX_MAX_NUM) return 0;
+    return ((uint32_t*)&(msg->payload[164]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t* fmav_msg_onboard_computer_status_get_field_fan_speed_ptr(const fmav_message_t* msg)
+{
+    return (int16_t*)&(msg->payload[188]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_onboard_computer_status_get_field_fan_speed(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_FAN_SPEED_NUM) return 0;
+    return ((int16_t*)&(msg->payload[188]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_onboard_computer_status_get_field_cpu_cores_ptr(const fmav_message_t* msg)
+{
+    return (uint8_t*)&(msg->payload[197]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_onboard_computer_status_get_field_cpu_cores(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_CPU_CORES_NUM) return 0;
+    return ((uint8_t*)&(msg->payload[197]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_onboard_computer_status_get_field_cpu_combined_ptr(const fmav_message_t* msg)
+{
+    return (uint8_t*)&(msg->payload[205]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_onboard_computer_status_get_field_cpu_combined(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_CPU_COMBINED_NUM) return 0;
+    return ((uint8_t*)&(msg->payload[205]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_onboard_computer_status_get_field_gpu_cores_ptr(const fmav_message_t* msg)
+{
+    return (uint8_t*)&(msg->payload[215]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_onboard_computer_status_get_field_gpu_cores(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_GPU_CORES_NUM) return 0;
+    return ((uint8_t*)&(msg->payload[215]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_onboard_computer_status_get_field_gpu_combined_ptr(const fmav_message_t* msg)
+{
+    return (uint8_t*)&(msg->payload[219]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_onboard_computer_status_get_field_gpu_combined(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_GPU_COMBINED_NUM) return 0;
+    return ((uint8_t*)&(msg->payload[219]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int8_t* fmav_msg_onboard_computer_status_get_field_temperature_core_ptr(const fmav_message_t* msg)
+{
+    return (int8_t*)&(msg->payload[230]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_onboard_computer_status_get_field_temperature_core(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_TEMPERATURE_CORE_NUM) return 0;
+    return ((int8_t*)&(msg->payload[230]))[index];     
 }
 
 

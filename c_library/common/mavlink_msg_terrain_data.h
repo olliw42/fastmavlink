@@ -25,25 +25,24 @@ typedef struct _fmav_terrain_data_t {
 
 #define FASTMAVLINK_MSG_ID_TERRAIN_DATA  134
 
-
 #define FASTMAVLINK_MSG_TERRAIN_DATA_PAYLOAD_LEN_MIN  43
 #define FASTMAVLINK_MSG_TERRAIN_DATA_PAYLOAD_LEN_MAX  43
-#define FASTMAVLINK_MSG_TERRAIN_DATA_PAYLOAD_LEN  43
 #define FASTMAVLINK_MSG_TERRAIN_DATA_CRCEXTRA  229
-
-#define FASTMAVLINK_MSG_ID_134_LEN_MIN  43
-#define FASTMAVLINK_MSG_ID_134_LEN_MAX  43
-#define FASTMAVLINK_MSG_ID_134_LEN  43
-#define FASTMAVLINK_MSG_ID_134_CRCEXTRA  229
-
-#define FASTMAVLINK_MSG_TERRAIN_DATA_FIELD_DATA_LEN  16
 
 #define FASTMAVLINK_MSG_TERRAIN_DATA_FLAGS  0
 #define FASTMAVLINK_MSG_TERRAIN_DATA_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_TERRAIN_DATA_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_TERRAIN_DATA_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_TERRAIN_DATA_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_134_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_134_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_TERRAIN_DATA_FRAME_LEN_MAX  68
+
+#define FASTMAVLINK_MSG_TERRAIN_DATA_FIELD_DATA_NUM  16 // number of elements in array
+#define FASTMAVLINK_MSG_TERRAIN_DATA_FIELD_DATA_LEN  32 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_TERRAIN_DATA_FIELD_LAT_OFS  0
+#define FASTMAVLINK_MSG_TERRAIN_DATA_FIELD_LON_OFS  4
+#define FASTMAVLINK_MSG_TERRAIN_DATA_FIELD_GRID_SPACING_OFS  8
+#define FASTMAVLINK_MSG_TERRAIN_DATA_FIELD_DATA_OFS  10
+#define FASTMAVLINK_MSG_TERRAIN_DATA_FIELD_GRIDBIT_OFS  42
 
 
 //----------------------------------------
@@ -196,6 +195,51 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_terrain_data_decode(fmav_terrain_da
 
     memset(payload, 0, FASTMAVLINK_MSG_TERRAIN_DATA_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_terrain_data_get_field_lat(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_terrain_data_get_field_lon(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_data_get_field_grid_spacing(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_terrain_data_get_field_gridbit(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[42]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t* fmav_msg_terrain_data_get_field_data_ptr(const fmav_message_t* msg)
+{
+    return (int16_t*)&(msg->payload[10]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_terrain_data_get_field_data(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_TERRAIN_DATA_FIELD_DATA_NUM) return 0;
+    return ((int16_t*)&(msg->payload[10]))[index];     
 }
 
 

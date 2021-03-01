@@ -28,25 +28,27 @@ typedef struct _fmav_gimbal_manager_set_attitude_t {
 
 #define FASTMAVLINK_MSG_ID_GIMBAL_MANAGER_SET_ATTITUDE  282
 
-
 #define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_ATTITUDE_PAYLOAD_LEN_MIN  35
 #define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_ATTITUDE_PAYLOAD_LEN_MAX  35
-#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_ATTITUDE_PAYLOAD_LEN  35
 #define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_ATTITUDE_CRCEXTRA  123
-
-#define FASTMAVLINK_MSG_ID_282_LEN_MIN  35
-#define FASTMAVLINK_MSG_ID_282_LEN_MAX  35
-#define FASTMAVLINK_MSG_ID_282_LEN  35
-#define FASTMAVLINK_MSG_ID_282_CRCEXTRA  123
-
-#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_ATTITUDE_FIELD_Q_LEN  4
 
 #define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_ATTITUDE_FLAGS  3
 #define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_ATTITUDE_TARGET_SYSTEM_OFS  32
 #define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_ATTITUDE_TARGET_COMPONENT_OFS  33
 
-#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_ATTITUDE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_ATTITUDE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_282_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_282_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_ATTITUDE_FRAME_LEN_MAX  60
+
+#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_ATTITUDE_FIELD_Q_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_ATTITUDE_FIELD_Q_LEN  16 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_ATTITUDE_FIELD_FLAGS_OFS  0
+#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_ATTITUDE_FIELD_Q_OFS  4
+#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_ATTITUDE_FIELD_ANGULAR_VELOCITY_X_OFS  20
+#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_ATTITUDE_FIELD_ANGULAR_VELOCITY_Y_OFS  24
+#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_ATTITUDE_FIELD_ANGULAR_VELOCITY_Z_OFS  28
+#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_ATTITUDE_FIELD_TARGET_SYSTEM_OFS  32
+#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_ATTITUDE_FIELD_TARGET_COMPONENT_OFS  33
+#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_ATTITUDE_FIELD_GIMBAL_DEVICE_ID_OFS  34
 
 
 //----------------------------------------
@@ -208,6 +210,75 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gimbal_manager_set_attitude_decode(
 
     memset(payload, 0, FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_ATTITUDE_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_gimbal_manager_set_attitude_get_field_flags(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_manager_set_attitude_get_field_angular_velocity_x(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_manager_set_attitude_get_field_angular_velocity_y(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_manager_set_attitude_get_field_angular_velocity_z(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gimbal_manager_set_attitude_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gimbal_manager_set_attitude_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[33]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gimbal_manager_set_attitude_get_field_gimbal_device_id(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[34]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_gimbal_manager_set_attitude_get_field_q_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[4]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_manager_set_attitude_get_field_q(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_ATTITUDE_FIELD_Q_NUM) return 0;
+    return ((float*)&(msg->payload[4]))[index];     
 }
 
 

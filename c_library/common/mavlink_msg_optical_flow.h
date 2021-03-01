@@ -30,25 +30,28 @@ typedef struct _fmav_optical_flow_t {
 
 #define FASTMAVLINK_MSG_ID_OPTICAL_FLOW  100
 
-
 #define FASTMAVLINK_MSG_OPTICAL_FLOW_PAYLOAD_LEN_MIN  26
 #define FASTMAVLINK_MSG_OPTICAL_FLOW_PAYLOAD_LEN_MAX  34
-#define FASTMAVLINK_MSG_OPTICAL_FLOW_PAYLOAD_LEN  34
 #define FASTMAVLINK_MSG_OPTICAL_FLOW_CRCEXTRA  175
-
-#define FASTMAVLINK_MSG_ID_100_LEN_MIN  26
-#define FASTMAVLINK_MSG_ID_100_LEN_MAX  34
-#define FASTMAVLINK_MSG_ID_100_LEN  34
-#define FASTMAVLINK_MSG_ID_100_CRCEXTRA  175
-
-
 
 #define FASTMAVLINK_MSG_OPTICAL_FLOW_FLAGS  0
 #define FASTMAVLINK_MSG_OPTICAL_FLOW_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_OPTICAL_FLOW_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_OPTICAL_FLOW_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_OPTICAL_FLOW_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_100_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_100_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_FRAME_LEN_MAX  59
+
+
+
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_FIELD_FLOW_COMP_M_X_OFS  8
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_FIELD_FLOW_COMP_M_Y_OFS  12
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_FIELD_GROUND_DISTANCE_OFS  16
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_FIELD_FLOW_X_OFS  20
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_FIELD_FLOW_Y_OFS  22
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_FIELD_SENSOR_ID_OFS  24
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_FIELD_QUALITY_OFS  25
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_FIELD_FLOW_RATE_X_OFS  26
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_FIELD_FLOW_RATE_Y_OFS  30
 
 
 //----------------------------------------
@@ -220,6 +223,89 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_optical_flow_decode(fmav_optical_fl
     memset(payload, 0, FASTMAVLINK_MSG_OPTICAL_FLOW_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_optical_flow_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_optical_flow_get_field_flow_comp_m_x(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_optical_flow_get_field_flow_comp_m_y(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_optical_flow_get_field_ground_distance(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_optical_flow_get_field_flow_x(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_optical_flow_get_field_flow_y(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[22]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_optical_flow_get_field_sensor_id(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_optical_flow_get_field_quality(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[25]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_optical_flow_get_field_flow_rate_x(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[26]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_optical_flow_get_field_flow_rate_y(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[30]), sizeof(float)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

@@ -24,25 +24,23 @@ typedef struct _fmav_memory_vect_t {
 
 #define FASTMAVLINK_MSG_ID_MEMORY_VECT  249
 
-
 #define FASTMAVLINK_MSG_MEMORY_VECT_PAYLOAD_LEN_MIN  36
 #define FASTMAVLINK_MSG_MEMORY_VECT_PAYLOAD_LEN_MAX  36
-#define FASTMAVLINK_MSG_MEMORY_VECT_PAYLOAD_LEN  36
 #define FASTMAVLINK_MSG_MEMORY_VECT_CRCEXTRA  204
-
-#define FASTMAVLINK_MSG_ID_249_LEN_MIN  36
-#define FASTMAVLINK_MSG_ID_249_LEN_MAX  36
-#define FASTMAVLINK_MSG_ID_249_LEN  36
-#define FASTMAVLINK_MSG_ID_249_CRCEXTRA  204
-
-#define FASTMAVLINK_MSG_MEMORY_VECT_FIELD_VALUE_LEN  32
 
 #define FASTMAVLINK_MSG_MEMORY_VECT_FLAGS  0
 #define FASTMAVLINK_MSG_MEMORY_VECT_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_MEMORY_VECT_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_MEMORY_VECT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_MEMORY_VECT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_249_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_249_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_MEMORY_VECT_FRAME_LEN_MAX  61
+
+#define FASTMAVLINK_MSG_MEMORY_VECT_FIELD_VALUE_NUM  32 // number of elements in array
+#define FASTMAVLINK_MSG_MEMORY_VECT_FIELD_VALUE_LEN  32 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_MEMORY_VECT_FIELD_ADDRESS_OFS  0
+#define FASTMAVLINK_MSG_MEMORY_VECT_FIELD_VER_OFS  2
+#define FASTMAVLINK_MSG_MEMORY_VECT_FIELD_TYPE_OFS  3
+#define FASTMAVLINK_MSG_MEMORY_VECT_FIELD_VALUE_OFS  4
 
 
 //----------------------------------------
@@ -192,6 +190,43 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_memory_vect_decode(fmav_memory_vect
 
     memset(payload, 0, FASTMAVLINK_MSG_MEMORY_VECT_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_memory_vect_get_field_address(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_memory_vect_get_field_ver(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[2]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_memory_vect_get_field_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[3]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int8_t* fmav_msg_memory_vect_get_field_value_ptr(const fmav_message_t* msg)
+{
+    return (int8_t*)&(msg->payload[4]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_memory_vect_get_field_value(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_MEMORY_VECT_FIELD_VALUE_NUM) return 0;
+    return ((int8_t*)&(msg->payload[4]))[index];     
 }
 
 

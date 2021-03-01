@@ -25,25 +25,24 @@ typedef struct _fmav_open_drone_id_message_pack_t {
 
 #define FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_MESSAGE_PACK  12915
 
-
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_MESSAGE_PACK_PAYLOAD_LEN_MIN  254
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_MESSAGE_PACK_PAYLOAD_LEN_MAX  254
-#define FASTMAVLINK_MSG_OPEN_DRONE_ID_MESSAGE_PACK_PAYLOAD_LEN  254
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_MESSAGE_PACK_CRCEXTRA  62
-
-#define FASTMAVLINK_MSG_ID_12915_LEN_MIN  254
-#define FASTMAVLINK_MSG_ID_12915_LEN_MAX  254
-#define FASTMAVLINK_MSG_ID_12915_LEN  254
-#define FASTMAVLINK_MSG_ID_12915_CRCEXTRA  62
-
-#define FASTMAVLINK_MSG_OPEN_DRONE_ID_MESSAGE_PACK_FIELD_MESSAGES_LEN  250
 
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_MESSAGE_PACK_FLAGS  3
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_MESSAGE_PACK_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_MESSAGE_PACK_TARGET_COMPONENT_OFS  1
 
-#define FASTMAVLINK_MSG_OPEN_DRONE_ID_MESSAGE_PACK_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_OPEN_DRONE_ID_MESSAGE_PACK_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_12915_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_12915_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_MESSAGE_PACK_FRAME_LEN_MAX  279
+
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_MESSAGE_PACK_FIELD_MESSAGES_NUM  250 // number of elements in array
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_MESSAGE_PACK_FIELD_MESSAGES_LEN  250 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_MESSAGE_PACK_FIELD_TARGET_SYSTEM_OFS  0
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_MESSAGE_PACK_FIELD_TARGET_COMPONENT_OFS  1
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_MESSAGE_PACK_FIELD_SINGLE_MESSAGE_SIZE_OFS  2
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_MESSAGE_PACK_FIELD_MSG_PACK_SIZE_OFS  3
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_MESSAGE_PACK_FIELD_MESSAGES_OFS  4
 
 
 //----------------------------------------
@@ -196,6 +195,51 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_open_drone_id_message_pack_decode(f
 
     memset(payload, 0, FASTMAVLINK_MSG_OPEN_DRONE_ID_MESSAGE_PACK_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_message_pack_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_message_pack_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[1]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_message_pack_get_field_single_message_size(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[2]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_message_pack_get_field_msg_pack_size(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[3]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_open_drone_id_message_pack_get_field_messages_ptr(const fmav_message_t* msg)
+{
+    return (uint8_t*)&(msg->payload[4]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_message_pack_get_field_messages(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_OPEN_DRONE_ID_MESSAGE_PACK_FIELD_MESSAGES_NUM) return 0;
+    return ((uint8_t*)&(msg->payload[4]))[index];     
 }
 
 

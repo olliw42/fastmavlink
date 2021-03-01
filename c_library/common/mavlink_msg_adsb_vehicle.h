@@ -33,25 +33,32 @@ typedef struct _fmav_adsb_vehicle_t {
 
 #define FASTMAVLINK_MSG_ID_ADSB_VEHICLE  246
 
-
 #define FASTMAVLINK_MSG_ADSB_VEHICLE_PAYLOAD_LEN_MIN  38
 #define FASTMAVLINK_MSG_ADSB_VEHICLE_PAYLOAD_LEN_MAX  38
-#define FASTMAVLINK_MSG_ADSB_VEHICLE_PAYLOAD_LEN  38
 #define FASTMAVLINK_MSG_ADSB_VEHICLE_CRCEXTRA  184
-
-#define FASTMAVLINK_MSG_ID_246_LEN_MIN  38
-#define FASTMAVLINK_MSG_ID_246_LEN_MAX  38
-#define FASTMAVLINK_MSG_ID_246_LEN  38
-#define FASTMAVLINK_MSG_ID_246_CRCEXTRA  184
-
-#define FASTMAVLINK_MSG_ADSB_VEHICLE_FIELD_CALLSIGN_LEN  9
 
 #define FASTMAVLINK_MSG_ADSB_VEHICLE_FLAGS  0
 #define FASTMAVLINK_MSG_ADSB_VEHICLE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ADSB_VEHICLE_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_ADSB_VEHICLE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ADSB_VEHICLE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_246_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_246_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ADSB_VEHICLE_FRAME_LEN_MAX  63
+
+#define FASTMAVLINK_MSG_ADSB_VEHICLE_FIELD_CALLSIGN_NUM  9 // number of elements in array
+#define FASTMAVLINK_MSG_ADSB_VEHICLE_FIELD_CALLSIGN_LEN  9 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_ADSB_VEHICLE_FIELD_ICAO_ADDRESS_OFS  0
+#define FASTMAVLINK_MSG_ADSB_VEHICLE_FIELD_LAT_OFS  4
+#define FASTMAVLINK_MSG_ADSB_VEHICLE_FIELD_LON_OFS  8
+#define FASTMAVLINK_MSG_ADSB_VEHICLE_FIELD_ALTITUDE_OFS  12
+#define FASTMAVLINK_MSG_ADSB_VEHICLE_FIELD_HEADING_OFS  16
+#define FASTMAVLINK_MSG_ADSB_VEHICLE_FIELD_HOR_VELOCITY_OFS  18
+#define FASTMAVLINK_MSG_ADSB_VEHICLE_FIELD_VER_VELOCITY_OFS  20
+#define FASTMAVLINK_MSG_ADSB_VEHICLE_FIELD_FLAGS_OFS  22
+#define FASTMAVLINK_MSG_ADSB_VEHICLE_FIELD_SQUAWK_OFS  24
+#define FASTMAVLINK_MSG_ADSB_VEHICLE_FIELD_ALTITUDE_TYPE_OFS  26
+#define FASTMAVLINK_MSG_ADSB_VEHICLE_FIELD_CALLSIGN_OFS  27
+#define FASTMAVLINK_MSG_ADSB_VEHICLE_FIELD_EMITTER_TYPE_OFS  36
+#define FASTMAVLINK_MSG_ADSB_VEHICLE_FIELD_TSLC_OFS  37
 
 
 //----------------------------------------
@@ -228,6 +235,115 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_adsb_vehicle_decode(fmav_adsb_vehic
 
     memset(payload, 0, FASTMAVLINK_MSG_ADSB_VEHICLE_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_adsb_vehicle_get_field_ICAO_address(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_adsb_vehicle_get_field_lat(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_adsb_vehicle_get_field_lon(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_adsb_vehicle_get_field_altitude(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adsb_vehicle_get_field_heading(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adsb_vehicle_get_field_hor_velocity(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[18]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_adsb_vehicle_get_field_ver_velocity(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adsb_vehicle_get_field_flags(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[22]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adsb_vehicle_get_field_squawk(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_adsb_vehicle_get_field_altitude_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[26]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_adsb_vehicle_get_field_emitter_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_adsb_vehicle_get_field_tslc(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[37]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_adsb_vehicle_get_field_callsign_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[27]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_adsb_vehicle_get_field_callsign(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ADSB_VEHICLE_FIELD_CALLSIGN_NUM) return 0;
+    return ((char*)&(msg->payload[27]))[index];     
 }
 
 

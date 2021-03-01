@@ -37,27 +37,40 @@ typedef struct _fmav_control_system_state_t {
 
 #define FASTMAVLINK_MSG_ID_CONTROL_SYSTEM_STATE  146
 
-
 #define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MIN  100
 #define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MAX  100
-#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN  100
 #define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_CRCEXTRA  103
-
-#define FASTMAVLINK_MSG_ID_146_LEN_MIN  100
-#define FASTMAVLINK_MSG_ID_146_LEN_MAX  100
-#define FASTMAVLINK_MSG_ID_146_LEN  100
-#define FASTMAVLINK_MSG_ID_146_CRCEXTRA  103
-
-#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_VEL_VARIANCE_LEN  3
-#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_POS_VARIANCE_LEN  3
-#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_Q_LEN  4
 
 #define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FLAGS  0
 #define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_146_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_146_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FRAME_LEN_MAX  125
+
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_VEL_VARIANCE_NUM  3 // number of elements in array
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_VEL_VARIANCE_LEN  12 // length of array = number of bytes
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_POS_VARIANCE_NUM  3 // number of elements in array
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_POS_VARIANCE_LEN  12 // length of array = number of bytes
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_Q_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_Q_LEN  16 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_X_ACC_OFS  8
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_Y_ACC_OFS  12
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_Z_ACC_OFS  16
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_X_VEL_OFS  20
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_Y_VEL_OFS  24
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_Z_VEL_OFS  28
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_X_POS_OFS  32
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_Y_POS_OFS  36
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_Z_POS_OFS  40
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_AIRSPEED_OFS  44
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_VEL_VARIANCE_OFS  48
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_POS_VARIANCE_OFS  60
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_Q_OFS  72
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_ROLL_RATE_OFS  88
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_PITCH_RATE_OFS  92
+#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_YAW_RATE_OFS  96
 
 
 //----------------------------------------
@@ -246,6 +259,157 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_control_system_state_decode(fmav_co
 
     memset(payload, 0, FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_control_system_state_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_x_acc(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_y_acc(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_z_acc(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_x_vel(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_y_vel(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_z_vel(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_x_pos(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_y_pos(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_z_pos(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[40]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_airspeed(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[44]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_roll_rate(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[88]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_pitch_rate(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[92]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_yaw_rate(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[96]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_control_system_state_get_field_vel_variance_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[48]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_vel_variance(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_VEL_VARIANCE_NUM) return 0;
+    return ((float*)&(msg->payload[48]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_control_system_state_get_field_pos_variance_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[60]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_pos_variance(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_POS_VARIANCE_NUM) return 0;
+    return ((float*)&(msg->payload[60]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_control_system_state_get_field_q_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[72]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_q(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_Q_NUM) return 0;
+    return ((float*)&(msg->payload[72]))[index];     
 }
 
 

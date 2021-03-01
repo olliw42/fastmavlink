@@ -39,25 +39,37 @@ typedef struct _fmav_gps_input_t {
 
 #define FASTMAVLINK_MSG_ID_GPS_INPUT  232
 
-
 #define FASTMAVLINK_MSG_GPS_INPUT_PAYLOAD_LEN_MIN  63
 #define FASTMAVLINK_MSG_GPS_INPUT_PAYLOAD_LEN_MAX  65
-#define FASTMAVLINK_MSG_GPS_INPUT_PAYLOAD_LEN  65
 #define FASTMAVLINK_MSG_GPS_INPUT_CRCEXTRA  151
-
-#define FASTMAVLINK_MSG_ID_232_LEN_MIN  63
-#define FASTMAVLINK_MSG_ID_232_LEN_MAX  65
-#define FASTMAVLINK_MSG_ID_232_LEN  65
-#define FASTMAVLINK_MSG_ID_232_CRCEXTRA  151
-
-
 
 #define FASTMAVLINK_MSG_GPS_INPUT_FLAGS  0
 #define FASTMAVLINK_MSG_GPS_INPUT_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_GPS_INPUT_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_GPS_INPUT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_GPS_INPUT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_232_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_232_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_GPS_INPUT_FRAME_LEN_MAX  90
+
+
+
+#define FASTMAVLINK_MSG_GPS_INPUT_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_GPS_INPUT_FIELD_TIME_WEEK_MS_OFS  8
+#define FASTMAVLINK_MSG_GPS_INPUT_FIELD_LAT_OFS  12
+#define FASTMAVLINK_MSG_GPS_INPUT_FIELD_LON_OFS  16
+#define FASTMAVLINK_MSG_GPS_INPUT_FIELD_ALT_OFS  20
+#define FASTMAVLINK_MSG_GPS_INPUT_FIELD_HDOP_OFS  24
+#define FASTMAVLINK_MSG_GPS_INPUT_FIELD_VDOP_OFS  28
+#define FASTMAVLINK_MSG_GPS_INPUT_FIELD_VN_OFS  32
+#define FASTMAVLINK_MSG_GPS_INPUT_FIELD_VE_OFS  36
+#define FASTMAVLINK_MSG_GPS_INPUT_FIELD_VD_OFS  40
+#define FASTMAVLINK_MSG_GPS_INPUT_FIELD_SPEED_ACCURACY_OFS  44
+#define FASTMAVLINK_MSG_GPS_INPUT_FIELD_HORIZ_ACCURACY_OFS  48
+#define FASTMAVLINK_MSG_GPS_INPUT_FIELD_VERT_ACCURACY_OFS  52
+#define FASTMAVLINK_MSG_GPS_INPUT_FIELD_IGNORE_FLAGS_OFS  56
+#define FASTMAVLINK_MSG_GPS_INPUT_FIELD_TIME_WEEK_OFS  58
+#define FASTMAVLINK_MSG_GPS_INPUT_FIELD_GPS_ID_OFS  60
+#define FASTMAVLINK_MSG_GPS_INPUT_FIELD_FIX_TYPE_OFS  61
+#define FASTMAVLINK_MSG_GPS_INPUT_FIELD_SATELLITES_VISIBLE_OFS  62
+#define FASTMAVLINK_MSG_GPS_INPUT_FIELD_YAW_OFS  63
 
 
 //----------------------------------------
@@ -256,6 +268,161 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gps_input_decode(fmav_gps_input_t* 
     memset(payload, 0, FASTMAVLINK_MSG_GPS_INPUT_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_gps_input_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_gps_input_get_field_time_week_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_gps_input_get_field_lat(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_gps_input_get_field_lon(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gps_input_get_field_alt(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gps_input_get_field_hdop(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gps_input_get_field_vdop(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gps_input_get_field_vn(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gps_input_get_field_ve(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gps_input_get_field_vd(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[40]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gps_input_get_field_speed_accuracy(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[44]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gps_input_get_field_horiz_accuracy(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[48]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gps_input_get_field_vert_accuracy(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[52]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_input_get_field_ignore_flags(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[56]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_input_get_field_time_week(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[58]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gps_input_get_field_gps_id(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[60]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gps_input_get_field_fix_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[61]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gps_input_get_field_satellites_visible(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[62]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_input_get_field_yaw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[63]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

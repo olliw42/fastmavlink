@@ -25,25 +25,23 @@ typedef struct _fmav_time_estimate_to_target_t {
 
 #define FASTMAVLINK_MSG_ID_TIME_ESTIMATE_TO_TARGET  380
 
-
 #define FASTMAVLINK_MSG_TIME_ESTIMATE_TO_TARGET_PAYLOAD_LEN_MIN  20
 #define FASTMAVLINK_MSG_TIME_ESTIMATE_TO_TARGET_PAYLOAD_LEN_MAX  20
-#define FASTMAVLINK_MSG_TIME_ESTIMATE_TO_TARGET_PAYLOAD_LEN  20
 #define FASTMAVLINK_MSG_TIME_ESTIMATE_TO_TARGET_CRCEXTRA  232
-
-#define FASTMAVLINK_MSG_ID_380_LEN_MIN  20
-#define FASTMAVLINK_MSG_ID_380_LEN_MAX  20
-#define FASTMAVLINK_MSG_ID_380_LEN  20
-#define FASTMAVLINK_MSG_ID_380_CRCEXTRA  232
-
-
 
 #define FASTMAVLINK_MSG_TIME_ESTIMATE_TO_TARGET_FLAGS  0
 #define FASTMAVLINK_MSG_TIME_ESTIMATE_TO_TARGET_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_TIME_ESTIMATE_TO_TARGET_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_TIME_ESTIMATE_TO_TARGET_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_TIME_ESTIMATE_TO_TARGET_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_380_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_380_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_TIME_ESTIMATE_TO_TARGET_FRAME_LEN_MAX  45
+
+
+
+#define FASTMAVLINK_MSG_TIME_ESTIMATE_TO_TARGET_FIELD_SAFE_RETURN_OFS  0
+#define FASTMAVLINK_MSG_TIME_ESTIMATE_TO_TARGET_FIELD_LAND_OFS  4
+#define FASTMAVLINK_MSG_TIME_ESTIMATE_TO_TARGET_FIELD_MISSION_NEXT_ITEM_OFS  8
+#define FASTMAVLINK_MSG_TIME_ESTIMATE_TO_TARGET_FIELD_MISSION_END_OFS  12
+#define FASTMAVLINK_MSG_TIME_ESTIMATE_TO_TARGET_FIELD_COMMANDED_ACTION_OFS  16
 
 
 //----------------------------------------
@@ -200,6 +198,49 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_time_estimate_to_target_decode(fmav
     memset(payload, 0, FASTMAVLINK_MSG_TIME_ESTIMATE_TO_TARGET_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_time_estimate_to_target_get_field_safe_return(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_time_estimate_to_target_get_field_land(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_time_estimate_to_target_get_field_mission_next_item(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_time_estimate_to_target_get_field_mission_end(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_time_estimate_to_target_get_field_commanded_action(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

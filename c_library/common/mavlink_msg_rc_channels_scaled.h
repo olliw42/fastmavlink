@@ -31,25 +31,29 @@ typedef struct _fmav_rc_channels_scaled_t {
 
 #define FASTMAVLINK_MSG_ID_RC_CHANNELS_SCALED  34
 
-
 #define FASTMAVLINK_MSG_RC_CHANNELS_SCALED_PAYLOAD_LEN_MIN  22
 #define FASTMAVLINK_MSG_RC_CHANNELS_SCALED_PAYLOAD_LEN_MAX  22
-#define FASTMAVLINK_MSG_RC_CHANNELS_SCALED_PAYLOAD_LEN  22
 #define FASTMAVLINK_MSG_RC_CHANNELS_SCALED_CRCEXTRA  237
-
-#define FASTMAVLINK_MSG_ID_34_LEN_MIN  22
-#define FASTMAVLINK_MSG_ID_34_LEN_MAX  22
-#define FASTMAVLINK_MSG_ID_34_LEN  22
-#define FASTMAVLINK_MSG_ID_34_CRCEXTRA  237
-
-
 
 #define FASTMAVLINK_MSG_RC_CHANNELS_SCALED_FLAGS  0
 #define FASTMAVLINK_MSG_RC_CHANNELS_SCALED_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_RC_CHANNELS_SCALED_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_RC_CHANNELS_SCALED_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_RC_CHANNELS_SCALED_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_34_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_34_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_RC_CHANNELS_SCALED_FRAME_LEN_MAX  47
+
+
+
+#define FASTMAVLINK_MSG_RC_CHANNELS_SCALED_FIELD_TIME_BOOT_MS_OFS  0
+#define FASTMAVLINK_MSG_RC_CHANNELS_SCALED_FIELD_CHAN1_SCALED_OFS  4
+#define FASTMAVLINK_MSG_RC_CHANNELS_SCALED_FIELD_CHAN2_SCALED_OFS  6
+#define FASTMAVLINK_MSG_RC_CHANNELS_SCALED_FIELD_CHAN3_SCALED_OFS  8
+#define FASTMAVLINK_MSG_RC_CHANNELS_SCALED_FIELD_CHAN4_SCALED_OFS  10
+#define FASTMAVLINK_MSG_RC_CHANNELS_SCALED_FIELD_CHAN5_SCALED_OFS  12
+#define FASTMAVLINK_MSG_RC_CHANNELS_SCALED_FIELD_CHAN6_SCALED_OFS  14
+#define FASTMAVLINK_MSG_RC_CHANNELS_SCALED_FIELD_CHAN7_SCALED_OFS  16
+#define FASTMAVLINK_MSG_RC_CHANNELS_SCALED_FIELD_CHAN8_SCALED_OFS  18
+#define FASTMAVLINK_MSG_RC_CHANNELS_SCALED_FIELD_PORT_OFS  20
+#define FASTMAVLINK_MSG_RC_CHANNELS_SCALED_FIELD_RSSI_OFS  21
 
 
 //----------------------------------------
@@ -224,6 +228,97 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_rc_channels_scaled_decode(fmav_rc_c
     memset(payload, 0, FASTMAVLINK_MSG_RC_CHANNELS_SCALED_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_rc_channels_scaled_get_field_time_boot_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_rc_channels_scaled_get_field_chan1_scaled(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_rc_channels_scaled_get_field_chan2_scaled(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[6]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_rc_channels_scaled_get_field_chan3_scaled(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_rc_channels_scaled_get_field_chan4_scaled(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[10]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_rc_channels_scaled_get_field_chan5_scaled(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_rc_channels_scaled_get_field_chan6_scaled(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[14]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_rc_channels_scaled_get_field_chan7_scaled(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_rc_channels_scaled_get_field_chan8_scaled(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[18]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_rc_channels_scaled_get_field_port(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_rc_channels_scaled_get_field_rssi(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[21]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

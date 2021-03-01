@@ -23,25 +23,22 @@ typedef struct _fmav_gopro_get_response_t {
 
 #define FASTMAVLINK_MSG_ID_GOPRO_GET_RESPONSE  217
 
-
 #define FASTMAVLINK_MSG_GOPRO_GET_RESPONSE_PAYLOAD_LEN_MIN  6
 #define FASTMAVLINK_MSG_GOPRO_GET_RESPONSE_PAYLOAD_LEN_MAX  6
-#define FASTMAVLINK_MSG_GOPRO_GET_RESPONSE_PAYLOAD_LEN  6
 #define FASTMAVLINK_MSG_GOPRO_GET_RESPONSE_CRCEXTRA  202
-
-#define FASTMAVLINK_MSG_ID_217_LEN_MIN  6
-#define FASTMAVLINK_MSG_ID_217_LEN_MAX  6
-#define FASTMAVLINK_MSG_ID_217_LEN  6
-#define FASTMAVLINK_MSG_ID_217_CRCEXTRA  202
-
-#define FASTMAVLINK_MSG_GOPRO_GET_RESPONSE_FIELD_VALUE_LEN  4
 
 #define FASTMAVLINK_MSG_GOPRO_GET_RESPONSE_FLAGS  0
 #define FASTMAVLINK_MSG_GOPRO_GET_RESPONSE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_GOPRO_GET_RESPONSE_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_GOPRO_GET_RESPONSE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_GOPRO_GET_RESPONSE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_217_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_217_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_GOPRO_GET_RESPONSE_FRAME_LEN_MAX  31
+
+#define FASTMAVLINK_MSG_GOPRO_GET_RESPONSE_FIELD_VALUE_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_GOPRO_GET_RESPONSE_FIELD_VALUE_LEN  4 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_GOPRO_GET_RESPONSE_FIELD_CMD_ID_OFS  0
+#define FASTMAVLINK_MSG_GOPRO_GET_RESPONSE_FIELD_STATUS_OFS  1
+#define FASTMAVLINK_MSG_GOPRO_GET_RESPONSE_FIELD_VALUE_OFS  2
 
 
 //----------------------------------------
@@ -188,6 +185,35 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gopro_get_response_decode(fmav_gopr
 
     memset(payload, 0, FASTMAVLINK_MSG_GOPRO_GET_RESPONSE_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gopro_get_response_get_field_cmd_id(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gopro_get_response_get_field_status(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[1]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_gopro_get_response_get_field_value_ptr(const fmav_message_t* msg)
+{
+    return (uint8_t*)&(msg->payload[2]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gopro_get_response_get_field_value(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_GOPRO_GET_RESPONSE_FIELD_VALUE_NUM) return 0;
+    return ((uint8_t*)&(msg->payload[2]))[index];     
 }
 
 

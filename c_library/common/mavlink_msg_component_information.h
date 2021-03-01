@@ -26,26 +26,27 @@ typedef struct _fmav_component_information_t {
 
 #define FASTMAVLINK_MSG_ID_COMPONENT_INFORMATION  395
 
-
 #define FASTMAVLINK_MSG_COMPONENT_INFORMATION_PAYLOAD_LEN_MIN  156
 #define FASTMAVLINK_MSG_COMPONENT_INFORMATION_PAYLOAD_LEN_MAX  156
-#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_PAYLOAD_LEN  156
 #define FASTMAVLINK_MSG_COMPONENT_INFORMATION_CRCEXTRA  163
-
-#define FASTMAVLINK_MSG_ID_395_LEN_MIN  156
-#define FASTMAVLINK_MSG_ID_395_LEN_MAX  156
-#define FASTMAVLINK_MSG_ID_395_LEN  156
-#define FASTMAVLINK_MSG_ID_395_CRCEXTRA  163
-
-#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_FIELD_METADATA_URI_LEN  70
-#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_FIELD_TRANSLATION_URI_LEN  70
 
 #define FASTMAVLINK_MSG_COMPONENT_INFORMATION_FLAGS  0
 #define FASTMAVLINK_MSG_COMPONENT_INFORMATION_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_COMPONENT_INFORMATION_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_COMPONENT_INFORMATION_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_395_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_395_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_FRAME_LEN_MAX  181
+
+#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_FIELD_METADATA_URI_NUM  70 // number of elements in array
+#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_FIELD_METADATA_URI_LEN  70 // length of array = number of bytes
+#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_FIELD_TRANSLATION_URI_NUM  70 // number of elements in array
+#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_FIELD_TRANSLATION_URI_LEN  70 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_FIELD_TIME_BOOT_MS_OFS  0
+#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_FIELD_METADATA_TYPE_OFS  4
+#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_FIELD_METADATA_UID_OFS  8
+#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_FIELD_TRANSLATION_UID_OFS  12
+#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_FIELD_METADATA_URI_OFS  16
+#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_FIELD_TRANSLATION_URI_OFS  86
 
 
 //----------------------------------------
@@ -201,6 +202,64 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_component_information_decode(fmav_c
 
     memset(payload, 0, FASTMAVLINK_MSG_COMPONENT_INFORMATION_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_component_information_get_field_time_boot_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_component_information_get_field_metadata_type(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_component_information_get_field_metadata_uid(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_component_information_get_field_translation_uid(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_component_information_get_field_metadata_uri_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[16]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_component_information_get_field_metadata_uri(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_COMPONENT_INFORMATION_FIELD_METADATA_URI_NUM) return 0;
+    return ((char*)&(msg->payload[16]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_component_information_get_field_translation_uri_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[86]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_component_information_get_field_translation_uri(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_COMPONENT_INFORMATION_FIELD_TRANSLATION_URI_NUM) return 0;
+    return ((char*)&(msg->payload[86]))[index];     
 }
 
 

@@ -26,25 +26,25 @@ typedef struct _fmav_device_op_read_reply_t {
 
 #define FASTMAVLINK_MSG_ID_DEVICE_OP_READ_REPLY  11001
 
-
 #define FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_PAYLOAD_LEN_MIN  135
 #define FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_PAYLOAD_LEN_MAX  136
-#define FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_PAYLOAD_LEN  136
 #define FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_CRCEXTRA  15
-
-#define FASTMAVLINK_MSG_ID_11001_LEN_MIN  135
-#define FASTMAVLINK_MSG_ID_11001_LEN_MAX  136
-#define FASTMAVLINK_MSG_ID_11001_LEN  136
-#define FASTMAVLINK_MSG_ID_11001_CRCEXTRA  15
-
-#define FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_FIELD_DATA_LEN  128
 
 #define FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_FLAGS  0
 #define FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_11001_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_11001_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_FRAME_LEN_MAX  161
+
+#define FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_FIELD_DATA_NUM  128 // number of elements in array
+#define FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_FIELD_DATA_LEN  128 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_FIELD_REQUEST_ID_OFS  0
+#define FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_FIELD_RESULT_OFS  4
+#define FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_FIELD_REGSTART_OFS  5
+#define FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_FIELD_COUNT_OFS  6
+#define FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_FIELD_DATA_OFS  7
+#define FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_FIELD_BANK_OFS  135
 
 
 //----------------------------------------
@@ -200,6 +200,59 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_device_op_read_reply_decode(fmav_de
 
     memset(payload, 0, FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_device_op_read_reply_get_field_request_id(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_device_op_read_reply_get_field_result(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_device_op_read_reply_get_field_regstart(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[5]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_device_op_read_reply_get_field_count(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[6]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_device_op_read_reply_get_field_bank(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[135]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_device_op_read_reply_get_field_data_ptr(const fmav_message_t* msg)
+{
+    return (uint8_t*)&(msg->payload[7]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_device_op_read_reply_get_field_data(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_FIELD_DATA_NUM) return 0;
+    return ((uint8_t*)&(msg->payload[7]))[index];     
 }
 
 

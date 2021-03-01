@@ -29,25 +29,27 @@ typedef struct _fmav_wind_cov_t {
 
 #define FASTMAVLINK_MSG_ID_WIND_COV  231
 
-
 #define FASTMAVLINK_MSG_WIND_COV_PAYLOAD_LEN_MIN  40
 #define FASTMAVLINK_MSG_WIND_COV_PAYLOAD_LEN_MAX  40
-#define FASTMAVLINK_MSG_WIND_COV_PAYLOAD_LEN  40
 #define FASTMAVLINK_MSG_WIND_COV_CRCEXTRA  105
-
-#define FASTMAVLINK_MSG_ID_231_LEN_MIN  40
-#define FASTMAVLINK_MSG_ID_231_LEN_MAX  40
-#define FASTMAVLINK_MSG_ID_231_LEN  40
-#define FASTMAVLINK_MSG_ID_231_CRCEXTRA  105
-
-
 
 #define FASTMAVLINK_MSG_WIND_COV_FLAGS  0
 #define FASTMAVLINK_MSG_WIND_COV_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_WIND_COV_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_WIND_COV_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_WIND_COV_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_231_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_231_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_WIND_COV_FRAME_LEN_MAX  65
+
+
+
+#define FASTMAVLINK_MSG_WIND_COV_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_WIND_COV_FIELD_WIND_X_OFS  8
+#define FASTMAVLINK_MSG_WIND_COV_FIELD_WIND_Y_OFS  12
+#define FASTMAVLINK_MSG_WIND_COV_FIELD_WIND_Z_OFS  16
+#define FASTMAVLINK_MSG_WIND_COV_FIELD_VAR_HORIZ_OFS  20
+#define FASTMAVLINK_MSG_WIND_COV_FIELD_VAR_VERT_OFS  24
+#define FASTMAVLINK_MSG_WIND_COV_FIELD_WIND_ALT_OFS  28
+#define FASTMAVLINK_MSG_WIND_COV_FIELD_HORIZ_ACCURACY_OFS  32
+#define FASTMAVLINK_MSG_WIND_COV_FIELD_VERT_ACCURACY_OFS  36
 
 
 //----------------------------------------
@@ -216,6 +218,81 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_wind_cov_decode(fmav_wind_cov_t* pa
     memset(payload, 0, FASTMAVLINK_MSG_WIND_COV_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_wind_cov_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_wind_cov_get_field_wind_x(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_wind_cov_get_field_wind_y(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_wind_cov_get_field_wind_z(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_wind_cov_get_field_var_horiz(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_wind_cov_get_field_var_vert(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_wind_cov_get_field_wind_alt(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_wind_cov_get_field_horiz_accuracy(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_wind_cov_get_field_vert_accuracy(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(float)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

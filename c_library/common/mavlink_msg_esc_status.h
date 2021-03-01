@@ -25,27 +25,28 @@ typedef struct _fmav_esc_status_t {
 
 #define FASTMAVLINK_MSG_ID_ESC_STATUS  291
 
-
 #define FASTMAVLINK_MSG_ESC_STATUS_PAYLOAD_LEN_MIN  57
 #define FASTMAVLINK_MSG_ESC_STATUS_PAYLOAD_LEN_MAX  57
-#define FASTMAVLINK_MSG_ESC_STATUS_PAYLOAD_LEN  57
 #define FASTMAVLINK_MSG_ESC_STATUS_CRCEXTRA  10
-
-#define FASTMAVLINK_MSG_ID_291_LEN_MIN  57
-#define FASTMAVLINK_MSG_ID_291_LEN_MAX  57
-#define FASTMAVLINK_MSG_ID_291_LEN  57
-#define FASTMAVLINK_MSG_ID_291_CRCEXTRA  10
-
-#define FASTMAVLINK_MSG_ESC_STATUS_FIELD_RPM_LEN  4
-#define FASTMAVLINK_MSG_ESC_STATUS_FIELD_VOLTAGE_LEN  4
-#define FASTMAVLINK_MSG_ESC_STATUS_FIELD_CURRENT_LEN  4
 
 #define FASTMAVLINK_MSG_ESC_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_ESC_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ESC_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_ESC_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ESC_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_291_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_291_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ESC_STATUS_FRAME_LEN_MAX  82
+
+#define FASTMAVLINK_MSG_ESC_STATUS_FIELD_RPM_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_ESC_STATUS_FIELD_RPM_LEN  16 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ESC_STATUS_FIELD_VOLTAGE_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_ESC_STATUS_FIELD_VOLTAGE_LEN  16 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ESC_STATUS_FIELD_CURRENT_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_ESC_STATUS_FIELD_CURRENT_LEN  16 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_ESC_STATUS_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_ESC_STATUS_FIELD_RPM_OFS  8
+#define FASTMAVLINK_MSG_ESC_STATUS_FIELD_VOLTAGE_OFS  24
+#define FASTMAVLINK_MSG_ESC_STATUS_FIELD_CURRENT_OFS  40
+#define FASTMAVLINK_MSG_ESC_STATUS_FIELD_INDEX_OFS  56
 
 
 //----------------------------------------
@@ -198,6 +199,61 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_esc_status_decode(fmav_esc_status_t
 
     memset(payload, 0, FASTMAVLINK_MSG_ESC_STATUS_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_esc_status_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_esc_status_get_field_index(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[56]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t* fmav_msg_esc_status_get_field_rpm_ptr(const fmav_message_t* msg)
+{
+    return (int32_t*)&(msg->payload[8]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_esc_status_get_field_rpm(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ESC_STATUS_FIELD_RPM_NUM) return 0;
+    return ((int32_t*)&(msg->payload[8]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_esc_status_get_field_voltage_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[24]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_esc_status_get_field_voltage(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ESC_STATUS_FIELD_VOLTAGE_NUM) return 0;
+    return ((float*)&(msg->payload[24]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_esc_status_get_field_current_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[40]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_esc_status_get_field_current(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ESC_STATUS_FIELD_CURRENT_NUM) return 0;
+    return ((float*)&(msg->payload[40]))[index];     
 }
 
 

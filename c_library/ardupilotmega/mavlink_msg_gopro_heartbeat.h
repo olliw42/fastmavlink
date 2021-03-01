@@ -23,25 +23,21 @@ typedef struct _fmav_gopro_heartbeat_t {
 
 #define FASTMAVLINK_MSG_ID_GOPRO_HEARTBEAT  215
 
-
 #define FASTMAVLINK_MSG_GOPRO_HEARTBEAT_PAYLOAD_LEN_MIN  3
 #define FASTMAVLINK_MSG_GOPRO_HEARTBEAT_PAYLOAD_LEN_MAX  3
-#define FASTMAVLINK_MSG_GOPRO_HEARTBEAT_PAYLOAD_LEN  3
 #define FASTMAVLINK_MSG_GOPRO_HEARTBEAT_CRCEXTRA  101
-
-#define FASTMAVLINK_MSG_ID_215_LEN_MIN  3
-#define FASTMAVLINK_MSG_ID_215_LEN_MAX  3
-#define FASTMAVLINK_MSG_ID_215_LEN  3
-#define FASTMAVLINK_MSG_ID_215_CRCEXTRA  101
-
-
 
 #define FASTMAVLINK_MSG_GOPRO_HEARTBEAT_FLAGS  0
 #define FASTMAVLINK_MSG_GOPRO_HEARTBEAT_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_GOPRO_HEARTBEAT_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_GOPRO_HEARTBEAT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_GOPRO_HEARTBEAT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_215_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_215_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_GOPRO_HEARTBEAT_FRAME_LEN_MAX  28
+
+
+
+#define FASTMAVLINK_MSG_GOPRO_HEARTBEAT_FIELD_STATUS_OFS  0
+#define FASTMAVLINK_MSG_GOPRO_HEARTBEAT_FIELD_CAPTURE_MODE_OFS  1
+#define FASTMAVLINK_MSG_GOPRO_HEARTBEAT_FIELD_FLAGS_OFS  2
 
 
 //----------------------------------------
@@ -192,6 +188,33 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gopro_heartbeat_decode(fmav_gopro_h
     memset(payload, 0, FASTMAVLINK_MSG_GOPRO_HEARTBEAT_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gopro_heartbeat_get_field_status(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gopro_heartbeat_get_field_capture_mode(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[1]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gopro_heartbeat_get_field_flags(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[2]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

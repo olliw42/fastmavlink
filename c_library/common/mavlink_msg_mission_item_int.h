@@ -35,25 +35,33 @@ typedef struct _fmav_mission_item_int_t {
 
 #define FASTMAVLINK_MSG_ID_MISSION_ITEM_INT  73
 
-
 #define FASTMAVLINK_MSG_MISSION_ITEM_INT_PAYLOAD_LEN_MIN  37
 #define FASTMAVLINK_MSG_MISSION_ITEM_INT_PAYLOAD_LEN_MAX  38
-#define FASTMAVLINK_MSG_MISSION_ITEM_INT_PAYLOAD_LEN  38
 #define FASTMAVLINK_MSG_MISSION_ITEM_INT_CRCEXTRA  38
-
-#define FASTMAVLINK_MSG_ID_73_LEN_MIN  37
-#define FASTMAVLINK_MSG_ID_73_LEN_MAX  38
-#define FASTMAVLINK_MSG_ID_73_LEN  38
-#define FASTMAVLINK_MSG_ID_73_CRCEXTRA  38
-
-
 
 #define FASTMAVLINK_MSG_MISSION_ITEM_INT_FLAGS  3
 #define FASTMAVLINK_MSG_MISSION_ITEM_INT_TARGET_SYSTEM_OFS  32
 #define FASTMAVLINK_MSG_MISSION_ITEM_INT_TARGET_COMPONENT_OFS  33
 
-#define FASTMAVLINK_MSG_MISSION_ITEM_INT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_MISSION_ITEM_INT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_73_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_73_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_MISSION_ITEM_INT_FRAME_LEN_MAX  63
+
+
+
+#define FASTMAVLINK_MSG_MISSION_ITEM_INT_FIELD_PARAM1_OFS  0
+#define FASTMAVLINK_MSG_MISSION_ITEM_INT_FIELD_PARAM2_OFS  4
+#define FASTMAVLINK_MSG_MISSION_ITEM_INT_FIELD_PARAM3_OFS  8
+#define FASTMAVLINK_MSG_MISSION_ITEM_INT_FIELD_PARAM4_OFS  12
+#define FASTMAVLINK_MSG_MISSION_ITEM_INT_FIELD_X_OFS  16
+#define FASTMAVLINK_MSG_MISSION_ITEM_INT_FIELD_Y_OFS  20
+#define FASTMAVLINK_MSG_MISSION_ITEM_INT_FIELD_Z_OFS  24
+#define FASTMAVLINK_MSG_MISSION_ITEM_INT_FIELD_SEQ_OFS  28
+#define FASTMAVLINK_MSG_MISSION_ITEM_INT_FIELD_COMMAND_OFS  30
+#define FASTMAVLINK_MSG_MISSION_ITEM_INT_FIELD_TARGET_SYSTEM_OFS  32
+#define FASTMAVLINK_MSG_MISSION_ITEM_INT_FIELD_TARGET_COMPONENT_OFS  33
+#define FASTMAVLINK_MSG_MISSION_ITEM_INT_FIELD_FRAME_OFS  34
+#define FASTMAVLINK_MSG_MISSION_ITEM_INT_FIELD_CURRENT_OFS  35
+#define FASTMAVLINK_MSG_MISSION_ITEM_INT_FIELD_AUTOCONTINUE_OFS  36
+#define FASTMAVLINK_MSG_MISSION_ITEM_INT_FIELD_MISSION_TYPE_OFS  37
 
 
 //----------------------------------------
@@ -240,6 +248,129 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_mission_item_int_decode(fmav_missio
     memset(payload, 0, FASTMAVLINK_MSG_MISSION_ITEM_INT_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_mission_item_int_get_field_param1(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_mission_item_int_get_field_param2(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_mission_item_int_get_field_param3(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_mission_item_int_get_field_param4(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_mission_item_int_get_field_x(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_mission_item_int_get_field_y(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_mission_item_int_get_field_z(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_item_int_get_field_seq(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_item_int_get_field_command(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[30]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mission_item_int_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mission_item_int_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[33]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mission_item_int_get_field_frame(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[34]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mission_item_int_get_field_current(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[35]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mission_item_int_get_field_autocontinue(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mission_item_int_get_field_mission_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[37]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

@@ -28,25 +28,26 @@ typedef struct _fmav_isbd_link_status_t {
 
 #define FASTMAVLINK_MSG_ID_ISBD_LINK_STATUS  335
 
-
 #define FASTMAVLINK_MSG_ISBD_LINK_STATUS_PAYLOAD_LEN_MIN  24
 #define FASTMAVLINK_MSG_ISBD_LINK_STATUS_PAYLOAD_LEN_MAX  24
-#define FASTMAVLINK_MSG_ISBD_LINK_STATUS_PAYLOAD_LEN  24
 #define FASTMAVLINK_MSG_ISBD_LINK_STATUS_CRCEXTRA  225
-
-#define FASTMAVLINK_MSG_ID_335_LEN_MIN  24
-#define FASTMAVLINK_MSG_ID_335_LEN_MAX  24
-#define FASTMAVLINK_MSG_ID_335_LEN  24
-#define FASTMAVLINK_MSG_ID_335_CRCEXTRA  225
-
-
 
 #define FASTMAVLINK_MSG_ISBD_LINK_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_ISBD_LINK_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ISBD_LINK_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_ISBD_LINK_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ISBD_LINK_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_335_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_335_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ISBD_LINK_STATUS_FRAME_LEN_MAX  49
+
+
+
+#define FASTMAVLINK_MSG_ISBD_LINK_STATUS_FIELD_TIMESTAMP_OFS  0
+#define FASTMAVLINK_MSG_ISBD_LINK_STATUS_FIELD_LAST_HEARTBEAT_OFS  8
+#define FASTMAVLINK_MSG_ISBD_LINK_STATUS_FIELD_FAILED_SESSIONS_OFS  16
+#define FASTMAVLINK_MSG_ISBD_LINK_STATUS_FIELD_SUCCESSFUL_SESSIONS_OFS  18
+#define FASTMAVLINK_MSG_ISBD_LINK_STATUS_FIELD_SIGNAL_QUALITY_OFS  20
+#define FASTMAVLINK_MSG_ISBD_LINK_STATUS_FIELD_RING_PENDING_OFS  21
+#define FASTMAVLINK_MSG_ISBD_LINK_STATUS_FIELD_TX_SESSION_PENDING_OFS  22
+#define FASTMAVLINK_MSG_ISBD_LINK_STATUS_FIELD_RX_SESSION_PENDING_OFS  23
 
 
 //----------------------------------------
@@ -212,6 +213,73 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_isbd_link_status_decode(fmav_isbd_l
     memset(payload, 0, FASTMAVLINK_MSG_ISBD_LINK_STATUS_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_isbd_link_status_get_field_timestamp(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_isbd_link_status_get_field_last_heartbeat(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_isbd_link_status_get_field_failed_sessions(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_isbd_link_status_get_field_successful_sessions(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[18]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_isbd_link_status_get_field_signal_quality(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_isbd_link_status_get_field_ring_pending(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[21]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_isbd_link_status_get_field_tx_session_pending(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[22]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_isbd_link_status_get_field_rx_session_pending(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[23]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

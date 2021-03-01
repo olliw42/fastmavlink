@@ -28,25 +28,26 @@ typedef struct _fmav_gimbal_manager_set_pitchyaw_t {
 
 #define FASTMAVLINK_MSG_ID_GIMBAL_MANAGER_SET_PITCHYAW  287
 
-
 #define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_PITCHYAW_PAYLOAD_LEN_MIN  23
 #define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_PITCHYAW_PAYLOAD_LEN_MAX  23
-#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_PITCHYAW_PAYLOAD_LEN  23
 #define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_PITCHYAW_CRCEXTRA  1
-
-#define FASTMAVLINK_MSG_ID_287_LEN_MIN  23
-#define FASTMAVLINK_MSG_ID_287_LEN_MAX  23
-#define FASTMAVLINK_MSG_ID_287_LEN  23
-#define FASTMAVLINK_MSG_ID_287_CRCEXTRA  1
-
-
 
 #define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_PITCHYAW_FLAGS  3
 #define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_PITCHYAW_TARGET_SYSTEM_OFS  20
 #define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_PITCHYAW_TARGET_COMPONENT_OFS  21
 
-#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_PITCHYAW_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_PITCHYAW_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_287_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_287_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_PITCHYAW_FRAME_LEN_MAX  48
+
+
+
+#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_PITCHYAW_FIELD_FLAGS_OFS  0
+#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_PITCHYAW_FIELD_PITCH_OFS  4
+#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_PITCHYAW_FIELD_YAW_OFS  8
+#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_PITCHYAW_FIELD_PITCH_RATE_OFS  12
+#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_PITCHYAW_FIELD_YAW_RATE_OFS  16
+#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_PITCHYAW_FIELD_TARGET_SYSTEM_OFS  20
+#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_PITCHYAW_FIELD_TARGET_COMPONENT_OFS  21
+#define FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_PITCHYAW_FIELD_GIMBAL_DEVICE_ID_OFS  22
 
 
 //----------------------------------------
@@ -212,6 +213,73 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gimbal_manager_set_pitchyaw_decode(
     memset(payload, 0, FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_PITCHYAW_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_gimbal_manager_set_pitchyaw_get_field_flags(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_manager_set_pitchyaw_get_field_pitch(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_manager_set_pitchyaw_get_field_yaw(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_manager_set_pitchyaw_get_field_pitch_rate(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_manager_set_pitchyaw_get_field_yaw_rate(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gimbal_manager_set_pitchyaw_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gimbal_manager_set_pitchyaw_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[21]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gimbal_manager_set_pitchyaw_get_field_gimbal_device_id(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[22]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

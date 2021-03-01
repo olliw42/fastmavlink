@@ -27,25 +27,25 @@ typedef struct _fmav_terrain_report_t {
 
 #define FASTMAVLINK_MSG_ID_TERRAIN_REPORT  136
 
-
 #define FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN_MIN  22
 #define FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN_MAX  22
-#define FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN  22
 #define FASTMAVLINK_MSG_TERRAIN_REPORT_CRCEXTRA  1
-
-#define FASTMAVLINK_MSG_ID_136_LEN_MIN  22
-#define FASTMAVLINK_MSG_ID_136_LEN_MAX  22
-#define FASTMAVLINK_MSG_ID_136_LEN  22
-#define FASTMAVLINK_MSG_ID_136_CRCEXTRA  1
-
-
 
 #define FASTMAVLINK_MSG_TERRAIN_REPORT_FLAGS  0
 #define FASTMAVLINK_MSG_TERRAIN_REPORT_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_TERRAIN_REPORT_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_TERRAIN_REPORT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_136_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_136_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_TERRAIN_REPORT_FRAME_LEN_MAX  47
+
+
+
+#define FASTMAVLINK_MSG_TERRAIN_REPORT_FIELD_LAT_OFS  0
+#define FASTMAVLINK_MSG_TERRAIN_REPORT_FIELD_LON_OFS  4
+#define FASTMAVLINK_MSG_TERRAIN_REPORT_FIELD_TERRAIN_HEIGHT_OFS  8
+#define FASTMAVLINK_MSG_TERRAIN_REPORT_FIELD_CURRENT_HEIGHT_OFS  12
+#define FASTMAVLINK_MSG_TERRAIN_REPORT_FIELD_SPACING_OFS  16
+#define FASTMAVLINK_MSG_TERRAIN_REPORT_FIELD_PENDING_OFS  18
+#define FASTMAVLINK_MSG_TERRAIN_REPORT_FIELD_LOADED_OFS  20
 
 
 //----------------------------------------
@@ -208,6 +208,65 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_terrain_report_decode(fmav_terrain_
     memset(payload, 0, FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_terrain_report_get_field_lat(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_terrain_report_get_field_lon(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_terrain_report_get_field_terrain_height(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_terrain_report_get_field_current_height(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_report_get_field_spacing(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_report_get_field_pending(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[18]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_report_get_field_loaded(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

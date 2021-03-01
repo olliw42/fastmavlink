@@ -25,25 +25,23 @@ typedef struct _fmav_gimbal_control_t {
 
 #define FASTMAVLINK_MSG_ID_GIMBAL_CONTROL  201
 
-
 #define FASTMAVLINK_MSG_GIMBAL_CONTROL_PAYLOAD_LEN_MIN  14
 #define FASTMAVLINK_MSG_GIMBAL_CONTROL_PAYLOAD_LEN_MAX  14
-#define FASTMAVLINK_MSG_GIMBAL_CONTROL_PAYLOAD_LEN  14
 #define FASTMAVLINK_MSG_GIMBAL_CONTROL_CRCEXTRA  205
-
-#define FASTMAVLINK_MSG_ID_201_LEN_MIN  14
-#define FASTMAVLINK_MSG_ID_201_LEN_MAX  14
-#define FASTMAVLINK_MSG_ID_201_LEN  14
-#define FASTMAVLINK_MSG_ID_201_CRCEXTRA  205
-
-
 
 #define FASTMAVLINK_MSG_GIMBAL_CONTROL_FLAGS  3
 #define FASTMAVLINK_MSG_GIMBAL_CONTROL_TARGET_SYSTEM_OFS  12
 #define FASTMAVLINK_MSG_GIMBAL_CONTROL_TARGET_COMPONENT_OFS  13
 
-#define FASTMAVLINK_MSG_GIMBAL_CONTROL_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_GIMBAL_CONTROL_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_201_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_201_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_GIMBAL_CONTROL_FRAME_LEN_MAX  39
+
+
+
+#define FASTMAVLINK_MSG_GIMBAL_CONTROL_FIELD_DEMANDED_RATE_X_OFS  0
+#define FASTMAVLINK_MSG_GIMBAL_CONTROL_FIELD_DEMANDED_RATE_Y_OFS  4
+#define FASTMAVLINK_MSG_GIMBAL_CONTROL_FIELD_DEMANDED_RATE_Z_OFS  8
+#define FASTMAVLINK_MSG_GIMBAL_CONTROL_FIELD_TARGET_SYSTEM_OFS  12
+#define FASTMAVLINK_MSG_GIMBAL_CONTROL_FIELD_TARGET_COMPONENT_OFS  13
 
 
 //----------------------------------------
@@ -200,6 +198,49 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gimbal_control_decode(fmav_gimbal_c
     memset(payload, 0, FASTMAVLINK_MSG_GIMBAL_CONTROL_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_control_get_field_demanded_rate_x(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_control_get_field_demanded_rate_y(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_control_get_field_demanded_rate_z(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gimbal_control_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gimbal_control_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[13]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

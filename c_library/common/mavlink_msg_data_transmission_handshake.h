@@ -27,25 +27,25 @@ typedef struct _fmav_data_transmission_handshake_t {
 
 #define FASTMAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE  130
 
-
 #define FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_PAYLOAD_LEN_MIN  13
 #define FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_PAYLOAD_LEN_MAX  13
-#define FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_PAYLOAD_LEN  13
 #define FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_CRCEXTRA  29
-
-#define FASTMAVLINK_MSG_ID_130_LEN_MIN  13
-#define FASTMAVLINK_MSG_ID_130_LEN_MAX  13
-#define FASTMAVLINK_MSG_ID_130_LEN  13
-#define FASTMAVLINK_MSG_ID_130_CRCEXTRA  29
-
-
 
 #define FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_FLAGS  0
 #define FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_130_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_130_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_FRAME_LEN_MAX  38
+
+
+
+#define FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_FIELD_SIZE_OFS  0
+#define FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_FIELD_WIDTH_OFS  4
+#define FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_FIELD_HEIGHT_OFS  6
+#define FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_FIELD_PACKETS_OFS  8
+#define FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_FIELD_TYPE_OFS  10
+#define FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_FIELD_PAYLOAD_OFS  11
+#define FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_FIELD_JPG_QUALITY_OFS  12
 
 
 //----------------------------------------
@@ -208,6 +208,65 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_data_transmission_handshake_decode(
     memset(payload, 0, FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_data_transmission_handshake_get_field_size(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data_transmission_handshake_get_field_width(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data_transmission_handshake_get_field_height(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[6]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data_transmission_handshake_get_field_packets(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_data_transmission_handshake_get_field_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[10]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_data_transmission_handshake_get_field_payload(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[11]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_data_transmission_handshake_get_field_jpg_quality(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

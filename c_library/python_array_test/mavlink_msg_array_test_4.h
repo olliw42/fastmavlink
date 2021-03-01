@@ -22,25 +22,21 @@ typedef struct _fmav_array_test_4_t {
 
 #define FASTMAVLINK_MSG_ID_ARRAY_TEST_4  17154
 
-
 #define FASTMAVLINK_MSG_ARRAY_TEST_4_PAYLOAD_LEN_MIN  17
 #define FASTMAVLINK_MSG_ARRAY_TEST_4_PAYLOAD_LEN_MAX  17
-#define FASTMAVLINK_MSG_ARRAY_TEST_4_PAYLOAD_LEN  17
 #define FASTMAVLINK_MSG_ARRAY_TEST_4_CRCEXTRA  89
-
-#define FASTMAVLINK_MSG_ID_17154_LEN_MIN  17
-#define FASTMAVLINK_MSG_ID_17154_LEN_MAX  17
-#define FASTMAVLINK_MSG_ID_17154_LEN  17
-#define FASTMAVLINK_MSG_ID_17154_CRCEXTRA  89
-
-#define FASTMAVLINK_MSG_ARRAY_TEST_4_FIELD_AR_U32_LEN  4
 
 #define FASTMAVLINK_MSG_ARRAY_TEST_4_FLAGS  0
 #define FASTMAVLINK_MSG_ARRAY_TEST_4_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ARRAY_TEST_4_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_ARRAY_TEST_4_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ARRAY_TEST_4_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_17154_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_17154_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ARRAY_TEST_4_FRAME_LEN_MAX  42
+
+#define FASTMAVLINK_MSG_ARRAY_TEST_4_FIELD_AR_U32_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_ARRAY_TEST_4_FIELD_AR_U32_LEN  16 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_ARRAY_TEST_4_FIELD_AR_U32_OFS  0
+#define FASTMAVLINK_MSG_ARRAY_TEST_4_FIELD_V_OFS  16
 
 
 //----------------------------------------
@@ -184,6 +180,27 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_array_test_4_decode(fmav_array_test
 
     memset(payload, 0, FASTMAVLINK_MSG_ARRAY_TEST_4_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_array_test_4_get_field_v(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t* fmav_msg_array_test_4_get_field_ar_u32_ptr(const fmav_message_t* msg)
+{
+    return (uint32_t*)&(msg->payload[0]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_array_test_4_get_field_ar_u32(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ARRAY_TEST_4_FIELD_AR_U32_NUM) return 0;
+    return ((uint32_t*)&(msg->payload[0]))[index];     
 }
 
 

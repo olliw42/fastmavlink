@@ -31,25 +31,29 @@ typedef struct _fmav_link_node_status_t {
 
 #define FASTMAVLINK_MSG_ID_LINK_NODE_STATUS  8
 
-
 #define FASTMAVLINK_MSG_LINK_NODE_STATUS_PAYLOAD_LEN_MIN  36
 #define FASTMAVLINK_MSG_LINK_NODE_STATUS_PAYLOAD_LEN_MAX  36
-#define FASTMAVLINK_MSG_LINK_NODE_STATUS_PAYLOAD_LEN  36
 #define FASTMAVLINK_MSG_LINK_NODE_STATUS_CRCEXTRA  117
-
-#define FASTMAVLINK_MSG_ID_8_LEN_MIN  36
-#define FASTMAVLINK_MSG_ID_8_LEN_MAX  36
-#define FASTMAVLINK_MSG_ID_8_LEN  36
-#define FASTMAVLINK_MSG_ID_8_CRCEXTRA  117
-
-
 
 #define FASTMAVLINK_MSG_LINK_NODE_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_LINK_NODE_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_LINK_NODE_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_LINK_NODE_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_LINK_NODE_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_8_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_8_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_LINK_NODE_STATUS_FRAME_LEN_MAX  61
+
+
+
+#define FASTMAVLINK_MSG_LINK_NODE_STATUS_FIELD_TIMESTAMP_OFS  0
+#define FASTMAVLINK_MSG_LINK_NODE_STATUS_FIELD_TX_RATE_OFS  8
+#define FASTMAVLINK_MSG_LINK_NODE_STATUS_FIELD_RX_RATE_OFS  12
+#define FASTMAVLINK_MSG_LINK_NODE_STATUS_FIELD_MESSAGES_SENT_OFS  16
+#define FASTMAVLINK_MSG_LINK_NODE_STATUS_FIELD_MESSAGES_RECEIVED_OFS  20
+#define FASTMAVLINK_MSG_LINK_NODE_STATUS_FIELD_MESSAGES_LOST_OFS  24
+#define FASTMAVLINK_MSG_LINK_NODE_STATUS_FIELD_RX_PARSE_ERR_OFS  28
+#define FASTMAVLINK_MSG_LINK_NODE_STATUS_FIELD_TX_OVERFLOWS_OFS  30
+#define FASTMAVLINK_MSG_LINK_NODE_STATUS_FIELD_RX_OVERFLOWS_OFS  32
+#define FASTMAVLINK_MSG_LINK_NODE_STATUS_FIELD_TX_BUF_OFS  34
+#define FASTMAVLINK_MSG_LINK_NODE_STATUS_FIELD_RX_BUF_OFS  35
 
 
 //----------------------------------------
@@ -224,6 +228,97 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_link_node_status_decode(fmav_link_n
     memset(payload, 0, FASTMAVLINK_MSG_LINK_NODE_STATUS_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_link_node_status_get_field_timestamp(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_link_node_status_get_field_tx_rate(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_link_node_status_get_field_rx_rate(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_link_node_status_get_field_messages_sent(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_link_node_status_get_field_messages_received(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_link_node_status_get_field_messages_lost(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_link_node_status_get_field_rx_parse_err(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_link_node_status_get_field_tx_overflows(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[30]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_link_node_status_get_field_rx_overflows(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_link_node_status_get_field_tx_buf(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[34]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_link_node_status_get_field_rx_buf(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[35]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

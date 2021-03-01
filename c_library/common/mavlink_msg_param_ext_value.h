@@ -25,26 +25,26 @@ typedef struct _fmav_param_ext_value_t {
 
 #define FASTMAVLINK_MSG_ID_PARAM_EXT_VALUE  322
 
-
 #define FASTMAVLINK_MSG_PARAM_EXT_VALUE_PAYLOAD_LEN_MIN  149
 #define FASTMAVLINK_MSG_PARAM_EXT_VALUE_PAYLOAD_LEN_MAX  149
-#define FASTMAVLINK_MSG_PARAM_EXT_VALUE_PAYLOAD_LEN  149
 #define FASTMAVLINK_MSG_PARAM_EXT_VALUE_CRCEXTRA  243
-
-#define FASTMAVLINK_MSG_ID_322_LEN_MIN  149
-#define FASTMAVLINK_MSG_ID_322_LEN_MAX  149
-#define FASTMAVLINK_MSG_ID_322_LEN  149
-#define FASTMAVLINK_MSG_ID_322_CRCEXTRA  243
-
-#define FASTMAVLINK_MSG_PARAM_EXT_VALUE_FIELD_PARAM_ID_LEN  16
-#define FASTMAVLINK_MSG_PARAM_EXT_VALUE_FIELD_PARAM_VALUE_LEN  128
 
 #define FASTMAVLINK_MSG_PARAM_EXT_VALUE_FLAGS  0
 #define FASTMAVLINK_MSG_PARAM_EXT_VALUE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_PARAM_EXT_VALUE_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_PARAM_EXT_VALUE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_PARAM_EXT_VALUE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_322_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_322_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_PARAM_EXT_VALUE_FRAME_LEN_MAX  174
+
+#define FASTMAVLINK_MSG_PARAM_EXT_VALUE_FIELD_PARAM_ID_NUM  16 // number of elements in array
+#define FASTMAVLINK_MSG_PARAM_EXT_VALUE_FIELD_PARAM_ID_LEN  16 // length of array = number of bytes
+#define FASTMAVLINK_MSG_PARAM_EXT_VALUE_FIELD_PARAM_VALUE_NUM  128 // number of elements in array
+#define FASTMAVLINK_MSG_PARAM_EXT_VALUE_FIELD_PARAM_VALUE_LEN  128 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_PARAM_EXT_VALUE_FIELD_PARAM_COUNT_OFS  0
+#define FASTMAVLINK_MSG_PARAM_EXT_VALUE_FIELD_PARAM_INDEX_OFS  2
+#define FASTMAVLINK_MSG_PARAM_EXT_VALUE_FIELD_PARAM_ID_OFS  4
+#define FASTMAVLINK_MSG_PARAM_EXT_VALUE_FIELD_PARAM_VALUE_OFS  20
+#define FASTMAVLINK_MSG_PARAM_EXT_VALUE_FIELD_PARAM_TYPE_OFS  148
 
 
 //----------------------------------------
@@ -197,6 +197,56 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_param_ext_value_decode(fmav_param_e
 
     memset(payload, 0, FASTMAVLINK_MSG_PARAM_EXT_VALUE_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ext_value_get_field_param_count(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ext_value_get_field_param_index(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[2]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_param_ext_value_get_field_param_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[148]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_param_ext_value_get_field_param_id_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[4]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_param_ext_value_get_field_param_id(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_PARAM_EXT_VALUE_FIELD_PARAM_ID_NUM) return 0;
+    return ((char*)&(msg->payload[4]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_param_ext_value_get_field_param_value_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[20]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_param_ext_value_get_field_param_value(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_PARAM_EXT_VALUE_FIELD_PARAM_VALUE_NUM) return 0;
+    return ((char*)&(msg->payload[20]))[index];     
 }
 
 

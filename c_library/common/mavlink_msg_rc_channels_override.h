@@ -40,25 +40,38 @@ typedef struct _fmav_rc_channels_override_t {
 
 #define FASTMAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE  70
 
-
 #define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_PAYLOAD_LEN_MIN  18
 #define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_PAYLOAD_LEN_MAX  38
-#define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_PAYLOAD_LEN  38
 #define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_CRCEXTRA  124
-
-#define FASTMAVLINK_MSG_ID_70_LEN_MIN  18
-#define FASTMAVLINK_MSG_ID_70_LEN_MAX  38
-#define FASTMAVLINK_MSG_ID_70_LEN  38
-#define FASTMAVLINK_MSG_ID_70_CRCEXTRA  124
-
-
 
 #define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_FLAGS  3
 #define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_TARGET_SYSTEM_OFS  16
 #define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_TARGET_COMPONENT_OFS  17
 
-#define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_70_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_70_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_FRAME_LEN_MAX  63
+
+
+
+#define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_FIELD_CHAN1_RAW_OFS  0
+#define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_FIELD_CHAN2_RAW_OFS  2
+#define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_FIELD_CHAN3_RAW_OFS  4
+#define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_FIELD_CHAN4_RAW_OFS  6
+#define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_FIELD_CHAN5_RAW_OFS  8
+#define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_FIELD_CHAN6_RAW_OFS  10
+#define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_FIELD_CHAN7_RAW_OFS  12
+#define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_FIELD_CHAN8_RAW_OFS  14
+#define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_FIELD_TARGET_SYSTEM_OFS  16
+#define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_FIELD_TARGET_COMPONENT_OFS  17
+#define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_FIELD_CHAN9_RAW_OFS  18
+#define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_FIELD_CHAN10_RAW_OFS  20
+#define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_FIELD_CHAN11_RAW_OFS  22
+#define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_FIELD_CHAN12_RAW_OFS  24
+#define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_FIELD_CHAN13_RAW_OFS  26
+#define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_FIELD_CHAN14_RAW_OFS  28
+#define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_FIELD_CHAN15_RAW_OFS  30
+#define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_FIELD_CHAN16_RAW_OFS  32
+#define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_FIELD_CHAN17_RAW_OFS  34
+#define FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_FIELD_CHAN18_RAW_OFS  36
 
 
 //----------------------------------------
@@ -260,6 +273,169 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_rc_channels_override_decode(fmav_rc
     memset(payload, 0, FASTMAVLINK_MSG_RC_CHANNELS_OVERRIDE_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_override_get_field_chan1_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_override_get_field_chan2_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[2]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_override_get_field_chan3_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_override_get_field_chan4_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[6]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_override_get_field_chan5_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_override_get_field_chan6_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[10]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_override_get_field_chan7_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_override_get_field_chan8_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[14]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_rc_channels_override_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_rc_channels_override_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[17]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_override_get_field_chan9_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[18]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_override_get_field_chan10_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_override_get_field_chan11_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[22]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_override_get_field_chan12_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_override_get_field_chan13_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[26]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_override_get_field_chan14_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_override_get_field_chan15_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[30]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_override_get_field_chan16_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_override_get_field_chan17_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[34]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rc_channels_override_get_field_chan18_raw(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

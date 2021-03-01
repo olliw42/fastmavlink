@@ -31,25 +31,30 @@ typedef struct _fmav_storage_information_t {
 
 #define FASTMAVLINK_MSG_ID_STORAGE_INFORMATION  261
 
-
 #define FASTMAVLINK_MSG_STORAGE_INFORMATION_PAYLOAD_LEN_MIN  27
 #define FASTMAVLINK_MSG_STORAGE_INFORMATION_PAYLOAD_LEN_MAX  60
-#define FASTMAVLINK_MSG_STORAGE_INFORMATION_PAYLOAD_LEN  60
 #define FASTMAVLINK_MSG_STORAGE_INFORMATION_CRCEXTRA  179
-
-#define FASTMAVLINK_MSG_ID_261_LEN_MIN  27
-#define FASTMAVLINK_MSG_ID_261_LEN_MAX  60
-#define FASTMAVLINK_MSG_ID_261_LEN  60
-#define FASTMAVLINK_MSG_ID_261_CRCEXTRA  179
-
-#define FASTMAVLINK_MSG_STORAGE_INFORMATION_FIELD_NAME_LEN  32
 
 #define FASTMAVLINK_MSG_STORAGE_INFORMATION_FLAGS  0
 #define FASTMAVLINK_MSG_STORAGE_INFORMATION_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_STORAGE_INFORMATION_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_STORAGE_INFORMATION_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_STORAGE_INFORMATION_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_261_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_261_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_STORAGE_INFORMATION_FRAME_LEN_MAX  85
+
+#define FASTMAVLINK_MSG_STORAGE_INFORMATION_FIELD_NAME_NUM  32 // number of elements in array
+#define FASTMAVLINK_MSG_STORAGE_INFORMATION_FIELD_NAME_LEN  32 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_STORAGE_INFORMATION_FIELD_TIME_BOOT_MS_OFS  0
+#define FASTMAVLINK_MSG_STORAGE_INFORMATION_FIELD_TOTAL_CAPACITY_OFS  4
+#define FASTMAVLINK_MSG_STORAGE_INFORMATION_FIELD_USED_CAPACITY_OFS  8
+#define FASTMAVLINK_MSG_STORAGE_INFORMATION_FIELD_AVAILABLE_CAPACITY_OFS  12
+#define FASTMAVLINK_MSG_STORAGE_INFORMATION_FIELD_READ_SPEED_OFS  16
+#define FASTMAVLINK_MSG_STORAGE_INFORMATION_FIELD_WRITE_SPEED_OFS  20
+#define FASTMAVLINK_MSG_STORAGE_INFORMATION_FIELD_STORAGE_ID_OFS  24
+#define FASTMAVLINK_MSG_STORAGE_INFORMATION_FIELD_STORAGE_COUNT_OFS  25
+#define FASTMAVLINK_MSG_STORAGE_INFORMATION_FIELD_STATUS_OFS  26
+#define FASTMAVLINK_MSG_STORAGE_INFORMATION_FIELD_TYPE_OFS  27
+#define FASTMAVLINK_MSG_STORAGE_INFORMATION_FIELD_NAME_OFS  28
 
 
 //----------------------------------------
@@ -220,6 +225,99 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_storage_information_decode(fmav_sto
 
     memset(payload, 0, FASTMAVLINK_MSG_STORAGE_INFORMATION_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_storage_information_get_field_time_boot_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_storage_information_get_field_total_capacity(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_storage_information_get_field_used_capacity(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_storage_information_get_field_available_capacity(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_storage_information_get_field_read_speed(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_storage_information_get_field_write_speed(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_storage_information_get_field_storage_id(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_storage_information_get_field_storage_count(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[25]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_storage_information_get_field_status(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[26]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_storage_information_get_field_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[27]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_storage_information_get_field_name_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[28]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_storage_information_get_field_name(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_STORAGE_INFORMATION_FIELD_NAME_NUM) return 0;
+    return ((char*)&(msg->payload[28]))[index];     
 }
 
 

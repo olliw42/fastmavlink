@@ -26,25 +26,24 @@ typedef struct _fmav_heartbeat_t {
 
 #define FASTMAVLINK_MSG_ID_HEARTBEAT  0
 
-
 #define FASTMAVLINK_MSG_HEARTBEAT_PAYLOAD_LEN_MIN  9
 #define FASTMAVLINK_MSG_HEARTBEAT_PAYLOAD_LEN_MAX  9
-#define FASTMAVLINK_MSG_HEARTBEAT_PAYLOAD_LEN  9
 #define FASTMAVLINK_MSG_HEARTBEAT_CRCEXTRA  50
-
-#define FASTMAVLINK_MSG_ID_0_LEN_MIN  9
-#define FASTMAVLINK_MSG_ID_0_LEN_MAX  9
-#define FASTMAVLINK_MSG_ID_0_LEN  9
-#define FASTMAVLINK_MSG_ID_0_CRCEXTRA  50
-
-
 
 #define FASTMAVLINK_MSG_HEARTBEAT_FLAGS  0
 #define FASTMAVLINK_MSG_HEARTBEAT_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_HEARTBEAT_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_HEARTBEAT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_HEARTBEAT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_0_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_0_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_HEARTBEAT_FRAME_LEN_MAX  34
+
+
+
+#define FASTMAVLINK_MSG_HEARTBEAT_FIELD_CUSTOM_MODE_OFS  0
+#define FASTMAVLINK_MSG_HEARTBEAT_FIELD_TYPE_OFS  4
+#define FASTMAVLINK_MSG_HEARTBEAT_FIELD_AUTOPILOT_OFS  5
+#define FASTMAVLINK_MSG_HEARTBEAT_FIELD_BASE_MODE_OFS  6
+#define FASTMAVLINK_MSG_HEARTBEAT_FIELD_SYSTEM_STATUS_OFS  7
+#define FASTMAVLINK_MSG_HEARTBEAT_FIELD_MAVLINK_VERSION_OFS  8
 
 
 //----------------------------------------
@@ -204,6 +203,57 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_heartbeat_decode(fmav_heartbeat_t* 
     memset(payload, 0, FASTMAVLINK_MSG_HEARTBEAT_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_heartbeat_get_field_custom_mode(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_heartbeat_get_field_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_heartbeat_get_field_autopilot(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[5]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_heartbeat_get_field_base_mode(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[6]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_heartbeat_get_field_system_status(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[7]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_heartbeat_get_field_mavlink_version(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

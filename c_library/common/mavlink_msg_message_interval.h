@@ -22,25 +22,20 @@ typedef struct _fmav_message_interval_t {
 
 #define FASTMAVLINK_MSG_ID_MESSAGE_INTERVAL  244
 
-
 #define FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN_MIN  6
 #define FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN_MAX  6
-#define FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN  6
 #define FASTMAVLINK_MSG_MESSAGE_INTERVAL_CRCEXTRA  95
-
-#define FASTMAVLINK_MSG_ID_244_LEN_MIN  6
-#define FASTMAVLINK_MSG_ID_244_LEN_MAX  6
-#define FASTMAVLINK_MSG_ID_244_LEN  6
-#define FASTMAVLINK_MSG_ID_244_CRCEXTRA  95
-
-
 
 #define FASTMAVLINK_MSG_MESSAGE_INTERVAL_FLAGS  0
 #define FASTMAVLINK_MSG_MESSAGE_INTERVAL_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_MESSAGE_INTERVAL_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_MESSAGE_INTERVAL_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_244_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_244_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_MESSAGE_INTERVAL_FRAME_LEN_MAX  31
+
+
+
+#define FASTMAVLINK_MSG_MESSAGE_INTERVAL_FIELD_INTERVAL_US_OFS  0
+#define FASTMAVLINK_MSG_MESSAGE_INTERVAL_FIELD_MESSAGE_ID_OFS  4
 
 
 //----------------------------------------
@@ -188,6 +183,25 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_message_interval_decode(fmav_messag
     memset(payload, 0, FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_message_interval_get_field_interval_us(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_message_interval_get_field_message_id(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

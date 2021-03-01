@@ -30,25 +30,28 @@ typedef struct _fmav_estimator_status_t {
 
 #define FASTMAVLINK_MSG_ID_ESTIMATOR_STATUS  230
 
-
 #define FASTMAVLINK_MSG_ESTIMATOR_STATUS_PAYLOAD_LEN_MIN  42
 #define FASTMAVLINK_MSG_ESTIMATOR_STATUS_PAYLOAD_LEN_MAX  42
-#define FASTMAVLINK_MSG_ESTIMATOR_STATUS_PAYLOAD_LEN  42
 #define FASTMAVLINK_MSG_ESTIMATOR_STATUS_CRCEXTRA  163
-
-#define FASTMAVLINK_MSG_ID_230_LEN_MIN  42
-#define FASTMAVLINK_MSG_ID_230_LEN_MAX  42
-#define FASTMAVLINK_MSG_ID_230_LEN  42
-#define FASTMAVLINK_MSG_ID_230_CRCEXTRA  163
-
-
 
 #define FASTMAVLINK_MSG_ESTIMATOR_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_ESTIMATOR_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ESTIMATOR_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_ESTIMATOR_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ESTIMATOR_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_230_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_230_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ESTIMATOR_STATUS_FRAME_LEN_MAX  67
+
+
+
+#define FASTMAVLINK_MSG_ESTIMATOR_STATUS_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_ESTIMATOR_STATUS_FIELD_VEL_RATIO_OFS  8
+#define FASTMAVLINK_MSG_ESTIMATOR_STATUS_FIELD_POS_HORIZ_RATIO_OFS  12
+#define FASTMAVLINK_MSG_ESTIMATOR_STATUS_FIELD_POS_VERT_RATIO_OFS  16
+#define FASTMAVLINK_MSG_ESTIMATOR_STATUS_FIELD_MAG_RATIO_OFS  20
+#define FASTMAVLINK_MSG_ESTIMATOR_STATUS_FIELD_HAGL_RATIO_OFS  24
+#define FASTMAVLINK_MSG_ESTIMATOR_STATUS_FIELD_TAS_RATIO_OFS  28
+#define FASTMAVLINK_MSG_ESTIMATOR_STATUS_FIELD_POS_HORIZ_ACCURACY_OFS  32
+#define FASTMAVLINK_MSG_ESTIMATOR_STATUS_FIELD_POS_VERT_ACCURACY_OFS  36
+#define FASTMAVLINK_MSG_ESTIMATOR_STATUS_FIELD_FLAGS_OFS  40
 
 
 //----------------------------------------
@@ -220,6 +223,89 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_estimator_status_decode(fmav_estima
     memset(payload, 0, FASTMAVLINK_MSG_ESTIMATOR_STATUS_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_estimator_status_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_estimator_status_get_field_vel_ratio(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_estimator_status_get_field_pos_horiz_ratio(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_estimator_status_get_field_pos_vert_ratio(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_estimator_status_get_field_mag_ratio(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_estimator_status_get_field_hagl_ratio(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_estimator_status_get_field_tas_ratio(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_estimator_status_get_field_pos_horiz_accuracy(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_estimator_status_get_field_pos_vert_accuracy(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_estimator_status_get_field_flags(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[40]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

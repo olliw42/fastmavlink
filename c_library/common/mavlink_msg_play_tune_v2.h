@@ -24,25 +24,23 @@ typedef struct _fmav_play_tune_v2_t {
 
 #define FASTMAVLINK_MSG_ID_PLAY_TUNE_V2  400
 
-
 #define FASTMAVLINK_MSG_PLAY_TUNE_V2_PAYLOAD_LEN_MIN  254
 #define FASTMAVLINK_MSG_PLAY_TUNE_V2_PAYLOAD_LEN_MAX  254
-#define FASTMAVLINK_MSG_PLAY_TUNE_V2_PAYLOAD_LEN  254
 #define FASTMAVLINK_MSG_PLAY_TUNE_V2_CRCEXTRA  110
-
-#define FASTMAVLINK_MSG_ID_400_LEN_MIN  254
-#define FASTMAVLINK_MSG_ID_400_LEN_MAX  254
-#define FASTMAVLINK_MSG_ID_400_LEN  254
-#define FASTMAVLINK_MSG_ID_400_CRCEXTRA  110
-
-#define FASTMAVLINK_MSG_PLAY_TUNE_V2_FIELD_TUNE_LEN  248
 
 #define FASTMAVLINK_MSG_PLAY_TUNE_V2_FLAGS  3
 #define FASTMAVLINK_MSG_PLAY_TUNE_V2_TARGET_SYSTEM_OFS  4
 #define FASTMAVLINK_MSG_PLAY_TUNE_V2_TARGET_COMPONENT_OFS  5
 
-#define FASTMAVLINK_MSG_PLAY_TUNE_V2_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_PLAY_TUNE_V2_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_400_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_400_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_PLAY_TUNE_V2_FRAME_LEN_MAX  279
+
+#define FASTMAVLINK_MSG_PLAY_TUNE_V2_FIELD_TUNE_NUM  248 // number of elements in array
+#define FASTMAVLINK_MSG_PLAY_TUNE_V2_FIELD_TUNE_LEN  248 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_PLAY_TUNE_V2_FIELD_FORMAT_OFS  0
+#define FASTMAVLINK_MSG_PLAY_TUNE_V2_FIELD_TARGET_SYSTEM_OFS  4
+#define FASTMAVLINK_MSG_PLAY_TUNE_V2_FIELD_TARGET_COMPONENT_OFS  5
+#define FASTMAVLINK_MSG_PLAY_TUNE_V2_FIELD_TUNE_OFS  6
 
 
 //----------------------------------------
@@ -192,6 +190,43 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_play_tune_v2_decode(fmav_play_tune_
 
     memset(payload, 0, FASTMAVLINK_MSG_PLAY_TUNE_V2_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_play_tune_v2_get_field_format(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_play_tune_v2_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_play_tune_v2_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[5]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_play_tune_v2_get_field_tune_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[6]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_play_tune_v2_get_field_tune(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_PLAY_TUNE_V2_FIELD_TUNE_NUM) return 0;
+    return ((char*)&(msg->payload[6]))[index];     
 }
 
 

@@ -25,25 +25,23 @@ typedef struct _fmav_scaled_pressure3_t {
 
 #define FASTMAVLINK_MSG_ID_SCALED_PRESSURE3  143
 
-
 #define FASTMAVLINK_MSG_SCALED_PRESSURE3_PAYLOAD_LEN_MIN  14
 #define FASTMAVLINK_MSG_SCALED_PRESSURE3_PAYLOAD_LEN_MAX  16
-#define FASTMAVLINK_MSG_SCALED_PRESSURE3_PAYLOAD_LEN  16
 #define FASTMAVLINK_MSG_SCALED_PRESSURE3_CRCEXTRA  131
-
-#define FASTMAVLINK_MSG_ID_143_LEN_MIN  14
-#define FASTMAVLINK_MSG_ID_143_LEN_MAX  16
-#define FASTMAVLINK_MSG_ID_143_LEN  16
-#define FASTMAVLINK_MSG_ID_143_CRCEXTRA  131
-
-
 
 #define FASTMAVLINK_MSG_SCALED_PRESSURE3_FLAGS  0
 #define FASTMAVLINK_MSG_SCALED_PRESSURE3_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_SCALED_PRESSURE3_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_SCALED_PRESSURE3_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_SCALED_PRESSURE3_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_143_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_143_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_SCALED_PRESSURE3_FRAME_LEN_MAX  41
+
+
+
+#define FASTMAVLINK_MSG_SCALED_PRESSURE3_FIELD_TIME_BOOT_MS_OFS  0
+#define FASTMAVLINK_MSG_SCALED_PRESSURE3_FIELD_PRESS_ABS_OFS  4
+#define FASTMAVLINK_MSG_SCALED_PRESSURE3_FIELD_PRESS_DIFF_OFS  8
+#define FASTMAVLINK_MSG_SCALED_PRESSURE3_FIELD_TEMPERATURE_OFS  12
+#define FASTMAVLINK_MSG_SCALED_PRESSURE3_FIELD_TEMPERATURE_PRESS_DIFF_OFS  14
 
 
 //----------------------------------------
@@ -200,6 +198,49 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_scaled_pressure3_decode(fmav_scaled
     memset(payload, 0, FASTMAVLINK_MSG_SCALED_PRESSURE3_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_scaled_pressure3_get_field_time_boot_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_scaled_pressure3_get_field_press_abs(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_scaled_pressure3_get_field_press_diff(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_scaled_pressure3_get_field_temperature(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_scaled_pressure3_get_field_temperature_press_diff(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[14]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

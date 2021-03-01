@@ -25,26 +25,26 @@ typedef struct _fmav_resource_request_t {
 
 #define FASTMAVLINK_MSG_ID_RESOURCE_REQUEST  142
 
-
 #define FASTMAVLINK_MSG_RESOURCE_REQUEST_PAYLOAD_LEN_MIN  243
 #define FASTMAVLINK_MSG_RESOURCE_REQUEST_PAYLOAD_LEN_MAX  243
-#define FASTMAVLINK_MSG_RESOURCE_REQUEST_PAYLOAD_LEN  243
 #define FASTMAVLINK_MSG_RESOURCE_REQUEST_CRCEXTRA  72
-
-#define FASTMAVLINK_MSG_ID_142_LEN_MIN  243
-#define FASTMAVLINK_MSG_ID_142_LEN_MAX  243
-#define FASTMAVLINK_MSG_ID_142_LEN  243
-#define FASTMAVLINK_MSG_ID_142_CRCEXTRA  72
-
-#define FASTMAVLINK_MSG_RESOURCE_REQUEST_FIELD_URI_LEN  120
-#define FASTMAVLINK_MSG_RESOURCE_REQUEST_FIELD_STORAGE_LEN  120
 
 #define FASTMAVLINK_MSG_RESOURCE_REQUEST_FLAGS  0
 #define FASTMAVLINK_MSG_RESOURCE_REQUEST_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_RESOURCE_REQUEST_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_RESOURCE_REQUEST_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_RESOURCE_REQUEST_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_142_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_142_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_RESOURCE_REQUEST_FRAME_LEN_MAX  268
+
+#define FASTMAVLINK_MSG_RESOURCE_REQUEST_FIELD_URI_NUM  120 // number of elements in array
+#define FASTMAVLINK_MSG_RESOURCE_REQUEST_FIELD_URI_LEN  120 // length of array = number of bytes
+#define FASTMAVLINK_MSG_RESOURCE_REQUEST_FIELD_STORAGE_NUM  120 // number of elements in array
+#define FASTMAVLINK_MSG_RESOURCE_REQUEST_FIELD_STORAGE_LEN  120 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_RESOURCE_REQUEST_FIELD_REQUEST_ID_OFS  0
+#define FASTMAVLINK_MSG_RESOURCE_REQUEST_FIELD_URI_TYPE_OFS  1
+#define FASTMAVLINK_MSG_RESOURCE_REQUEST_FIELD_URI_OFS  2
+#define FASTMAVLINK_MSG_RESOURCE_REQUEST_FIELD_TRANSFER_TYPE_OFS  122
+#define FASTMAVLINK_MSG_RESOURCE_REQUEST_FIELD_STORAGE_OFS  123
 
 
 //----------------------------------------
@@ -197,6 +197,56 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_resource_request_decode(fmav_resour
 
     memset(payload, 0, FASTMAVLINK_MSG_RESOURCE_REQUEST_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_resource_request_get_field_request_id(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_resource_request_get_field_uri_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[1]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_resource_request_get_field_transfer_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[122]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_resource_request_get_field_uri_ptr(const fmav_message_t* msg)
+{
+    return (uint8_t*)&(msg->payload[2]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_resource_request_get_field_uri(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_RESOURCE_REQUEST_FIELD_URI_NUM) return 0;
+    return ((uint8_t*)&(msg->payload[2]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_resource_request_get_field_storage_ptr(const fmav_message_t* msg)
+{
+    return (uint8_t*)&(msg->payload[123]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_resource_request_get_field_storage(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_RESOURCE_REQUEST_FIELD_STORAGE_NUM) return 0;
+    return ((uint8_t*)&(msg->payload[123]))[index];     
 }
 
 

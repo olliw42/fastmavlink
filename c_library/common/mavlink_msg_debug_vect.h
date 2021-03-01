@@ -25,25 +25,24 @@ typedef struct _fmav_debug_vect_t {
 
 #define FASTMAVLINK_MSG_ID_DEBUG_VECT  250
 
-
 #define FASTMAVLINK_MSG_DEBUG_VECT_PAYLOAD_LEN_MIN  30
 #define FASTMAVLINK_MSG_DEBUG_VECT_PAYLOAD_LEN_MAX  30
-#define FASTMAVLINK_MSG_DEBUG_VECT_PAYLOAD_LEN  30
 #define FASTMAVLINK_MSG_DEBUG_VECT_CRCEXTRA  49
-
-#define FASTMAVLINK_MSG_ID_250_LEN_MIN  30
-#define FASTMAVLINK_MSG_ID_250_LEN_MAX  30
-#define FASTMAVLINK_MSG_ID_250_LEN  30
-#define FASTMAVLINK_MSG_ID_250_CRCEXTRA  49
-
-#define FASTMAVLINK_MSG_DEBUG_VECT_FIELD_NAME_LEN  10
 
 #define FASTMAVLINK_MSG_DEBUG_VECT_FLAGS  0
 #define FASTMAVLINK_MSG_DEBUG_VECT_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_DEBUG_VECT_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_DEBUG_VECT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_DEBUG_VECT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_250_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_250_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_DEBUG_VECT_FRAME_LEN_MAX  55
+
+#define FASTMAVLINK_MSG_DEBUG_VECT_FIELD_NAME_NUM  10 // number of elements in array
+#define FASTMAVLINK_MSG_DEBUG_VECT_FIELD_NAME_LEN  10 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_DEBUG_VECT_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_DEBUG_VECT_FIELD_X_OFS  8
+#define FASTMAVLINK_MSG_DEBUG_VECT_FIELD_Y_OFS  12
+#define FASTMAVLINK_MSG_DEBUG_VECT_FIELD_Z_OFS  16
+#define FASTMAVLINK_MSG_DEBUG_VECT_FIELD_NAME_OFS  20
 
 
 //----------------------------------------
@@ -196,6 +195,51 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_debug_vect_decode(fmav_debug_vect_t
 
     memset(payload, 0, FASTMAVLINK_MSG_DEBUG_VECT_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_debug_vect_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_debug_vect_get_field_x(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_debug_vect_get_field_y(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_debug_vect_get_field_z(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_debug_vect_get_field_name_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[20]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_debug_vect_get_field_name(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_DEBUG_VECT_FIELD_NAME_NUM) return 0;
+    return ((char*)&(msg->payload[20]))[index];     
 }
 
 

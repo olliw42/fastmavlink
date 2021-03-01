@@ -24,26 +24,25 @@ typedef struct _fmav_wifi_config_ap_t {
 
 #define FASTMAVLINK_MSG_ID_WIFI_CONFIG_AP  299
 
-
 #define FASTMAVLINK_MSG_WIFI_CONFIG_AP_PAYLOAD_LEN_MIN  96
 #define FASTMAVLINK_MSG_WIFI_CONFIG_AP_PAYLOAD_LEN_MAX  98
-#define FASTMAVLINK_MSG_WIFI_CONFIG_AP_PAYLOAD_LEN  98
 #define FASTMAVLINK_MSG_WIFI_CONFIG_AP_CRCEXTRA  19
-
-#define FASTMAVLINK_MSG_ID_299_LEN_MIN  96
-#define FASTMAVLINK_MSG_ID_299_LEN_MAX  98
-#define FASTMAVLINK_MSG_ID_299_LEN  98
-#define FASTMAVLINK_MSG_ID_299_CRCEXTRA  19
-
-#define FASTMAVLINK_MSG_WIFI_CONFIG_AP_FIELD_SSID_LEN  32
-#define FASTMAVLINK_MSG_WIFI_CONFIG_AP_FIELD_PASSWORD_LEN  64
 
 #define FASTMAVLINK_MSG_WIFI_CONFIG_AP_FLAGS  0
 #define FASTMAVLINK_MSG_WIFI_CONFIG_AP_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_WIFI_CONFIG_AP_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_WIFI_CONFIG_AP_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_WIFI_CONFIG_AP_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_299_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_299_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_WIFI_CONFIG_AP_FRAME_LEN_MAX  123
+
+#define FASTMAVLINK_MSG_WIFI_CONFIG_AP_FIELD_SSID_NUM  32 // number of elements in array
+#define FASTMAVLINK_MSG_WIFI_CONFIG_AP_FIELD_SSID_LEN  32 // length of array = number of bytes
+#define FASTMAVLINK_MSG_WIFI_CONFIG_AP_FIELD_PASSWORD_NUM  64 // number of elements in array
+#define FASTMAVLINK_MSG_WIFI_CONFIG_AP_FIELD_PASSWORD_LEN  64 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_WIFI_CONFIG_AP_FIELD_SSID_OFS  0
+#define FASTMAVLINK_MSG_WIFI_CONFIG_AP_FIELD_PASSWORD_OFS  32
+#define FASTMAVLINK_MSG_WIFI_CONFIG_AP_FIELD_MODE_OFS  96
+#define FASTMAVLINK_MSG_WIFI_CONFIG_AP_FIELD_RESPONSE_OFS  97
 
 
 //----------------------------------------
@@ -193,6 +192,48 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_wifi_config_ap_decode(fmav_wifi_con
 
     memset(payload, 0, FASTMAVLINK_MSG_WIFI_CONFIG_AP_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_wifi_config_ap_get_field_mode(const fmav_message_t* msg)
+{
+    int8_t r; 
+    memcpy(&r, &(msg->payload[96]), sizeof(int8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_wifi_config_ap_get_field_response(const fmav_message_t* msg)
+{
+    int8_t r; 
+    memcpy(&r, &(msg->payload[97]), sizeof(int8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_wifi_config_ap_get_field_ssid_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[0]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_wifi_config_ap_get_field_ssid(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_WIFI_CONFIG_AP_FIELD_SSID_NUM) return 0;
+    return ((char*)&(msg->payload[0]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_wifi_config_ap_get_field_password_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[32]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_wifi_config_ap_get_field_password(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_WIFI_CONFIG_AP_FIELD_PASSWORD_NUM) return 0;
+    return ((char*)&(msg->payload[32]))[index];     
 }
 
 

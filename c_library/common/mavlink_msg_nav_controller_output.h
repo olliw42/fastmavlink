@@ -28,25 +28,26 @@ typedef struct _fmav_nav_controller_output_t {
 
 #define FASTMAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT  62
 
-
 #define FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MIN  26
 #define FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MAX  26
-#define FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN  26
 #define FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_CRCEXTRA  183
-
-#define FASTMAVLINK_MSG_ID_62_LEN_MIN  26
-#define FASTMAVLINK_MSG_ID_62_LEN_MAX  26
-#define FASTMAVLINK_MSG_ID_62_LEN  26
-#define FASTMAVLINK_MSG_ID_62_CRCEXTRA  183
-
-
 
 #define FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_FLAGS  0
 #define FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_62_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_62_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_FRAME_LEN_MAX  51
+
+
+
+#define FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_FIELD_NAV_ROLL_OFS  0
+#define FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_FIELD_NAV_PITCH_OFS  4
+#define FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_FIELD_ALT_ERROR_OFS  8
+#define FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_FIELD_ASPD_ERROR_OFS  12
+#define FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_FIELD_XTRACK_ERROR_OFS  16
+#define FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_FIELD_NAV_BEARING_OFS  20
+#define FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_FIELD_TARGET_BEARING_OFS  22
+#define FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_FIELD_WP_DIST_OFS  24
 
 
 //----------------------------------------
@@ -212,6 +213,73 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_nav_controller_output_decode(fmav_n
     memset(payload, 0, FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_nav_controller_output_get_field_nav_roll(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_nav_controller_output_get_field_nav_pitch(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_nav_controller_output_get_field_alt_error(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_nav_controller_output_get_field_aspd_error(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_nav_controller_output_get_field_xtrack_error(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_nav_controller_output_get_field_nav_bearing(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_nav_controller_output_get_field_target_bearing(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[22]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_controller_output_get_field_wp_dist(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

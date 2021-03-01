@@ -26,25 +26,24 @@ typedef struct _fmav_compassmot_status_t {
 
 #define FASTMAVLINK_MSG_ID_COMPASSMOT_STATUS  177
 
-
 #define FASTMAVLINK_MSG_COMPASSMOT_STATUS_PAYLOAD_LEN_MIN  20
 #define FASTMAVLINK_MSG_COMPASSMOT_STATUS_PAYLOAD_LEN_MAX  20
-#define FASTMAVLINK_MSG_COMPASSMOT_STATUS_PAYLOAD_LEN  20
 #define FASTMAVLINK_MSG_COMPASSMOT_STATUS_CRCEXTRA  240
-
-#define FASTMAVLINK_MSG_ID_177_LEN_MIN  20
-#define FASTMAVLINK_MSG_ID_177_LEN_MAX  20
-#define FASTMAVLINK_MSG_ID_177_LEN  20
-#define FASTMAVLINK_MSG_ID_177_CRCEXTRA  240
-
-
 
 #define FASTMAVLINK_MSG_COMPASSMOT_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_COMPASSMOT_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_COMPASSMOT_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_COMPASSMOT_STATUS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_COMPASSMOT_STATUS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_177_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_177_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_COMPASSMOT_STATUS_FRAME_LEN_MAX  45
+
+
+
+#define FASTMAVLINK_MSG_COMPASSMOT_STATUS_FIELD_CURRENT_OFS  0
+#define FASTMAVLINK_MSG_COMPASSMOT_STATUS_FIELD_COMPENSATIONX_OFS  4
+#define FASTMAVLINK_MSG_COMPASSMOT_STATUS_FIELD_COMPENSATIONY_OFS  8
+#define FASTMAVLINK_MSG_COMPASSMOT_STATUS_FIELD_COMPENSATIONZ_OFS  12
+#define FASTMAVLINK_MSG_COMPASSMOT_STATUS_FIELD_THROTTLE_OFS  16
+#define FASTMAVLINK_MSG_COMPASSMOT_STATUS_FIELD_INTERFERENCE_OFS  18
 
 
 //----------------------------------------
@@ -204,6 +203,57 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_compassmot_status_decode(fmav_compa
     memset(payload, 0, FASTMAVLINK_MSG_COMPASSMOT_STATUS_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_compassmot_status_get_field_current(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_compassmot_status_get_field_CompensationX(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_compassmot_status_get_field_CompensationY(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_compassmot_status_get_field_CompensationZ(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_compassmot_status_get_field_throttle(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_compassmot_status_get_field_interference(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[18]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

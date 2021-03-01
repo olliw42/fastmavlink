@@ -24,25 +24,23 @@ typedef struct _fmav_statustext_t {
 
 #define FASTMAVLINK_MSG_ID_STATUSTEXT  253
 
-
 #define FASTMAVLINK_MSG_STATUSTEXT_PAYLOAD_LEN_MIN  51
 #define FASTMAVLINK_MSG_STATUSTEXT_PAYLOAD_LEN_MAX  54
-#define FASTMAVLINK_MSG_STATUSTEXT_PAYLOAD_LEN  54
 #define FASTMAVLINK_MSG_STATUSTEXT_CRCEXTRA  83
-
-#define FASTMAVLINK_MSG_ID_253_LEN_MIN  51
-#define FASTMAVLINK_MSG_ID_253_LEN_MAX  54
-#define FASTMAVLINK_MSG_ID_253_LEN  54
-#define FASTMAVLINK_MSG_ID_253_CRCEXTRA  83
-
-#define FASTMAVLINK_MSG_STATUSTEXT_FIELD_TEXT_LEN  50
 
 #define FASTMAVLINK_MSG_STATUSTEXT_FLAGS  0
 #define FASTMAVLINK_MSG_STATUSTEXT_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_STATUSTEXT_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_STATUSTEXT_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_STATUSTEXT_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_253_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_253_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_STATUSTEXT_FRAME_LEN_MAX  79
+
+#define FASTMAVLINK_MSG_STATUSTEXT_FIELD_TEXT_NUM  50 // number of elements in array
+#define FASTMAVLINK_MSG_STATUSTEXT_FIELD_TEXT_LEN  50 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_STATUSTEXT_FIELD_SEVERITY_OFS  0
+#define FASTMAVLINK_MSG_STATUSTEXT_FIELD_TEXT_OFS  1
+#define FASTMAVLINK_MSG_STATUSTEXT_FIELD_ID_OFS  51
+#define FASTMAVLINK_MSG_STATUSTEXT_FIELD_CHUNK_SEQ_OFS  53
 
 
 //----------------------------------------
@@ -192,6 +190,43 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_statustext_decode(fmav_statustext_t
 
     memset(payload, 0, FASTMAVLINK_MSG_STATUSTEXT_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_statustext_get_field_severity(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_statustext_get_field_id(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[51]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_statustext_get_field_chunk_seq(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[53]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_statustext_get_field_text_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[1]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_statustext_get_field_text(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_STATUSTEXT_FIELD_TEXT_NUM) return 0;
+    return ((char*)&(msg->payload[1]))[index];     
 }
 
 

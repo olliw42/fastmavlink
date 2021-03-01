@@ -26,25 +26,24 @@ typedef struct _fmav_ahrs2_t {
 
 #define FASTMAVLINK_MSG_ID_AHRS2  178
 
-
 #define FASTMAVLINK_MSG_AHRS2_PAYLOAD_LEN_MIN  24
 #define FASTMAVLINK_MSG_AHRS2_PAYLOAD_LEN_MAX  24
-#define FASTMAVLINK_MSG_AHRS2_PAYLOAD_LEN  24
 #define FASTMAVLINK_MSG_AHRS2_CRCEXTRA  47
-
-#define FASTMAVLINK_MSG_ID_178_LEN_MIN  24
-#define FASTMAVLINK_MSG_ID_178_LEN_MAX  24
-#define FASTMAVLINK_MSG_ID_178_LEN  24
-#define FASTMAVLINK_MSG_ID_178_CRCEXTRA  47
-
-
 
 #define FASTMAVLINK_MSG_AHRS2_FLAGS  0
 #define FASTMAVLINK_MSG_AHRS2_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_AHRS2_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_AHRS2_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_AHRS2_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_178_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_178_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_AHRS2_FRAME_LEN_MAX  49
+
+
+
+#define FASTMAVLINK_MSG_AHRS2_FIELD_ROLL_OFS  0
+#define FASTMAVLINK_MSG_AHRS2_FIELD_PITCH_OFS  4
+#define FASTMAVLINK_MSG_AHRS2_FIELD_YAW_OFS  8
+#define FASTMAVLINK_MSG_AHRS2_FIELD_ALTITUDE_OFS  12
+#define FASTMAVLINK_MSG_AHRS2_FIELD_LAT_OFS  16
+#define FASTMAVLINK_MSG_AHRS2_FIELD_LNG_OFS  20
 
 
 //----------------------------------------
@@ -204,6 +203,57 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_ahrs2_decode(fmav_ahrs2_t* payload,
     memset(payload, 0, FASTMAVLINK_MSG_AHRS2_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ahrs2_get_field_roll(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ahrs2_get_field_pitch(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ahrs2_get_field_yaw(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ahrs2_get_field_altitude(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_ahrs2_get_field_lat(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_ahrs2_get_field_lng(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

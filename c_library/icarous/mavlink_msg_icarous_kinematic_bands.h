@@ -36,25 +36,34 @@ typedef struct _fmav_icarous_kinematic_bands_t {
 
 #define FASTMAVLINK_MSG_ID_ICAROUS_KINEMATIC_BANDS  42001
 
-
 #define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN_MIN  46
 #define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN_MAX  46
-#define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN  46
 #define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_CRCEXTRA  239
-
-#define FASTMAVLINK_MSG_ID_42001_LEN_MIN  46
-#define FASTMAVLINK_MSG_ID_42001_LEN_MAX  46
-#define FASTMAVLINK_MSG_ID_42001_LEN  46
-#define FASTMAVLINK_MSG_ID_42001_CRCEXTRA  239
-
-
 
 #define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_FLAGS  0
 #define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_42001_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_42001_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_FRAME_LEN_MAX  71
+
+
+
+#define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_FIELD_MIN1_OFS  0
+#define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_FIELD_MAX1_OFS  4
+#define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_FIELD_MIN2_OFS  8
+#define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_FIELD_MAX2_OFS  12
+#define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_FIELD_MIN3_OFS  16
+#define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_FIELD_MAX3_OFS  20
+#define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_FIELD_MIN4_OFS  24
+#define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_FIELD_MAX4_OFS  28
+#define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_FIELD_MIN5_OFS  32
+#define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_FIELD_MAX5_OFS  36
+#define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_FIELD_NUMBANDS_OFS  40
+#define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_FIELD_TYPE1_OFS  41
+#define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_FIELD_TYPE2_OFS  42
+#define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_FIELD_TYPE3_OFS  43
+#define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_FIELD_TYPE4_OFS  44
+#define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_FIELD_TYPE5_OFS  45
 
 
 //----------------------------------------
@@ -244,6 +253,137 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_icarous_kinematic_bands_decode(fmav
     memset(payload, 0, FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_icarous_kinematic_bands_get_field_min1(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_icarous_kinematic_bands_get_field_max1(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_icarous_kinematic_bands_get_field_min2(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_icarous_kinematic_bands_get_field_max2(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_icarous_kinematic_bands_get_field_min3(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_icarous_kinematic_bands_get_field_max3(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_icarous_kinematic_bands_get_field_min4(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_icarous_kinematic_bands_get_field_max4(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_icarous_kinematic_bands_get_field_min5(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_icarous_kinematic_bands_get_field_max5(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_icarous_kinematic_bands_get_field_numBands(const fmav_message_t* msg)
+{
+    int8_t r; 
+    memcpy(&r, &(msg->payload[40]), sizeof(int8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_icarous_kinematic_bands_get_field_type1(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[41]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_icarous_kinematic_bands_get_field_type2(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[42]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_icarous_kinematic_bands_get_field_type3(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[43]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_icarous_kinematic_bands_get_field_type4(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[44]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_icarous_kinematic_bands_get_field_type5(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[45]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

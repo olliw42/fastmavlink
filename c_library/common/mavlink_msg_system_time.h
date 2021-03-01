@@ -22,25 +22,20 @@ typedef struct _fmav_system_time_t {
 
 #define FASTMAVLINK_MSG_ID_SYSTEM_TIME  2
 
-
 #define FASTMAVLINK_MSG_SYSTEM_TIME_PAYLOAD_LEN_MIN  12
 #define FASTMAVLINK_MSG_SYSTEM_TIME_PAYLOAD_LEN_MAX  12
-#define FASTMAVLINK_MSG_SYSTEM_TIME_PAYLOAD_LEN  12
 #define FASTMAVLINK_MSG_SYSTEM_TIME_CRCEXTRA  137
-
-#define FASTMAVLINK_MSG_ID_2_LEN_MIN  12
-#define FASTMAVLINK_MSG_ID_2_LEN_MAX  12
-#define FASTMAVLINK_MSG_ID_2_LEN  12
-#define FASTMAVLINK_MSG_ID_2_CRCEXTRA  137
-
-
 
 #define FASTMAVLINK_MSG_SYSTEM_TIME_FLAGS  0
 #define FASTMAVLINK_MSG_SYSTEM_TIME_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_SYSTEM_TIME_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_SYSTEM_TIME_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_SYSTEM_TIME_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_2_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_2_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_SYSTEM_TIME_FRAME_LEN_MAX  37
+
+
+
+#define FASTMAVLINK_MSG_SYSTEM_TIME_FIELD_TIME_UNIX_USEC_OFS  0
+#define FASTMAVLINK_MSG_SYSTEM_TIME_FIELD_TIME_BOOT_MS_OFS  8
 
 
 //----------------------------------------
@@ -188,6 +183,25 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_system_time_decode(fmav_system_time
     memset(payload, 0, FASTMAVLINK_MSG_SYSTEM_TIME_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_system_time_get_field_time_unix_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_system_time_get_field_time_boot_ms(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

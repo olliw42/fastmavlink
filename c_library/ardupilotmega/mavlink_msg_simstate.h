@@ -31,25 +31,29 @@ typedef struct _fmav_simstate_t {
 
 #define FASTMAVLINK_MSG_ID_SIMSTATE  164
 
-
 #define FASTMAVLINK_MSG_SIMSTATE_PAYLOAD_LEN_MIN  44
 #define FASTMAVLINK_MSG_SIMSTATE_PAYLOAD_LEN_MAX  44
-#define FASTMAVLINK_MSG_SIMSTATE_PAYLOAD_LEN  44
 #define FASTMAVLINK_MSG_SIMSTATE_CRCEXTRA  154
-
-#define FASTMAVLINK_MSG_ID_164_LEN_MIN  44
-#define FASTMAVLINK_MSG_ID_164_LEN_MAX  44
-#define FASTMAVLINK_MSG_ID_164_LEN  44
-#define FASTMAVLINK_MSG_ID_164_CRCEXTRA  154
-
-
 
 #define FASTMAVLINK_MSG_SIMSTATE_FLAGS  0
 #define FASTMAVLINK_MSG_SIMSTATE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_SIMSTATE_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_SIMSTATE_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_SIMSTATE_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_164_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_164_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_SIMSTATE_FRAME_LEN_MAX  69
+
+
+
+#define FASTMAVLINK_MSG_SIMSTATE_FIELD_ROLL_OFS  0
+#define FASTMAVLINK_MSG_SIMSTATE_FIELD_PITCH_OFS  4
+#define FASTMAVLINK_MSG_SIMSTATE_FIELD_YAW_OFS  8
+#define FASTMAVLINK_MSG_SIMSTATE_FIELD_XACC_OFS  12
+#define FASTMAVLINK_MSG_SIMSTATE_FIELD_YACC_OFS  16
+#define FASTMAVLINK_MSG_SIMSTATE_FIELD_ZACC_OFS  20
+#define FASTMAVLINK_MSG_SIMSTATE_FIELD_XGYRO_OFS  24
+#define FASTMAVLINK_MSG_SIMSTATE_FIELD_YGYRO_OFS  28
+#define FASTMAVLINK_MSG_SIMSTATE_FIELD_ZGYRO_OFS  32
+#define FASTMAVLINK_MSG_SIMSTATE_FIELD_LAT_OFS  36
+#define FASTMAVLINK_MSG_SIMSTATE_FIELD_LNG_OFS  40
 
 
 //----------------------------------------
@@ -224,6 +228,97 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_simstate_decode(fmav_simstate_t* pa
     memset(payload, 0, FASTMAVLINK_MSG_SIMSTATE_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_simstate_get_field_roll(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_simstate_get_field_pitch(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_simstate_get_field_yaw(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_simstate_get_field_xacc(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_simstate_get_field_yacc(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_simstate_get_field_zacc(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_simstate_get_field_xgyro(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_simstate_get_field_ygyro(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_simstate_get_field_zgyro(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_simstate_get_field_lat(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_simstate_get_field_lng(const fmav_message_t* msg)
+{
+    int32_t r; 
+    memcpy(&r, &(msg->payload[40]), sizeof(int32_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

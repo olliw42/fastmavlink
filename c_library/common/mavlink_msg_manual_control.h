@@ -26,25 +26,24 @@ typedef struct _fmav_manual_control_t {
 
 #define FASTMAVLINK_MSG_ID_MANUAL_CONTROL  69
 
-
 #define FASTMAVLINK_MSG_MANUAL_CONTROL_PAYLOAD_LEN_MIN  11
 #define FASTMAVLINK_MSG_MANUAL_CONTROL_PAYLOAD_LEN_MAX  11
-#define FASTMAVLINK_MSG_MANUAL_CONTROL_PAYLOAD_LEN  11
 #define FASTMAVLINK_MSG_MANUAL_CONTROL_CRCEXTRA  243
-
-#define FASTMAVLINK_MSG_ID_69_LEN_MIN  11
-#define FASTMAVLINK_MSG_ID_69_LEN_MAX  11
-#define FASTMAVLINK_MSG_ID_69_LEN  11
-#define FASTMAVLINK_MSG_ID_69_CRCEXTRA  243
-
-
 
 #define FASTMAVLINK_MSG_MANUAL_CONTROL_FLAGS  1
 #define FASTMAVLINK_MSG_MANUAL_CONTROL_TARGET_SYSTEM_OFS  10
 #define FASTMAVLINK_MSG_MANUAL_CONTROL_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_MANUAL_CONTROL_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_MANUAL_CONTROL_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_69_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_69_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_MANUAL_CONTROL_FRAME_LEN_MAX  36
+
+
+
+#define FASTMAVLINK_MSG_MANUAL_CONTROL_FIELD_X_OFS  0
+#define FASTMAVLINK_MSG_MANUAL_CONTROL_FIELD_Y_OFS  2
+#define FASTMAVLINK_MSG_MANUAL_CONTROL_FIELD_Z_OFS  4
+#define FASTMAVLINK_MSG_MANUAL_CONTROL_FIELD_R_OFS  6
+#define FASTMAVLINK_MSG_MANUAL_CONTROL_FIELD_BUTTONS_OFS  8
+#define FASTMAVLINK_MSG_MANUAL_CONTROL_FIELD_TARGET_OFS  10
 
 
 //----------------------------------------
@@ -204,6 +203,57 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_manual_control_decode(fmav_manual_c
     memset(payload, 0, FASTMAVLINK_MSG_MANUAL_CONTROL_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_manual_control_get_field_x(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_manual_control_get_field_y(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[2]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_manual_control_get_field_z(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_manual_control_get_field_r(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[6]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_control_get_field_buttons(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_manual_control_get_field_target(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[10]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

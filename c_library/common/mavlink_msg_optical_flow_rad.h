@@ -32,25 +32,30 @@ typedef struct _fmav_optical_flow_rad_t {
 
 #define FASTMAVLINK_MSG_ID_OPTICAL_FLOW_RAD  106
 
-
 #define FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_PAYLOAD_LEN_MIN  44
 #define FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_PAYLOAD_LEN_MAX  44
-#define FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_PAYLOAD_LEN  44
 #define FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_CRCEXTRA  138
-
-#define FASTMAVLINK_MSG_ID_106_LEN_MIN  44
-#define FASTMAVLINK_MSG_ID_106_LEN_MAX  44
-#define FASTMAVLINK_MSG_ID_106_LEN  44
-#define FASTMAVLINK_MSG_ID_106_CRCEXTRA  138
-
-
 
 #define FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_FLAGS  0
 #define FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_106_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_106_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_FRAME_LEN_MAX  69
+
+
+
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_FIELD_INTEGRATION_TIME_US_OFS  8
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_FIELD_INTEGRATED_X_OFS  12
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_FIELD_INTEGRATED_Y_OFS  16
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_FIELD_INTEGRATED_XGYRO_OFS  20
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_FIELD_INTEGRATED_YGYRO_OFS  24
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_FIELD_INTEGRATED_ZGYRO_OFS  28
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_FIELD_TIME_DELTA_DISTANCE_US_OFS  32
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_FIELD_DISTANCE_OFS  36
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_FIELD_TEMPERATURE_OFS  40
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_FIELD_SENSOR_ID_OFS  42
+#define FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_FIELD_QUALITY_OFS  43
 
 
 //----------------------------------------
@@ -228,6 +233,105 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_optical_flow_rad_decode(fmav_optica
     memset(payload, 0, FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_optical_flow_rad_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_optical_flow_rad_get_field_integration_time_us(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_optical_flow_rad_get_field_integrated_x(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_optical_flow_rad_get_field_integrated_y(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_optical_flow_rad_get_field_integrated_xgyro(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_optical_flow_rad_get_field_integrated_ygyro(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_optical_flow_rad_get_field_integrated_zgyro(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_optical_flow_rad_get_field_time_delta_distance_us(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_optical_flow_rad_get_field_distance(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[36]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_optical_flow_rad_get_field_temperature(const fmav_message_t* msg)
+{
+    int16_t r; 
+    memcpy(&r, &(msg->payload[40]), sizeof(int16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_optical_flow_rad_get_field_sensor_id(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[42]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_optical_flow_rad_get_field_quality(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[43]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

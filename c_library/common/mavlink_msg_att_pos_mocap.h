@@ -26,26 +26,27 @@ typedef struct _fmav_att_pos_mocap_t {
 
 #define FASTMAVLINK_MSG_ID_ATT_POS_MOCAP  138
 
-
 #define FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MIN  36
 #define FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MAX  120
-#define FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN  120
 #define FASTMAVLINK_MSG_ATT_POS_MOCAP_CRCEXTRA  109
-
-#define FASTMAVLINK_MSG_ID_138_LEN_MIN  36
-#define FASTMAVLINK_MSG_ID_138_LEN_MAX  120
-#define FASTMAVLINK_MSG_ID_138_LEN  120
-#define FASTMAVLINK_MSG_ID_138_CRCEXTRA  109
-
-#define FASTMAVLINK_MSG_ATT_POS_MOCAP_FIELD_Q_LEN  4
-#define FASTMAVLINK_MSG_ATT_POS_MOCAP_FIELD_COVARIANCE_LEN  21
 
 #define FASTMAVLINK_MSG_ATT_POS_MOCAP_FLAGS  0
 #define FASTMAVLINK_MSG_ATT_POS_MOCAP_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ATT_POS_MOCAP_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_ATT_POS_MOCAP_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_138_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_138_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_ATT_POS_MOCAP_FRAME_LEN_MAX  145
+
+#define FASTMAVLINK_MSG_ATT_POS_MOCAP_FIELD_Q_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_ATT_POS_MOCAP_FIELD_Q_LEN  16 // length of array = number of bytes
+#define FASTMAVLINK_MSG_ATT_POS_MOCAP_FIELD_COVARIANCE_NUM  21 // number of elements in array
+#define FASTMAVLINK_MSG_ATT_POS_MOCAP_FIELD_COVARIANCE_LEN  84 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_ATT_POS_MOCAP_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_ATT_POS_MOCAP_FIELD_Q_OFS  8
+#define FASTMAVLINK_MSG_ATT_POS_MOCAP_FIELD_X_OFS  24
+#define FASTMAVLINK_MSG_ATT_POS_MOCAP_FIELD_Y_OFS  28
+#define FASTMAVLINK_MSG_ATT_POS_MOCAP_FIELD_Z_OFS  32
+#define FASTMAVLINK_MSG_ATT_POS_MOCAP_FIELD_COVARIANCE_OFS  36
 
 
 //----------------------------------------
@@ -201,6 +202,64 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_att_pos_mocap_decode(fmav_att_pos_m
 
     memset(payload, 0, FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_att_pos_mocap_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_att_pos_mocap_get_field_x(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_att_pos_mocap_get_field_y(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_att_pos_mocap_get_field_z(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_att_pos_mocap_get_field_q_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[8]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_att_pos_mocap_get_field_q(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ATT_POS_MOCAP_FIELD_Q_NUM) return 0;
+    return ((float*)&(msg->payload[8]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_att_pos_mocap_get_field_covariance_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[36]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_att_pos_mocap_get_field_covariance(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_ATT_POS_MOCAP_FIELD_COVARIANCE_NUM) return 0;
+    return ((float*)&(msg->payload[36]))[index];     
 }
 
 

@@ -34,25 +34,33 @@ typedef struct _fmav_landing_target_t {
 
 #define FASTMAVLINK_MSG_ID_LANDING_TARGET  149
 
-
 #define FASTMAVLINK_MSG_LANDING_TARGET_PAYLOAD_LEN_MIN  30
 #define FASTMAVLINK_MSG_LANDING_TARGET_PAYLOAD_LEN_MAX  60
-#define FASTMAVLINK_MSG_LANDING_TARGET_PAYLOAD_LEN  60
 #define FASTMAVLINK_MSG_LANDING_TARGET_CRCEXTRA  200
-
-#define FASTMAVLINK_MSG_ID_149_LEN_MIN  30
-#define FASTMAVLINK_MSG_ID_149_LEN_MAX  60
-#define FASTMAVLINK_MSG_ID_149_LEN  60
-#define FASTMAVLINK_MSG_ID_149_CRCEXTRA  200
-
-#define FASTMAVLINK_MSG_LANDING_TARGET_FIELD_Q_LEN  4
 
 #define FASTMAVLINK_MSG_LANDING_TARGET_FLAGS  0
 #define FASTMAVLINK_MSG_LANDING_TARGET_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_LANDING_TARGET_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_LANDING_TARGET_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_LANDING_TARGET_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_149_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_149_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_LANDING_TARGET_FRAME_LEN_MAX  85
+
+#define FASTMAVLINK_MSG_LANDING_TARGET_FIELD_Q_NUM  4 // number of elements in array
+#define FASTMAVLINK_MSG_LANDING_TARGET_FIELD_Q_LEN  16 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_LANDING_TARGET_FIELD_TIME_USEC_OFS  0
+#define FASTMAVLINK_MSG_LANDING_TARGET_FIELD_ANGLE_X_OFS  8
+#define FASTMAVLINK_MSG_LANDING_TARGET_FIELD_ANGLE_Y_OFS  12
+#define FASTMAVLINK_MSG_LANDING_TARGET_FIELD_DISTANCE_OFS  16
+#define FASTMAVLINK_MSG_LANDING_TARGET_FIELD_SIZE_X_OFS  20
+#define FASTMAVLINK_MSG_LANDING_TARGET_FIELD_SIZE_Y_OFS  24
+#define FASTMAVLINK_MSG_LANDING_TARGET_FIELD_TARGET_NUM_OFS  28
+#define FASTMAVLINK_MSG_LANDING_TARGET_FIELD_FRAME_OFS  29
+#define FASTMAVLINK_MSG_LANDING_TARGET_FIELD_X_OFS  30
+#define FASTMAVLINK_MSG_LANDING_TARGET_FIELD_Y_OFS  34
+#define FASTMAVLINK_MSG_LANDING_TARGET_FIELD_Z_OFS  38
+#define FASTMAVLINK_MSG_LANDING_TARGET_FIELD_Q_OFS  42
+#define FASTMAVLINK_MSG_LANDING_TARGET_FIELD_TYPE_OFS  58
+#define FASTMAVLINK_MSG_LANDING_TARGET_FIELD_POSITION_VALID_OFS  59
 
 
 //----------------------------------------
@@ -232,6 +240,123 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_landing_target_decode(fmav_landing_
 
     memset(payload, 0, FASTMAVLINK_MSG_LANDING_TARGET_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_landing_target_get_field_time_usec(const fmav_message_t* msg)
+{
+    uint64_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_landing_target_get_field_angle_x(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_landing_target_get_field_angle_y(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_landing_target_get_field_distance(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_landing_target_get_field_size_x(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_landing_target_get_field_size_y(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_landing_target_get_field_target_num(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[28]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_landing_target_get_field_frame(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[29]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_landing_target_get_field_x(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[30]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_landing_target_get_field_y(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[34]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_landing_target_get_field_z(const fmav_message_t* msg)
+{
+    float r; 
+    memcpy(&r, &(msg->payload[38]), sizeof(float)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_landing_target_get_field_type(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[58]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_landing_target_get_field_position_valid(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[59]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_landing_target_get_field_q_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[42]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_landing_target_get_field_q(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_LANDING_TARGET_FIELD_Q_NUM) return 0;
+    return ((float*)&(msg->payload[42]))[index];     
 }
 
 

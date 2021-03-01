@@ -26,25 +26,24 @@ typedef struct _fmav_ap_adc_t {
 
 #define FASTMAVLINK_MSG_ID_AP_ADC  153
 
-
 #define FASTMAVLINK_MSG_AP_ADC_PAYLOAD_LEN_MIN  12
 #define FASTMAVLINK_MSG_AP_ADC_PAYLOAD_LEN_MAX  12
-#define FASTMAVLINK_MSG_AP_ADC_PAYLOAD_LEN  12
 #define FASTMAVLINK_MSG_AP_ADC_CRCEXTRA  188
-
-#define FASTMAVLINK_MSG_ID_153_LEN_MIN  12
-#define FASTMAVLINK_MSG_ID_153_LEN_MAX  12
-#define FASTMAVLINK_MSG_ID_153_LEN  12
-#define FASTMAVLINK_MSG_ID_153_CRCEXTRA  188
-
-
 
 #define FASTMAVLINK_MSG_AP_ADC_FLAGS  0
 #define FASTMAVLINK_MSG_AP_ADC_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_AP_ADC_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_AP_ADC_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_AP_ADC_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_153_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_153_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_AP_ADC_FRAME_LEN_MAX  37
+
+
+
+#define FASTMAVLINK_MSG_AP_ADC_FIELD_ADC1_OFS  0
+#define FASTMAVLINK_MSG_AP_ADC_FIELD_ADC2_OFS  2
+#define FASTMAVLINK_MSG_AP_ADC_FIELD_ADC3_OFS  4
+#define FASTMAVLINK_MSG_AP_ADC_FIELD_ADC4_OFS  6
+#define FASTMAVLINK_MSG_AP_ADC_FIELD_ADC5_OFS  8
+#define FASTMAVLINK_MSG_AP_ADC_FIELD_ADC6_OFS  10
 
 
 //----------------------------------------
@@ -204,6 +203,57 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_ap_adc_decode(fmav_ap_adc_t* payloa
     memset(payload, 0, FASTMAVLINK_MSG_AP_ADC_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
 }
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ap_adc_get_field_adc1(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ap_adc_get_field_adc2(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[2]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ap_adc_get_field_adc3(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ap_adc_get_field_adc4(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[6]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ap_adc_get_field_adc5(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[8]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ap_adc_get_field_adc6(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[10]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+
 
 
 //----------------------------------------

@@ -28,28 +28,33 @@ typedef struct _fmav_cellular_config_t {
 
 #define FASTMAVLINK_MSG_ID_CELLULAR_CONFIG  336
 
-
 #define FASTMAVLINK_MSG_CELLULAR_CONFIG_PAYLOAD_LEN_MIN  84
 #define FASTMAVLINK_MSG_CELLULAR_CONFIG_PAYLOAD_LEN_MAX  84
-#define FASTMAVLINK_MSG_CELLULAR_CONFIG_PAYLOAD_LEN  84
 #define FASTMAVLINK_MSG_CELLULAR_CONFIG_CRCEXTRA  245
-
-#define FASTMAVLINK_MSG_ID_336_LEN_MIN  84
-#define FASTMAVLINK_MSG_ID_336_LEN_MAX  84
-#define FASTMAVLINK_MSG_ID_336_LEN  84
-#define FASTMAVLINK_MSG_ID_336_CRCEXTRA  245
-
-#define FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_PIN_LEN  16
-#define FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_NEW_PIN_LEN  16
-#define FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_APN_LEN  32
-#define FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_PUK_LEN  16
 
 #define FASTMAVLINK_MSG_CELLULAR_CONFIG_FLAGS  0
 #define FASTMAVLINK_MSG_CELLULAR_CONFIG_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_CELLULAR_CONFIG_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_CELLULAR_CONFIG_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_CELLULAR_CONFIG_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_336_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_336_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_CELLULAR_CONFIG_FRAME_LEN_MAX  109
+
+#define FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_PIN_NUM  16 // number of elements in array
+#define FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_PIN_LEN  16 // length of array = number of bytes
+#define FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_NEW_PIN_NUM  16 // number of elements in array
+#define FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_NEW_PIN_LEN  16 // length of array = number of bytes
+#define FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_APN_NUM  32 // number of elements in array
+#define FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_APN_LEN  32 // length of array = number of bytes
+#define FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_PUK_NUM  16 // number of elements in array
+#define FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_PUK_LEN  16 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_ENABLE_LTE_OFS  0
+#define FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_ENABLE_PIN_OFS  1
+#define FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_PIN_OFS  2
+#define FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_NEW_PIN_OFS  18
+#define FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_APN_OFS  34
+#define FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_PUK_OFS  66
+#define FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_ROAMING_OFS  82
+#define FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_RESPONSE_OFS  83
 
 
 //----------------------------------------
@@ -211,6 +216,90 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_cellular_config_decode(fmav_cellula
 
     memset(payload, 0, FASTMAVLINK_MSG_CELLULAR_CONFIG_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_cellular_config_get_field_enable_lte(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_cellular_config_get_field_enable_pin(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[1]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_cellular_config_get_field_roaming(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[82]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_cellular_config_get_field_response(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[83]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_cellular_config_get_field_pin_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[2]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_cellular_config_get_field_pin(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_PIN_NUM) return 0;
+    return ((char*)&(msg->payload[2]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_cellular_config_get_field_new_pin_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[18]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_cellular_config_get_field_new_pin(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_NEW_PIN_NUM) return 0;
+    return ((char*)&(msg->payload[18]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_cellular_config_get_field_apn_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[34]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_cellular_config_get_field_apn(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_APN_NUM) return 0;
+    return ((char*)&(msg->payload[34]))[index];     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_cellular_config_get_field_puk_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[66]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_cellular_config_get_field_puk(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_CELLULAR_CONFIG_FIELD_PUK_NUM) return 0;
+    return ((char*)&(msg->payload[66]))[index];     
 }
 
 

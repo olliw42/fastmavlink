@@ -28,25 +28,27 @@ typedef struct _fmav_uavionix_adsb_out_cfg_t {
 
 #define FASTMAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG  10001
 
-
 #define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN_MIN  20
 #define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN_MAX  20
-#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN  20
 #define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_CRCEXTRA  209
-
-#define FASTMAVLINK_MSG_ID_10001_LEN_MIN  20
-#define FASTMAVLINK_MSG_ID_10001_LEN_MAX  20
-#define FASTMAVLINK_MSG_ID_10001_LEN  20
-#define FASTMAVLINK_MSG_ID_10001_CRCEXTRA  209
-
-#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_FIELD_CALLSIGN_LEN  9
 
 #define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_FLAGS  0
 #define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
-#define FASTMAVLINK_MSG_ID_10001_FRAME_LEN_MAX  (FASTMAVLINK_HEADER_V2_LEN+FASTMAVLINK_MSG_ID_10001_PAYLOAD_LEN_MAX+FASTMAVLINK_CHECKSUM_LEN+FASTMAVLINK_SIGNATURE_LEN)
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_FRAME_LEN_MAX  45
+
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_FIELD_CALLSIGN_NUM  9 // number of elements in array
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_FIELD_CALLSIGN_LEN  9 // length of array = number of bytes
+
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_FIELD_ICAO_OFS  0
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_FIELD_STALLSPEED_OFS  4
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_FIELD_CALLSIGN_OFS  6
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_FIELD_EMITTERTYPE_OFS  15
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_FIELD_AIRCRAFTSIZE_OFS  16
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_FIELD_GPSOFFSETLAT_OFS  17
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_FIELD_GPSOFFSETLON_OFS  18
+#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_FIELD_RFSELECT_OFS  19
 
 
 //----------------------------------------
@@ -208,6 +210,75 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_uavionix_adsb_out_cfg_decode(fmav_u
 
     memset(payload, 0, FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN_MAX);
     memcpy(payload, msg->payload, len);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_uavionix_adsb_out_cfg_get_field_ICAO(const fmav_message_t* msg)
+{
+    uint32_t r; 
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_cfg_get_field_stallSpeed(const fmav_message_t* msg)
+{
+    uint16_t r; 
+    memcpy(&r, &(msg->payload[4]), sizeof(uint16_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_uavionix_adsb_out_cfg_get_field_emitterType(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[15]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_uavionix_adsb_out_cfg_get_field_aircraftSize(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[16]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_uavionix_adsb_out_cfg_get_field_gpsOffsetLat(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[17]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_uavionix_adsb_out_cfg_get_field_gpsOffsetLon(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[18]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_uavionix_adsb_out_cfg_get_field_rfSelect(const fmav_message_t* msg)
+{
+    uint8_t r; 
+    memcpy(&r, &(msg->payload[19]), sizeof(uint8_t)); 
+    return r;     
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_uavionix_adsb_out_cfg_get_field_callsign_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[6]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_uavionix_adsb_out_cfg_get_field_callsign(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_FIELD_CALLSIGN_NUM) return 0;
+    return ((char*)&(msg->payload[6]))[index];     
 }
 
 
