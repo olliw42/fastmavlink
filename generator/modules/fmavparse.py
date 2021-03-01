@@ -101,10 +101,10 @@ class MAVMessageField(object):
         self.description = description.replace("\n","")
 
         self.type =  None # determined below
-        self.type_length =  None # determined below
+        self.type_length =  None # determined below, = sizeof(type)
         self.type_upper =  None # determined below
-        self.array_length = 0
-        self.field_length = None # determined below
+        self.array_length = 0 # = array[array_lenght]
+        self.field_length = None # determined below, = type_length * array_length
         self.mavlink_version = None # special treatment for HEARTBEAT version field
 
         self.payload_offset = None # determined in MAVMessage.finalize()
@@ -177,8 +177,9 @@ class MAVMessage(object):
         self.fields_number = 0
 
         self.crc_extra = None
-        self.payload_length = 0
+        self.payload_max_length = 0
         self.payload_min_length = 0
+        self.frame_max_length = 0
         self.message_flags = 0
         self.target_system_ofs = 0
         self.target_component_ofs = 0
@@ -241,16 +242,18 @@ class MAVMessage(object):
 
         for i in range(len(self.ordered_fields)):
             field = self.ordered_fields[i]
-            field.payload_offset = self.payload_length
+            field.payload_offset = self.payload_max_length
             self.field_offsets[field.name] = field.payload_offset
-            self.payload_length += field.field_length
+            self.payload_max_length += field.field_length
             field_el_length = field.field_length
             if field.array_length > 1:
                 field_el_length = field.field_length / field.array_length
             if field.payload_offset % field_el_length != 0: # misaligned field, structure will need packing in C
                 self.needs_pack = True
             if self.extensions_start is None or i < self.extensions_start:
-                self.payload_min_length = self.payload_length
+                self.payload_min_length = self.payload_max_length
+                
+            self.frame_max_length = 10 + self.payload_max_length + 2 + 13
                 
             self.ordered_field_names.append(field.name)
             self.ordered_field_types.append(field.type)
@@ -439,8 +442,8 @@ class MAVParseXml(object):
 
         for msg in self.messages:
             msg.finalize()
-            if msg.payload_length > self.payload_largest_length:
-                self.payload_largest_length = msg.payload_length
+            if msg.payload_max_length > self.payload_largest_length:
+                self.payload_largest_length = msg.payload_max_length
             self.messages_all_by_name[msg.name] = msg
             self.messages_all_by_id[msg.id] = msg
 
