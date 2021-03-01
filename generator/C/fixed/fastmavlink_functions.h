@@ -23,6 +23,8 @@
 //   uint8_t fmav_msg_get_target_compid(fmav_message_t* msg)
 //   uint8_t fmav_msg_is_for_me_r(uint8_t my_sysid, uint8_t my_compid, fmav_result_t* result)
 //   uint8_t fmav_msg_is_for_me(uint8_t my_sysid, uint8_t my_compid, fmav_message_t* msg)
+//   void fmav_status_reset_rx(fmav_status_t* status)
+//   void fmav_status_reset_tx(fmav_status_t* status)
 //   void fmav_status_reset(fmav_status_t* status)
 //   void fmav_init(void)
 //------------------------------
@@ -747,14 +749,26 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_is_for_me(uint8_t my_sysid, uint
 //-- Init
 //------------------------------
 
-FASTMAVLINK_FUNCTION_DECORATOR void fmav_status_reset(fmav_status_t* status)
+FASTMAVLINK_FUNCTION_DECORATOR void fmav_status_reset_rx(fmav_status_t* status)
 {
     status->rx_state = FASTMAVLINK_PARSE_STATE_IDLE;
     status->rx_cnt = 0;
     status->rx_header_len = 0;
     status->rx_frame_len = 0;
     status->rx_crc = 0;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR void fmav_status_reset_tx(fmav_status_t* status)
+{
     status->tx_seq = 0;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR void fmav_status_reset(fmav_status_t* status)
+{
+    fmav_status_reset_rx(status);
+    fmav_status_reset_tx(status);
 }
 
 
