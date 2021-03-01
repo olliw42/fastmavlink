@@ -198,7 +198,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_check_msg(fmav_message_t* msg, fmav_
     }
 
     // check length
-    if ((msg->len < msg_entry->min_payload_len) || (msg->len > msg_entry->max_payload_len)) {
+    if (msg->len > msg_entry->max_payload_len) {    
         msg->res = FASTMAVLINK_PARSE_RESULT_LENGTH_ERROR;
         return FASTMAVLINK_PARSE_RESULT_LENGTH_ERROR;
     }
@@ -329,12 +329,11 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_check_frame_buf(fmav_result_t* resul
     }
 
     // check length
-/* for some reason this hurts
-    if ((buf[1] < msg_entry->min_payload_len) || (buf[1] > msg_entry->max_payload_len)) {
+    if (buf[1] > msg_entry->max_payload_len) {
         result->res = FASTMAVLINK_PARSE_RESULT_LENGTH_ERROR;
         return FASTMAVLINK_PARSE_RESULT_LENGTH_ERROR;
     }
-*/
+
     // check crc
     uint16_t crc_pos = (buf[0] == FASTMAVLINK_MAGIC_V2) ? FASTMAVLINK_HEADER_V2_LEN : FASTMAVLINK_HEADER_V1_LEN;
     crc_pos += buf[1];
@@ -438,11 +437,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_msg_wbuf(fmav_message_t* ms
     res = fmav_check_frame_buf(&result, buf);
     msg->res = result.res;
     // res can be MSGID_UNKNOWN, LENGTH_ERROR, CRC_ERROR, SIGNATURE_ERROR, or OK
-    //  if (res != FASTMAVLINK_PARSE_RESULT_OK) return false;
-    if (res == FASTMAVLINK_PARSE_RESULT_MSGID_UNKNOWN) return 0;
-    if (res == FASTMAVLINK_PARSE_RESULT_LENGTH_ERROR) return 0;
-    if (res == FASTMAVLINK_PARSE_RESULT_CRC_ERROR) return 0;
-    if (res == FASTMAVLINK_PARSE_RESULT_SIGNATURE_ERROR) return 0;
+    if (res != FASTMAVLINK_PARSE_RESULT_OK) return 0;
 
     fmav_frame_buf_to_msg(msg, &result, buf);
 
