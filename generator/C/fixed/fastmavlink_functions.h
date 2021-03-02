@@ -245,9 +245,6 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_parse_reset(fmav_status_t* status)
 //-- Receive handlers
 //------------------------------
 
-// TODO: what kind of reasonable error recovery can wee do ???
-// timeout? probably dangerous
-// retracing? would be great
 // returns NONE, HAS_HEADER, or OK
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_frame_buf(fmav_result_t* result, uint8_t* buf, fmav_status_t* status, uint8_t c)
 {

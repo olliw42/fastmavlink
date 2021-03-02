@@ -188,9 +188,9 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_${name_lower}_decode(fmav_${name_lo
 
 ${{scalar_fields:FASTMAVLINK_FUNCTION_DECORATOR ${type} fmav_msg_${name_lower}_get_field_${name}(const fmav_message_t* msg)
 {
-    ${type} r; 
-    memcpy(&r, &(msg->payload[${payload_offset}]), sizeof(${type})); 
-    return r;     
+    ${type} r;
+    memcpy(&r, &(msg->payload[${payload_offset}]), sizeof(${type}));
+    return r;
 }
 
 
@@ -206,7 +206,7 @@ ${{array_fields:FASTMAVLINK_FUNCTION_DECORATOR ${type}* fmav_msg_${name_lower}_g
 FASTMAVLINK_FUNCTION_DECORATOR ${type} fmav_msg_${name_lower}_get_field_${name}(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_${msg_name}_FIELD_${name_upper}_NUM) return 0;
-    return ((${type}*)&(msg->payload[${payload_offset}]))[index];     
+    return ((${type}*)&(msg->payload[${payload_offset}]))[index];
 }
 
 
