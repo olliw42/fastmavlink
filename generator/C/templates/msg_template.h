@@ -22,7 +22,6 @@ ${{ordered_fields:    ${type} ${name}${array_suffix};
 
 #define FASTMAVLINK_MSG_ID_${name}  ${id}
 
-#define FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MIN  ${payload_min_length}
 #define FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MAX  ${payload_max_length}
 #define FASTMAVLINK_MSG_${name}_CRCEXTRA  ${crc_extra}
 
@@ -68,7 +67,6 @@ ${{array_fields:    memcpy(&(_payload->${name}), ${name}, sizeof(${type})*${arra
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -110,7 +108,6 @@ ${{array_fields:    memcpy(&(_payload->${name}), ${name}, sizeof(${type})*${arra
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_${name}_CRCEXTRA,
         _status);
@@ -151,7 +148,6 @@ ${{array_fields:    memcpy(&(_payload.${name}), ${name}, sizeof(${type})*${array
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_${name},
-        FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_${name}_CRCEXTRA,
         _status);
@@ -169,7 +165,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_${name_lower}_encode_to_serial(
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_${name},
-        FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_${name}_CRCEXTRA,
         _status);
@@ -180,12 +175,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_${name_lower}_encode_to_serial(
 //----------------------------------------
 //-- Message ${name} unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_${name_lower}_decode(fmav_${name_lower}_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 

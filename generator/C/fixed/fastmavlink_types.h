@@ -19,10 +19,9 @@ typedef enum {
 
 
 typedef struct _fmav_message_entry {
-    uint32_t msgid;
+    uint32_t msgid:24;
     uint8_t crc_extra;
-    uint8_t min_payload_len;
-    uint8_t max_payload_len;
+    uint8_t payload_max_len;
     uint8_t flags; // see FASTMAVLINK_MESSAGE_ENTRY_FLAGS
     uint8_t target_system_ofs;
     uint8_t target_component_ofs;
@@ -52,6 +51,7 @@ typedef struct _fmav_result {
     uint8_t target_sysid;
     uint8_t target_compid;
     uint8_t crc_extra;
+    uint8_t payload_max_len;
 } fmav_result_t;
 
 

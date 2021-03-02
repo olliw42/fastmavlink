@@ -100,8 +100,13 @@ def generateForOneXml(outputdir, xml):
     xml.message_crcs_list = []
     for msgid in sorted(xml.messages_all_by_id.keys()):
         msg = xml.messages_all_by_id[msgid]
+        '''
         msg_entry = '{%u, %u, %u, %u, %u, %u, %u}' % (msgid,
                       msg.crc_extra, msg.payload_min_length, msg.payload_max_length,
+                      msg.message_flags, msg.target_system_ofs, msg.target_component_ofs)
+        '''              
+        msg_entry = '{%u, %u, %u, %u, %u, %u}' % (msgid,
+                      msg.crc_extra, msg.payload_max_length,
                       msg.message_flags, msg.target_system_ofs, msg.target_component_ofs)
         xml.message_crcs_list.append(templateItem(msg.name, msg_entry))
 
