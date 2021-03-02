@@ -19,7 +19,7 @@ typedef enum {
 
 
 typedef struct _fmav_message_entry {
-    uint32_t msgid:24;
+    uint32_t msgid; // :24; works and reduced RAM, but good?
     uint8_t crc_extra;
     uint8_t payload_max_len;
     uint8_t flags; // see FASTMAVLINK_MESSAGE_ENTRY_FLAGS
