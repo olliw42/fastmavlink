@@ -44,7 +44,6 @@ typedef struct _fmav_high_latency_t {
 
 #define FASTMAVLINK_MSG_ID_HIGH_LATENCY  234
 
-#define FASTMAVLINK_MSG_HIGH_LATENCY_PAYLOAD_LEN_MIN  40
 #define FASTMAVLINK_MSG_HIGH_LATENCY_PAYLOAD_LEN_MAX  40
 #define FASTMAVLINK_MSG_HIGH_LATENCY_CRCEXTRA  150
 
@@ -131,7 +130,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_HIGH_LATENCY_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_HIGH_LATENCY_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -194,7 +192,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency_pack_to_frame_buf(
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_HIGH_LATENCY_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_HIGH_LATENCY_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_HIGH_LATENCY_CRCEXTRA,
         _status);
@@ -256,7 +253,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_HIGH_LATENCY,
-        FASTMAVLINK_MSG_HIGH_LATENCY_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_HIGH_LATENCY_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_HIGH_LATENCY_CRCEXTRA,
         _status);
@@ -274,7 +270,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency_encode_to_serial(
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_HIGH_LATENCY,
-        FASTMAVLINK_MSG_HIGH_LATENCY_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_HIGH_LATENCY_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_HIGH_LATENCY_CRCEXTRA,
         _status);
@@ -285,205 +280,206 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency_encode_to_serial(
 //----------------------------------------
 //-- Message HIGH_LATENCY unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_high_latency_decode(fmav_high_latency_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_HIGH_LATENCY_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_HIGH_LATENCY_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_HIGH_LATENCY_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_HIGH_LATENCY_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_high_latency_get_field_custom_mode(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_high_latency_get_field_latitude(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_high_latency_get_field_longitude(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_high_latency_get_field_roll(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[12]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_high_latency_get_field_pitch(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[14]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[14]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency_get_field_heading(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[16]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_high_latency_get_field_heading_sp(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[18]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[18]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_high_latency_get_field_altitude_amsl(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[20]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_high_latency_get_field_altitude_sp(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[22]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[22]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency_get_field_wp_distance(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[24]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[24]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_high_latency_get_field_base_mode(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[26]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[26]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_high_latency_get_field_landed_state(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[27]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[27]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_high_latency_get_field_throttle(const fmav_message_t* msg)
 {
-    int8_t r; 
-    memcpy(&r, &(msg->payload[28]), sizeof(int8_t)); 
-    return r;     
+    int8_t r;
+    memcpy(&r, &(msg->payload[28]), sizeof(int8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_high_latency_get_field_airspeed(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[29]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[29]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_high_latency_get_field_airspeed_sp(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[30]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[30]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_high_latency_get_field_groundspeed(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[31]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[31]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_high_latency_get_field_climb_rate(const fmav_message_t* msg)
 {
-    int8_t r; 
-    memcpy(&r, &(msg->payload[32]), sizeof(int8_t)); 
-    return r;     
+    int8_t r;
+    memcpy(&r, &(msg->payload[32]), sizeof(int8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_high_latency_get_field_gps_nsat(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[33]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[33]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_high_latency_get_field_gps_fix_type(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[34]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[34]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_high_latency_get_field_battery_remaining(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[35]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[35]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_high_latency_get_field_temperature(const fmav_message_t* msg)
 {
-    int8_t r; 
-    memcpy(&r, &(msg->payload[36]), sizeof(int8_t)); 
-    return r;     
+    int8_t r;
+    memcpy(&r, &(msg->payload[36]), sizeof(int8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_high_latency_get_field_temperature_air(const fmav_message_t* msg)
 {
-    int8_t r; 
-    memcpy(&r, &(msg->payload[37]), sizeof(int8_t)); 
-    return r;     
+    int8_t r;
+    memcpy(&r, &(msg->payload[37]), sizeof(int8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_high_latency_get_field_failsafe(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[38]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[38]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_high_latency_get_field_wp_num(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[39]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[39]), sizeof(uint8_t));
+    return r;
 }
 
 

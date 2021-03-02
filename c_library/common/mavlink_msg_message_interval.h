@@ -22,7 +22,6 @@ typedef struct _fmav_message_interval_t {
 
 #define FASTMAVLINK_MSG_ID_MESSAGE_INTERVAL  244
 
-#define FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN_MIN  6
 #define FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN_MAX  6
 #define FASTMAVLINK_MSG_MESSAGE_INTERVAL_CRCEXTRA  95
 
@@ -65,7 +64,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_message_interval_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -106,7 +104,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_message_interval_pack_to_frame_
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MESSAGE_INTERVAL_CRCEXTRA,
         _status);
@@ -146,7 +143,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_message_interval_pack_to_serial
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_MESSAGE_INTERVAL,
-        FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MESSAGE_INTERVAL_CRCEXTRA,
         _status);
@@ -164,7 +160,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_message_interval_encode_to_seri
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_MESSAGE_INTERVAL,
-        FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MESSAGE_INTERVAL_CRCEXTRA,
         _status);
@@ -175,29 +170,30 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_message_interval_encode_to_seri
 //----------------------------------------
 //-- Message MESSAGE_INTERVAL unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_message_interval_decode(fmav_message_interval_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_MESSAGE_INTERVAL_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_message_interval_get_field_interval_us(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_message_interval_get_field_message_id(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(uint16_t));
+    return r;
 }
 
 

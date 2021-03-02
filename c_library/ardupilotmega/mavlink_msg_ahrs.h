@@ -27,7 +27,6 @@ typedef struct _fmav_ahrs_t {
 
 #define FASTMAVLINK_MSG_ID_AHRS  163
 
-#define FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MIN  28
 #define FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MAX  28
 #define FASTMAVLINK_MSG_AHRS_CRCEXTRA  127
 
@@ -80,7 +79,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -126,7 +124,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs_pack_to_frame_buf(
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_AHRS_CRCEXTRA,
         _status);
@@ -171,7 +168,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_AHRS,
-        FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_AHRS_CRCEXTRA,
         _status);
@@ -189,7 +185,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs_encode_to_serial(
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_AHRS,
-        FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_AHRS_CRCEXTRA,
         _status);
@@ -200,69 +195,70 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs_encode_to_serial(
 //----------------------------------------
 //-- Message AHRS unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_ahrs_decode(fmav_ahrs_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ahrs_get_field_omegaIx(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[0]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ahrs_get_field_omegaIy(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[4]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ahrs_get_field_omegaIz(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[8]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ahrs_get_field_accel_weight(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[12]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ahrs_get_field_renorm_val(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[16]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ahrs_get_field_error_rp(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[20]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ahrs_get_field_error_yaw(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[24]), sizeof(float));
+    return r;
 }
 
 

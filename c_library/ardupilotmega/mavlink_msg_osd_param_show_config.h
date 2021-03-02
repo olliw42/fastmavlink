@@ -25,7 +25,6 @@ typedef struct _fmav_osd_param_show_config_t {
 
 #define FASTMAVLINK_MSG_ID_OSD_PARAM_SHOW_CONFIG  11035
 
-#define FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_PAYLOAD_LEN_MIN  8
 #define FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_PAYLOAD_LEN_MAX  8
 #define FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_CRCEXTRA  128
 
@@ -74,7 +73,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_osd_param_show_config_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -118,7 +116,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_osd_param_show_config_pack_to_f
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_CRCEXTRA,
         _status);
@@ -161,7 +158,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_osd_param_show_config_pack_to_s
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_OSD_PARAM_SHOW_CONFIG,
-        FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_CRCEXTRA,
         _status);
@@ -179,7 +175,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_osd_param_show_config_encode_to
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_OSD_PARAM_SHOW_CONFIG,
-        FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_CRCEXTRA,
         _status);
@@ -190,53 +185,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_osd_param_show_config_encode_to
 //----------------------------------------
 //-- Message OSD_PARAM_SHOW_CONFIG unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_osd_param_show_config_decode(fmav_osd_param_show_config_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_OSD_PARAM_SHOW_CONFIG_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_osd_param_show_config_get_field_request_id(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_osd_param_show_config_get_field_target_system(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_osd_param_show_config_get_field_target_component(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[5]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[5]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_osd_param_show_config_get_field_osd_screen(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[6]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[6]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_osd_param_show_config_get_field_osd_index(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[7]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[7]), sizeof(uint8_t));
+    return r;
 }
 
 

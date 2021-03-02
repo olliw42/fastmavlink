@@ -12,7 +12,7 @@
 //-- The values of msg_entry_t for all messages in the dialect.
 //------------------------------
  
-#define FASTMAVLINK_MSG_ENTRY_TEST_TYPES  {17000, 103, 179, 179, 0, 0, 0}
+#define FASTMAVLINK_MSG_ENTRY_TEST_TYPES  {17000, 103, 179, 0, 0, 0}
 
 
 /*------------------------------

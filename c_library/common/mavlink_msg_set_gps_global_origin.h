@@ -25,7 +25,6 @@ typedef struct _fmav_set_gps_global_origin_t {
 
 #define FASTMAVLINK_MSG_ID_SET_GPS_GLOBAL_ORIGIN  48
 
-#define FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN_MIN  13
 #define FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN_MAX  21
 #define FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_CRCEXTRA  41
 
@@ -74,7 +73,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_gps_global_origin_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -118,7 +116,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_gps_global_origin_pack_to_f
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_CRCEXTRA,
         _status);
@@ -161,7 +158,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_gps_global_origin_pack_to_s
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_SET_GPS_GLOBAL_ORIGIN,
-        FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_CRCEXTRA,
         _status);
@@ -179,7 +175,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_gps_global_origin_encode_to
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_SET_GPS_GLOBAL_ORIGIN,
-        FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_CRCEXTRA,
         _status);
@@ -190,53 +185,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_gps_global_origin_encode_to
 //----------------------------------------
 //-- Message SET_GPS_GLOBAL_ORIGIN unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_set_gps_global_origin_decode(fmav_set_gps_global_origin_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_SET_GPS_GLOBAL_ORIGIN_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_set_gps_global_origin_get_field_latitude(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_set_gps_global_origin_get_field_longitude(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_set_gps_global_origin_get_field_altitude(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_set_gps_global_origin_get_field_target_system(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[12]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_set_gps_global_origin_get_field_time_usec(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[13]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[13]), sizeof(uint64_t));
+    return r;
 }
 
 

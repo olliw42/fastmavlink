@@ -23,7 +23,6 @@ typedef struct _fmav_mission_clear_all_t {
 
 #define FASTMAVLINK_MSG_ID_MISSION_CLEAR_ALL  45
 
-#define FASTMAVLINK_MSG_MISSION_CLEAR_ALL_PAYLOAD_LEN_MIN  2
 #define FASTMAVLINK_MSG_MISSION_CLEAR_ALL_PAYLOAD_LEN_MAX  3
 #define FASTMAVLINK_MSG_MISSION_CLEAR_ALL_CRCEXTRA  232
 
@@ -68,7 +67,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_clear_all_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_MISSION_CLEAR_ALL_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MISSION_CLEAR_ALL_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -110,7 +108,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_clear_all_pack_to_frame
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_MISSION_CLEAR_ALL_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MISSION_CLEAR_ALL_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MISSION_CLEAR_ALL_CRCEXTRA,
         _status);
@@ -151,7 +148,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_clear_all_pack_to_seria
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_MISSION_CLEAR_ALL,
-        FASTMAVLINK_MSG_MISSION_CLEAR_ALL_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MISSION_CLEAR_ALL_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MISSION_CLEAR_ALL_CRCEXTRA,
         _status);
@@ -169,7 +165,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_clear_all_encode_to_ser
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_MISSION_CLEAR_ALL,
-        FASTMAVLINK_MSG_MISSION_CLEAR_ALL_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MISSION_CLEAR_ALL_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MISSION_CLEAR_ALL_CRCEXTRA,
         _status);
@@ -180,37 +175,38 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_clear_all_encode_to_ser
 //----------------------------------------
 //-- Message MISSION_CLEAR_ALL unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_mission_clear_all_decode(fmav_mission_clear_all_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_MISSION_CLEAR_ALL_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_MISSION_CLEAR_ALL_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_MISSION_CLEAR_ALL_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_MISSION_CLEAR_ALL_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mission_clear_all_get_field_target_system(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mission_clear_all_get_field_target_component(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[1]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[1]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mission_clear_all_get_field_mission_type(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[2]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[2]), sizeof(uint8_t));
+    return r;
 }
 
 

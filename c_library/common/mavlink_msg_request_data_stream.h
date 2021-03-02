@@ -25,7 +25,6 @@ typedef struct _fmav_request_data_stream_t {
 
 #define FASTMAVLINK_MSG_ID_REQUEST_DATA_STREAM  66
 
-#define FASTMAVLINK_MSG_REQUEST_DATA_STREAM_PAYLOAD_LEN_MIN  6
 #define FASTMAVLINK_MSG_REQUEST_DATA_STREAM_PAYLOAD_LEN_MAX  6
 #define FASTMAVLINK_MSG_REQUEST_DATA_STREAM_CRCEXTRA  148
 
@@ -74,7 +73,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_request_data_stream_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_REQUEST_DATA_STREAM_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_REQUEST_DATA_STREAM_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -118,7 +116,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_request_data_stream_pack_to_fra
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_REQUEST_DATA_STREAM_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_REQUEST_DATA_STREAM_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_REQUEST_DATA_STREAM_CRCEXTRA,
         _status);
@@ -161,7 +158,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_request_data_stream_pack_to_ser
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_REQUEST_DATA_STREAM,
-        FASTMAVLINK_MSG_REQUEST_DATA_STREAM_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_REQUEST_DATA_STREAM_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_REQUEST_DATA_STREAM_CRCEXTRA,
         _status);
@@ -179,7 +175,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_request_data_stream_encode_to_s
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_REQUEST_DATA_STREAM,
-        FASTMAVLINK_MSG_REQUEST_DATA_STREAM_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_REQUEST_DATA_STREAM_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_REQUEST_DATA_STREAM_CRCEXTRA,
         _status);
@@ -190,53 +185,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_request_data_stream_encode_to_s
 //----------------------------------------
 //-- Message REQUEST_DATA_STREAM unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_request_data_stream_decode(fmav_request_data_stream_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_REQUEST_DATA_STREAM_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_REQUEST_DATA_STREAM_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_REQUEST_DATA_STREAM_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_REQUEST_DATA_STREAM_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_request_data_stream_get_field_req_message_rate(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_request_data_stream_get_field_target_system(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[2]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[2]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_request_data_stream_get_field_target_component(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[3]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[3]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_request_data_stream_get_field_req_stream_id(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_request_data_stream_get_field_start_stop(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[5]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[5]), sizeof(uint8_t));
+    return r;
 }
 
 

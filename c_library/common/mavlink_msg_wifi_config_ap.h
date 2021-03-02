@@ -24,7 +24,6 @@ typedef struct _fmav_wifi_config_ap_t {
 
 #define FASTMAVLINK_MSG_ID_WIFI_CONFIG_AP  299
 
-#define FASTMAVLINK_MSG_WIFI_CONFIG_AP_PAYLOAD_LEN_MIN  96
 #define FASTMAVLINK_MSG_WIFI_CONFIG_AP_PAYLOAD_LEN_MAX  98
 #define FASTMAVLINK_MSG_WIFI_CONFIG_AP_CRCEXTRA  19
 
@@ -73,7 +72,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wifi_config_ap_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_WIFI_CONFIG_AP_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_WIFI_CONFIG_AP_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -115,7 +113,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wifi_config_ap_pack_to_frame_bu
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_WIFI_CONFIG_AP_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_WIFI_CONFIG_AP_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_WIFI_CONFIG_AP_CRCEXTRA,
         _status);
@@ -156,7 +153,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wifi_config_ap_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_WIFI_CONFIG_AP,
-        FASTMAVLINK_MSG_WIFI_CONFIG_AP_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_WIFI_CONFIG_AP_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_WIFI_CONFIG_AP_CRCEXTRA,
         _status);
@@ -174,7 +170,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wifi_config_ap_encode_to_serial
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_WIFI_CONFIG_AP,
-        FASTMAVLINK_MSG_WIFI_CONFIG_AP_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_WIFI_CONFIG_AP_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_WIFI_CONFIG_AP_CRCEXTRA,
         _status);
@@ -185,29 +180,30 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wifi_config_ap_encode_to_serial
 //----------------------------------------
 //-- Message WIFI_CONFIG_AP unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_wifi_config_ap_decode(fmav_wifi_config_ap_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_WIFI_CONFIG_AP_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_WIFI_CONFIG_AP_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_WIFI_CONFIG_AP_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_WIFI_CONFIG_AP_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_wifi_config_ap_get_field_mode(const fmav_message_t* msg)
 {
-    int8_t r; 
-    memcpy(&r, &(msg->payload[96]), sizeof(int8_t)); 
-    return r;     
+    int8_t r;
+    memcpy(&r, &(msg->payload[96]), sizeof(int8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_wifi_config_ap_get_field_response(const fmav_message_t* msg)
 {
-    int8_t r; 
-    memcpy(&r, &(msg->payload[97]), sizeof(int8_t)); 
-    return r;     
+    int8_t r;
+    memcpy(&r, &(msg->payload[97]), sizeof(int8_t));
+    return r;
 }
 
 
@@ -220,7 +216,7 @@ FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_wifi_config_ap_get_field_ssid_ptr(
 FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_wifi_config_ap_get_field_ssid(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_WIFI_CONFIG_AP_FIELD_SSID_NUM) return 0;
-    return ((char*)&(msg->payload[0]))[index];     
+    return ((char*)&(msg->payload[0]))[index];
 }
 
 
@@ -233,7 +229,7 @@ FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_wifi_config_ap_get_field_password_
 FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_wifi_config_ap_get_field_password(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_WIFI_CONFIG_AP_FIELD_PASSWORD_NUM) return 0;
-    return ((char*)&(msg->payload[32]))[index];     
+    return ((char*)&(msg->payload[32]))[index];
 }
 
 

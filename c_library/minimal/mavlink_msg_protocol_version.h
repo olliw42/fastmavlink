@@ -25,7 +25,6 @@ typedef struct _fmav_protocol_version_t {
 
 #define FASTMAVLINK_MSG_ID_PROTOCOL_VERSION  300
 
-#define FASTMAVLINK_MSG_PROTOCOL_VERSION_PAYLOAD_LEN_MIN  22
 #define FASTMAVLINK_MSG_PROTOCOL_VERSION_PAYLOAD_LEN_MAX  22
 #define FASTMAVLINK_MSG_PROTOCOL_VERSION_CRCEXTRA  217
 
@@ -76,7 +75,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_protocol_version_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_PROTOCOL_VERSION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_PROTOCOL_VERSION_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -119,7 +117,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_protocol_version_pack_to_frame_
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_PROTOCOL_VERSION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_PROTOCOL_VERSION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_PROTOCOL_VERSION_CRCEXTRA,
         _status);
@@ -161,7 +158,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_protocol_version_pack_to_serial
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_PROTOCOL_VERSION,
-        FASTMAVLINK_MSG_PROTOCOL_VERSION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_PROTOCOL_VERSION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_PROTOCOL_VERSION_CRCEXTRA,
         _status);
@@ -179,7 +175,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_protocol_version_encode_to_seri
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_PROTOCOL_VERSION,
-        FASTMAVLINK_MSG_PROTOCOL_VERSION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_PROTOCOL_VERSION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_PROTOCOL_VERSION_CRCEXTRA,
         _status);
@@ -190,37 +185,38 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_protocol_version_encode_to_seri
 //----------------------------------------
 //-- Message PROTOCOL_VERSION unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_protocol_version_decode(fmav_protocol_version_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_PROTOCOL_VERSION_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_PROTOCOL_VERSION_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_PROTOCOL_VERSION_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_PROTOCOL_VERSION_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_protocol_version_get_field_version(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_protocol_version_get_field_min_version(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[2]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[2]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_protocol_version_get_field_max_version(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(uint16_t));
+    return r;
 }
 
 
@@ -233,7 +229,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_protocol_version_get_field_spec
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_protocol_version_get_field_spec_version_hash(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_PROTOCOL_VERSION_FIELD_SPEC_VERSION_HASH_NUM) return 0;
-    return ((uint8_t*)&(msg->payload[6]))[index];     
+    return ((uint8_t*)&(msg->payload[6]))[index];
 }
 
 
@@ -246,7 +242,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_protocol_version_get_field_libr
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_protocol_version_get_field_library_version_hash(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_PROTOCOL_VERSION_FIELD_LIBRARY_VERSION_HASH_NUM) return 0;
-    return ((uint8_t*)&(msg->payload[14]))[index];     
+    return ((uint8_t*)&(msg->payload[14]))[index];
 }
 
 

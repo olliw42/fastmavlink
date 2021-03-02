@@ -26,7 +26,6 @@ typedef struct _fmav_param_ack_transaction_t {
 
 #define FASTMAVLINK_MSG_ID_PARAM_ACK_TRANSACTION  19
 
-#define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN_MIN  24
 #define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN_MAX  24
 #define FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_CRCEXTRA  137
 
@@ -77,7 +76,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ack_transaction_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -121,7 +119,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ack_transaction_pack_to_f
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_CRCEXTRA,
         _status);
@@ -164,7 +161,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ack_transaction_pack_to_s
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_PARAM_ACK_TRANSACTION,
-        FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_CRCEXTRA,
         _status);
@@ -182,7 +178,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ack_transaction_encode_to
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_PARAM_ACK_TRANSACTION,
-        FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_CRCEXTRA,
         _status);
@@ -193,53 +188,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ack_transaction_encode_to
 //----------------------------------------
 //-- Message PARAM_ACK_TRANSACTION unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_param_ack_transaction_decode(fmav_param_ack_transaction_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_param_ack_transaction_get_field_param_value(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[0]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_param_ack_transaction_get_field_target_system(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_param_ack_transaction_get_field_target_component(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[5]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[5]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_param_ack_transaction_get_field_param_type(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[22]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[22]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_param_ack_transaction_get_field_param_result(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[23]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[23]), sizeof(uint8_t));
+    return r;
 }
 
 
@@ -252,7 +248,7 @@ FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_param_ack_transaction_get_field_pa
 FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_param_ack_transaction_get_field_param_id(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_PARAM_ACK_TRANSACTION_FIELD_PARAM_ID_NUM) return 0;
-    return ((char*)&(msg->payload[6]))[index];     
+    return ((char*)&(msg->payload[6]))[index];
 }
 
 

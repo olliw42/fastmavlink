@@ -27,7 +27,6 @@ typedef struct _fmav_radio_status_t {
 
 #define FASTMAVLINK_MSG_ID_RADIO_STATUS  109
 
-#define FASTMAVLINK_MSG_RADIO_STATUS_PAYLOAD_LEN_MIN  9
 #define FASTMAVLINK_MSG_RADIO_STATUS_PAYLOAD_LEN_MAX  9
 #define FASTMAVLINK_MSG_RADIO_STATUS_CRCEXTRA  185
 
@@ -80,7 +79,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_status_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_RADIO_STATUS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_RADIO_STATUS_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -126,7 +124,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_status_pack_to_frame_buf(
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_RADIO_STATUS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_RADIO_STATUS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_RADIO_STATUS_CRCEXTRA,
         _status);
@@ -171,7 +168,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_status_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_RADIO_STATUS,
-        FASTMAVLINK_MSG_RADIO_STATUS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_RADIO_STATUS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_RADIO_STATUS_CRCEXTRA,
         _status);
@@ -189,7 +185,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_status_encode_to_serial(
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_RADIO_STATUS,
-        FASTMAVLINK_MSG_RADIO_STATUS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_RADIO_STATUS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_RADIO_STATUS_CRCEXTRA,
         _status);
@@ -200,69 +195,70 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_status_encode_to_serial(
 //----------------------------------------
 //-- Message RADIO_STATUS unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_radio_status_decode(fmav_radio_status_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_RADIO_STATUS_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_RADIO_STATUS_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_RADIO_STATUS_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_RADIO_STATUS_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_status_get_field_rxerrors(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_status_get_field_fixed(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[2]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[2]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_radio_status_get_field_rssi(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_radio_status_get_field_remrssi(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[5]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[5]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_radio_status_get_field_txbuf(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[6]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[6]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_radio_status_get_field_noise(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[7]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[7]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_radio_status_get_field_remnoise(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(uint8_t));
+    return r;
 }
 
 

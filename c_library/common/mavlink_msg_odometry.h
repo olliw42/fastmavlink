@@ -37,7 +37,6 @@ typedef struct _fmav_odometry_t {
 
 #define FASTMAVLINK_MSG_ID_ODOMETRY  331
 
-#define FASTMAVLINK_MSG_ODOMETRY_PAYLOAD_LEN_MIN  230
 #define FASTMAVLINK_MSG_ODOMETRY_PAYLOAD_LEN_MAX  232
 #define FASTMAVLINK_MSG_ODOMETRY_CRCEXTRA  91
 
@@ -114,7 +113,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_odometry_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_ODOMETRY_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ODOMETRY_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -169,7 +167,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_odometry_pack_to_frame_buf(
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_ODOMETRY_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ODOMETRY_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ODOMETRY_CRCEXTRA,
         _status);
@@ -223,7 +220,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_odometry_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_ODOMETRY,
-        FASTMAVLINK_MSG_ODOMETRY_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ODOMETRY_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ODOMETRY_CRCEXTRA,
         _status);
@@ -241,7 +237,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_odometry_encode_to_serial(
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_ODOMETRY,
-        FASTMAVLINK_MSG_ODOMETRY_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ODOMETRY_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ODOMETRY_CRCEXTRA,
         _status);
@@ -252,125 +247,126 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_odometry_encode_to_serial(
 //----------------------------------------
 //-- Message ODOMETRY unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_odometry_decode(fmav_odometry_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_ODOMETRY_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_ODOMETRY_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_ODOMETRY_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_ODOMETRY_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_odometry_get_field_time_usec(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_odometry_get_field_x(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[8]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_odometry_get_field_y(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[12]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_odometry_get_field_z(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[16]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_odometry_get_field_vx(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[36]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[36]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_odometry_get_field_vy(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[40]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[40]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_odometry_get_field_vz(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[44]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[44]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_odometry_get_field_rollspeed(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[48]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[48]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_odometry_get_field_pitchspeed(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[52]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[52]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_odometry_get_field_yawspeed(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[56]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[56]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_odometry_get_field_frame_id(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[228]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[228]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_odometry_get_field_child_frame_id(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[229]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[229]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_odometry_get_field_reset_counter(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[230]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[230]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_odometry_get_field_estimator_type(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[231]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[231]), sizeof(uint8_t));
+    return r;
 }
 
 
@@ -383,7 +379,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_odometry_get_field_q_ptr(const fm
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_odometry_get_field_q(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ODOMETRY_FIELD_Q_NUM) return 0;
-    return ((float*)&(msg->payload[20]))[index];     
+    return ((float*)&(msg->payload[20]))[index];
 }
 
 
@@ -396,7 +392,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_odometry_get_field_pose_covarianc
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_odometry_get_field_pose_covariance(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ODOMETRY_FIELD_POSE_COVARIANCE_NUM) return 0;
-    return ((float*)&(msg->payload[60]))[index];     
+    return ((float*)&(msg->payload[60]))[index];
 }
 
 
@@ -409,7 +405,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_odometry_get_field_velocity_covar
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_odometry_get_field_velocity_covariance(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ODOMETRY_FIELD_VELOCITY_COVARIANCE_NUM) return 0;
-    return ((float*)&(msg->payload[144]))[index];     
+    return ((float*)&(msg->payload[144]))[index];
 }
 
 

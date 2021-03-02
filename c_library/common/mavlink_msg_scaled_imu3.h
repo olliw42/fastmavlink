@@ -31,7 +31,6 @@ typedef struct _fmav_scaled_imu3_t {
 
 #define FASTMAVLINK_MSG_ID_SCALED_IMU3  129
 
-#define FASTMAVLINK_MSG_SCALED_IMU3_PAYLOAD_LEN_MIN  22
 #define FASTMAVLINK_MSG_SCALED_IMU3_PAYLOAD_LEN_MAX  24
 #define FASTMAVLINK_MSG_SCALED_IMU3_CRCEXTRA  46
 
@@ -92,7 +91,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_scaled_imu3_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_SCALED_IMU3_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SCALED_IMU3_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -142,7 +140,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_scaled_imu3_pack_to_frame_buf(
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_SCALED_IMU3_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SCALED_IMU3_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_SCALED_IMU3_CRCEXTRA,
         _status);
@@ -191,7 +188,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_scaled_imu3_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_SCALED_IMU3,
-        FASTMAVLINK_MSG_SCALED_IMU3_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SCALED_IMU3_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_SCALED_IMU3_CRCEXTRA,
         _status);
@@ -209,7 +205,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_scaled_imu3_encode_to_serial(
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_SCALED_IMU3,
-        FASTMAVLINK_MSG_SCALED_IMU3_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SCALED_IMU3_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_SCALED_IMU3_CRCEXTRA,
         _status);
@@ -220,101 +215,102 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_scaled_imu3_encode_to_serial(
 //----------------------------------------
 //-- Message SCALED_IMU3 unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_scaled_imu3_decode(fmav_scaled_imu3_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_SCALED_IMU3_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_SCALED_IMU3_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_SCALED_IMU3_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_SCALED_IMU3_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_scaled_imu3_get_field_time_boot_ms(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_scaled_imu3_get_field_xacc(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_scaled_imu3_get_field_yacc(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[6]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[6]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_scaled_imu3_get_field_zacc(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_scaled_imu3_get_field_xgyro(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[10]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[10]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_scaled_imu3_get_field_ygyro(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[12]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_scaled_imu3_get_field_zgyro(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[14]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[14]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_scaled_imu3_get_field_xmag(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[16]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_scaled_imu3_get_field_ymag(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[18]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[18]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_scaled_imu3_get_field_zmag(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[20]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_scaled_imu3_get_field_temperature(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[22]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[22]), sizeof(int16_t));
+    return r;
 }
 
 

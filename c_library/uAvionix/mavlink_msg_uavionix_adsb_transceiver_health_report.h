@@ -21,7 +21,6 @@ typedef struct _fmav_uavionix_adsb_transceiver_health_report_t {
 
 #define FASTMAVLINK_MSG_ID_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT  10003
 
-#define FASTMAVLINK_MSG_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT_PAYLOAD_LEN_MIN  1
 #define FASTMAVLINK_MSG_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT_PAYLOAD_LEN_MAX  1
 #define FASTMAVLINK_MSG_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT_CRCEXTRA  4
 
@@ -62,7 +61,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_transceiver_healt
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -102,7 +100,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_transceiver_healt
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT_CRCEXTRA,
         _status);
@@ -141,7 +138,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_transceiver_healt
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT,
-        FASTMAVLINK_MSG_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT_CRCEXTRA,
         _status);
@@ -159,7 +155,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_transceiver_healt
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT,
-        FASTMAVLINK_MSG_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT_CRCEXTRA,
         _status);
@@ -170,21 +165,22 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_transceiver_healt
 //----------------------------------------
 //-- Message UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_uavionix_adsb_transceiver_health_report_decode(fmav_uavionix_adsb_transceiver_health_report_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_uavionix_adsb_transceiver_health_report_get_field_rfHealth(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t));
+    return r;
 }
 
 

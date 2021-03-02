@@ -31,7 +31,6 @@ typedef struct _fmav_command_long_t {
 
 #define FASTMAVLINK_MSG_ID_COMMAND_LONG  76
 
-#define FASTMAVLINK_MSG_COMMAND_LONG_PAYLOAD_LEN_MIN  33
 #define FASTMAVLINK_MSG_COMMAND_LONG_PAYLOAD_LEN_MAX  33
 #define FASTMAVLINK_MSG_COMMAND_LONG_CRCEXTRA  152
 
@@ -92,7 +91,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_long_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_COMMAND_LONG_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_COMMAND_LONG_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -142,7 +140,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_long_pack_to_frame_buf(
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_COMMAND_LONG_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_COMMAND_LONG_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_COMMAND_LONG_CRCEXTRA,
         _status);
@@ -191,7 +188,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_long_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_COMMAND_LONG,
-        FASTMAVLINK_MSG_COMMAND_LONG_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_COMMAND_LONG_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_COMMAND_LONG_CRCEXTRA,
         _status);
@@ -209,7 +205,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_long_encode_to_serial(
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_COMMAND_LONG,
-        FASTMAVLINK_MSG_COMMAND_LONG_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_COMMAND_LONG_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_COMMAND_LONG_CRCEXTRA,
         _status);
@@ -220,101 +215,102 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_long_encode_to_serial(
 //----------------------------------------
 //-- Message COMMAND_LONG unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_command_long_decode(fmav_command_long_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_COMMAND_LONG_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_COMMAND_LONG_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_COMMAND_LONG_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_COMMAND_LONG_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_command_long_get_field_param1(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[0]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_command_long_get_field_param2(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[4]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_command_long_get_field_param3(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[8]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_command_long_get_field_param4(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[12]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_command_long_get_field_param5(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[16]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_command_long_get_field_param6(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[20]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_command_long_get_field_param7(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[24]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_long_get_field_command(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[28]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[28]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_command_long_get_field_target_system(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[30]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[30]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_command_long_get_field_target_component(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[31]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[31]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_command_long_get_field_confirmation(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[32]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[32]), sizeof(uint8_t));
+    return r;
 }
 
 

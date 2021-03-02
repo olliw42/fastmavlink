@@ -38,7 +38,6 @@ typedef struct _fmav_utm_global_position_t {
 
 #define FASTMAVLINK_MSG_ID_UTM_GLOBAL_POSITION  340
 
-#define FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_PAYLOAD_LEN_MIN  70
 #define FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_PAYLOAD_LEN_MAX  70
 #define FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_CRCEXTRA  99
 
@@ -113,7 +112,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_utm_global_position_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -169,7 +167,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_utm_global_position_pack_to_fra
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_CRCEXTRA,
         _status);
@@ -224,7 +221,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_utm_global_position_pack_to_ser
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_UTM_GLOBAL_POSITION,
-        FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_CRCEXTRA,
         _status);
@@ -242,7 +238,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_utm_global_position_encode_to_s
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_UTM_GLOBAL_POSITION,
-        FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_CRCEXTRA,
         _status);
@@ -253,149 +248,150 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_utm_global_position_encode_to_s
 //----------------------------------------
 //-- Message UTM_GLOBAL_POSITION unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_utm_global_position_decode(fmav_utm_global_position_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_utm_global_position_get_field_time(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_utm_global_position_get_field_lat(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_utm_global_position_get_field_lon(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[12]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_utm_global_position_get_field_alt(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[16]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_utm_global_position_get_field_relative_alt(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[20]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_utm_global_position_get_field_next_lat(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[24]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[24]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_utm_global_position_get_field_next_lon(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[28]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[28]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_utm_global_position_get_field_next_alt(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[32]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[32]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_utm_global_position_get_field_vx(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[36]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[36]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_utm_global_position_get_field_vy(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[38]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[38]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_utm_global_position_get_field_vz(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[40]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[40]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_utm_global_position_get_field_h_acc(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[42]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[42]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_utm_global_position_get_field_v_acc(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[44]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[44]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_utm_global_position_get_field_vel_acc(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[46]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[46]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_utm_global_position_get_field_update_rate(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[48]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[48]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_utm_global_position_get_field_flight_state(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[68]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[68]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_utm_global_position_get_field_flags(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[69]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[69]), sizeof(uint8_t));
+    return r;
 }
 
 
@@ -408,7 +404,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_utm_global_position_get_field_u
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_utm_global_position_get_field_uas_id(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_FIELD_UAS_ID_NUM) return 0;
-    return ((uint8_t*)&(msg->payload[50]))[index];     
+    return ((uint8_t*)&(msg->payload[50]))[index];
 }
 
 

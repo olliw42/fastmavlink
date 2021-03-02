@@ -21,7 +21,6 @@ typedef struct _fmav_mission_current_t {
 
 #define FASTMAVLINK_MSG_ID_MISSION_CURRENT  42
 
-#define FASTMAVLINK_MSG_MISSION_CURRENT_PAYLOAD_LEN_MIN  2
 #define FASTMAVLINK_MSG_MISSION_CURRENT_PAYLOAD_LEN_MAX  2
 #define FASTMAVLINK_MSG_MISSION_CURRENT_CRCEXTRA  28
 
@@ -62,7 +61,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_current_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_MISSION_CURRENT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MISSION_CURRENT_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -102,7 +100,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_current_pack_to_frame_b
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_MISSION_CURRENT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MISSION_CURRENT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MISSION_CURRENT_CRCEXTRA,
         _status);
@@ -141,7 +138,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_current_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_MISSION_CURRENT,
-        FASTMAVLINK_MSG_MISSION_CURRENT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MISSION_CURRENT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MISSION_CURRENT_CRCEXTRA,
         _status);
@@ -159,7 +155,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_current_encode_to_seria
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_MISSION_CURRENT,
-        FASTMAVLINK_MSG_MISSION_CURRENT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MISSION_CURRENT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MISSION_CURRENT_CRCEXTRA,
         _status);
@@ -170,21 +165,22 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_current_encode_to_seria
 //----------------------------------------
 //-- Message MISSION_CURRENT unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_mission_current_decode(fmav_mission_current_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_MISSION_CURRENT_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_MISSION_CURRENT_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_MISSION_CURRENT_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_MISSION_CURRENT_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_current_get_field_seq(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t));
+    return r;
 }
 
 

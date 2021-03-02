@@ -31,7 +31,6 @@ typedef struct _fmav_follow_target_t {
 
 #define FASTMAVLINK_MSG_ID_FOLLOW_TARGET  144
 
-#define FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN_MIN  93
 #define FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN_MAX  93
 #define FASTMAVLINK_MSG_FOLLOW_TARGET_CRCEXTRA  127
 
@@ -100,7 +99,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_follow_target_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -149,7 +147,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_follow_target_pack_to_frame_buf
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_FOLLOW_TARGET_CRCEXTRA,
         _status);
@@ -197,7 +194,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_follow_target_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_FOLLOW_TARGET,
-        FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_FOLLOW_TARGET_CRCEXTRA,
         _status);
@@ -215,7 +211,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_follow_target_encode_to_serial(
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_FOLLOW_TARGET,
-        FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_FOLLOW_TARGET_CRCEXTRA,
         _status);
@@ -226,61 +221,62 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_follow_target_encode_to_serial(
 //----------------------------------------
 //-- Message FOLLOW_TARGET unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_follow_target_decode(fmav_follow_target_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_FOLLOW_TARGET_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_follow_target_get_field_timestamp(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_follow_target_get_field_custom_state(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(uint64_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_follow_target_get_field_lat(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[16]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_follow_target_get_field_lon(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[20]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_follow_target_get_field_alt(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[24]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_follow_target_get_field_est_capabilities(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[92]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[92]), sizeof(uint8_t));
+    return r;
 }
 
 
@@ -293,7 +289,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_follow_target_get_field_vel_ptr(c
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_follow_target_get_field_vel(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_VEL_NUM) return 0;
-    return ((float*)&(msg->payload[28]))[index];     
+    return ((float*)&(msg->payload[28]))[index];
 }
 
 
@@ -306,7 +302,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_follow_target_get_field_acc_ptr(c
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_follow_target_get_field_acc(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_ACC_NUM) return 0;
-    return ((float*)&(msg->payload[40]))[index];     
+    return ((float*)&(msg->payload[40]))[index];
 }
 
 
@@ -319,7 +315,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_follow_target_get_field_attitude_
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_follow_target_get_field_attitude_q(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_ATTITUDE_Q_NUM) return 0;
-    return ((float*)&(msg->payload[52]))[index];     
+    return ((float*)&(msg->payload[52]))[index];
 }
 
 
@@ -332,7 +328,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_follow_target_get_field_rates_ptr
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_follow_target_get_field_rates(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_RATES_NUM) return 0;
-    return ((float*)&(msg->payload[68]))[index];     
+    return ((float*)&(msg->payload[68]))[index];
 }
 
 
@@ -345,7 +341,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_follow_target_get_field_position_
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_follow_target_get_field_position_cov(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_FOLLOW_TARGET_FIELD_POSITION_COV_NUM) return 0;
-    return ((float*)&(msg->payload[80]))[index];     
+    return ((float*)&(msg->payload[80]))[index];
 }
 
 

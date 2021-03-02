@@ -32,7 +32,6 @@ typedef struct _fmav_array_test_6_t {
 
 #define FASTMAVLINK_MSG_ID_ARRAY_TEST_6  17156
 
-#define FASTMAVLINK_MSG_ARRAY_TEST_6_PAYLOAD_LEN_MIN  91
 #define FASTMAVLINK_MSG_ARRAY_TEST_6_PAYLOAD_LEN_MAX  91
 #define FASTMAVLINK_MSG_ARRAY_TEST_6_CRCEXTRA  14
 
@@ -111,7 +110,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_6_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_ARRAY_TEST_6_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ARRAY_TEST_6_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -161,7 +159,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_6_pack_to_frame_buf(
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_ARRAY_TEST_6_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ARRAY_TEST_6_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ARRAY_TEST_6_CRCEXTRA,
         _status);
@@ -210,7 +207,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_6_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_ARRAY_TEST_6,
-        FASTMAVLINK_MSG_ARRAY_TEST_6_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ARRAY_TEST_6_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ARRAY_TEST_6_CRCEXTRA,
         _status);
@@ -228,7 +224,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_6_encode_to_serial(
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_ARRAY_TEST_6,
-        FASTMAVLINK_MSG_ARRAY_TEST_6_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ARRAY_TEST_6_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ARRAY_TEST_6_CRCEXTRA,
         _status);
@@ -239,37 +234,38 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_6_encode_to_serial(
 //----------------------------------------
 //-- Message ARRAY_TEST_6 unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_array_test_6_decode(fmav_array_test_6_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_ARRAY_TEST_6_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_ARRAY_TEST_6_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_ARRAY_TEST_6_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_ARRAY_TEST_6_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_array_test_6_get_field_v3(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[16]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_6_get_field_v2(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[44]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[44]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_array_test_6_get_field_v1(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[54]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[54]), sizeof(uint8_t));
+    return r;
 }
 
 
@@ -282,7 +278,7 @@ FASTMAVLINK_FUNCTION_DECORATOR double* fmav_msg_array_test_6_get_field_ar_d_ptr(
 FASTMAVLINK_FUNCTION_DECORATOR double fmav_msg_array_test_6_get_field_ar_d(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ARRAY_TEST_6_FIELD_AR_D_NUM) return 0;
-    return ((double*)&(msg->payload[0]))[index];     
+    return ((double*)&(msg->payload[0]))[index];
 }
 
 
@@ -295,7 +291,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint32_t* fmav_msg_array_test_6_get_field_ar_u32_
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_array_test_6_get_field_ar_u32(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ARRAY_TEST_6_FIELD_AR_U32_NUM) return 0;
-    return ((uint32_t*)&(msg->payload[20]))[index];     
+    return ((uint32_t*)&(msg->payload[20]))[index];
 }
 
 
@@ -308,7 +304,7 @@ FASTMAVLINK_FUNCTION_DECORATOR int32_t* fmav_msg_array_test_6_get_field_ar_i32_p
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_array_test_6_get_field_ar_i32(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ARRAY_TEST_6_FIELD_AR_I32_NUM) return 0;
-    return ((int32_t*)&(msg->payload[28]))[index];     
+    return ((int32_t*)&(msg->payload[28]))[index];
 }
 
 
@@ -321,7 +317,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_array_test_6_get_field_ar_f_ptr(c
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_array_test_6_get_field_ar_f(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ARRAY_TEST_6_FIELD_AR_F_NUM) return 0;
-    return ((float*)&(msg->payload[36]))[index];     
+    return ((float*)&(msg->payload[36]))[index];
 }
 
 
@@ -334,7 +330,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_array_test_6_get_field_ar_u16_
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_6_get_field_ar_u16(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ARRAY_TEST_6_FIELD_AR_U16_NUM) return 0;
-    return ((uint16_t*)&(msg->payload[46]))[index];     
+    return ((uint16_t*)&(msg->payload[46]))[index];
 }
 
 
@@ -347,7 +343,7 @@ FASTMAVLINK_FUNCTION_DECORATOR int16_t* fmav_msg_array_test_6_get_field_ar_i16_p
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_array_test_6_get_field_ar_i16(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ARRAY_TEST_6_FIELD_AR_I16_NUM) return 0;
-    return ((int16_t*)&(msg->payload[50]))[index];     
+    return ((int16_t*)&(msg->payload[50]))[index];
 }
 
 
@@ -360,7 +356,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_array_test_6_get_field_ar_u8_pt
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_array_test_6_get_field_ar_u8(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ARRAY_TEST_6_FIELD_AR_U8_NUM) return 0;
-    return ((uint8_t*)&(msg->payload[55]))[index];     
+    return ((uint8_t*)&(msg->payload[55]))[index];
 }
 
 
@@ -373,7 +369,7 @@ FASTMAVLINK_FUNCTION_DECORATOR int8_t* fmav_msg_array_test_6_get_field_ar_i8_ptr
 FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_array_test_6_get_field_ar_i8(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ARRAY_TEST_6_FIELD_AR_I8_NUM) return 0;
-    return ((int8_t*)&(msg->payload[57]))[index];     
+    return ((int8_t*)&(msg->payload[57]))[index];
 }
 
 
@@ -386,7 +382,7 @@ FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_array_test_6_get_field_ar_c_ptr(co
 FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_array_test_6_get_field_ar_c(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ARRAY_TEST_6_FIELD_AR_C_NUM) return 0;
-    return ((char*)&(msg->payload[59]))[index];     
+    return ((char*)&(msg->payload[59]))[index];
 }
 
 

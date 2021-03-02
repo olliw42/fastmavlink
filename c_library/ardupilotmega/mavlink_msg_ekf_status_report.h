@@ -27,7 +27,6 @@ typedef struct _fmav_ekf_status_report_t {
 
 #define FASTMAVLINK_MSG_ID_EKF_STATUS_REPORT  193
 
-#define FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MIN  22
 #define FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MAX  26
 #define FASTMAVLINK_MSG_EKF_STATUS_REPORT_CRCEXTRA  71
 
@@ -80,7 +79,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ekf_status_report_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -126,7 +124,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ekf_status_report_pack_to_frame
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_EKF_STATUS_REPORT_CRCEXTRA,
         _status);
@@ -171,7 +168,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ekf_status_report_pack_to_seria
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_EKF_STATUS_REPORT,
-        FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_EKF_STATUS_REPORT_CRCEXTRA,
         _status);
@@ -189,7 +185,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ekf_status_report_encode_to_ser
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_EKF_STATUS_REPORT,
-        FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_EKF_STATUS_REPORT_CRCEXTRA,
         _status);
@@ -200,69 +195,70 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ekf_status_report_encode_to_ser
 //----------------------------------------
 //-- Message EKF_STATUS_REPORT unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_ekf_status_report_decode(fmav_ekf_status_report_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ekf_status_report_get_field_velocity_variance(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[0]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ekf_status_report_get_field_pos_horiz_variance(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[4]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ekf_status_report_get_field_pos_vert_variance(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[8]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ekf_status_report_get_field_compass_variance(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[12]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ekf_status_report_get_field_terrain_alt_variance(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[16]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ekf_status_report_get_field_flags(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[20]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ekf_status_report_get_field_airspeed_variance(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[22]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[22]), sizeof(float));
+    return r;
 }
 
 

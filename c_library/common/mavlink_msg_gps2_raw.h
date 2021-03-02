@@ -33,7 +33,6 @@ typedef struct _fmav_gps2_raw_t {
 
 #define FASTMAVLINK_MSG_ID_GPS2_RAW  124
 
-#define FASTMAVLINK_MSG_GPS2_RAW_PAYLOAD_LEN_MIN  35
 #define FASTMAVLINK_MSG_GPS2_RAW_PAYLOAD_LEN_MAX  37
 #define FASTMAVLINK_MSG_GPS2_RAW_CRCEXTRA  87
 
@@ -98,7 +97,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_raw_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_GPS2_RAW_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GPS2_RAW_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -150,7 +148,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_raw_pack_to_frame_buf(
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_GPS2_RAW_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GPS2_RAW_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_GPS2_RAW_CRCEXTRA,
         _status);
@@ -201,7 +198,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_raw_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_GPS2_RAW,
-        FASTMAVLINK_MSG_GPS2_RAW_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GPS2_RAW_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_GPS2_RAW_CRCEXTRA,
         _status);
@@ -219,7 +215,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_raw_encode_to_serial(
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_GPS2_RAW,
-        FASTMAVLINK_MSG_GPS2_RAW_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GPS2_RAW_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_GPS2_RAW_CRCEXTRA,
         _status);
@@ -230,117 +225,118 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_raw_encode_to_serial(
 //----------------------------------------
 //-- Message GPS2_RAW unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gps2_raw_decode(fmav_gps2_raw_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_GPS2_RAW_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_GPS2_RAW_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_GPS2_RAW_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_GPS2_RAW_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_gps2_raw_get_field_time_usec(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_gps2_raw_get_field_lat(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_gps2_raw_get_field_lon(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[12]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_gps2_raw_get_field_alt(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[16]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_gps2_raw_get_field_dgps_age(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[20]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_raw_get_field_eph(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[24]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[24]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_raw_get_field_epv(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[26]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[26]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_raw_get_field_vel(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[28]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[28]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_raw_get_field_cog(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[30]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[30]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gps2_raw_get_field_fix_type(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[32]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[32]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gps2_raw_get_field_satellites_visible(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[33]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[33]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gps2_raw_get_field_dgps_numch(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[34]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[34]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_raw_get_field_yaw(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[35]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[35]), sizeof(uint16_t));
+    return r;
 }
 
 

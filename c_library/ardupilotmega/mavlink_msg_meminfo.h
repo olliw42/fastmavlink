@@ -23,7 +23,6 @@ typedef struct _fmav_meminfo_t {
 
 #define FASTMAVLINK_MSG_ID_MEMINFO  152
 
-#define FASTMAVLINK_MSG_MEMINFO_PAYLOAD_LEN_MIN  4
 #define FASTMAVLINK_MSG_MEMINFO_PAYLOAD_LEN_MAX  8
 #define FASTMAVLINK_MSG_MEMINFO_CRCEXTRA  208
 
@@ -68,7 +67,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_meminfo_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_MEMINFO_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MEMINFO_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -110,7 +108,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_meminfo_pack_to_frame_buf(
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_MEMINFO_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MEMINFO_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MEMINFO_CRCEXTRA,
         _status);
@@ -151,7 +148,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_meminfo_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_MEMINFO,
-        FASTMAVLINK_MSG_MEMINFO_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MEMINFO_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MEMINFO_CRCEXTRA,
         _status);
@@ -169,7 +165,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_meminfo_encode_to_serial(
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_MEMINFO,
-        FASTMAVLINK_MSG_MEMINFO_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MEMINFO_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MEMINFO_CRCEXTRA,
         _status);
@@ -180,37 +175,38 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_meminfo_encode_to_serial(
 //----------------------------------------
 //-- Message MEMINFO unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_meminfo_decode(fmav_meminfo_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_MEMINFO_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_MEMINFO_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_MEMINFO_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_MEMINFO_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_meminfo_get_field_brkval(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_meminfo_get_field_freemem(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[2]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[2]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_meminfo_get_field_freemem32(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(uint32_t));
+    return r;
 }
 
 

@@ -26,7 +26,6 @@ typedef struct _fmav_vision_speed_estimate_t {
 
 #define FASTMAVLINK_MSG_ID_VISION_SPEED_ESTIMATE  103
 
-#define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MIN  20
 #define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MAX  57
 #define FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_CRCEXTRA  208
 
@@ -77,7 +76,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_speed_estimate_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -121,7 +119,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_speed_estimate_pack_to_f
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_CRCEXTRA,
         _status);
@@ -164,7 +161,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_speed_estimate_pack_to_s
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_VISION_SPEED_ESTIMATE,
-        FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_CRCEXTRA,
         _status);
@@ -182,7 +178,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_speed_estimate_encode_to
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_VISION_SPEED_ESTIMATE,
-        FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_CRCEXTRA,
         _status);
@@ -193,53 +188,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_speed_estimate_encode_to
 //----------------------------------------
 //-- Message VISION_SPEED_ESTIMATE unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_vision_speed_estimate_decode(fmav_vision_speed_estimate_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_vision_speed_estimate_get_field_usec(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vision_speed_estimate_get_field_x(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[8]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vision_speed_estimate_get_field_y(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[12]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vision_speed_estimate_get_field_z(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[16]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_vision_speed_estimate_get_field_reset_counter(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[56]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[56]), sizeof(uint8_t));
+    return r;
 }
 
 
@@ -252,7 +248,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_vision_speed_estimate_get_field_c
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vision_speed_estimate_get_field_covariance(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_FIELD_COVARIANCE_NUM) return 0;
-    return ((float*)&(msg->payload[20]))[index];     
+    return ((float*)&(msg->payload[20]))[index];
 }
 
 

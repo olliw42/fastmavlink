@@ -25,7 +25,6 @@ typedef struct _fmav_log_request_data_t {
 
 #define FASTMAVLINK_MSG_ID_LOG_REQUEST_DATA  119
 
-#define FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN_MIN  12
 #define FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN_MAX  12
 #define FASTMAVLINK_MSG_LOG_REQUEST_DATA_CRCEXTRA  116
 
@@ -74,7 +73,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_request_data_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -118,7 +116,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_request_data_pack_to_frame_
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_LOG_REQUEST_DATA_CRCEXTRA,
         _status);
@@ -161,7 +158,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_request_data_pack_to_serial
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_LOG_REQUEST_DATA,
-        FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_LOG_REQUEST_DATA_CRCEXTRA,
         _status);
@@ -179,7 +175,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_request_data_encode_to_seri
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_LOG_REQUEST_DATA,
-        FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_LOG_REQUEST_DATA_CRCEXTRA,
         _status);
@@ -190,53 +185,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_request_data_encode_to_seri
 //----------------------------------------
 //-- Message LOG_REQUEST_DATA unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_log_request_data_decode(fmav_log_request_data_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_LOG_REQUEST_DATA_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_log_request_data_get_field_ofs(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_log_request_data_get_field_count(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_log_request_data_get_field_id(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_log_request_data_get_field_target_system(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[10]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[10]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_log_request_data_get_field_target_component(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[11]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[11]), sizeof(uint8_t));
+    return r;
 }
 
 

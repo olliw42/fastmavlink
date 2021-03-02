@@ -30,7 +30,6 @@ typedef struct _fmav_global_position_int_cov_t {
 
 #define FASTMAVLINK_MSG_ID_GLOBAL_POSITION_INT_COV  63
 
-#define FASTMAVLINK_MSG_GLOBAL_POSITION_INT_COV_PAYLOAD_LEN_MIN  181
 #define FASTMAVLINK_MSG_GLOBAL_POSITION_INT_COV_PAYLOAD_LEN_MAX  181
 #define FASTMAVLINK_MSG_GLOBAL_POSITION_INT_COV_CRCEXTRA  119
 
@@ -89,7 +88,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_global_position_int_cov_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_GLOBAL_POSITION_INT_COV_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GLOBAL_POSITION_INT_COV_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -137,7 +135,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_global_position_int_cov_pack_to
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_GLOBAL_POSITION_INT_COV_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GLOBAL_POSITION_INT_COV_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_GLOBAL_POSITION_INT_COV_CRCEXTRA,
         _status);
@@ -184,7 +181,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_global_position_int_cov_pack_to
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_GLOBAL_POSITION_INT_COV,
-        FASTMAVLINK_MSG_GLOBAL_POSITION_INT_COV_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GLOBAL_POSITION_INT_COV_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_GLOBAL_POSITION_INT_COV_CRCEXTRA,
         _status);
@@ -202,7 +198,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_global_position_int_cov_encode_
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_GLOBAL_POSITION_INT_COV,
-        FASTMAVLINK_MSG_GLOBAL_POSITION_INT_COV_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GLOBAL_POSITION_INT_COV_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_GLOBAL_POSITION_INT_COV_CRCEXTRA,
         _status);
@@ -213,85 +208,86 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_global_position_int_cov_encode_
 //----------------------------------------
 //-- Message GLOBAL_POSITION_INT_COV unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_global_position_int_cov_decode(fmav_global_position_int_cov_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_GLOBAL_POSITION_INT_COV_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_GLOBAL_POSITION_INT_COV_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_GLOBAL_POSITION_INT_COV_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_GLOBAL_POSITION_INT_COV_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_global_position_int_cov_get_field_time_usec(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_global_position_int_cov_get_field_lat(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_global_position_int_cov_get_field_lon(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[12]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_global_position_int_cov_get_field_alt(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[16]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_global_position_int_cov_get_field_relative_alt(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[20]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_global_position_int_cov_get_field_vx(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[24]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_global_position_int_cov_get_field_vy(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[28]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_global_position_int_cov_get_field_vz(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[32]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_global_position_int_cov_get_field_estimator_type(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[180]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[180]), sizeof(uint8_t));
+    return r;
 }
 
 
@@ -304,7 +300,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_global_position_int_cov_get_field
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_global_position_int_cov_get_field_covariance(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_GLOBAL_POSITION_INT_COV_FIELD_COVARIANCE_NUM) return 0;
-    return ((float*)&(msg->payload[36]))[index];     
+    return ((float*)&(msg->payload[36]))[index];
 }
 
 

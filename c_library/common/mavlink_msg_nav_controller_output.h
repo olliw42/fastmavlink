@@ -28,7 +28,6 @@ typedef struct _fmav_nav_controller_output_t {
 
 #define FASTMAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT  62
 
-#define FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MIN  26
 #define FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MAX  26
 #define FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_CRCEXTRA  183
 
@@ -83,7 +82,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_controller_output_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -130,7 +128,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_controller_output_pack_to_f
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_CRCEXTRA,
         _status);
@@ -176,7 +173,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_controller_output_pack_to_s
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT,
-        FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_CRCEXTRA,
         _status);
@@ -194,7 +190,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_controller_output_encode_to
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT,
-        FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_CRCEXTRA,
         _status);
@@ -205,77 +200,78 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_controller_output_encode_to
 //----------------------------------------
 //-- Message NAV_CONTROLLER_OUTPUT unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_nav_controller_output_decode(fmav_nav_controller_output_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_nav_controller_output_get_field_nav_roll(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[0]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_nav_controller_output_get_field_nav_pitch(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[4]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_nav_controller_output_get_field_alt_error(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[8]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_nav_controller_output_get_field_aspd_error(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[12]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_nav_controller_output_get_field_xtrack_error(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[16]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_nav_controller_output_get_field_nav_bearing(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[20]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_nav_controller_output_get_field_target_bearing(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[22]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[22]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_controller_output_get_field_wp_dist(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[24]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[24]), sizeof(uint16_t));
+    return r;
 }
 
 

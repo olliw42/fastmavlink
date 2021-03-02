@@ -32,7 +32,6 @@ typedef struct _fmav_sensor_offsets_t {
 
 #define FASTMAVLINK_MSG_ID_SENSOR_OFFSETS  150
 
-#define FASTMAVLINK_MSG_SENSOR_OFFSETS_PAYLOAD_LEN_MIN  42
 #define FASTMAVLINK_MSG_SENSOR_OFFSETS_PAYLOAD_LEN_MAX  42
 #define FASTMAVLINK_MSG_SENSOR_OFFSETS_CRCEXTRA  134
 
@@ -95,7 +94,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sensor_offsets_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_SENSOR_OFFSETS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SENSOR_OFFSETS_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -146,7 +144,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sensor_offsets_pack_to_frame_bu
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_SENSOR_OFFSETS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SENSOR_OFFSETS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_SENSOR_OFFSETS_CRCEXTRA,
         _status);
@@ -196,7 +193,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sensor_offsets_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_SENSOR_OFFSETS,
-        FASTMAVLINK_MSG_SENSOR_OFFSETS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SENSOR_OFFSETS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_SENSOR_OFFSETS_CRCEXTRA,
         _status);
@@ -214,7 +210,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sensor_offsets_encode_to_serial
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_SENSOR_OFFSETS,
-        FASTMAVLINK_MSG_SENSOR_OFFSETS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SENSOR_OFFSETS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_SENSOR_OFFSETS_CRCEXTRA,
         _status);
@@ -225,109 +220,110 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sensor_offsets_encode_to_serial
 //----------------------------------------
 //-- Message SENSOR_OFFSETS unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_sensor_offsets_decode(fmav_sensor_offsets_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_SENSOR_OFFSETS_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_SENSOR_OFFSETS_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_SENSOR_OFFSETS_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_SENSOR_OFFSETS_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sensor_offsets_get_field_mag_declination(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[0]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_sensor_offsets_get_field_raw_press(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_sensor_offsets_get_field_raw_temp(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sensor_offsets_get_field_gyro_cal_x(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[12]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sensor_offsets_get_field_gyro_cal_y(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[16]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sensor_offsets_get_field_gyro_cal_z(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[20]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sensor_offsets_get_field_accel_cal_x(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[24]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sensor_offsets_get_field_accel_cal_y(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[28]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sensor_offsets_get_field_accel_cal_z(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[32]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_sensor_offsets_get_field_mag_ofs_x(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[36]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[36]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_sensor_offsets_get_field_mag_ofs_y(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[38]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[38]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_sensor_offsets_get_field_mag_ofs_z(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[40]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[40]), sizeof(int16_t));
+    return r;
 }
 
 

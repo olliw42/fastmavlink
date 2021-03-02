@@ -26,7 +26,6 @@ typedef struct _fmav_command_ack_t {
 
 #define FASTMAVLINK_MSG_ID_COMMAND_ACK  77
 
-#define FASTMAVLINK_MSG_COMMAND_ACK_PAYLOAD_LEN_MIN  3
 #define FASTMAVLINK_MSG_COMMAND_ACK_PAYLOAD_LEN_MAX  10
 #define FASTMAVLINK_MSG_COMMAND_ACK_CRCEXTRA  143
 
@@ -77,7 +76,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_ack_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_COMMAND_ACK_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_COMMAND_ACK_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -122,7 +120,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_ack_pack_to_frame_buf(
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_COMMAND_ACK_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_COMMAND_ACK_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_COMMAND_ACK_CRCEXTRA,
         _status);
@@ -166,7 +163,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_ack_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_COMMAND_ACK,
-        FASTMAVLINK_MSG_COMMAND_ACK_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_COMMAND_ACK_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_COMMAND_ACK_CRCEXTRA,
         _status);
@@ -184,7 +180,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_ack_encode_to_serial(
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_COMMAND_ACK,
-        FASTMAVLINK_MSG_COMMAND_ACK_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_COMMAND_ACK_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_COMMAND_ACK_CRCEXTRA,
         _status);
@@ -195,61 +190,62 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_ack_encode_to_serial(
 //----------------------------------------
 //-- Message COMMAND_ACK unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_command_ack_decode(fmav_command_ack_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_COMMAND_ACK_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_COMMAND_ACK_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_COMMAND_ACK_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_COMMAND_ACK_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_command_ack_get_field_command(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_command_ack_get_field_result(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[2]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[2]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_command_ack_get_field_progress(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[3]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[3]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_command_ack_get_field_result_param2(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_command_ack_get_field_target_system(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_command_ack_get_field_target_component(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[9]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[9]), sizeof(uint8_t));
+    return r;
 }
 
 

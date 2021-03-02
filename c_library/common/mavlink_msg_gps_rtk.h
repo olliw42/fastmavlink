@@ -33,7 +33,6 @@ typedef struct _fmav_gps_rtk_t {
 
 #define FASTMAVLINK_MSG_ID_GPS_RTK  127
 
-#define FASTMAVLINK_MSG_GPS_RTK_PAYLOAD_LEN_MIN  35
 #define FASTMAVLINK_MSG_GPS_RTK_PAYLOAD_LEN_MAX  35
 #define FASTMAVLINK_MSG_GPS_RTK_CRCEXTRA  25
 
@@ -98,7 +97,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_rtk_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_GPS_RTK_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GPS_RTK_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -150,7 +148,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_rtk_pack_to_frame_buf(
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_GPS_RTK_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GPS_RTK_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_GPS_RTK_CRCEXTRA,
         _status);
@@ -201,7 +198,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_rtk_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_GPS_RTK,
-        FASTMAVLINK_MSG_GPS_RTK_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GPS_RTK_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_GPS_RTK_CRCEXTRA,
         _status);
@@ -219,7 +215,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_rtk_encode_to_serial(
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_GPS_RTK,
-        FASTMAVLINK_MSG_GPS_RTK_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GPS_RTK_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_GPS_RTK_CRCEXTRA,
         _status);
@@ -230,117 +225,118 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_rtk_encode_to_serial(
 //----------------------------------------
 //-- Message GPS_RTK unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gps_rtk_decode(fmav_gps_rtk_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_GPS_RTK_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_GPS_RTK_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_GPS_RTK_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_GPS_RTK_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_gps_rtk_get_field_time_last_baseline_ms(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_gps_rtk_get_field_tow(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_gps_rtk_get_field_baseline_a_mm(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_gps_rtk_get_field_baseline_b_mm(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[12]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_gps_rtk_get_field_baseline_c_mm(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[16]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_gps_rtk_get_field_accuracy(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[20]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_gps_rtk_get_field_iar_num_hypotheses(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[24]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[24]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_rtk_get_field_wn(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[28]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[28]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gps_rtk_get_field_rtk_receiver_id(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[30]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[30]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gps_rtk_get_field_rtk_health(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[31]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[31]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gps_rtk_get_field_rtk_rate(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[32]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[32]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gps_rtk_get_field_nsats(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[33]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[33]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gps_rtk_get_field_baseline_coords_type(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[34]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[34]), sizeof(uint8_t));
+    return r;
 }
 
 

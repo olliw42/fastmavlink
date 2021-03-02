@@ -22,7 +22,6 @@ typedef struct _fmav_camera_trigger_t {
 
 #define FASTMAVLINK_MSG_ID_CAMERA_TRIGGER  112
 
-#define FASTMAVLINK_MSG_CAMERA_TRIGGER_PAYLOAD_LEN_MIN  12
 #define FASTMAVLINK_MSG_CAMERA_TRIGGER_PAYLOAD_LEN_MAX  12
 #define FASTMAVLINK_MSG_CAMERA_TRIGGER_CRCEXTRA  174
 
@@ -65,7 +64,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_trigger_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_CAMERA_TRIGGER_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_CAMERA_TRIGGER_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -106,7 +104,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_trigger_pack_to_frame_bu
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_CAMERA_TRIGGER_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_CAMERA_TRIGGER_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_CAMERA_TRIGGER_CRCEXTRA,
         _status);
@@ -146,7 +143,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_trigger_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_CAMERA_TRIGGER,
-        FASTMAVLINK_MSG_CAMERA_TRIGGER_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_CAMERA_TRIGGER_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_CAMERA_TRIGGER_CRCEXTRA,
         _status);
@@ -164,7 +160,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_trigger_encode_to_serial
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_CAMERA_TRIGGER,
-        FASTMAVLINK_MSG_CAMERA_TRIGGER_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_CAMERA_TRIGGER_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_CAMERA_TRIGGER_CRCEXTRA,
         _status);
@@ -175,29 +170,30 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_trigger_encode_to_serial
 //----------------------------------------
 //-- Message CAMERA_TRIGGER unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_camera_trigger_decode(fmav_camera_trigger_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_CAMERA_TRIGGER_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_CAMERA_TRIGGER_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_CAMERA_TRIGGER_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_CAMERA_TRIGGER_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_camera_trigger_get_field_time_usec(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_camera_trigger_get_field_seq(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(uint32_t));
+    return r;
 }
 
 

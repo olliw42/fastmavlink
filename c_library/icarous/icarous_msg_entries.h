@@ -12,8 +12,8 @@
 //-- The values of msg_entry_t for all messages in the dialect.
 //------------------------------
  
-#define FASTMAVLINK_MSG_ENTRY_ICAROUS_HEARTBEAT  {42000, 227, 1, 1, 0, 0, 0}
-#define FASTMAVLINK_MSG_ENTRY_ICAROUS_KINEMATIC_BANDS  {42001, 239, 46, 46, 0, 0, 0}
+#define FASTMAVLINK_MSG_ENTRY_ICAROUS_HEARTBEAT  {42000, 227, 1, 0, 0, 0}
+#define FASTMAVLINK_MSG_ENTRY_ICAROUS_KINEMATIC_BANDS  {42001, 239, 46, 0, 0, 0}
 
 
 /*------------------------------

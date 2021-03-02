@@ -26,7 +26,6 @@ typedef struct _fmav_vfr_hud_t {
 
 #define FASTMAVLINK_MSG_ID_VFR_HUD  74
 
-#define FASTMAVLINK_MSG_VFR_HUD_PAYLOAD_LEN_MIN  20
 #define FASTMAVLINK_MSG_VFR_HUD_PAYLOAD_LEN_MAX  20
 #define FASTMAVLINK_MSG_VFR_HUD_CRCEXTRA  20
 
@@ -77,7 +76,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vfr_hud_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_VFR_HUD_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_VFR_HUD_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -122,7 +120,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vfr_hud_pack_to_frame_buf(
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_VFR_HUD_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_VFR_HUD_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_VFR_HUD_CRCEXTRA,
         _status);
@@ -166,7 +163,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vfr_hud_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_VFR_HUD,
-        FASTMAVLINK_MSG_VFR_HUD_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_VFR_HUD_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_VFR_HUD_CRCEXTRA,
         _status);
@@ -184,7 +180,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vfr_hud_encode_to_serial(
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_VFR_HUD,
-        FASTMAVLINK_MSG_VFR_HUD_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_VFR_HUD_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_VFR_HUD_CRCEXTRA,
         _status);
@@ -195,61 +190,62 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vfr_hud_encode_to_serial(
 //----------------------------------------
 //-- Message VFR_HUD unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_vfr_hud_decode(fmav_vfr_hud_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_VFR_HUD_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_VFR_HUD_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_VFR_HUD_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_VFR_HUD_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vfr_hud_get_field_airspeed(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[0]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vfr_hud_get_field_groundspeed(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[4]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vfr_hud_get_field_alt(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[8]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vfr_hud_get_field_climb(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[12]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_vfr_hud_get_field_heading(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[16]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vfr_hud_get_field_throttle(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[18]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[18]), sizeof(uint16_t));
+    return r;
 }
 
 

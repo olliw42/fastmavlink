@@ -28,7 +28,6 @@ typedef struct _fmav_vicon_position_estimate_t {
 
 #define FASTMAVLINK_MSG_ID_VICON_POSITION_ESTIMATE  104
 
-#define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MIN  32
 #define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MAX  116
 #define FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_CRCEXTRA  56
 
@@ -83,7 +82,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vicon_position_estimate_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -129,7 +127,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vicon_position_estimate_pack_to
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_CRCEXTRA,
         _status);
@@ -174,7 +171,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vicon_position_estimate_pack_to
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_VICON_POSITION_ESTIMATE,
-        FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_CRCEXTRA,
         _status);
@@ -192,7 +188,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vicon_position_estimate_encode_
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_VICON_POSITION_ESTIMATE,
-        FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_CRCEXTRA,
         _status);
@@ -203,69 +198,70 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vicon_position_estimate_encode_
 //----------------------------------------
 //-- Message VICON_POSITION_ESTIMATE unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_vicon_position_estimate_decode(fmav_vicon_position_estimate_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_vicon_position_estimate_get_field_usec(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vicon_position_estimate_get_field_x(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[8]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vicon_position_estimate_get_field_y(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[12]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vicon_position_estimate_get_field_z(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[16]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vicon_position_estimate_get_field_roll(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[20]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vicon_position_estimate_get_field_pitch(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[24]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vicon_position_estimate_get_field_yaw(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[28]), sizeof(float));
+    return r;
 }
 
 
@@ -278,7 +274,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_vicon_position_estimate_get_field
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vicon_position_estimate_get_field_covariance(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_FIELD_COVARIANCE_NUM) return 0;
-    return ((float*)&(msg->payload[32]))[index];     
+    return ((float*)&(msg->payload[32]))[index];
 }
 
 

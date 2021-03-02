@@ -28,7 +28,6 @@ typedef struct _fmav_uavionix_adsb_out_cfg_t {
 
 #define FASTMAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG  10001
 
-#define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN_MIN  20
 #define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN_MAX  20
 #define FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_CRCEXTRA  209
 
@@ -83,7 +82,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_cfg_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -129,7 +127,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_cfg_pack_to_f
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_CRCEXTRA,
         _status);
@@ -174,7 +171,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_cfg_pack_to_s
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG,
-        FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_CRCEXTRA,
         _status);
@@ -192,7 +188,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_cfg_encode_to
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG,
-        FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_CRCEXTRA,
         _status);
@@ -203,69 +198,70 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_cfg_encode_to
 //----------------------------------------
 //-- Message UAVIONIX_ADSB_OUT_CFG unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_uavionix_adsb_out_cfg_decode(fmav_uavionix_adsb_out_cfg_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_uavionix_adsb_out_cfg_get_field_ICAO(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_cfg_get_field_stallSpeed(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_uavionix_adsb_out_cfg_get_field_emitterType(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[15]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[15]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_uavionix_adsb_out_cfg_get_field_aircraftSize(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[16]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_uavionix_adsb_out_cfg_get_field_gpsOffsetLat(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[17]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[17]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_uavionix_adsb_out_cfg_get_field_gpsOffsetLon(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[18]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[18]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_uavionix_adsb_out_cfg_get_field_rfSelect(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[19]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[19]), sizeof(uint8_t));
+    return r;
 }
 
 
@@ -278,7 +274,7 @@ FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_uavionix_adsb_out_cfg_get_field_ca
 FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_uavionix_adsb_out_cfg_get_field_callsign(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_CFG_FIELD_CALLSIGN_NUM) return 0;
-    return ((char*)&(msg->payload[6]))[index];     
+    return ((char*)&(msg->payload[6]))[index];
 }
 
 

@@ -41,7 +41,6 @@ typedef struct _fmav_sim_state_t {
 
 #define FASTMAVLINK_MSG_ID_SIM_STATE  108
 
-#define FASTMAVLINK_MSG_SIM_STATE_PAYLOAD_LEN_MIN  84
 #define FASTMAVLINK_MSG_SIM_STATE_PAYLOAD_LEN_MAX  84
 #define FASTMAVLINK_MSG_SIM_STATE_CRCEXTRA  32
 
@@ -122,7 +121,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sim_state_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_SIM_STATE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SIM_STATE_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -182,7 +180,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sim_state_pack_to_frame_buf(
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_SIM_STATE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SIM_STATE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_SIM_STATE_CRCEXTRA,
         _status);
@@ -241,7 +238,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sim_state_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_SIM_STATE,
-        FASTMAVLINK_MSG_SIM_STATE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SIM_STATE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_SIM_STATE_CRCEXTRA,
         _status);
@@ -259,7 +255,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sim_state_encode_to_serial(
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_SIM_STATE,
-        FASTMAVLINK_MSG_SIM_STATE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SIM_STATE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_SIM_STATE_CRCEXTRA,
         _status);
@@ -270,181 +265,182 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sim_state_encode_to_serial(
 //----------------------------------------
 //-- Message SIM_STATE unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_sim_state_decode(fmav_sim_state_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_SIM_STATE_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_SIM_STATE_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_SIM_STATE_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_SIM_STATE_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sim_state_get_field_q1(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[0]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sim_state_get_field_q2(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[4]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sim_state_get_field_q3(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[8]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sim_state_get_field_q4(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[12]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sim_state_get_field_roll(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[16]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sim_state_get_field_pitch(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[20]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sim_state_get_field_yaw(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[24]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sim_state_get_field_xacc(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[28]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sim_state_get_field_yacc(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[32]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sim_state_get_field_zacc(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[36]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[36]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sim_state_get_field_xgyro(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[40]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[40]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sim_state_get_field_ygyro(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[44]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[44]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sim_state_get_field_zgyro(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[48]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[48]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sim_state_get_field_lat(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[52]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[52]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sim_state_get_field_lon(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[56]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[56]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sim_state_get_field_alt(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[60]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[60]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sim_state_get_field_std_dev_horz(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[64]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[64]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sim_state_get_field_std_dev_vert(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[68]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[68]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sim_state_get_field_vn(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[72]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[72]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sim_state_get_field_ve(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[76]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[76]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sim_state_get_field_vd(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[80]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[80]), sizeof(float));
+    return r;
 }
 
 

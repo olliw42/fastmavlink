@@ -33,7 +33,6 @@ typedef struct _fmav_camera_tracking_geo_status_t {
 
 #define FASTMAVLINK_MSG_ID_CAMERA_TRACKING_GEO_STATUS  276
 
-#define FASTMAVLINK_MSG_CAMERA_TRACKING_GEO_STATUS_PAYLOAD_LEN_MIN  49
 #define FASTMAVLINK_MSG_CAMERA_TRACKING_GEO_STATUS_PAYLOAD_LEN_MAX  49
 #define FASTMAVLINK_MSG_CAMERA_TRACKING_GEO_STATUS_CRCEXTRA  18
 
@@ -98,7 +97,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_tracking_geo_status_pack
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_CAMERA_TRACKING_GEO_STATUS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_CAMERA_TRACKING_GEO_STATUS_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -150,7 +148,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_tracking_geo_status_pack
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_CAMERA_TRACKING_GEO_STATUS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_CAMERA_TRACKING_GEO_STATUS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_CAMERA_TRACKING_GEO_STATUS_CRCEXTRA,
         _status);
@@ -201,7 +198,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_tracking_geo_status_pack
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_CAMERA_TRACKING_GEO_STATUS,
-        FASTMAVLINK_MSG_CAMERA_TRACKING_GEO_STATUS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_CAMERA_TRACKING_GEO_STATUS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_CAMERA_TRACKING_GEO_STATUS_CRCEXTRA,
         _status);
@@ -219,7 +215,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_tracking_geo_status_enco
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_CAMERA_TRACKING_GEO_STATUS,
-        FASTMAVLINK_MSG_CAMERA_TRACKING_GEO_STATUS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_CAMERA_TRACKING_GEO_STATUS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_CAMERA_TRACKING_GEO_STATUS_CRCEXTRA,
         _status);
@@ -230,117 +225,118 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_tracking_geo_status_enco
 //----------------------------------------
 //-- Message CAMERA_TRACKING_GEO_STATUS unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_camera_tracking_geo_status_decode(fmav_camera_tracking_geo_status_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_CAMERA_TRACKING_GEO_STATUS_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_CAMERA_TRACKING_GEO_STATUS_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_CAMERA_TRACKING_GEO_STATUS_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_CAMERA_TRACKING_GEO_STATUS_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_camera_tracking_geo_status_get_field_lat(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_camera_tracking_geo_status_get_field_lon(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_tracking_geo_status_get_field_alt(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[8]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_tracking_geo_status_get_field_h_acc(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[12]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_tracking_geo_status_get_field_v_acc(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[16]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_tracking_geo_status_get_field_vel_n(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[20]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_tracking_geo_status_get_field_vel_e(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[24]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_tracking_geo_status_get_field_vel_d(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[28]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_tracking_geo_status_get_field_vel_acc(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[32]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_tracking_geo_status_get_field_dist(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[36]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[36]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_tracking_geo_status_get_field_hdg(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[40]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[40]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_tracking_geo_status_get_field_hdg_acc(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[44]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[44]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_camera_tracking_geo_status_get_field_tracking_status(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[48]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[48]), sizeof(uint8_t));
+    return r;
 }
 
 

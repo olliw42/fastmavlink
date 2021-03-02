@@ -26,7 +26,6 @@ typedef struct _fmav_radio_calibration_t {
 
 #define FASTMAVLINK_MSG_ID_RADIO_CALIBRATION  221
 
-#define FASTMAVLINK_MSG_RADIO_CALIBRATION_PAYLOAD_LEN_MIN  42
 #define FASTMAVLINK_MSG_RADIO_CALIBRATION_PAYLOAD_LEN_MAX  42
 #define FASTMAVLINK_MSG_RADIO_CALIBRATION_CRCEXTRA  71
 
@@ -88,7 +87,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_calibration_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_RADIO_CALIBRATION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_RADIO_CALIBRATION_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -133,7 +131,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_calibration_pack_to_frame
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_RADIO_CALIBRATION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_RADIO_CALIBRATION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_RADIO_CALIBRATION_CRCEXTRA,
         _status);
@@ -177,7 +174,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_calibration_pack_to_seria
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_RADIO_CALIBRATION,
-        FASTMAVLINK_MSG_RADIO_CALIBRATION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_RADIO_CALIBRATION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_RADIO_CALIBRATION_CRCEXTRA,
         _status);
@@ -195,7 +191,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_calibration_encode_to_ser
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_RADIO_CALIBRATION,
-        FASTMAVLINK_MSG_RADIO_CALIBRATION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_RADIO_CALIBRATION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_RADIO_CALIBRATION_CRCEXTRA,
         _status);
@@ -206,12 +201,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_calibration_encode_to_ser
 //----------------------------------------
 //-- Message RADIO_CALIBRATION unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_radio_calibration_decode(fmav_radio_calibration_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_RADIO_CALIBRATION_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_RADIO_CALIBRATION_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_RADIO_CALIBRATION_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_RADIO_CALIBRATION_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
@@ -228,7 +224,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_radio_calibration_get_field_ai
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_calibration_get_field_aileron(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_AILERON_NUM) return 0;
-    return ((uint16_t*)&(msg->payload[0]))[index];     
+    return ((uint16_t*)&(msg->payload[0]))[index];
 }
 
 
@@ -241,7 +237,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_radio_calibration_get_field_el
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_calibration_get_field_elevator(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_ELEVATOR_NUM) return 0;
-    return ((uint16_t*)&(msg->payload[6]))[index];     
+    return ((uint16_t*)&(msg->payload[6]))[index];
 }
 
 
@@ -254,7 +250,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_radio_calibration_get_field_ru
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_calibration_get_field_rudder(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_RUDDER_NUM) return 0;
-    return ((uint16_t*)&(msg->payload[12]))[index];     
+    return ((uint16_t*)&(msg->payload[12]))[index];
 }
 
 
@@ -267,7 +263,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_radio_calibration_get_field_gy
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_calibration_get_field_gyro(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_GYRO_NUM) return 0;
-    return ((uint16_t*)&(msg->payload[18]))[index];     
+    return ((uint16_t*)&(msg->payload[18]))[index];
 }
 
 
@@ -280,7 +276,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_radio_calibration_get_field_pi
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_calibration_get_field_pitch(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_PITCH_NUM) return 0;
-    return ((uint16_t*)&(msg->payload[22]))[index];     
+    return ((uint16_t*)&(msg->payload[22]))[index];
 }
 
 
@@ -293,7 +289,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_radio_calibration_get_field_th
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_calibration_get_field_throttle(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_RADIO_CALIBRATION_FIELD_THROTTLE_NUM) return 0;
-    return ((uint16_t*)&(msg->payload[32]))[index];     
+    return ((uint16_t*)&(msg->payload[32]))[index];
 }
 
 

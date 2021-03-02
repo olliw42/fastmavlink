@@ -21,7 +21,6 @@ typedef struct _fmav_mission_item_reached_t {
 
 #define FASTMAVLINK_MSG_ID_MISSION_ITEM_REACHED  46
 
-#define FASTMAVLINK_MSG_MISSION_ITEM_REACHED_PAYLOAD_LEN_MIN  2
 #define FASTMAVLINK_MSG_MISSION_ITEM_REACHED_PAYLOAD_LEN_MAX  2
 #define FASTMAVLINK_MSG_MISSION_ITEM_REACHED_CRCEXTRA  11
 
@@ -62,7 +61,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_item_reached_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_MISSION_ITEM_REACHED_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MISSION_ITEM_REACHED_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -102,7 +100,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_item_reached_pack_to_fr
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_MISSION_ITEM_REACHED_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MISSION_ITEM_REACHED_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MISSION_ITEM_REACHED_CRCEXTRA,
         _status);
@@ -141,7 +138,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_item_reached_pack_to_se
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_MISSION_ITEM_REACHED,
-        FASTMAVLINK_MSG_MISSION_ITEM_REACHED_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MISSION_ITEM_REACHED_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MISSION_ITEM_REACHED_CRCEXTRA,
         _status);
@@ -159,7 +155,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_item_reached_encode_to_
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_MISSION_ITEM_REACHED,
-        FASTMAVLINK_MSG_MISSION_ITEM_REACHED_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MISSION_ITEM_REACHED_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MISSION_ITEM_REACHED_CRCEXTRA,
         _status);
@@ -170,21 +165,22 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_item_reached_encode_to_
 //----------------------------------------
 //-- Message MISSION_ITEM_REACHED unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_mission_item_reached_decode(fmav_mission_item_reached_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_MISSION_ITEM_REACHED_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_MISSION_ITEM_REACHED_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_MISSION_ITEM_REACHED_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_MISSION_ITEM_REACHED_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_item_reached_get_field_seq(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t));
+    return r;
 }
 
 

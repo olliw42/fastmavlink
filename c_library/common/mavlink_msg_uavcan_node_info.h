@@ -29,7 +29,6 @@ typedef struct _fmav_uavcan_node_info_t {
 
 #define FASTMAVLINK_MSG_ID_UAVCAN_NODE_INFO  311
 
-#define FASTMAVLINK_MSG_UAVCAN_NODE_INFO_PAYLOAD_LEN_MIN  116
 #define FASTMAVLINK_MSG_UAVCAN_NODE_INFO_PAYLOAD_LEN_MAX  116
 #define FASTMAVLINK_MSG_UAVCAN_NODE_INFO_CRCEXTRA  95
 
@@ -88,7 +87,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavcan_node_info_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_UAVCAN_NODE_INFO_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_UAVCAN_NODE_INFO_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -135,7 +133,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavcan_node_info_pack_to_frame_
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_UAVCAN_NODE_INFO_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_UAVCAN_NODE_INFO_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_UAVCAN_NODE_INFO_CRCEXTRA,
         _status);
@@ -181,7 +178,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavcan_node_info_pack_to_serial
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_UAVCAN_NODE_INFO,
-        FASTMAVLINK_MSG_UAVCAN_NODE_INFO_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_UAVCAN_NODE_INFO_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_UAVCAN_NODE_INFO_CRCEXTRA,
         _status);
@@ -199,7 +195,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavcan_node_info_encode_to_seri
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_UAVCAN_NODE_INFO,
-        FASTMAVLINK_MSG_UAVCAN_NODE_INFO_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_UAVCAN_NODE_INFO_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_UAVCAN_NODE_INFO_CRCEXTRA,
         _status);
@@ -210,69 +205,70 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavcan_node_info_encode_to_seri
 //----------------------------------------
 //-- Message UAVCAN_NODE_INFO unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_uavcan_node_info_decode(fmav_uavcan_node_info_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_UAVCAN_NODE_INFO_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_UAVCAN_NODE_INFO_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_UAVCAN_NODE_INFO_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_UAVCAN_NODE_INFO_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_uavcan_node_info_get_field_time_usec(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_uavcan_node_info_get_field_uptime_sec(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_uavcan_node_info_get_field_sw_vcs_commit(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[12]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_uavcan_node_info_get_field_hw_version_major(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[96]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[96]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_uavcan_node_info_get_field_hw_version_minor(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[97]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[97]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_uavcan_node_info_get_field_sw_version_major(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[114]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[114]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_uavcan_node_info_get_field_sw_version_minor(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[115]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[115]), sizeof(uint8_t));
+    return r;
 }
 
 
@@ -285,7 +281,7 @@ FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_uavcan_node_info_get_field_name_pt
 FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_uavcan_node_info_get_field_name(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_UAVCAN_NODE_INFO_FIELD_NAME_NUM) return 0;
-    return ((char*)&(msg->payload[16]))[index];     
+    return ((char*)&(msg->payload[16]))[index];
 }
 
 
@@ -298,7 +294,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_uavcan_node_info_get_field_hw_u
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_uavcan_node_info_get_field_hw_unique_id(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_UAVCAN_NODE_INFO_FIELD_HW_UNIQUE_ID_NUM) return 0;
-    return ((uint8_t*)&(msg->payload[98]))[index];     
+    return ((uint8_t*)&(msg->payload[98]))[index];
 }
 
 

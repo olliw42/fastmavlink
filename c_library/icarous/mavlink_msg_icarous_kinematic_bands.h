@@ -36,7 +36,6 @@ typedef struct _fmav_icarous_kinematic_bands_t {
 
 #define FASTMAVLINK_MSG_ID_ICAROUS_KINEMATIC_BANDS  42001
 
-#define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN_MIN  46
 #define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN_MAX  46
 #define FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_CRCEXTRA  239
 
@@ -107,7 +106,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_icarous_kinematic_bands_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -162,7 +160,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_icarous_kinematic_bands_pack_to
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_CRCEXTRA,
         _status);
@@ -216,7 +213,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_icarous_kinematic_bands_pack_to
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_ICAROUS_KINEMATIC_BANDS,
-        FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_CRCEXTRA,
         _status);
@@ -234,7 +230,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_icarous_kinematic_bands_encode_
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_ICAROUS_KINEMATIC_BANDS,
-        FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_CRCEXTRA,
         _status);
@@ -245,141 +240,142 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_icarous_kinematic_bands_encode_
 //----------------------------------------
 //-- Message ICAROUS_KINEMATIC_BANDS unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_icarous_kinematic_bands_decode(fmav_icarous_kinematic_bands_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_ICAROUS_KINEMATIC_BANDS_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_icarous_kinematic_bands_get_field_min1(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[0]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_icarous_kinematic_bands_get_field_max1(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[4]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_icarous_kinematic_bands_get_field_min2(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[8]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_icarous_kinematic_bands_get_field_max2(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[12]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_icarous_kinematic_bands_get_field_min3(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[16]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_icarous_kinematic_bands_get_field_max3(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[20]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_icarous_kinematic_bands_get_field_min4(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[24]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_icarous_kinematic_bands_get_field_max4(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[28]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_icarous_kinematic_bands_get_field_min5(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[32]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_icarous_kinematic_bands_get_field_max5(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[36]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[36]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_icarous_kinematic_bands_get_field_numBands(const fmav_message_t* msg)
 {
-    int8_t r; 
-    memcpy(&r, &(msg->payload[40]), sizeof(int8_t)); 
-    return r;     
+    int8_t r;
+    memcpy(&r, &(msg->payload[40]), sizeof(int8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_icarous_kinematic_bands_get_field_type1(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[41]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[41]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_icarous_kinematic_bands_get_field_type2(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[42]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[42]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_icarous_kinematic_bands_get_field_type3(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[43]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[43]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_icarous_kinematic_bands_get_field_type4(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[44]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[44]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_icarous_kinematic_bands_get_field_type5(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[45]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[45]), sizeof(uint8_t));
+    return r;
 }
 
 

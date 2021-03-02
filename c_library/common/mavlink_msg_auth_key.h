@@ -21,7 +21,6 @@ typedef struct _fmav_auth_key_t {
 
 #define FASTMAVLINK_MSG_ID_AUTH_KEY  7
 
-#define FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN_MIN  32
 #define FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN_MAX  32
 #define FASTMAVLINK_MSG_AUTH_KEY_CRCEXTRA  119
 
@@ -63,7 +62,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_auth_key_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -103,7 +101,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_auth_key_pack_to_frame_buf(
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_AUTH_KEY_CRCEXTRA,
         _status);
@@ -142,7 +139,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_auth_key_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_AUTH_KEY,
-        FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_AUTH_KEY_CRCEXTRA,
         _status);
@@ -160,7 +156,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_auth_key_encode_to_serial(
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_AUTH_KEY,
-        FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_AUTH_KEY_CRCEXTRA,
         _status);
@@ -171,12 +166,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_auth_key_encode_to_serial(
 //----------------------------------------
 //-- Message AUTH_KEY unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_auth_key_decode(fmav_auth_key_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_AUTH_KEY_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
@@ -193,7 +189,7 @@ FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_auth_key_get_field_key_ptr(const f
 FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_auth_key_get_field_key(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_AUTH_KEY_FIELD_KEY_NUM) return 0;
-    return ((char*)&(msg->payload[0]))[index];     
+    return ((char*)&(msg->payload[0]))[index];
 }
 
 

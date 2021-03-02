@@ -27,7 +27,6 @@ typedef struct _fmav_nav_filter_bias_t {
 
 #define FASTMAVLINK_MSG_ID_NAV_FILTER_BIAS  220
 
-#define FASTMAVLINK_MSG_NAV_FILTER_BIAS_PAYLOAD_LEN_MIN  32
 #define FASTMAVLINK_MSG_NAV_FILTER_BIAS_PAYLOAD_LEN_MAX  32
 #define FASTMAVLINK_MSG_NAV_FILTER_BIAS_CRCEXTRA  34
 
@@ -80,7 +79,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_filter_bias_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_NAV_FILTER_BIAS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_NAV_FILTER_BIAS_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -126,7 +124,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_filter_bias_pack_to_frame_b
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_NAV_FILTER_BIAS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_NAV_FILTER_BIAS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_NAV_FILTER_BIAS_CRCEXTRA,
         _status);
@@ -171,7 +168,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_filter_bias_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_NAV_FILTER_BIAS,
-        FASTMAVLINK_MSG_NAV_FILTER_BIAS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_NAV_FILTER_BIAS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_NAV_FILTER_BIAS_CRCEXTRA,
         _status);
@@ -189,7 +185,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_filter_bias_encode_to_seria
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_NAV_FILTER_BIAS,
-        FASTMAVLINK_MSG_NAV_FILTER_BIAS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_NAV_FILTER_BIAS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_NAV_FILTER_BIAS_CRCEXTRA,
         _status);
@@ -200,69 +195,70 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_filter_bias_encode_to_seria
 //----------------------------------------
 //-- Message NAV_FILTER_BIAS unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_nav_filter_bias_decode(fmav_nav_filter_bias_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_NAV_FILTER_BIAS_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_NAV_FILTER_BIAS_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_NAV_FILTER_BIAS_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_NAV_FILTER_BIAS_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_nav_filter_bias_get_field_usec(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_nav_filter_bias_get_field_accel_0(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[8]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_nav_filter_bias_get_field_accel_1(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[12]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_nav_filter_bias_get_field_accel_2(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[16]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_nav_filter_bias_get_field_gyro_0(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[20]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_nav_filter_bias_get_field_gyro_1(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[24]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_nav_filter_bias_get_field_gyro_2(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[28]), sizeof(float));
+    return r;
 }
 
 

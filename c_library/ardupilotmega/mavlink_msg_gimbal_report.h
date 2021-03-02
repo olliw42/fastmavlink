@@ -32,7 +32,6 @@ typedef struct _fmav_gimbal_report_t {
 
 #define FASTMAVLINK_MSG_ID_GIMBAL_REPORT  200
 
-#define FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN_MIN  42
 #define FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN_MAX  42
 #define FASTMAVLINK_MSG_GIMBAL_REPORT_CRCEXTRA  134
 
@@ -95,7 +94,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_report_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -146,7 +144,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_report_pack_to_frame_buf
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_GIMBAL_REPORT_CRCEXTRA,
         _status);
@@ -196,7 +193,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_report_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_GIMBAL_REPORT,
-        FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_GIMBAL_REPORT_CRCEXTRA,
         _status);
@@ -214,7 +210,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_report_encode_to_serial(
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_GIMBAL_REPORT,
-        FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_GIMBAL_REPORT_CRCEXTRA,
         _status);
@@ -225,109 +220,110 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_report_encode_to_serial(
 //----------------------------------------
 //-- Message GIMBAL_REPORT unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gimbal_report_decode(fmav_gimbal_report_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_GIMBAL_REPORT_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_report_get_field_delta_time(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[0]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_report_get_field_delta_angle_x(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[4]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_report_get_field_delta_angle_y(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[8]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_report_get_field_delta_angle_z(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[12]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_report_get_field_delta_velocity_x(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[16]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_report_get_field_delta_velocity_y(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[20]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_report_get_field_delta_velocity_z(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[24]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_report_get_field_joint_roll(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[28]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_report_get_field_joint_el(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[32]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_gimbal_report_get_field_joint_az(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[36]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[36]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gimbal_report_get_field_target_system(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[40]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[40]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gimbal_report_get_field_target_component(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[41]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[41]), sizeof(uint8_t));
+    return r;
 }
 
 

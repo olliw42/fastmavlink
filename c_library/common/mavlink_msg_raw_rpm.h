@@ -22,7 +22,6 @@ typedef struct _fmav_raw_rpm_t {
 
 #define FASTMAVLINK_MSG_ID_RAW_RPM  339
 
-#define FASTMAVLINK_MSG_RAW_RPM_PAYLOAD_LEN_MIN  5
 #define FASTMAVLINK_MSG_RAW_RPM_PAYLOAD_LEN_MAX  5
 #define FASTMAVLINK_MSG_RAW_RPM_CRCEXTRA  199
 
@@ -65,7 +64,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_rpm_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_RAW_RPM_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_RAW_RPM_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -106,7 +104,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_rpm_pack_to_frame_buf(
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_RAW_RPM_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_RAW_RPM_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_RAW_RPM_CRCEXTRA,
         _status);
@@ -146,7 +143,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_rpm_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_RAW_RPM,
-        FASTMAVLINK_MSG_RAW_RPM_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_RAW_RPM_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_RAW_RPM_CRCEXTRA,
         _status);
@@ -164,7 +160,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_rpm_encode_to_serial(
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_RAW_RPM,
-        FASTMAVLINK_MSG_RAW_RPM_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_RAW_RPM_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_RAW_RPM_CRCEXTRA,
         _status);
@@ -175,29 +170,30 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_rpm_encode_to_serial(
 //----------------------------------------
 //-- Message RAW_RPM unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_raw_rpm_decode(fmav_raw_rpm_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_RAW_RPM_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_RAW_RPM_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_RAW_RPM_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_RAW_RPM_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_raw_rpm_get_field_frequency(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[0]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_raw_rpm_get_field_index(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t));
+    return r;
 }
 
 

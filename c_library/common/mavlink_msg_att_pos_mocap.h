@@ -26,7 +26,6 @@ typedef struct _fmav_att_pos_mocap_t {
 
 #define FASTMAVLINK_MSG_ID_ATT_POS_MOCAP  138
 
-#define FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MIN  36
 #define FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MAX  120
 #define FASTMAVLINK_MSG_ATT_POS_MOCAP_CRCEXTRA  109
 
@@ -79,7 +78,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_att_pos_mocap_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -123,7 +121,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_att_pos_mocap_pack_to_frame_buf
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ATT_POS_MOCAP_CRCEXTRA,
         _status);
@@ -166,7 +163,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_att_pos_mocap_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_ATT_POS_MOCAP,
-        FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ATT_POS_MOCAP_CRCEXTRA,
         _status);
@@ -184,7 +180,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_att_pos_mocap_encode_to_serial(
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_ATT_POS_MOCAP,
-        FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ATT_POS_MOCAP_CRCEXTRA,
         _status);
@@ -195,45 +190,46 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_att_pos_mocap_encode_to_serial(
 //----------------------------------------
 //-- Message ATT_POS_MOCAP unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_att_pos_mocap_decode(fmav_att_pos_mocap_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_att_pos_mocap_get_field_time_usec(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_att_pos_mocap_get_field_x(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[24]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_att_pos_mocap_get_field_y(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[28]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_att_pos_mocap_get_field_z(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[32]), sizeof(float));
+    return r;
 }
 
 
@@ -246,7 +242,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_att_pos_mocap_get_field_q_ptr(con
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_att_pos_mocap_get_field_q(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ATT_POS_MOCAP_FIELD_Q_NUM) return 0;
-    return ((float*)&(msg->payload[8]))[index];     
+    return ((float*)&(msg->payload[8]))[index];
 }
 
 
@@ -259,7 +255,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_att_pos_mocap_get_field_covarianc
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_att_pos_mocap_get_field_covariance(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ATT_POS_MOCAP_FIELD_COVARIANCE_NUM) return 0;
-    return ((float*)&(msg->payload[36]))[index];     
+    return ((float*)&(msg->payload[36]))[index];
 }
 
 

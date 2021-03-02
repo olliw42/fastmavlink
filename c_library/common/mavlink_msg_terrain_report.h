@@ -27,7 +27,6 @@ typedef struct _fmav_terrain_report_t {
 
 #define FASTMAVLINK_MSG_ID_TERRAIN_REPORT  136
 
-#define FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN_MIN  22
 #define FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN_MAX  22
 #define FASTMAVLINK_MSG_TERRAIN_REPORT_CRCEXTRA  1
 
@@ -80,7 +79,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_report_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -126,7 +124,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_report_pack_to_frame_bu
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_TERRAIN_REPORT_CRCEXTRA,
         _status);
@@ -171,7 +168,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_report_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_TERRAIN_REPORT,
-        FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_TERRAIN_REPORT_CRCEXTRA,
         _status);
@@ -189,7 +185,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_report_encode_to_serial
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_TERRAIN_REPORT,
-        FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_TERRAIN_REPORT_CRCEXTRA,
         _status);
@@ -200,69 +195,70 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_report_encode_to_serial
 //----------------------------------------
 //-- Message TERRAIN_REPORT unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_terrain_report_decode(fmav_terrain_report_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_TERRAIN_REPORT_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_terrain_report_get_field_lat(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_terrain_report_get_field_lon(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_terrain_report_get_field_terrain_height(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[8]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_terrain_report_get_field_current_height(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[12]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_report_get_field_spacing(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[16]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_report_get_field_pending(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[18]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[18]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_terrain_report_get_field_loaded(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[20]), sizeof(uint16_t));
+    return r;
 }
 
 

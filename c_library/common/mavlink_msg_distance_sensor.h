@@ -32,7 +32,6 @@ typedef struct _fmav_distance_sensor_t {
 
 #define FASTMAVLINK_MSG_ID_DISTANCE_SENSOR  132
 
-#define FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MIN  14
 #define FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MAX  39
 #define FASTMAVLINK_MSG_DISTANCE_SENSOR_CRCEXTRA  85
 
@@ -95,7 +94,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -145,7 +143,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_pack_to_frame_b
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_DISTANCE_SENSOR_CRCEXTRA,
         _status);
@@ -194,7 +191,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_DISTANCE_SENSOR,
-        FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_DISTANCE_SENSOR_CRCEXTRA,
         _status);
@@ -212,7 +208,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_encode_to_seria
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_DISTANCE_SENSOR,
-        FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_DISTANCE_SENSOR_CRCEXTRA,
         _status);
@@ -223,101 +218,102 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_encode_to_seria
 //----------------------------------------
 //-- Message DISTANCE_SENSOR unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_distance_sensor_decode(fmav_distance_sensor_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_distance_sensor_get_field_time_boot_ms(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_get_field_min_distance(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_get_field_max_distance(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[6]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[6]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_get_field_current_distance(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_distance_sensor_get_field_type(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[10]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[10]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_distance_sensor_get_field_id(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[11]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[11]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_distance_sensor_get_field_orientation(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[12]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_distance_sensor_get_field_covariance(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[13]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[13]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_distance_sensor_get_field_horizontal_fov(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[14]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[14]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_distance_sensor_get_field_vertical_fov(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[18]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[18]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_distance_sensor_get_field_signal_quality(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[38]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[38]), sizeof(uint8_t));
+    return r;
 }
 
 
@@ -330,7 +326,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_distance_sensor_get_field_quatern
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_distance_sensor_get_field_quaternion(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_DISTANCE_SENSOR_FIELD_QUATERNION_NUM) return 0;
-    return ((float*)&(msg->payload[22]))[index];     
+    return ((float*)&(msg->payload[22]))[index];
 }
 
 

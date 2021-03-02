@@ -27,7 +27,6 @@ typedef struct _fmav_manual_setpoint_t {
 
 #define FASTMAVLINK_MSG_ID_MANUAL_SETPOINT  81
 
-#define FASTMAVLINK_MSG_MANUAL_SETPOINT_PAYLOAD_LEN_MIN  22
 #define FASTMAVLINK_MSG_MANUAL_SETPOINT_PAYLOAD_LEN_MAX  22
 #define FASTMAVLINK_MSG_MANUAL_SETPOINT_CRCEXTRA  106
 
@@ -80,7 +79,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_setpoint_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_MANUAL_SETPOINT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MANUAL_SETPOINT_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -126,7 +124,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_setpoint_pack_to_frame_b
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_MANUAL_SETPOINT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MANUAL_SETPOINT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MANUAL_SETPOINT_CRCEXTRA,
         _status);
@@ -171,7 +168,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_setpoint_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_MANUAL_SETPOINT,
-        FASTMAVLINK_MSG_MANUAL_SETPOINT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MANUAL_SETPOINT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MANUAL_SETPOINT_CRCEXTRA,
         _status);
@@ -189,7 +185,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_setpoint_encode_to_seria
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_MANUAL_SETPOINT,
-        FASTMAVLINK_MSG_MANUAL_SETPOINT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MANUAL_SETPOINT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MANUAL_SETPOINT_CRCEXTRA,
         _status);
@@ -200,69 +195,70 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_setpoint_encode_to_seria
 //----------------------------------------
 //-- Message MANUAL_SETPOINT unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_manual_setpoint_decode(fmav_manual_setpoint_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_MANUAL_SETPOINT_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_MANUAL_SETPOINT_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_MANUAL_SETPOINT_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_MANUAL_SETPOINT_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_manual_setpoint_get_field_time_boot_ms(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_manual_setpoint_get_field_roll(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[4]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_manual_setpoint_get_field_pitch(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[8]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_manual_setpoint_get_field_yaw(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[12]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_manual_setpoint_get_field_thrust(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[16]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_manual_setpoint_get_field_mode_switch(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[20]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_manual_setpoint_get_field_manual_override_switch(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[21]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[21]), sizeof(uint8_t));
+    return r;
 }
 
 

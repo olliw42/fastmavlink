@@ -25,7 +25,6 @@ typedef struct _fmav_set_actuator_control_target_t {
 
 #define FASTMAVLINK_MSG_ID_SET_ACTUATOR_CONTROL_TARGET  139
 
-#define FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MIN  43
 #define FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MAX  43
 #define FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_CRCEXTRA  168
 
@@ -74,7 +73,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_actuator_control_target_pac
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -117,7 +115,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_actuator_control_target_pac
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_CRCEXTRA,
         _status);
@@ -159,7 +156,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_actuator_control_target_pac
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_SET_ACTUATOR_CONTROL_TARGET,
-        FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_CRCEXTRA,
         _status);
@@ -177,7 +173,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_actuator_control_target_enc
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_SET_ACTUATOR_CONTROL_TARGET,
-        FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_CRCEXTRA,
         _status);
@@ -188,45 +183,46 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_actuator_control_target_enc
 //----------------------------------------
 //-- Message SET_ACTUATOR_CONTROL_TARGET unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_set_actuator_control_target_decode(fmav_set_actuator_control_target_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_set_actuator_control_target_get_field_time_usec(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_set_actuator_control_target_get_field_group_mlx(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[40]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[40]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_set_actuator_control_target_get_field_target_system(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[41]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[41]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_set_actuator_control_target_get_field_target_component(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[42]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[42]), sizeof(uint8_t));
+    return r;
 }
 
 
@@ -239,7 +235,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_set_actuator_control_target_get_f
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_set_actuator_control_target_get_field_controls(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_FIELD_CONTROLS_NUM) return 0;
-    return ((float*)&(msg->payload[8]))[index];     
+    return ((float*)&(msg->payload[8]))[index];
 }
 
 

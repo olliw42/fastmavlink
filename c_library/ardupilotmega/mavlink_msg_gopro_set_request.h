@@ -24,7 +24,6 @@ typedef struct _fmav_gopro_set_request_t {
 
 #define FASTMAVLINK_MSG_ID_GOPRO_SET_REQUEST  218
 
-#define FASTMAVLINK_MSG_GOPRO_SET_REQUEST_PAYLOAD_LEN_MIN  7
 #define FASTMAVLINK_MSG_GOPRO_SET_REQUEST_PAYLOAD_LEN_MAX  7
 #define FASTMAVLINK_MSG_GOPRO_SET_REQUEST_CRCEXTRA  17
 
@@ -71,7 +70,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gopro_set_request_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_GOPRO_SET_REQUEST_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GOPRO_SET_REQUEST_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -113,7 +111,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gopro_set_request_pack_to_frame
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_GOPRO_SET_REQUEST_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GOPRO_SET_REQUEST_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_GOPRO_SET_REQUEST_CRCEXTRA,
         _status);
@@ -154,7 +151,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gopro_set_request_pack_to_seria
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_GOPRO_SET_REQUEST,
-        FASTMAVLINK_MSG_GOPRO_SET_REQUEST_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GOPRO_SET_REQUEST_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_GOPRO_SET_REQUEST_CRCEXTRA,
         _status);
@@ -172,7 +168,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gopro_set_request_encode_to_ser
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_GOPRO_SET_REQUEST,
-        FASTMAVLINK_MSG_GOPRO_SET_REQUEST_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GOPRO_SET_REQUEST_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_GOPRO_SET_REQUEST_CRCEXTRA,
         _status);
@@ -183,37 +178,38 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gopro_set_request_encode_to_ser
 //----------------------------------------
 //-- Message GOPRO_SET_REQUEST unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gopro_set_request_decode(fmav_gopro_set_request_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_GOPRO_SET_REQUEST_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_GOPRO_SET_REQUEST_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_GOPRO_SET_REQUEST_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_GOPRO_SET_REQUEST_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gopro_set_request_get_field_target_system(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gopro_set_request_get_field_target_component(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[1]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[1]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gopro_set_request_get_field_cmd_id(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[2]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[2]), sizeof(uint8_t));
+    return r;
 }
 
 
@@ -226,7 +222,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_gopro_set_request_get_field_val
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gopro_set_request_get_field_value(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_GOPRO_SET_REQUEST_FIELD_VALUE_NUM) return 0;
-    return ((uint8_t*)&(msg->payload[3]))[index];     
+    return ((uint8_t*)&(msg->payload[3]))[index];
 }
 
 

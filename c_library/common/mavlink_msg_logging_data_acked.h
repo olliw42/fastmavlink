@@ -26,7 +26,6 @@ typedef struct _fmav_logging_data_acked_t {
 
 #define FASTMAVLINK_MSG_ID_LOGGING_DATA_ACKED  267
 
-#define FASTMAVLINK_MSG_LOGGING_DATA_ACKED_PAYLOAD_LEN_MIN  255
 #define FASTMAVLINK_MSG_LOGGING_DATA_ACKED_PAYLOAD_LEN_MAX  255
 #define FASTMAVLINK_MSG_LOGGING_DATA_ACKED_CRCEXTRA  35
 
@@ -77,7 +76,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_logging_data_acked_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_LOGGING_DATA_ACKED_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_LOGGING_DATA_ACKED_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -121,7 +119,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_logging_data_acked_pack_to_fram
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_LOGGING_DATA_ACKED_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_LOGGING_DATA_ACKED_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_LOGGING_DATA_ACKED_CRCEXTRA,
         _status);
@@ -164,7 +161,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_logging_data_acked_pack_to_seri
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_LOGGING_DATA_ACKED,
-        FASTMAVLINK_MSG_LOGGING_DATA_ACKED_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_LOGGING_DATA_ACKED_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_LOGGING_DATA_ACKED_CRCEXTRA,
         _status);
@@ -182,7 +178,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_logging_data_acked_encode_to_se
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_LOGGING_DATA_ACKED,
-        FASTMAVLINK_MSG_LOGGING_DATA_ACKED_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_LOGGING_DATA_ACKED_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_LOGGING_DATA_ACKED_CRCEXTRA,
         _status);
@@ -193,53 +188,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_logging_data_acked_encode_to_se
 //----------------------------------------
 //-- Message LOGGING_DATA_ACKED unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_logging_data_acked_decode(fmav_logging_data_acked_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_LOGGING_DATA_ACKED_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_LOGGING_DATA_ACKED_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_LOGGING_DATA_ACKED_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_LOGGING_DATA_ACKED_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_logging_data_acked_get_field_sequence(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_logging_data_acked_get_field_target_system(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[2]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[2]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_logging_data_acked_get_field_target_component(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[3]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[3]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_logging_data_acked_get_field_length(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_logging_data_acked_get_field_first_message_offset(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[5]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[5]), sizeof(uint8_t));
+    return r;
 }
 
 
@@ -252,7 +248,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_logging_data_acked_get_field_da
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_logging_data_acked_get_field_data(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_LOGGING_DATA_ACKED_FIELD_DATA_NUM) return 0;
-    return ((uint8_t*)&(msg->payload[6]))[index];     
+    return ((uint8_t*)&(msg->payload[6]))[index];
 }
 
 

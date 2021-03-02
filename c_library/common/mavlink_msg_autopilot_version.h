@@ -32,7 +32,6 @@ typedef struct _fmav_autopilot_version_t {
 
 #define FASTMAVLINK_MSG_ID_AUTOPILOT_VERSION  148
 
-#define FASTMAVLINK_MSG_AUTOPILOT_VERSION_PAYLOAD_LEN_MIN  60
 #define FASTMAVLINK_MSG_AUTOPILOT_VERSION_PAYLOAD_LEN_MAX  78
 #define FASTMAVLINK_MSG_AUTOPILOT_VERSION_CRCEXTRA  178
 
@@ -101,7 +100,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_autopilot_version_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_AUTOPILOT_VERSION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_AUTOPILOT_VERSION_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -151,7 +149,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_autopilot_version_pack_to_frame
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_AUTOPILOT_VERSION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_AUTOPILOT_VERSION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_AUTOPILOT_VERSION_CRCEXTRA,
         _status);
@@ -200,7 +197,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_autopilot_version_pack_to_seria
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_AUTOPILOT_VERSION,
-        FASTMAVLINK_MSG_AUTOPILOT_VERSION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_AUTOPILOT_VERSION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_AUTOPILOT_VERSION_CRCEXTRA,
         _status);
@@ -218,7 +214,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_autopilot_version_encode_to_ser
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_AUTOPILOT_VERSION,
-        FASTMAVLINK_MSG_AUTOPILOT_VERSION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_AUTOPILOT_VERSION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_AUTOPILOT_VERSION_CRCEXTRA,
         _status);
@@ -229,77 +224,78 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_autopilot_version_encode_to_ser
 //----------------------------------------
 //-- Message AUTOPILOT_VERSION unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_autopilot_version_decode(fmav_autopilot_version_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_AUTOPILOT_VERSION_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_AUTOPILOT_VERSION_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_AUTOPILOT_VERSION_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_AUTOPILOT_VERSION_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_autopilot_version_get_field_capabilities(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_autopilot_version_get_field_uid(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(uint64_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_autopilot_version_get_field_flight_sw_version(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[16]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_autopilot_version_get_field_middleware_sw_version(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[20]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_autopilot_version_get_field_os_sw_version(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[24]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[24]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_autopilot_version_get_field_board_version(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[28]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[28]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_autopilot_version_get_field_vendor_id(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[32]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[32]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_autopilot_version_get_field_product_id(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[34]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[34]), sizeof(uint16_t));
+    return r;
 }
 
 
@@ -312,7 +308,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_autopilot_version_get_field_fli
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_autopilot_version_get_field_flight_custom_version(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_AUTOPILOT_VERSION_FIELD_FLIGHT_CUSTOM_VERSION_NUM) return 0;
-    return ((uint8_t*)&(msg->payload[36]))[index];     
+    return ((uint8_t*)&(msg->payload[36]))[index];
 }
 
 
@@ -325,7 +321,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_autopilot_version_get_field_mid
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_autopilot_version_get_field_middleware_custom_version(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_AUTOPILOT_VERSION_FIELD_MIDDLEWARE_CUSTOM_VERSION_NUM) return 0;
-    return ((uint8_t*)&(msg->payload[44]))[index];     
+    return ((uint8_t*)&(msg->payload[44]))[index];
 }
 
 
@@ -338,7 +334,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_autopilot_version_get_field_os_
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_autopilot_version_get_field_os_custom_version(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_AUTOPILOT_VERSION_FIELD_OS_CUSTOM_VERSION_NUM) return 0;
-    return ((uint8_t*)&(msg->payload[52]))[index];     
+    return ((uint8_t*)&(msg->payload[52]))[index];
 }
 
 
@@ -351,7 +347,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_autopilot_version_get_field_uid
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_autopilot_version_get_field_uid2(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_AUTOPILOT_VERSION_FIELD_UID2_NUM) return 0;
-    return ((uint8_t*)&(msg->payload[60]))[index];     
+    return ((uint8_t*)&(msg->payload[60]))[index];
 }
 
 

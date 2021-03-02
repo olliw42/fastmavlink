@@ -32,7 +32,6 @@ typedef struct _fmav_hil_optical_flow_t {
 
 #define FASTMAVLINK_MSG_ID_HIL_OPTICAL_FLOW  114
 
-#define FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_PAYLOAD_LEN_MIN  44
 #define FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_PAYLOAD_LEN_MAX  44
 #define FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_CRCEXTRA  237
 
@@ -95,7 +94,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_optical_flow_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -146,7 +144,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_optical_flow_pack_to_frame_
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_CRCEXTRA,
         _status);
@@ -196,7 +193,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_optical_flow_pack_to_serial
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_HIL_OPTICAL_FLOW,
-        FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_CRCEXTRA,
         _status);
@@ -214,7 +210,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_optical_flow_encode_to_seri
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_HIL_OPTICAL_FLOW,
-        FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_CRCEXTRA,
         _status);
@@ -225,109 +220,110 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_optical_flow_encode_to_seri
 //----------------------------------------
 //-- Message HIL_OPTICAL_FLOW unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_hil_optical_flow_decode(fmav_hil_optical_flow_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_hil_optical_flow_get_field_time_usec(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_hil_optical_flow_get_field_integration_time_us(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_optical_flow_get_field_integrated_x(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[12]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_optical_flow_get_field_integrated_y(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[16]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_optical_flow_get_field_integrated_xgyro(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[20]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_optical_flow_get_field_integrated_ygyro(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[24]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_optical_flow_get_field_integrated_zgyro(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[28]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_hil_optical_flow_get_field_time_delta_distance_us(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[32]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[32]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_optical_flow_get_field_distance(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[36]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[36]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_hil_optical_flow_get_field_temperature(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[40]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[40]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_hil_optical_flow_get_field_sensor_id(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[42]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[42]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_hil_optical_flow_get_field_quality(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[43]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[43]), sizeof(uint8_t));
+    return r;
 }
 
 

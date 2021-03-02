@@ -29,7 +29,6 @@ typedef struct _fmav_mag_cal_progress_t {
 
 #define FASTMAVLINK_MSG_ID_MAG_CAL_PROGRESS  191
 
-#define FASTMAVLINK_MSG_MAG_CAL_PROGRESS_PAYLOAD_LEN_MIN  27
 #define FASTMAVLINK_MSG_MAG_CAL_PROGRESS_PAYLOAD_LEN_MAX  27
 #define FASTMAVLINK_MSG_MAG_CAL_PROGRESS_CRCEXTRA  92
 
@@ -86,7 +85,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_progress_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_MAG_CAL_PROGRESS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MAG_CAL_PROGRESS_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -133,7 +131,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_progress_pack_to_frame_
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_MAG_CAL_PROGRESS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MAG_CAL_PROGRESS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MAG_CAL_PROGRESS_CRCEXTRA,
         _status);
@@ -179,7 +176,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_progress_pack_to_serial
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_MAG_CAL_PROGRESS,
-        FASTMAVLINK_MSG_MAG_CAL_PROGRESS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MAG_CAL_PROGRESS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MAG_CAL_PROGRESS_CRCEXTRA,
         _status);
@@ -197,7 +193,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_progress_encode_to_seri
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_MAG_CAL_PROGRESS,
-        FASTMAVLINK_MSG_MAG_CAL_PROGRESS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_MAG_CAL_PROGRESS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MAG_CAL_PROGRESS_CRCEXTRA,
         _status);
@@ -208,77 +203,78 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_progress_encode_to_seri
 //----------------------------------------
 //-- Message MAG_CAL_PROGRESS unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_mag_cal_progress_decode(fmav_mag_cal_progress_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_MAG_CAL_PROGRESS_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_MAG_CAL_PROGRESS_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_MAG_CAL_PROGRESS_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_MAG_CAL_PROGRESS_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_mag_cal_progress_get_field_direction_x(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[0]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_mag_cal_progress_get_field_direction_y(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[4]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_mag_cal_progress_get_field_direction_z(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[8]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mag_cal_progress_get_field_compass_id(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[12]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mag_cal_progress_get_field_cal_mask(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[13]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[13]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mag_cal_progress_get_field_cal_status(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[14]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[14]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mag_cal_progress_get_field_attempt(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[15]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[15]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mag_cal_progress_get_field_completion_pct(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[16]), sizeof(uint8_t));
+    return r;
 }
 
 
@@ -291,7 +287,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_mag_cal_progress_get_field_comp
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mag_cal_progress_get_field_completion_mask(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_MAG_CAL_PROGRESS_FIELD_COMPLETION_MASK_NUM) return 0;
-    return ((uint8_t*)&(msg->payload[17]))[index];     
+    return ((uint8_t*)&(msg->payload[17]))[index];
 }
 
 

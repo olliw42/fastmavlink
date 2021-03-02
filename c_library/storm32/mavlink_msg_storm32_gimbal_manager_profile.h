@@ -28,7 +28,6 @@ typedef struct _fmav_storm32_gimbal_manager_profile_t {
 
 #define FASTMAVLINK_MSG_ID_STORM32_GIMBAL_MANAGER_PROFILE  60015
 
-#define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_PAYLOAD_LEN_MIN  22
 #define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_PAYLOAD_LEN_MAX  22
 #define FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_CRCEXTRA  78
 
@@ -85,7 +84,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storm32_gimbal_manager_profile_
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -131,7 +129,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storm32_gimbal_manager_profile_
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_CRCEXTRA,
         _status);
@@ -176,7 +173,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storm32_gimbal_manager_profile_
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_STORM32_GIMBAL_MANAGER_PROFILE,
-        FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_CRCEXTRA,
         _status);
@@ -194,7 +190,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storm32_gimbal_manager_profile_
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_STORM32_GIMBAL_MANAGER_PROFILE,
-        FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_CRCEXTRA,
         _status);
@@ -205,61 +200,62 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storm32_gimbal_manager_profile_
 //----------------------------------------
 //-- Message STORM32_GIMBAL_MANAGER_PROFILE unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_storm32_gimbal_manager_profile_decode(fmav_storm32_gimbal_manager_profile_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_storm32_gimbal_manager_profile_get_field_target_system(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_storm32_gimbal_manager_profile_get_field_target_component(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[1]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[1]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_storm32_gimbal_manager_profile_get_field_gimbal_id(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[2]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[2]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_storm32_gimbal_manager_profile_get_field_profile(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[3]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[3]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_storm32_gimbal_manager_profile_get_field_profile_flags(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[12]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_storm32_gimbal_manager_profile_get_field_rc_timeout(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[13]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[13]), sizeof(uint8_t));
+    return r;
 }
 
 
@@ -272,7 +268,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_storm32_gimbal_manager_profile_
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_storm32_gimbal_manager_profile_get_field_priorities(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_FIELD_PRIORITIES_NUM) return 0;
-    return ((uint8_t*)&(msg->payload[4]))[index];     
+    return ((uint8_t*)&(msg->payload[4]))[index];
 }
 
 
@@ -285,7 +281,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_storm32_gimbal_manager_profile_
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_storm32_gimbal_manager_profile_get_field_timeouts(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_PROFILE_FIELD_TIMEOUTS_NUM) return 0;
-    return ((uint8_t*)&(msg->payload[14]))[index];     
+    return ((uint8_t*)&(msg->payload[14]))[index];
 }
 
 

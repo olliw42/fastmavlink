@@ -32,7 +32,6 @@ typedef struct _fmav_autopilot_state_for_gimbal_device_t {
 
 #define FASTMAVLINK_MSG_ID_AUTOPILOT_STATE_FOR_GIMBAL_DEVICE  286
 
-#define FASTMAVLINK_MSG_AUTOPILOT_STATE_FOR_GIMBAL_DEVICE_PAYLOAD_LEN_MIN  53
 #define FASTMAVLINK_MSG_AUTOPILOT_STATE_FOR_GIMBAL_DEVICE_PAYLOAD_LEN_MAX  53
 #define FASTMAVLINK_MSG_AUTOPILOT_STATE_FOR_GIMBAL_DEVICE_CRCEXTRA  210
 
@@ -95,7 +94,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_autopilot_state_for_gimbal_devi
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_AUTOPILOT_STATE_FOR_GIMBAL_DEVICE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_AUTOPILOT_STATE_FOR_GIMBAL_DEVICE_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -145,7 +143,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_autopilot_state_for_gimbal_devi
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_AUTOPILOT_STATE_FOR_GIMBAL_DEVICE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_AUTOPILOT_STATE_FOR_GIMBAL_DEVICE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_AUTOPILOT_STATE_FOR_GIMBAL_DEVICE_CRCEXTRA,
         _status);
@@ -194,7 +191,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_autopilot_state_for_gimbal_devi
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_AUTOPILOT_STATE_FOR_GIMBAL_DEVICE,
-        FASTMAVLINK_MSG_AUTOPILOT_STATE_FOR_GIMBAL_DEVICE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_AUTOPILOT_STATE_FOR_GIMBAL_DEVICE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_AUTOPILOT_STATE_FOR_GIMBAL_DEVICE_CRCEXTRA,
         _status);
@@ -212,7 +208,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_autopilot_state_for_gimbal_devi
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_AUTOPILOT_STATE_FOR_GIMBAL_DEVICE,
-        FASTMAVLINK_MSG_AUTOPILOT_STATE_FOR_GIMBAL_DEVICE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_AUTOPILOT_STATE_FOR_GIMBAL_DEVICE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_AUTOPILOT_STATE_FOR_GIMBAL_DEVICE_CRCEXTRA,
         _status);
@@ -223,101 +218,102 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_autopilot_state_for_gimbal_devi
 //----------------------------------------
 //-- Message AUTOPILOT_STATE_FOR_GIMBAL_DEVICE unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_autopilot_state_for_gimbal_device_decode(fmav_autopilot_state_for_gimbal_device_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_AUTOPILOT_STATE_FOR_GIMBAL_DEVICE_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_AUTOPILOT_STATE_FOR_GIMBAL_DEVICE_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_AUTOPILOT_STATE_FOR_GIMBAL_DEVICE_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_AUTOPILOT_STATE_FOR_GIMBAL_DEVICE_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_autopilot_state_for_gimbal_device_get_field_time_boot_us(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_autopilot_state_for_gimbal_device_get_field_q_estimated_delay_us(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[24]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[24]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_autopilot_state_for_gimbal_device_get_field_vx(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[28]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_autopilot_state_for_gimbal_device_get_field_vy(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[32]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_autopilot_state_for_gimbal_device_get_field_vz(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[36]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[36]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_autopilot_state_for_gimbal_device_get_field_v_estimated_delay_us(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[40]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[40]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_autopilot_state_for_gimbal_device_get_field_feed_forward_angular_velocity_z(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[44]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[44]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_autopilot_state_for_gimbal_device_get_field_estimator_status(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[48]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[48]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_autopilot_state_for_gimbal_device_get_field_target_system(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[50]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[50]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_autopilot_state_for_gimbal_device_get_field_target_component(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[51]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[51]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_autopilot_state_for_gimbal_device_get_field_landed_state(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[52]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[52]), sizeof(uint8_t));
+    return r;
 }
 
 
@@ -330,7 +326,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_autopilot_state_for_gimbal_device
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_autopilot_state_for_gimbal_device_get_field_q(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_AUTOPILOT_STATE_FOR_GIMBAL_DEVICE_FIELD_Q_NUM) return 0;
-    return ((float*)&(msg->payload[8]))[index];     
+    return ((float*)&(msg->payload[8]))[index];
 }
 
 

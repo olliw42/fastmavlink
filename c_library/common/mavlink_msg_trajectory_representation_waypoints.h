@@ -34,7 +34,6 @@ typedef struct _fmav_trajectory_representation_waypoints_t {
 
 #define FASTMAVLINK_MSG_ID_TRAJECTORY_REPRESENTATION_WAYPOINTS  332
 
-#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_PAYLOAD_LEN_MIN  239
 #define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_PAYLOAD_LEN_MAX  239
 #define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_CRCEXTRA  236
 
@@ -123,7 +122,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_trajectory_representation_waypo
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -175,7 +173,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_trajectory_representation_waypo
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_CRCEXTRA,
         _status);
@@ -226,7 +223,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_trajectory_representation_waypo
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_TRAJECTORY_REPRESENTATION_WAYPOINTS,
-        FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_CRCEXTRA,
         _status);
@@ -244,7 +240,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_trajectory_representation_waypo
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_TRAJECTORY_REPRESENTATION_WAYPOINTS,
-        FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_CRCEXTRA,
         _status);
@@ -255,29 +250,30 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_trajectory_representation_waypo
 //----------------------------------------
 //-- Message TRAJECTORY_REPRESENTATION_WAYPOINTS unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_trajectory_representation_waypoints_decode(fmav_trajectory_representation_waypoints_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_trajectory_representation_waypoints_get_field_time_usec(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_trajectory_representation_waypoints_get_field_valid_points(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[238]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[238]), sizeof(uint8_t));
+    return r;
 }
 
 
@@ -290,7 +286,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_trajectory_representation_waypoin
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_trajectory_representation_waypoints_get_field_pos_x(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_FIELD_POS_X_NUM) return 0;
-    return ((float*)&(msg->payload[8]))[index];     
+    return ((float*)&(msg->payload[8]))[index];
 }
 
 
@@ -303,7 +299,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_trajectory_representation_waypoin
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_trajectory_representation_waypoints_get_field_pos_y(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_FIELD_POS_Y_NUM) return 0;
-    return ((float*)&(msg->payload[28]))[index];     
+    return ((float*)&(msg->payload[28]))[index];
 }
 
 
@@ -316,7 +312,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_trajectory_representation_waypoin
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_trajectory_representation_waypoints_get_field_pos_z(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_FIELD_POS_Z_NUM) return 0;
-    return ((float*)&(msg->payload[48]))[index];     
+    return ((float*)&(msg->payload[48]))[index];
 }
 
 
@@ -329,7 +325,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_trajectory_representation_waypoin
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_trajectory_representation_waypoints_get_field_vel_x(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_FIELD_VEL_X_NUM) return 0;
-    return ((float*)&(msg->payload[68]))[index];     
+    return ((float*)&(msg->payload[68]))[index];
 }
 
 
@@ -342,7 +338,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_trajectory_representation_waypoin
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_trajectory_representation_waypoints_get_field_vel_y(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_FIELD_VEL_Y_NUM) return 0;
-    return ((float*)&(msg->payload[88]))[index];     
+    return ((float*)&(msg->payload[88]))[index];
 }
 
 
@@ -355,7 +351,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_trajectory_representation_waypoin
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_trajectory_representation_waypoints_get_field_vel_z(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_FIELD_VEL_Z_NUM) return 0;
-    return ((float*)&(msg->payload[108]))[index];     
+    return ((float*)&(msg->payload[108]))[index];
 }
 
 
@@ -368,7 +364,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_trajectory_representation_waypoin
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_trajectory_representation_waypoints_get_field_acc_x(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_FIELD_ACC_X_NUM) return 0;
-    return ((float*)&(msg->payload[128]))[index];     
+    return ((float*)&(msg->payload[128]))[index];
 }
 
 
@@ -381,7 +377,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_trajectory_representation_waypoin
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_trajectory_representation_waypoints_get_field_acc_y(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_FIELD_ACC_Y_NUM) return 0;
-    return ((float*)&(msg->payload[148]))[index];     
+    return ((float*)&(msg->payload[148]))[index];
 }
 
 
@@ -394,7 +390,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_trajectory_representation_waypoin
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_trajectory_representation_waypoints_get_field_acc_z(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_FIELD_ACC_Z_NUM) return 0;
-    return ((float*)&(msg->payload[168]))[index];     
+    return ((float*)&(msg->payload[168]))[index];
 }
 
 
@@ -407,7 +403,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_trajectory_representation_waypoin
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_trajectory_representation_waypoints_get_field_pos_yaw(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_FIELD_POS_YAW_NUM) return 0;
-    return ((float*)&(msg->payload[188]))[index];     
+    return ((float*)&(msg->payload[188]))[index];
 }
 
 
@@ -420,7 +416,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_trajectory_representation_waypoin
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_trajectory_representation_waypoints_get_field_vel_yaw(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_FIELD_VEL_YAW_NUM) return 0;
-    return ((float*)&(msg->payload[208]))[index];     
+    return ((float*)&(msg->payload[208]))[index];
 }
 
 
@@ -433,7 +429,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_trajectory_representation_wayp
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_trajectory_representation_waypoints_get_field_command(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_FIELD_COMMAND_NUM) return 0;
-    return ((uint16_t*)&(msg->payload[228]))[index];     
+    return ((uint16_t*)&(msg->payload[228]))[index];
 }
 
 

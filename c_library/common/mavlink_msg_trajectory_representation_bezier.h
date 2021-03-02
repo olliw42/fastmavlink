@@ -27,7 +27,6 @@ typedef struct _fmav_trajectory_representation_bezier_t {
 
 #define FASTMAVLINK_MSG_ID_TRAJECTORY_REPRESENTATION_BEZIER  333
 
-#define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN_MIN  109
 #define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN_MAX  109
 #define FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_CRCEXTRA  231
 
@@ -88,7 +87,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_trajectory_representation_bezie
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -133,7 +131,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_trajectory_representation_bezie
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_CRCEXTRA,
         _status);
@@ -177,7 +174,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_trajectory_representation_bezie
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_TRAJECTORY_REPRESENTATION_BEZIER,
-        FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_CRCEXTRA,
         _status);
@@ -195,7 +191,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_trajectory_representation_bezie
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_TRAJECTORY_REPRESENTATION_BEZIER,
-        FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_CRCEXTRA,
         _status);
@@ -206,29 +201,30 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_trajectory_representation_bezie
 //----------------------------------------
 //-- Message TRAJECTORY_REPRESENTATION_BEZIER unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_trajectory_representation_bezier_decode(fmav_trajectory_representation_bezier_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_trajectory_representation_bezier_get_field_time_usec(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_trajectory_representation_bezier_get_field_valid_points(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[108]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[108]), sizeof(uint8_t));
+    return r;
 }
 
 
@@ -241,7 +237,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_trajectory_representation_bezier_
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_trajectory_representation_bezier_get_field_pos_x(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_X_NUM) return 0;
-    return ((float*)&(msg->payload[8]))[index];     
+    return ((float*)&(msg->payload[8]))[index];
 }
 
 
@@ -254,7 +250,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_trajectory_representation_bezier_
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_trajectory_representation_bezier_get_field_pos_y(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_Y_NUM) return 0;
-    return ((float*)&(msg->payload[28]))[index];     
+    return ((float*)&(msg->payload[28]))[index];
 }
 
 
@@ -267,7 +263,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_trajectory_representation_bezier_
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_trajectory_representation_bezier_get_field_pos_z(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_Z_NUM) return 0;
-    return ((float*)&(msg->payload[48]))[index];     
+    return ((float*)&(msg->payload[48]))[index];
 }
 
 
@@ -280,7 +276,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_trajectory_representation_bezier_
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_trajectory_representation_bezier_get_field_delta(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_DELTA_NUM) return 0;
-    return ((float*)&(msg->payload[68]))[index];     
+    return ((float*)&(msg->payload[68]))[index];
 }
 
 
@@ -293,7 +289,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_trajectory_representation_bezier_
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_trajectory_representation_bezier_get_field_pos_yaw(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_BEZIER_FIELD_POS_YAW_NUM) return 0;
-    return ((float*)&(msg->payload[88]))[index];     
+    return ((float*)&(msg->payload[88]))[index];
 }
 
 

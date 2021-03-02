@@ -21,7 +21,6 @@ typedef struct _fmav_icarous_heartbeat_t {
 
 #define FASTMAVLINK_MSG_ID_ICAROUS_HEARTBEAT  42000
 
-#define FASTMAVLINK_MSG_ICAROUS_HEARTBEAT_PAYLOAD_LEN_MIN  1
 #define FASTMAVLINK_MSG_ICAROUS_HEARTBEAT_PAYLOAD_LEN_MAX  1
 #define FASTMAVLINK_MSG_ICAROUS_HEARTBEAT_CRCEXTRA  227
 
@@ -62,7 +61,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_icarous_heartbeat_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_ICAROUS_HEARTBEAT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ICAROUS_HEARTBEAT_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -102,7 +100,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_icarous_heartbeat_pack_to_frame
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_ICAROUS_HEARTBEAT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ICAROUS_HEARTBEAT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ICAROUS_HEARTBEAT_CRCEXTRA,
         _status);
@@ -141,7 +138,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_icarous_heartbeat_pack_to_seria
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_ICAROUS_HEARTBEAT,
-        FASTMAVLINK_MSG_ICAROUS_HEARTBEAT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ICAROUS_HEARTBEAT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ICAROUS_HEARTBEAT_CRCEXTRA,
         _status);
@@ -159,7 +155,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_icarous_heartbeat_encode_to_ser
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_ICAROUS_HEARTBEAT,
-        FASTMAVLINK_MSG_ICAROUS_HEARTBEAT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ICAROUS_HEARTBEAT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ICAROUS_HEARTBEAT_CRCEXTRA,
         _status);
@@ -170,21 +165,22 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_icarous_heartbeat_encode_to_ser
 //----------------------------------------
 //-- Message ICAROUS_HEARTBEAT unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_icarous_heartbeat_decode(fmav_icarous_heartbeat_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_ICAROUS_HEARTBEAT_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_ICAROUS_HEARTBEAT_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_ICAROUS_HEARTBEAT_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_ICAROUS_HEARTBEAT_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_icarous_heartbeat_get_field_status(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t));
+    return r;
 }
 
 

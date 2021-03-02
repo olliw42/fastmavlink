@@ -12,8 +12,8 @@
 //-- The values of msg_entry_t for all messages in the dialect.
 //------------------------------
  
-#define FASTMAVLINK_MSG_ENTRY_HEARTBEAT  {0, 50, 9, 9, 0, 0, 0}
-#define FASTMAVLINK_MSG_ENTRY_PROTOCOL_VERSION  {300, 217, 22, 22, 0, 0, 0}
+#define FASTMAVLINK_MSG_ENTRY_HEARTBEAT  {0, 50, 9, 0, 0, 0}
+#define FASTMAVLINK_MSG_ENTRY_PROTOCOL_VERSION  {300, 217, 22, 0, 0, 0}
 
 
 /*------------------------------

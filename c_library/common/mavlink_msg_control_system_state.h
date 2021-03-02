@@ -37,7 +37,6 @@ typedef struct _fmav_control_system_state_t {
 
 #define FASTMAVLINK_MSG_ID_CONTROL_SYSTEM_STATE  146
 
-#define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MIN  100
 #define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MAX  100
 #define FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_CRCEXTRA  103
 
@@ -114,7 +113,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_control_system_state_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -169,7 +167,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_control_system_state_pack_to_fr
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_CRCEXTRA,
         _status);
@@ -223,7 +220,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_control_system_state_pack_to_se
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_CONTROL_SYSTEM_STATE,
-        FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_CRCEXTRA,
         _status);
@@ -241,7 +237,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_control_system_state_encode_to_
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_CONTROL_SYSTEM_STATE,
-        FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_CRCEXTRA,
         _status);
@@ -252,125 +247,126 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_control_system_state_encode_to_
 //----------------------------------------
 //-- Message CONTROL_SYSTEM_STATE unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_control_system_state_decode(fmav_control_system_state_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_control_system_state_get_field_time_usec(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_x_acc(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[8]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_y_acc(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[12]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_z_acc(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[16]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_x_vel(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[20]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_y_vel(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[24]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[24]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_z_vel(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[28]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[28]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_x_pos(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[32]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[32]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_y_pos(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[36]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[36]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_z_pos(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[40]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[40]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_airspeed(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[44]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[44]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_roll_rate(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[88]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[88]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_pitch_rate(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[92]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[92]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_yaw_rate(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[96]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[96]), sizeof(float));
+    return r;
 }
 
 
@@ -383,7 +379,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_control_system_state_get_field_ve
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_vel_variance(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_VEL_VARIANCE_NUM) return 0;
-    return ((float*)&(msg->payload[48]))[index];     
+    return ((float*)&(msg->payload[48]))[index];
 }
 
 
@@ -396,7 +392,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_control_system_state_get_field_po
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_pos_variance(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_POS_VARIANCE_NUM) return 0;
-    return ((float*)&(msg->payload[60]))[index];     
+    return ((float*)&(msg->payload[60]))[index];
 }
 
 
@@ -409,7 +405,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_control_system_state_get_field_q_
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_q(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_FIELD_Q_NUM) return 0;
-    return ((float*)&(msg->payload[72]))[index];     
+    return ((float*)&(msg->payload[72]))[index];
 }
 
 

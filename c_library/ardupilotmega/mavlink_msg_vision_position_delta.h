@@ -25,7 +25,6 @@ typedef struct _fmav_vision_position_delta_t {
 
 #define FASTMAVLINK_MSG_ID_VISION_POSITION_DELTA  11011
 
-#define FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN_MIN  44
 #define FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN_MAX  44
 #define FASTMAVLINK_MSG_VISION_POSITION_DELTA_CRCEXTRA  106
 
@@ -76,7 +75,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_position_delta_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -119,7 +117,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_position_delta_pack_to_f
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_VISION_POSITION_DELTA_CRCEXTRA,
         _status);
@@ -161,7 +158,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_position_delta_pack_to_s
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_VISION_POSITION_DELTA,
-        FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_VISION_POSITION_DELTA_CRCEXTRA,
         _status);
@@ -179,7 +175,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_position_delta_encode_to
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_VISION_POSITION_DELTA,
-        FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_VISION_POSITION_DELTA_CRCEXTRA,
         _status);
@@ -190,37 +185,38 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_position_delta_encode_to
 //----------------------------------------
 //-- Message VISION_POSITION_DELTA unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_vision_position_delta_decode(fmav_vision_position_delta_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_VISION_POSITION_DELTA_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_vision_position_delta_get_field_time_usec(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_vision_position_delta_get_field_time_delta_usec(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(uint64_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vision_position_delta_get_field_confidence(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[40]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[40]), sizeof(float));
+    return r;
 }
 
 
@@ -233,7 +229,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_vision_position_delta_get_field_a
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vision_position_delta_get_field_angle_delta(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_VISION_POSITION_DELTA_FIELD_ANGLE_DELTA_NUM) return 0;
-    return ((float*)&(msg->payload[16]))[index];     
+    return ((float*)&(msg->payload[16]))[index];
 }
 
 
@@ -246,7 +242,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_vision_position_delta_get_field_p
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vision_position_delta_get_field_position_delta(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_VISION_POSITION_DELTA_FIELD_POSITION_DELTA_NUM) return 0;
-    return ((float*)&(msg->payload[28]))[index];     
+    return ((float*)&(msg->payload[28]))[index];
 }
 
 

@@ -34,7 +34,6 @@ typedef struct _fmav_battery_status_t {
 
 #define FASTMAVLINK_MSG_ID_BATTERY_STATUS  147
 
-#define FASTMAVLINK_MSG_BATTERY_STATUS_PAYLOAD_LEN_MIN  36
 #define FASTMAVLINK_MSG_BATTERY_STATUS_PAYLOAD_LEN_MAX  54
 #define FASTMAVLINK_MSG_BATTERY_STATUS_CRCEXTRA  154
 
@@ -103,7 +102,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_battery_status_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_BATTERY_STATUS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_BATTERY_STATUS_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -155,7 +153,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_battery_status_pack_to_frame_bu
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_BATTERY_STATUS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_BATTERY_STATUS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_BATTERY_STATUS_CRCEXTRA,
         _status);
@@ -206,7 +203,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_battery_status_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_BATTERY_STATUS,
-        FASTMAVLINK_MSG_BATTERY_STATUS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_BATTERY_STATUS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_BATTERY_STATUS_CRCEXTRA,
         _status);
@@ -224,7 +220,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_battery_status_encode_to_serial
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_BATTERY_STATUS,
-        FASTMAVLINK_MSG_BATTERY_STATUS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_BATTERY_STATUS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_BATTERY_STATUS_CRCEXTRA,
         _status);
@@ -235,109 +230,110 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_battery_status_encode_to_serial
 //----------------------------------------
 //-- Message BATTERY_STATUS unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_battery_status_decode(fmav_battery_status_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_BATTERY_STATUS_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_BATTERY_STATUS_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_BATTERY_STATUS_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_BATTERY_STATUS_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_battery_status_get_field_current_consumed(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_battery_status_get_field_energy_consumed(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_battery_status_get_field_temperature(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_battery_status_get_field_current_battery(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[30]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[30]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_battery_status_get_field_id(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[32]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[32]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_battery_status_get_field_battery_function(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[33]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[33]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_battery_status_get_field_type(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[34]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[34]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_battery_status_get_field_battery_remaining(const fmav_message_t* msg)
 {
-    int8_t r; 
-    memcpy(&r, &(msg->payload[35]), sizeof(int8_t)); 
-    return r;     
+    int8_t r;
+    memcpy(&r, &(msg->payload[35]), sizeof(int8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_battery_status_get_field_time_remaining(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[36]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[36]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_battery_status_get_field_charge_state(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[40]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[40]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_battery_status_get_field_mode(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[49]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[49]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_battery_status_get_field_fault_bitmask(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[50]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[50]), sizeof(uint32_t));
+    return r;
 }
 
 
@@ -350,7 +346,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_battery_status_get_field_volta
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_battery_status_get_field_voltages(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_BATTERY_STATUS_FIELD_VOLTAGES_NUM) return 0;
-    return ((uint16_t*)&(msg->payload[10]))[index];     
+    return ((uint16_t*)&(msg->payload[10]))[index];
 }
 
 
@@ -363,7 +359,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t* fmav_msg_battery_status_get_field_volta
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_battery_status_get_field_voltages_ext(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_BATTERY_STATUS_FIELD_VOLTAGES_EXT_NUM) return 0;
-    return ((uint16_t*)&(msg->payload[41]))[index];     
+    return ((uint16_t*)&(msg->payload[41]))[index];
 }
 
 

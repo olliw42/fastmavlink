@@ -32,7 +32,6 @@ typedef struct _fmav_set_home_position_t {
 
 #define FASTMAVLINK_MSG_ID_SET_HOME_POSITION  243
 
-#define FASTMAVLINK_MSG_SET_HOME_POSITION_PAYLOAD_LEN_MIN  53
 #define FASTMAVLINK_MSG_SET_HOME_POSITION_PAYLOAD_LEN_MAX  61
 #define FASTMAVLINK_MSG_SET_HOME_POSITION_CRCEXTRA  85
 
@@ -95,7 +94,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_home_position_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_SET_HOME_POSITION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SET_HOME_POSITION_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -145,7 +143,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_home_position_pack_to_frame
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_SET_HOME_POSITION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SET_HOME_POSITION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_SET_HOME_POSITION_CRCEXTRA,
         _status);
@@ -194,7 +191,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_home_position_pack_to_seria
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_SET_HOME_POSITION,
-        FASTMAVLINK_MSG_SET_HOME_POSITION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SET_HOME_POSITION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_SET_HOME_POSITION_CRCEXTRA,
         _status);
@@ -212,7 +208,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_home_position_encode_to_ser
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_SET_HOME_POSITION,
-        FASTMAVLINK_MSG_SET_HOME_POSITION_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_SET_HOME_POSITION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_SET_HOME_POSITION_CRCEXTRA,
         _status);
@@ -223,101 +218,102 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_home_position_encode_to_ser
 //----------------------------------------
 //-- Message SET_HOME_POSITION unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_set_home_position_decode(fmav_set_home_position_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_SET_HOME_POSITION_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_SET_HOME_POSITION_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_SET_HOME_POSITION_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_SET_HOME_POSITION_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_set_home_position_get_field_latitude(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_set_home_position_get_field_longitude(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_set_home_position_get_field_altitude(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_set_home_position_get_field_x(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[12]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_set_home_position_get_field_y(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[16]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_set_home_position_get_field_z(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[20]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[20]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_set_home_position_get_field_approach_x(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[40]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[40]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_set_home_position_get_field_approach_y(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[44]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[44]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_set_home_position_get_field_approach_z(const fmav_message_t* msg)
 {
-    float r; 
-    memcpy(&r, &(msg->payload[48]), sizeof(float)); 
-    return r;     
+    float r;
+    memcpy(&r, &(msg->payload[48]), sizeof(float));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_set_home_position_get_field_target_system(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[52]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[52]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_set_home_position_get_field_time_usec(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[53]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[53]), sizeof(uint64_t));
+    return r;
 }
 
 
@@ -330,7 +326,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_set_home_position_get_field_q_ptr
 FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_set_home_position_get_field_q(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_SET_HOME_POSITION_FIELD_Q_NUM) return 0;
-    return ((float*)&(msg->payload[24]))[index];     
+    return ((float*)&(msg->payload[24]))[index];
 }
 
 

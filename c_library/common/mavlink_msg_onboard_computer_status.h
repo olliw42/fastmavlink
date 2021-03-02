@@ -40,7 +40,6 @@ typedef struct _fmav_onboard_computer_status_t {
 
 #define FASTMAVLINK_MSG_ID_ONBOARD_COMPUTER_STATUS  390
 
-#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_PAYLOAD_LEN_MIN  238
 #define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_PAYLOAD_LEN_MAX  238
 #define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_CRCEXTRA  156
 
@@ -145,7 +144,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_onboard_computer_status_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -203,7 +201,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_onboard_computer_status_pack_to
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_CRCEXTRA,
         _status);
@@ -260,7 +257,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_onboard_computer_status_pack_to
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_ONBOARD_COMPUTER_STATUS,
-        FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_CRCEXTRA,
         _status);
@@ -278,7 +274,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_onboard_computer_status_encode_
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_ONBOARD_COMPUTER_STATUS,
-        FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_CRCEXTRA,
         _status);
@@ -289,61 +284,62 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_onboard_computer_status_encode_
 //----------------------------------------
 //-- Message ONBOARD_COMPUTER_STATUS unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_onboard_computer_status_decode(fmav_onboard_computer_status_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint64_t fmav_msg_onboard_computer_status_get_field_time_usec(const fmav_message_t* msg)
 {
-    uint64_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t)); 
-    return r;     
+    uint64_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint64_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_onboard_computer_status_get_field_uptime(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_onboard_computer_status_get_field_ram_usage(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[12]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_onboard_computer_status_get_field_ram_total(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[16]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_onboard_computer_status_get_field_type(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[196]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[196]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_onboard_computer_status_get_field_temperature_board(const fmav_message_t* msg)
 {
-    int8_t r; 
-    memcpy(&r, &(msg->payload[229]), sizeof(int8_t)); 
-    return r;     
+    int8_t r;
+    memcpy(&r, &(msg->payload[229]), sizeof(int8_t));
+    return r;
 }
 
 
@@ -356,7 +352,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint32_t* fmav_msg_onboard_computer_status_get_fi
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_onboard_computer_status_get_field_storage_type(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_STORAGE_TYPE_NUM) return 0;
-    return ((uint32_t*)&(msg->payload[20]))[index];     
+    return ((uint32_t*)&(msg->payload[20]))[index];
 }
 
 
@@ -369,7 +365,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint32_t* fmav_msg_onboard_computer_status_get_fi
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_onboard_computer_status_get_field_storage_usage(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_STORAGE_USAGE_NUM) return 0;
-    return ((uint32_t*)&(msg->payload[36]))[index];     
+    return ((uint32_t*)&(msg->payload[36]))[index];
 }
 
 
@@ -382,7 +378,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint32_t* fmav_msg_onboard_computer_status_get_fi
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_onboard_computer_status_get_field_storage_total(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_STORAGE_TOTAL_NUM) return 0;
-    return ((uint32_t*)&(msg->payload[52]))[index];     
+    return ((uint32_t*)&(msg->payload[52]))[index];
 }
 
 
@@ -395,7 +391,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint32_t* fmav_msg_onboard_computer_status_get_fi
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_onboard_computer_status_get_field_link_type(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_TYPE_NUM) return 0;
-    return ((uint32_t*)&(msg->payload[68]))[index];     
+    return ((uint32_t*)&(msg->payload[68]))[index];
 }
 
 
@@ -408,7 +404,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint32_t* fmav_msg_onboard_computer_status_get_fi
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_onboard_computer_status_get_field_link_tx_rate(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_TX_RATE_NUM) return 0;
-    return ((uint32_t*)&(msg->payload[92]))[index];     
+    return ((uint32_t*)&(msg->payload[92]))[index];
 }
 
 
@@ -421,7 +417,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint32_t* fmav_msg_onboard_computer_status_get_fi
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_onboard_computer_status_get_field_link_rx_rate(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_RX_RATE_NUM) return 0;
-    return ((uint32_t*)&(msg->payload[116]))[index];     
+    return ((uint32_t*)&(msg->payload[116]))[index];
 }
 
 
@@ -434,7 +430,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint32_t* fmav_msg_onboard_computer_status_get_fi
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_onboard_computer_status_get_field_link_tx_max(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_TX_MAX_NUM) return 0;
-    return ((uint32_t*)&(msg->payload[140]))[index];     
+    return ((uint32_t*)&(msg->payload[140]))[index];
 }
 
 
@@ -447,7 +443,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint32_t* fmav_msg_onboard_computer_status_get_fi
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_onboard_computer_status_get_field_link_rx_max(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_LINK_RX_MAX_NUM) return 0;
-    return ((uint32_t*)&(msg->payload[164]))[index];     
+    return ((uint32_t*)&(msg->payload[164]))[index];
 }
 
 
@@ -460,7 +456,7 @@ FASTMAVLINK_FUNCTION_DECORATOR int16_t* fmav_msg_onboard_computer_status_get_fie
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_onboard_computer_status_get_field_fan_speed(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_FAN_SPEED_NUM) return 0;
-    return ((int16_t*)&(msg->payload[188]))[index];     
+    return ((int16_t*)&(msg->payload[188]))[index];
 }
 
 
@@ -473,7 +469,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_onboard_computer_status_get_fie
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_onboard_computer_status_get_field_cpu_cores(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_CPU_CORES_NUM) return 0;
-    return ((uint8_t*)&(msg->payload[197]))[index];     
+    return ((uint8_t*)&(msg->payload[197]))[index];
 }
 
 
@@ -486,7 +482,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_onboard_computer_status_get_fie
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_onboard_computer_status_get_field_cpu_combined(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_CPU_COMBINED_NUM) return 0;
-    return ((uint8_t*)&(msg->payload[205]))[index];     
+    return ((uint8_t*)&(msg->payload[205]))[index];
 }
 
 
@@ -499,7 +495,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_onboard_computer_status_get_fie
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_onboard_computer_status_get_field_gpu_cores(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_GPU_CORES_NUM) return 0;
-    return ((uint8_t*)&(msg->payload[215]))[index];     
+    return ((uint8_t*)&(msg->payload[215]))[index];
 }
 
 
@@ -512,7 +508,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_onboard_computer_status_get_fie
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_onboard_computer_status_get_field_gpu_combined(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_GPU_COMBINED_NUM) return 0;
-    return ((uint8_t*)&(msg->payload[219]))[index];     
+    return ((uint8_t*)&(msg->payload[219]))[index];
 }
 
 
@@ -525,7 +521,7 @@ FASTMAVLINK_FUNCTION_DECORATOR int8_t* fmav_msg_onboard_computer_status_get_fiel
 FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_onboard_computer_status_get_field_temperature_core(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_TEMPERATURE_CORE_NUM) return 0;
-    return ((int8_t*)&(msg->payload[230]))[index];     
+    return ((int8_t*)&(msg->payload[230]))[index];
 }
 
 

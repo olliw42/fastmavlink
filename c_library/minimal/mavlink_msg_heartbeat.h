@@ -26,7 +26,6 @@ typedef struct _fmav_heartbeat_t {
 
 #define FASTMAVLINK_MSG_ID_HEARTBEAT  0
 
-#define FASTMAVLINK_MSG_HEARTBEAT_PAYLOAD_LEN_MIN  9
 #define FASTMAVLINK_MSG_HEARTBEAT_PAYLOAD_LEN_MAX  9
 #define FASTMAVLINK_MSG_HEARTBEAT_CRCEXTRA  50
 
@@ -77,7 +76,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_heartbeat_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_HEARTBEAT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_HEARTBEAT_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -122,7 +120,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_heartbeat_pack_to_frame_buf(
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_HEARTBEAT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_HEARTBEAT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_HEARTBEAT_CRCEXTRA,
         _status);
@@ -166,7 +163,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_heartbeat_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_HEARTBEAT,
-        FASTMAVLINK_MSG_HEARTBEAT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_HEARTBEAT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_HEARTBEAT_CRCEXTRA,
         _status);
@@ -184,7 +180,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_heartbeat_encode_to_serial(
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_HEARTBEAT,
-        FASTMAVLINK_MSG_HEARTBEAT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_HEARTBEAT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_HEARTBEAT_CRCEXTRA,
         _status);
@@ -195,61 +190,62 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_heartbeat_encode_to_serial(
 //----------------------------------------
 //-- Message HEARTBEAT unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_heartbeat_decode(fmav_heartbeat_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_HEARTBEAT_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_HEARTBEAT_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_HEARTBEAT_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_HEARTBEAT_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_heartbeat_get_field_custom_mode(const fmav_message_t* msg)
 {
-    uint32_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t)); 
-    return r;     
+    uint32_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_heartbeat_get_field_type(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_heartbeat_get_field_autopilot(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[5]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[5]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_heartbeat_get_field_base_mode(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[6]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[6]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_heartbeat_get_field_system_status(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[7]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[7]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_heartbeat_get_field_mavlink_version(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(uint8_t));
+    return r;
 }
 
 

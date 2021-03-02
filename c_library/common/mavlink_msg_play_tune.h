@@ -24,7 +24,6 @@ typedef struct _fmav_play_tune_t {
 
 #define FASTMAVLINK_MSG_ID_PLAY_TUNE  258
 
-#define FASTMAVLINK_MSG_PLAY_TUNE_PAYLOAD_LEN_MIN  32
 #define FASTMAVLINK_MSG_PLAY_TUNE_PAYLOAD_LEN_MAX  232
 #define FASTMAVLINK_MSG_PLAY_TUNE_CRCEXTRA  187
 
@@ -73,7 +72,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_play_tune_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_PLAY_TUNE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_PLAY_TUNE_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -115,7 +113,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_play_tune_pack_to_frame_buf(
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_PLAY_TUNE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_PLAY_TUNE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_PLAY_TUNE_CRCEXTRA,
         _status);
@@ -156,7 +153,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_play_tune_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_PLAY_TUNE,
-        FASTMAVLINK_MSG_PLAY_TUNE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_PLAY_TUNE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_PLAY_TUNE_CRCEXTRA,
         _status);
@@ -174,7 +170,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_play_tune_encode_to_serial(
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_PLAY_TUNE,
-        FASTMAVLINK_MSG_PLAY_TUNE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_PLAY_TUNE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_PLAY_TUNE_CRCEXTRA,
         _status);
@@ -185,29 +180,30 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_play_tune_encode_to_serial(
 //----------------------------------------
 //-- Message PLAY_TUNE unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_play_tune_decode(fmav_play_tune_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_PLAY_TUNE_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_PLAY_TUNE_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_PLAY_TUNE_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_PLAY_TUNE_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_play_tune_get_field_target_system(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_play_tune_get_field_target_component(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[1]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[1]), sizeof(uint8_t));
+    return r;
 }
 
 
@@ -220,7 +216,7 @@ FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_play_tune_get_field_tune_ptr(const
 FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_play_tune_get_field_tune(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_PLAY_TUNE_FIELD_TUNE_NUM) return 0;
-    return ((char*)&(msg->payload[2]))[index];     
+    return ((char*)&(msg->payload[2]))[index];
 }
 
 
@@ -233,7 +229,7 @@ FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_play_tune_get_field_tune2_ptr(cons
 FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_play_tune_get_field_tune2(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_PLAY_TUNE_FIELD_TUNE2_NUM) return 0;
-    return ((char*)&(msg->payload[32]))[index];     
+    return ((char*)&(msg->payload[32]))[index];
 }
 
 

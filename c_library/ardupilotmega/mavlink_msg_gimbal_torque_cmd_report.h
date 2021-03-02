@@ -25,7 +25,6 @@ typedef struct _fmav_gimbal_torque_cmd_report_t {
 
 #define FASTMAVLINK_MSG_ID_GIMBAL_TORQUE_CMD_REPORT  214
 
-#define FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MIN  8
 #define FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MAX  8
 #define FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_CRCEXTRA  69
 
@@ -74,7 +73,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_torque_cmd_report_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -118,7 +116,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_torque_cmd_report_pack_t
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_CRCEXTRA,
         _status);
@@ -161,7 +158,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_torque_cmd_report_pack_t
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_GIMBAL_TORQUE_CMD_REPORT,
-        FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_CRCEXTRA,
         _status);
@@ -179,7 +175,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_torque_cmd_report_encode
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_GIMBAL_TORQUE_CMD_REPORT,
-        FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_CRCEXTRA,
         _status);
@@ -190,53 +185,54 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_torque_cmd_report_encode
 //----------------------------------------
 //-- Message GIMBAL_TORQUE_CMD_REPORT unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gimbal_torque_cmd_report_decode(fmav_gimbal_torque_cmd_report_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_gimbal_torque_cmd_report_get_field_rl_torque_cmd(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_gimbal_torque_cmd_report_get_field_el_torque_cmd(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[2]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[2]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_gimbal_torque_cmd_report_get_field_az_torque_cmd(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gimbal_torque_cmd_report_get_field_target_system(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[6]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[6]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gimbal_torque_cmd_report_get_field_target_component(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[7]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[7]), sizeof(uint8_t));
+    return r;
 }
 
 

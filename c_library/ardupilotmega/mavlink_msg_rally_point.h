@@ -30,7 +30,6 @@ typedef struct _fmav_rally_point_t {
 
 #define FASTMAVLINK_MSG_ID_RALLY_POINT  175
 
-#define FASTMAVLINK_MSG_RALLY_POINT_PAYLOAD_LEN_MIN  19
 #define FASTMAVLINK_MSG_RALLY_POINT_PAYLOAD_LEN_MAX  19
 #define FASTMAVLINK_MSG_RALLY_POINT_CRCEXTRA  138
 
@@ -89,7 +88,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rally_point_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_RALLY_POINT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_RALLY_POINT_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -138,7 +136,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rally_point_pack_to_frame_buf(
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_RALLY_POINT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_RALLY_POINT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_RALLY_POINT_CRCEXTRA,
         _status);
@@ -186,7 +183,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rally_point_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_RALLY_POINT,
-        FASTMAVLINK_MSG_RALLY_POINT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_RALLY_POINT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_RALLY_POINT_CRCEXTRA,
         _status);
@@ -204,7 +200,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rally_point_encode_to_serial(
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_RALLY_POINT,
-        FASTMAVLINK_MSG_RALLY_POINT_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_RALLY_POINT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_RALLY_POINT_CRCEXTRA,
         _status);
@@ -215,93 +210,94 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rally_point_encode_to_serial(
 //----------------------------------------
 //-- Message RALLY_POINT unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_rally_point_decode(fmav_rally_point_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_RALLY_POINT_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_RALLY_POINT_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_RALLY_POINT_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_RALLY_POINT_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_rally_point_get_field_lat(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_rally_point_get_field_lng(const fmav_message_t* msg)
 {
-    int32_t r; 
-    memcpy(&r, &(msg->payload[4]), sizeof(int32_t)); 
-    return r;     
+    int32_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(int32_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_rally_point_get_field_alt(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[8]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_rally_point_get_field_break_alt(const fmav_message_t* msg)
 {
-    int16_t r; 
-    memcpy(&r, &(msg->payload[10]), sizeof(int16_t)); 
-    return r;     
+    int16_t r;
+    memcpy(&r, &(msg->payload[10]), sizeof(int16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rally_point_get_field_land_dir(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[12]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[12]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_rally_point_get_field_target_system(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[14]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[14]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_rally_point_get_field_target_component(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[15]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[15]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_rally_point_get_field_idx(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[16]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[16]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_rally_point_get_field_count(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[17]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[17]), sizeof(uint8_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_rally_point_get_field_flags(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[18]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[18]), sizeof(uint8_t));
+    return r;
 }
 
 

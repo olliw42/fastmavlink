@@ -25,7 +25,6 @@ typedef struct _fmav_param_ext_value_t {
 
 #define FASTMAVLINK_MSG_ID_PARAM_EXT_VALUE  322
 
-#define FASTMAVLINK_MSG_PARAM_EXT_VALUE_PAYLOAD_LEN_MIN  149
 #define FASTMAVLINK_MSG_PARAM_EXT_VALUE_PAYLOAD_LEN_MAX  149
 #define FASTMAVLINK_MSG_PARAM_EXT_VALUE_CRCEXTRA  243
 
@@ -76,7 +75,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ext_value_pack(
 
     return fmav_finalize_msg(
         msg,
-        FASTMAVLINK_MSG_PARAM_EXT_VALUE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_PARAM_EXT_VALUE_PAYLOAD_LEN_MAX,
         _status);
 }
@@ -119,7 +117,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ext_value_pack_to_frame_b
 
     return fmav_finalize_frame_buf(
         buf,
-        FASTMAVLINK_MSG_PARAM_EXT_VALUE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_PARAM_EXT_VALUE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_PARAM_EXT_VALUE_CRCEXTRA,
         _status);
@@ -161,7 +158,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ext_value_pack_to_serial(
         compid,
         (uint8_t*)&_payload,
         FASTMAVLINK_MSG_ID_PARAM_EXT_VALUE,
-        FASTMAVLINK_MSG_PARAM_EXT_VALUE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_PARAM_EXT_VALUE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_PARAM_EXT_VALUE_CRCEXTRA,
         _status);
@@ -179,7 +175,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ext_value_encode_to_seria
         compid,
         (uint8_t*)_payload,
         FASTMAVLINK_MSG_ID_PARAM_EXT_VALUE,
-        FASTMAVLINK_MSG_PARAM_EXT_VALUE_PAYLOAD_LEN_MIN,
         FASTMAVLINK_MSG_PARAM_EXT_VALUE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_PARAM_EXT_VALUE_CRCEXTRA,
         _status);
@@ -190,37 +185,38 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ext_value_encode_to_seria
 //----------------------------------------
 //-- Message PARAM_EXT_VALUE unpacking routines, for receiving
 //----------------------------------------
+// for these functions to work correctly, msg payload must have been zero filled before
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_param_ext_value_decode(fmav_param_ext_value_t* payload, const fmav_message_t* msg)
 {
     uint8_t len = (msg->len < FASTMAVLINK_MSG_PARAM_EXT_VALUE_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_PARAM_EXT_VALUE_PAYLOAD_LEN_MAX;
 
-    memset(payload, 0, FASTMAVLINK_MSG_PARAM_EXT_VALUE_PAYLOAD_LEN_MAX);
+    // memset(payload, 0, FASTMAVLINK_MSG_PARAM_EXT_VALUE_PAYLOAD_LEN_MAX); not needed, must have been done before
     memcpy(payload, msg->payload, len);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ext_value_get_field_param_count(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ext_value_get_field_param_index(const fmav_message_t* msg)
 {
-    uint16_t r; 
-    memcpy(&r, &(msg->payload[2]), sizeof(uint16_t)); 
-    return r;     
+    uint16_t r;
+    memcpy(&r, &(msg->payload[2]), sizeof(uint16_t));
+    return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_param_ext_value_get_field_param_type(const fmav_message_t* msg)
 {
-    uint8_t r; 
-    memcpy(&r, &(msg->payload[148]), sizeof(uint8_t)); 
-    return r;     
+    uint8_t r;
+    memcpy(&r, &(msg->payload[148]), sizeof(uint8_t));
+    return r;
 }
 
 
@@ -233,7 +229,7 @@ FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_param_ext_value_get_field_param_id
 FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_param_ext_value_get_field_param_id(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_PARAM_EXT_VALUE_FIELD_PARAM_ID_NUM) return 0;
-    return ((char*)&(msg->payload[4]))[index];     
+    return ((char*)&(msg->payload[4]))[index];
 }
 
 
@@ -246,7 +242,7 @@ FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_param_ext_value_get_field_param_va
 FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_param_ext_value_get_field_param_value(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_PARAM_EXT_VALUE_FIELD_PARAM_VALUE_NUM) return 0;
-    return ((char*)&(msg->payload[20]))[index];     
+    return ((char*)&(msg->payload[20]))[index];
 }
 
 
