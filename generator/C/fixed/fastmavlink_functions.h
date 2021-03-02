@@ -44,32 +44,33 @@
 //-- Support functions
 //------------------------------
 
+FASTMAVLINK_RAM_SECTION const fmav_message_entry_t _fmav_message_crcs[] = FASTMAVLINK_MESSAGE_CRCS;
+
 // this function is taken from the pymavlink-mavgen project
 // https://github.com/ArduPilot/pymavlink/tree/master/generator
 FASTMAVLINK_FUNCTION_DECORATOR const fmav_message_entry_t* fmav_get_message_entry(uint32_t msgid)
 {
-    static const fmav_message_entry_t _message_crcs[] = FASTMAVLINK_MESSAGE_CRCS;
-
+//    static const fmav_message_entry_t _message_crcs[] = FASTMAVLINK_MESSAGE_CRCS;
     uint32_t low = 0;
-    uint32_t high = sizeof(_message_crcs)/sizeof(_message_crcs[0]) - 1;
+    uint32_t high = sizeof(_fmav_message_crcs)/sizeof(_fmav_message_crcs[0]) - 1;
 
     while (low < high) {
         uint32_t mid = (low + 1 + high)/2;
-        if (msgid < _message_crcs[mid].msgid) {
+        if (msgid < _fmav_message_crcs[mid].msgid) {
             high = mid - 1;
             continue;
         }
-        if (msgid > _message_crcs[mid].msgid) {
+        if (msgid > _fmav_message_crcs[mid].msgid) {
             low = mid;
             continue;
         }
         low = mid;
         break;
     }
-    if (_message_crcs[low].msgid != msgid) {
+    if (_fmav_message_crcs[low].msgid != msgid) {
         return NULL;
     }
-    return &_message_crcs[low];
+    return &_fmav_message_crcs[low];
 }
 
 
