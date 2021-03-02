@@ -15,8 +15,8 @@ extern "C" {
 #define FASTMAVLINK_BUILD_DATE  "Tue Mar 02 2021"
 #endif
 
-#ifdef FASTMAVLINK_DIALECT_VERSION
-#define FASTMAVLINK_DIALECT_VERSION  1  // version as specified in xml file
+#ifndef FASTMAVLINK_DIALECT_VERSION
+#define FASTMAVLINK_DIALECT_VERSION  1  // this is the version specified in the dialect xml file
 #endif
 
 
