@@ -21,13 +21,13 @@ The fastMavlink library is used in two projects of mine, the [STorM32 gimbal con
 
 ## Licence ##
 
-Yet to be determined. It will be a permissive licence, along the ideas of the original MAVLink project.
+Yet to be determined. It will be a permissive licence, along the ideas of the original MAVLink project. That is, the fastMavlink C code library canbe used in a closed source application without copyright issues and without any limitations.
 
 ## Limitations ##
 
 The parser can read MAVLink v1 and v2 messages, including the signing packet, and forward them, but it cannot decode signed messages.
 
-Messages can be generated and emitted only in MAVLink v2 format and without signature. (It would be easy to extend the library to allow sending v1 messages, removing this limitation, but, frankly, there should be really no need for sending v1 messages nowadays)
+Messages can be generated and emitted only in MAVLink v2 format, and without signature. (It would be easy to extend the library to allow sending v1 messages, but, frankly, there should be really no need for sending v1 messages nowadays)
 
 
 ## C Code Usage ##
@@ -57,7 +57,7 @@ For instance, parsing a message for a MAVLink component with routing capabilitie
 - forwarding the data in the working buffer to the proper links (no extra effort needed)
 - converting the data in the working buffer into a message structure holding the required and relevant information, which can be passed on to the component's message handler
 
-This ensures a most fast parsing and a minimal effort (= CPU time) for forwarding of known and unknown messages, and the proper design of the message structure minimizes the effort (= CPU time) for handling. The discrete tasks are represented by corresponding functions, namely `fmav_parse_to_frame_buf()`, `fmav_check_frame_buf()`, and `fmav_frame_buf_to_msg()`, which can be called in sequence when (and only when) needed. But also the higher-level functions `fmav_parse_and_check_to_frame_buf()` or `fmav_parse_to_msg()` are available.
+This ensures a most fast parsing and a minimal effort (= CPU time) for forwarding of known and unknown messages, and the proper design of the message structure minimizes the effort (= CPU time) for handling. The discrete tasks are represented by corresponding functions, namely `fmav_parse_to_frame_buf()`, `fmav_check_frame_buf()`, and `fmav_frame_buf_to_msg()`, which can be called in sequence when (and only when) needed. But also the higher-level functions `fmav_parse_and_check_to_frame_buf()` and `fmav_parse_to_msg_wbuf()` are available, which wrapp these steps. One also can do it in one "big" step, and directly parse the received bytes into a message structure (i.e., the intermediate working buffer is not needed) with the function `fmav_parse_to_msg()`, which would be preferred then the working buffer content is not needed.
 
 In the following the discrete tasks shall be analyzed, as this should help much to understand the fabric of the fastMavlink library.
 
@@ -122,7 +122,7 @@ The received byte (Rx) is parsed into a working buffer (buf), the information in
 
 
 
-### Sending/Emitting
+### Sending
 
 Overview of primitive tasks:
 
@@ -130,7 +130,7 @@ Overview of primitive tasks:
 |---|---|---|---|---|---|---|---|---|
 |data|->| payload_t |->| msg_t |->| buf |->| Tx |
 
-Sending/emitting can be disected into (up to) 5 discrete steps:
+Sending can be disected into (up to) 5 discrete steps:
 
 The data in the message fields (data) is encoded into a payload structure (payload_t), which is then packed into a message structure (msg_t), then converted into a working buffer (buf), which can be directly send out (Tx). As before, it is not necessary that each step is explicitely executed, and in fact this is usually not optimal. For instance, in simpler applications one may want to pack the data for the message fields (data) directly into the working buffer (buf), i.e., do data -> buf, and this would reduce RAM and/or stack footprint as neither the payload structure (payload_t) nor the message structure (msg_t) need to be involved, and it also would save CPU cycles.
 
