@@ -48,7 +48,7 @@ into your project. Note that it is not `".../dialect/mavlink.h"` as it would be 
 
 ## C Code Architecture ##
 
-The C code was architected along the line of the tasks which need to be covered for reading/parsing, handling, and sending/emitting MAVLink messages. That is, for each discrete task a function exists, which can then be combined to more user-friendly and easy-to-use higher-level functions, some of which are provided too. This way, only the tasks have to be executed as they are needed for the particular application at hand, allowing to minimize CPU time, RAM and stack usage.
+The C code was architected along the line of the tasks which need to be covered for reading/parsing, handling, and sending MAVLink messages. That is, for each discrete task a function exists, which can then be combined to more user-friendly and easy-to-use higher-level functions, some of which are provided too. This way, only the tasks have to be executed as they are needed for the particular application at hand, allowing to minimize CPU time, RAM and stack usage.
 
 For instance, parsing a message for a MAVLink component with routing capabilities involves these discrete tasks: 
 
@@ -57,7 +57,7 @@ For instance, parsing a message for a MAVLink component with routing capabilitie
 - forwarding the data in the working buffer to the proper links (no extra effort needed)
 - converting the data in the working buffer into a message structure holding the required and relevant information, which can be passed on to the component's message handler
 
-This ensures a most fast parsing and a minimal effort (= CPU time) for forwarding of known and unknown messages, and the proper design of the message structure minimizes the effort (= CPU time) for handling. The discrete tasks are represented by corresponding functions, namely `fmav_parse_to_frame_buf()`, `fmav_check_frame_buf()`, and `fmav_frame_buf_to_msg()`, which can be called in sequence when (and only when) needed. But also the higher-level functions `fmav_parse_and_check_to_frame_buf()` and `fmav_parse_to_msg_wbuf()` are available, which wrapp these steps. One also can do it in one "big" step, and directly parse the received bytes into a message structure (i.e., the intermediate working buffer is not needed) with the function `fmav_parse_to_msg()`, which would be preferred then the working buffer content is not needed.
+This ensures a most fast parsing and a minimal effort (= CPU time) for forwarding of known and unknown messages, and the proper design of the message structure minimizes the effort (= CPU time) for handling. The discrete tasks are represented by corresponding functions, namely `fmav_parse_to_frame_buf()`, `fmav_check_frame_buf()`, and `fmav_frame_buf_to_msg()`, which can be called in sequence when (and only when) needed. But also the higher-level functions `fmav_parse_and_check_to_frame_buf()` and `fmav_parse_to_msg_wbuf()` are available, which wrap these steps. One also can do it in one "big" step, and directly parse the received bytes into a message structure (i.e., the intermediate working buffer is not needed) with the function `fmav_parse_to_msg()`, which would be preferred then the working buffer content is not needed.
 
 In the following the discrete tasks shall be analyzed, as this should help much to understand the fabric of the fastMavlink library.
 
