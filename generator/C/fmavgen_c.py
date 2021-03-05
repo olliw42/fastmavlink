@@ -137,7 +137,7 @@ def generateForOneXml(outputdir, xml):
                 msg.array_fields.append(field)
         for field in msg.fields:
             if field.mavlink_version: # special treatment for the HEARTBEAT version field
-                field.name_for_setting_payload = field.mavlink_version
+                field.name_for_setting_payload = 'FASTMAVLINK_MAVLINK_VERSION' #field.mavlink_version
             else:
                 msg.arg_fields.append(field)
                 field.name_for_setting_payload = field.name

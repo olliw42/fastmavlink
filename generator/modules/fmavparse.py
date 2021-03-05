@@ -89,7 +89,7 @@ class MAVEnum(object):
 
 class MAVMessageField(object):
     '''Holds a MAVlink message field. mavlink.messages.message.field'''
-    def __init__(self, name, type, print_format, version, enum, display, units, instance, line_number, description=''):
+    def __init__(self, name, type, print_format, enum, display, units, instance, line_number, description=''):
         self.name = name
         self.name_upper = name.upper()
         self.print_format = print_format
@@ -126,7 +126,7 @@ class MAVMessageField(object):
 
         if type == 'uint8_t_mavlink_version': # special treatment for the HEARTBEAT version field
             type = 'uint8_t'
-            self.mavlink_version = version
+            self.mavlink_version = 'mavlink_version' # this will be somewhere replaced by something useful
 
         array_idx = type.find("[")
         if array_idx != -1:
@@ -312,7 +312,7 @@ class MAVParseXml(object):
         # this field is expanded to account for the included XML files
         self.payload_largest_length = 0
         
-        self.version = 3 # may be overwritten by a version field in the XML file, used for HEARTBEAT
+        self.version = 0 # version field in the XML file, 0 if none is defined
         self.parse_time = time.strftime("%a %b %d %Y")
 
         in_element_list = []
@@ -346,7 +346,7 @@ class MAVParseXml(object):
                     units = '[' + units + ']'
                 instance = attrs.get('instance', False)
                 self.messages[-1].fields.append(
-                    MAVMessageField(attrs['name'], attrs['type'], print_format, self.version, enum, display, units, instance, p.CurrentLineNumber)
+                    MAVMessageField(attrs['name'], attrs['type'], print_format, enum, display, units, instance, p.CurrentLineNumber)
                 )
 
             elif in_element == "mavlink.enums.enum":
@@ -412,7 +412,7 @@ class MAVParseXml(object):
                 self.enums[-1].entry[-1].description += data.replace("\n","")
             elif in_element == "mavlink.enums.enum.entry.param":
                 self.enums[-1].entry[-1].params[-1].description += data.replace("\n","")
-            elif in_element == "mavlink.version": # special handling for HEARTBEAT version field
+            elif in_element == "mavlink.version":
                 self.version = int(data)
             elif in_element == "mavlink.include":
                 self.includes.append(data)
