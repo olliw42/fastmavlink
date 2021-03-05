@@ -42,6 +42,8 @@ extern "C" {
 //-- Enum definitons
 //------------------------------
 
+#ifndef FASTMAVLINK_TEST_EXCLUDE_ENUMS
+
 ${{enums_merged:#ifndef FASTMAVLINK_HAS_ENUM_${name}
 #define FASTMAVLINK_HAS_ENUM_${name}
 typedef enum ${name} {
@@ -52,6 +54,8 @@ ${{entry:    ${name} = ${value},  // ${description} ${{params:| ${description} }
 
 
 }}
+
+#endif // FASTMAVLINK_DO_NOT_INCLUDE_ENUMS
 
 
 //------------------------------

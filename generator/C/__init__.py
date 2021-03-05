@@ -1,1 +1,1 @@
-'''The fastMavlink library code generator C language module'''
+'''The fastMavlink library C language code generator module'''

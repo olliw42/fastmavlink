@@ -8,6 +8,7 @@
 #define FASTMAVLINK_TYPES_H
 
 
+#include <stdint.h>
 #include "fastmavlink_config.h"
 #include "fastmavlink_protocol.h"
 

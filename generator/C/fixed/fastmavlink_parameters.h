@@ -24,6 +24,7 @@ extern "C" {
 #endif
 
 
+#include <stdint.h>
 #include "fastmavlink_config.h"
 #include "fastmavlink_types.h"
 
