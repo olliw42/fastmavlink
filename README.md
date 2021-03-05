@@ -21,7 +21,7 @@ The fastMavlink library is used in two projects of mine, the [STorM32 gimbal con
 
 ## Licence ##
 
-Yet to be determined. It will be a permissive licence, along the ideas of the original MAVLink project. That is, the fastMavlink C code library canbe used in a closed source application without copyright issues and without any limitations.
+Yet to be determined. It will be a permissive licence, along the ideas of the original MAVLink project. That is, the fastMavlink C code library can be used in a closed source application without copyright issues and without any limitations.
 
 ## Limitations ##
 
