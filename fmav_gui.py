@@ -31,8 +31,8 @@ else:
     tkinter.messagebox = tkMessageBox
     del tkMessageBox
     
-from generator import fmavgen as mavgen
-from generator.modules import fmavflags as mavflags
+from generator import fmav_gen as mavgen
+from generator.modules import fmav_flags as mavflags
 
 
 title = "MAVLink Code Generator GUI for FastMAVLink"

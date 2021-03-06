@@ -24,8 +24,8 @@ Imports
 '''
 sys.path.insert(0,mavlinkpathtorepository)
 
-from generator import fmavgen
-from generator.modules import fmavflags
+from generator import fmav_gen as mavgen
+from generator.modules import fmav_flags as mavflags
 
 '''
 Generates the header files and place them in the output directory.
@@ -43,10 +43,10 @@ except:
 os.mkdir(outdir)
 print('----------')
 
-opts = fmavgen.Opts(outdir, parse_flags=fmavflags.PARSE_FLAGS_WARNING_ENUM_VALUE_MISSING)
+opts = mavgen.Opts(outdir, parse_flags=mavflags.PARSE_FLAGS_WARNING_ENUM_VALUE_MISSING)
 args = [xmlfile]
 try:
-    fmavgen.fmavgen(opts,args)
+    mavgen.fmavgen(opts,args)
     print('Successfully Generated Headers', 'Headers generated successfully.')
 
 except Exception as ex:

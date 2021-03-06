@@ -10,9 +10,9 @@ as part of the fastMavlink project
 supports only MAVLink v2
 '''
 import os
-from ..modules import fmavparse as mavparse
+from ..modules import fmav_parse as mavparse
 from ..modules import mavtemplate
-from ..modules import fmavflags as mavflags
+from ..modules import fmav_flags as mavflags
 
 
 FASTMAVLINK_MSG_PREFIX = 'mavlink'

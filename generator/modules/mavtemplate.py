@@ -8,7 +8,7 @@ Released under GNU GPL version 3 or later
 
 from builtins import object
 
-from .fmavparse import MAVParseError
+from .fmav_parse import MAVParseError
 
 
 class MAVTemplate(object):

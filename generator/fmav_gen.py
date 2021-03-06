@@ -9,13 +9,13 @@ quite massively modified and modernized by OlliW
 as part of the fastMavlink project
 supports only MAVLink v2, and C currently
 
-fmavgen.py is the main entry point
+fmav_gen.py is the main entry point
 call fmavgen.fmavgen()
 '''
 import os
 import re
 import sys
-from .modules import fmavflags as mavflags
+from .modules import fmav_flags as mavflags
 
 
 VALIDATE_FLAGS_NONE = 0
@@ -112,8 +112,8 @@ def fmavgen(opts, args):
         validate_func = None
         
     if opts.language == 'c':
-        from .C import fmavgen_c
-        fmavgen_c.generate(opts.output, file_set, validate_func, parse_flags=opts.parse_flags)
+        from .C import fmav_gen_c as mavgen_c
+        mavgen_c.generate(opts.output, file_set, validate_func, parse_flags=opts.parse_flags)
     else:
         print("ERROR fmavgen(): Unsupported language %s" % opts.language)
 

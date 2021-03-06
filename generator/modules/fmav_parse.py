@@ -21,7 +21,7 @@ import xml.parsers.expat
 Classes holding the XML elements
 '''
 
-from . import fmavflags as mavflags
+from . import fmav_flags as mavflags
 
 # message flags, bitmask to help with handling targets
 MESSAGE_FLAGS_HAS_TARGET_SYSTEM    = 1
