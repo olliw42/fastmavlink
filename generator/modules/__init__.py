@@ -1,1 +1,1 @@
-'''The fastMavlink library code generator modules'''
+'''fastMavlink code generator helper modules'''
