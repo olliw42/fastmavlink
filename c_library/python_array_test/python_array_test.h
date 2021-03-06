@@ -12,11 +12,11 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Tue Mar 02 2021"
+#define FASTMAVLINK_BUILD_DATE  "Sat Mar 06 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
-#define FASTMAVLINK_DIALECT_VERSION  3  // this is the version specified in the dialect xml file
+#define FASTMAVLINK_DIALECT_VERSION  0  // this is the version specified in the dialect xml file
 #endif
 
 
@@ -42,7 +42,11 @@ extern "C" {
 //-- Enum definitons
 //------------------------------
 
+#ifndef FASTMAVLINK_TEST_EXCLUDE_ENUMS
 
+
+
+#endif // FASTMAVLINK_DO_NOT_INCLUDE_ENUMS
 
 
 //------------------------------

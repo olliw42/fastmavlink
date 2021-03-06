@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Tue Mar 02 2021"
+#define FASTMAVLINK_BUILD_DATE  "Sat Mar 06 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -41,6 +41,8 @@ extern "C" {
 //------------------------------
 //-- Enum definitons
 //------------------------------
+
+#ifndef FASTMAVLINK_TEST_EXCLUDE_ENUMS
 
 #ifndef FASTMAVLINK_HAS_ENUM_MAV_STORM32_TUNNEL_PAYLOAD_TYPE
 #define FASTMAVLINK_HAS_ENUM_MAV_STORM32_TUNNEL_PAYLOAD_TYPE
@@ -408,6 +410,8 @@ typedef enum MAV_CMD {
     MAV_CMD_ENUM_END = 60021,  // end marker
 } MAV_CMD;
 #endif
+
+#endif // FASTMAVLINK_DO_NOT_INCLUDE_ENUMS
 
 
 //------------------------------

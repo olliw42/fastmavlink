@@ -34,6 +34,7 @@
 #define FASTMAVLINK_FUNCTIONS_H
 
 
+#include <stdint.h>
 #include "fastmavlink_config.h"
 #include "fastmavlink_crc.h"
 #include "fastmavlink_protocol.h"
@@ -44,11 +45,14 @@
 //-- Support functions
 //------------------------------
 
+static const fmav_message_entry_t _fmav_message_crcs[] = FASTMAVLINK_MESSAGE_CRCS;
+
+
 // this function is taken from the pymavlink-mavgen project
 // https://github.com/ArduPilot/pymavlink/tree/master/generator
 FASTMAVLINK_FUNCTION_DECORATOR const fmav_message_entry_t* fmav_get_message_entry(uint32_t msgid)
 {
-    static const fmav_message_entry_t _fmav_message_crcs[] = FASTMAVLINK_MESSAGE_CRCS;
+    //static const fmav_message_entry_t _fmav_message_crcs[] = FASTMAVLINK_MESSAGE_CRCS;
     uint32_t low = 0;
     uint32_t high = sizeof(_fmav_message_crcs)/sizeof(_fmav_message_crcs[0]) - 1;
 
@@ -72,6 +76,18 @@ FASTMAVLINK_FUNCTION_DECORATOR const fmav_message_entry_t* fmav_get_message_entr
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_get_message_entry_num(void)
+{
+    return sizeof(_fmav_message_crcs)/sizeof(_fmav_message_crcs[0]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR const fmav_message_entry_t* fmav_get_message_entry_by_index(uint32_t i)
+{
+    return &(_fmav_message_crcs[i]);
+}
+
+
 // this function is taken from the pymavlink-mavgen project
 // https://github.com/ArduPilot/pymavlink/tree/master/generator
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_payload_len_wo_trailing_zeros(const uint8_t* payload, uint8_t len)
@@ -86,7 +102,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_payload_len_wo_trailing_zeros(const 
 // used in message generators to finalize the message entries
 // msg payload will not be zero filled, we should use it only to send, not to digest
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_finalize_msg(
-    fmav_message_t* msg, uint16_t payload_max_len, fmav_status_t* status)
+    fmav_message_t* msg, uint8_t payload_max_len, fmav_status_t* status)
 {
     uint8_t headbuf[FASTMAVLINK_HEADER_V2_LEN];
 
@@ -98,9 +114,9 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_finalize_msg(
     status->tx_seq++;
     headbuf[5] = msg->sysid; // msg->sysid was set in generator
     headbuf[6] = msg->compid; // msg->compid was set in generator
-    headbuf[7] = msg->msgid; // msg->msgid was set in generator
-    headbuf[8] = ((msg->msgid) >> 8);
-    headbuf[9] = ((msg->msgid) >> 16);
+    headbuf[7] = (uint8_t)msg->msgid; // msg->msgid was set in generator
+    headbuf[8] = (uint8_t)((msg->msgid) >> 8);
+    headbuf[9] = (uint8_t)((msg->msgid) >> 16);
 
     uint16_t crc = fmav_crc_calculate(&(headbuf[1]), FASTMAVLINK_HEADER_V2_LEN - 1);
     fmav_crc_accumulate_buf(&crc, msg->payload, msg->len);
@@ -119,12 +135,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_finalize_msg(
 
 // used in message generators to finalize a tx frame buf
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_finalize_frame_buf(
-    uint8_t* buf, uint16_t payload_max_len, uint8_t crc_extra, fmav_status_t* status)
+    uint8_t* buf, uint8_t payload_max_len, uint8_t crc_extra, fmav_status_t* status)
 {
     uint16_t len = fmav_payload_len_wo_trailing_zeros(&buf[10], payload_max_len);
 
     buf[0] = FASTMAVLINK_MAGIC_V2;
-    buf[1] = len;
+    buf[1] = (uint8_t)len;
     buf[2] = 0;
     buf[3] = 0;
     buf[4] = status->tx_seq;
@@ -139,8 +155,8 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_finalize_frame_buf(
     fmav_crc_accumulate_buf(&crc, &buf[10], len);
     fmav_crc_accumulate(&crc, crc_extra); // msg->crc_extra was set in generator
 
-    buf[len + FASTMAVLINK_HEADER_V2_LEN] = crc;
-    buf[len + FASTMAVLINK_HEADER_V2_LEN + 1] = (crc >> 8);
+    buf[len + FASTMAVLINK_HEADER_V2_LEN] = (uint8_t)crc;
+    buf[len + FASTMAVLINK_HEADER_V2_LEN + 1] = (uint8_t)(crc >> 8);
 
     return len + FASTMAVLINK_HEADER_V2_LEN + FASTMAVLINK_CHECKSUM_LEN;
 }
@@ -150,7 +166,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_finalize_frame_buf(
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_finalize_serial(
     uint8_t sysid, uint8_t compid, uint8_t* payload,
-    uint32_t msgid, uint16_t payload_max_len, uint8_t crc_extra, fmav_status_t* status)
+    uint32_t msgid, uint8_t payload_max_len, uint8_t crc_extra, fmav_status_t* status)
 {
     uint16_t len = fmav_payload_len_wo_trailing_zeros(payload, payload_max_len);
     uint16_t crc;
@@ -636,22 +652,22 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_to_frame_buf(uint8_t* buf, fmav
         buf[4] = msg->seq;
         buf[5] = msg->sysid;
         buf[6] = msg->compid;
-        buf[7] = msg->msgid;
-        buf[8] = ((msg->msgid) >> 8);
-        buf[9] = ((msg->msgid) >> 16);
+        buf[7] = (uint8_t)msg->msgid;
+        buf[8] = (uint8_t)((msg->msgid) >> 8);
+        buf[9] = (uint8_t)((msg->msgid) >> 16);
         pos = 10;
     } else {
         msg->incompat_flags = 0; // should be already so, but play it safe
         buf[2] = msg->seq;
         buf[3] = msg->sysid;
         buf[4] = msg->compid;
-        buf[5] = msg->msgid;
+        buf[5] = (uint8_t)msg->msgid;
         pos = 6;
     }
     memcpy(&(buf[pos]), msg->payload, msg->len);
     pos += msg->len;
-    buf[pos++] = msg->checksum;
-    buf[pos++] = ((msg->checksum) >> 8);
+    buf[pos++] = (uint8_t)msg->checksum;
+    buf[pos++] = (uint8_t)((msg->checksum) >> 8);
     if (msg->incompat_flags & FASTMAVLINK_INCOMPAT_FLAGS_SIGNED) {
         memcpy(&(buf[pos]), msg->signature_a, FASTMAVLINK_SIGNATURE_LEN);
         pos += FASTMAVLINK_SIGNATURE_LEN;

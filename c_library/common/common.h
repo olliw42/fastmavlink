@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Tue Mar 02 2021"
+#define FASTMAVLINK_BUILD_DATE  "Sat Mar 06 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -41,6 +41,8 @@ extern "C" {
 //------------------------------
 //-- Enum definitons
 //------------------------------
+
+#ifndef FASTMAVLINK_TEST_EXCLUDE_ENUMS
 
 #ifndef FASTMAVLINK_HAS_ENUM_FIRMWARE_VERSION_TYPE
 #define FASTMAVLINK_HAS_ENUM_FIRMWARE_VERSION_TYPE
@@ -2067,6 +2069,8 @@ typedef enum MAG_CAL_STATUS {
     MAG_CAL_STATUS_ENUM_END = 8,  // end marker
 } MAG_CAL_STATUS;
 #endif
+
+#endif // FASTMAVLINK_DO_NOT_INCLUDE_ENUMS
 
 
 //------------------------------

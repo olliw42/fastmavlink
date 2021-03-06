@@ -181,13 +181,31 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_debug_float_array_encode_to_ser
 //-- Message DEBUG_FLOAT_ARRAY unpacking routines, for receiving
 //----------------------------------------
 // for these functions to work correctly, msg payload must have been zero filled before
+// while for the fmav_msg_debug_float_array_decode() function, this could be accounted for,
+// there is no easy&reasonable way to do it for the fmav_msg_debug_float_array_get_field_yyy() functions.
+// So, we generally require it.
+
+// this should not be needed, but we provide it just in case
+FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_debug_float_array_zero_fill(fmav_message_t* msg)
+{
+    if (msg->len < FASTMAVLINK_MSG_DEBUG_FLOAT_ARRAY_PAYLOAD_LEN_MAX) {
+        memset(&(((uint8_t*)msg->payload)[msg->len]), 0, FASTMAVLINK_MSG_DEBUG_FLOAT_ARRAY_PAYLOAD_LEN_MAX - msg->len); // zero-fill
+    }
+}
+
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_debug_float_array_decode(fmav_debug_float_array_t* payload, const fmav_message_t* msg)
 {
-    uint8_t len = (msg->len < FASTMAVLINK_MSG_DEBUG_FLOAT_ARRAY_PAYLOAD_LEN_MAX) ? msg->len : FASTMAVLINK_MSG_DEBUG_FLOAT_ARRAY_PAYLOAD_LEN_MAX;
+    // this assumes msg payload has been zero filled
+    //memcpy(payload, msg->payload, FASTMAVLINK_MSG_DEBUG_FLOAT_ARRAY_PAYLOAD_LEN_MAX);
 
-    // memset(payload, 0, FASTMAVLINK_MSG_DEBUG_FLOAT_ARRAY_PAYLOAD_LEN_MAX); not needed, must have been done before
-    memcpy(payload, msg->payload, len);
+    // let's assume it is not zero filled, this should not be needed, but let's just play it safe
+    if (msg->len < FASTMAVLINK_MSG_DEBUG_FLOAT_ARRAY_PAYLOAD_LEN_MAX) {
+        memcpy(payload, msg->payload, msg->len);
+        memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_DEBUG_FLOAT_ARRAY_PAYLOAD_LEN_MAX - msg->len); // zero-fill
+    } else {
+        memcpy(payload, msg->payload, FASTMAVLINK_MSG_DEBUG_FLOAT_ARRAY_PAYLOAD_LEN_MAX);
+    }
 }
 
 

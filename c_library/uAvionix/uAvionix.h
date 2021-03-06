@@ -12,11 +12,11 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Tue Mar 02 2021"
+#define FASTMAVLINK_BUILD_DATE  "Sat Mar 06 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
-#define FASTMAVLINK_DIALECT_VERSION  3  // this is the version specified in the dialect xml file
+#define FASTMAVLINK_DIALECT_VERSION  0  // this is the version specified in the dialect xml file
 #endif
 
 
@@ -41,6 +41,8 @@ extern "C" {
 //------------------------------
 //-- Enum definitons
 //------------------------------
+
+#ifndef FASTMAVLINK_TEST_EXCLUDE_ENUMS
 
 #ifndef FASTMAVLINK_HAS_ENUM_UAVIONIX_ADSB_OUT_DYNAMIC_STATE
 #define FASTMAVLINK_HAS_ENUM_UAVIONIX_ADSB_OUT_DYNAMIC_STATE
@@ -156,6 +158,8 @@ typedef enum UAVIONIX_ADSB_EMERGENCY_STATUS {
     UAVIONIX_ADSB_EMERGENCY_STATUS_ENUM_END = 8,  // end marker
 } UAVIONIX_ADSB_EMERGENCY_STATUS;
 #endif
+
+#endif // FASTMAVLINK_DO_NOT_INCLUDE_ENUMS
 
 
 //------------------------------

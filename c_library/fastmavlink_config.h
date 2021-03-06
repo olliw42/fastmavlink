@@ -19,7 +19,11 @@
 
 
 #ifndef FASTMAVLINK_PACK
-  #define FASTMAVLINK_PACK(__Declaration__)  __Declaration__
+  #ifdef __GNUC__
+    #define FASTMAVLINK_PACK( __Declaration__ ) __Declaration__ __attribute__((packed))
+  #else
+    #define FASTMAVLINK_PACK( __Declaration__ ) __pragma( pack(push, 1) ) __Declaration__ __pragma( pack(pop) )
+  #endif
 #endif
 
 
@@ -27,6 +31,22 @@
   #define FASTMAVLINK_HEARTBEAT_MAVLINK_VERSION  3 // you should not modify this
 #endif
 
+
+/*
+#define FASTMAVLINK_MESSAGE_CRCS
+*/
+
+/*
+#define FASTMAVLINK_SERIAL_WRITE_CHAR
+*/
+
+/*
+FASTMAVLINK_DIALECT_VERSION
+*/
+
+/*
+#define FASTMAVLINK_EXCLUDE_ENUMS
+*/
 
 #endif // FASTMAVLINK_CONFIG_H
 
