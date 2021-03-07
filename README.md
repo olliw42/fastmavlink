@@ -13,7 +13,9 @@ Some of the drawbacks of the pymavlink-mavgen library were listed and addressed 
 
 In addition, the fastMavlink C library provides features not provided otherwise but which are quite missed. For instance, it has optimized routines for use in MAVLink routers as well as a MAVLink router library. It offers a pymavlink-mavgen mimicry capability, which can make changing to fastMavlink easy.
 
-Lastly, the C code is generated using a Python generator from the MAVLink protocol XML definition files, as it is common with MAVLink. The code generator is based off pymavlink-mavgen's, but has been massively renovated, cleaned up, and more logically structured. It also provides new capabilities. For instance, it provides consistent code generation across included dialects, which removes the hickups possible with pymavlink-mavgen. It therefore is well prepared to provide the means for the upcoming MAVLink governance policy, such as message overwrite for development and testing.
+The C code is generated using a Python generator from the MAVLink protocol XML definition files, as it is common with MAVLink. The code generator is based off pymavlink-mavgen's, but has been massively renovated, cleaned up, and more logically structured. It also provides new capabilities. For instance, it provides consistent code generation across included dialects, which removes the hickups possible with pymavlink-mavgen. It therefore is well prepared to provide the means for the upcoming MAVLink governance policy, such as message overwrite for development and testing.
+
+Lastly, fastMavlink provides a comprehensive test suite.
 
 You don't believe all this can be true, you think it must be exaggerated? Well, when please check it out and judge :)
 
@@ -44,6 +46,12 @@ In order to use the dialect dialect.xml, include
 ```
 
 into your project. Note that it is not `".../dialect/mavlink.h"` as it would be for pymavlink-mavgen. If you do so with fastMavlink, it would enable the [pymavlink-mavgen mimicry](#pymavlink-mavgen-mimicry).
+
+## Test Suite ##
+
+The fastMavlink C library includes what could be the most comprehensive test suite available for MAVLink code.
+
+Please see [The fastMavlink Library: Test Suite](tests/).
 
 
 ## C Code Architecture ##
