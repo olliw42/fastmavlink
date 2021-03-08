@@ -36,7 +36,7 @@ Messages can be generated and emitted only in MAVLink v2 format, and without sig
 
 Please see the following chapter on the [C Code Architecture](#c-code-architecture) for a general description. 
 
-For examples please go to [Examples](examples/).
+For examples please go to [The fastMavlink Library: Examples](examples/).
 
 
 In order to use the dialect dialect.xml, include 
@@ -49,7 +49,7 @@ into your project. Note that it is not `".../dialect/mavlink.h"` as it would be 
 
 ## Test Suite ##
 
-The fastMavlink C library includes what could be the most comprehensive test suite available for MAVLink code.
+The fastMavlink C library includes what could be the most comprehensive test suite available for MAVLink C code.
 
 Please see [The fastMavlink Library: Test Suite](tests/).
 
