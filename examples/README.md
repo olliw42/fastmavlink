@@ -3,6 +3,8 @@
 
 There are usually so many different ways of how to implement and realize one and the same goal, that code examples hardly can cover them. The following examples hence may not match exactly what you need. They however hopefully provide insight into how the fastMavlink library can be used, and they may serve as starting templates for your own projects.
 
+## Assumed Interface ##
+
 The examples make some common assumptions about your system and the serial (UART or USB/VCP) handling:
  
 It is assumed that the serial write and read functions are interrupt-driven and not of polling nature. The code might be simpler in the latter case, but in my experience except for maybe only the most simplest applications polling is not an option. That means, there are Tx and Rx buffers, which are filled and emptied by the write and read functions.
@@ -19,7 +21,7 @@ The following interface of serial functions is specifically assumed:
 
 This serial interface may seem overly complicated, and the available and has_space functions indeed often can be combined into the read and write functions, but this interface makes the discrete steps more explicit. It should be easy enough to convert the examples to your interface.
 
-If in an application more than one serial port is used, such as in a MAVLink router, the same interface is assumed, just with the `serial` appended by a number, e.g., `serial1_has_space()` or `serial2_write_buf()`.
+If an application uses more than one serial port, such as in a MAVLink router, the same interface is assumed, just with the `serial` appended by a number, e.g., `serial1_has_space()` or `serial2_write_buf()`, and so on.
 
 In addition to the above, a timer is also assumed:
 

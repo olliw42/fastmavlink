@@ -47,6 +47,14 @@ In order to use the dialect dialect.xml, include
 
 into your project. Note that it is not `".../dialect/mavlink.h"` as it would be for pymavlink-mavgen. If you do so with fastMavlink, it would enable the [pymavlink-mavgen mimicry](#pymavlink-mavgen-mimicry).
 
+
+## FastMavlink Router ##
+
+The fastMavlink C library includes a MAVLink router library. It is discussed in the examples.
+
+Please see [Examples: Several Links - No Component: MAVLink Router](examples#several-links---no-component-mavlink-router) and [Examples: Several Links - One Component: Component with Routing Capabilities](examples#several-links---one-component-component-with-routing-capabilities).
+
+
 ## Test Suite ##
 
 The fastMavlink C library includes what could be the most comprehensive test suite available for MAVLink C code.
