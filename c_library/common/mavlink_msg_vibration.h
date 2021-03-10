@@ -52,13 +52,13 @@ typedef struct _fmav_vibration_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vibration_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, float vibration_x, float vibration_y, float vibration_z, uint32_t clipping_0, uint32_t clipping_1, uint32_t clipping_2,
     fmav_status_t* _status)
 {
-    fmav_vibration_t* _payload = (fmav_vibration_t*)msg->payload;
+    fmav_vibration_t* _payload = (fmav_vibration_t*)_msg->payload;
 
     _payload->time_usec = time_usec;
     _payload->vibration_x = vibration_x;
@@ -69,43 +69,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vibration_pack(
     _payload->clipping_2 = clipping_2;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_VIBRATION;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_VIBRATION_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_VIBRATION;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_VIBRATION_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_VIBRATION_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vibration_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_vibration_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_vibration_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->time_usec, _payload->vibration_x, _payload->vibration_y, _payload->vibration_z, _payload->clipping_0, _payload->clipping_1, _payload->clipping_2,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vibration_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, float vibration_x, float vibration_y, float vibration_z, uint32_t clipping_0, uint32_t clipping_1, uint32_t clipping_2,
     fmav_status_t* _status)
 {
-    fmav_vibration_t* _payload = (fmav_vibration_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_vibration_t* _payload = (fmav_vibration_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_usec = time_usec;
     _payload->vibration_x = vibration_x;
@@ -116,14 +115,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vibration_pack_to_frame_buf(
     _payload->clipping_2 = clipping_2;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_VIBRATION;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_VIBRATION >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_VIBRATION >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_VIBRATION;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_VIBRATION >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_VIBRATION >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_VIBRATION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_VIBRATION_CRCEXTRA,
         _status);
@@ -131,14 +130,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vibration_pack_to_frame_buf(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vibration_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_vibration_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_vibration_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->time_usec, _payload->vibration_x, _payload->vibration_y, _payload->vibration_z, _payload->clipping_0, _payload->clipping_1, _payload->clipping_2,
         _status);
 }
@@ -308,12 +307,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_vibration_get_field_clipping_2(
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_vibration_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint64_t time_usec, float vibration_x, float vibration_y, float vibration_z, uint32_t clipping_0, uint32_t clipping_1, uint32_t clipping_2)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_vibration_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         time_usec, vibration_x, vibration_y, vibration_z, clipping_0, clipping_1, clipping_2,
         _status);
 }
@@ -322,14 +321,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_vibration_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_vibration_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, float vibration_x, float vibration_y, float vibration_z, uint32_t clipping_0, uint32_t clipping_1, uint32_t clipping_2)
 {
     return fmav_msg_vibration_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         time_usec, vibration_x, vibration_y, vibration_z, clipping_0, clipping_1, clipping_2,

@@ -74,13 +74,13 @@ typedef struct _fmav_mag_cal_report_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_report_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint8_t compass_id, uint8_t cal_mask, uint8_t cal_status, uint8_t autosaved, float fitness, float ofs_x, float ofs_y, float ofs_z, float diag_x, float diag_y, float diag_z, float offdiag_x, float offdiag_y, float offdiag_z, float orientation_confidence, uint8_t old_orientation, uint8_t new_orientation, float scale_factor,
     fmav_status_t* _status)
 {
-    fmav_mag_cal_report_t* _payload = (fmav_mag_cal_report_t*)msg->payload;
+    fmav_mag_cal_report_t* _payload = (fmav_mag_cal_report_t*)_msg->payload;
 
     _payload->fitness = fitness;
     _payload->ofs_x = ofs_x;
@@ -102,43 +102,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_report_pack(
     _payload->scale_factor = scale_factor;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_MAG_CAL_REPORT;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_MAG_CAL_REPORT_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_MAG_CAL_REPORT;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_MAG_CAL_REPORT_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_MAG_CAL_REPORT_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_report_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_mag_cal_report_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_mag_cal_report_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->compass_id, _payload->cal_mask, _payload->cal_status, _payload->autosaved, _payload->fitness, _payload->ofs_x, _payload->ofs_y, _payload->ofs_z, _payload->diag_x, _payload->diag_y, _payload->diag_z, _payload->offdiag_x, _payload->offdiag_y, _payload->offdiag_z, _payload->orientation_confidence, _payload->old_orientation, _payload->new_orientation, _payload->scale_factor,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_report_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint8_t compass_id, uint8_t cal_mask, uint8_t cal_status, uint8_t autosaved, float fitness, float ofs_x, float ofs_y, float ofs_z, float diag_x, float diag_y, float diag_z, float offdiag_x, float offdiag_y, float offdiag_z, float orientation_confidence, uint8_t old_orientation, uint8_t new_orientation, float scale_factor,
     fmav_status_t* _status)
 {
-    fmav_mag_cal_report_t* _payload = (fmav_mag_cal_report_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_mag_cal_report_t* _payload = (fmav_mag_cal_report_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->fitness = fitness;
     _payload->ofs_x = ofs_x;
@@ -160,14 +159,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_report_pack_to_frame_bu
     _payload->scale_factor = scale_factor;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_MAG_CAL_REPORT;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_MAG_CAL_REPORT >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_MAG_CAL_REPORT >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_MAG_CAL_REPORT;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_MAG_CAL_REPORT >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_MAG_CAL_REPORT >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_MAG_CAL_REPORT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MAG_CAL_REPORT_CRCEXTRA,
         _status);
@@ -175,14 +174,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_report_pack_to_frame_bu
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_report_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_mag_cal_report_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_mag_cal_report_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->compass_id, _payload->cal_mask, _payload->cal_status, _payload->autosaved, _payload->fitness, _payload->ofs_x, _payload->ofs_y, _payload->ofs_z, _payload->diag_x, _payload->diag_y, _payload->diag_z, _payload->offdiag_x, _payload->offdiag_y, _payload->offdiag_z, _payload->orientation_confidence, _payload->old_orientation, _payload->new_orientation, _payload->scale_factor,
         _status);
 }
@@ -451,12 +450,12 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_mag_cal_report_get_field_scale_fac
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_mag_cal_report_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint8_t compass_id, uint8_t cal_mask, uint8_t cal_status, uint8_t autosaved, float fitness, float ofs_x, float ofs_y, float ofs_z, float diag_x, float diag_y, float diag_z, float offdiag_x, float offdiag_y, float offdiag_z, float orientation_confidence, uint8_t old_orientation, uint8_t new_orientation, float scale_factor)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_mag_cal_report_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         compass_id, cal_mask, cal_status, autosaved, fitness, ofs_x, ofs_y, ofs_z, diag_x, diag_y, diag_z, offdiag_x, offdiag_y, offdiag_z, orientation_confidence, old_orientation, new_orientation, scale_factor,
         _status);
 }
@@ -465,14 +464,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_mag_cal_report_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_mag_cal_report_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint8_t compass_id, uint8_t cal_mask, uint8_t cal_status, uint8_t autosaved, float fitness, float ofs_x, float ofs_y, float ofs_z, float diag_x, float diag_y, float diag_z, float offdiag_x, float offdiag_y, float offdiag_z, float orientation_confidence, uint8_t old_orientation, uint8_t new_orientation, float scale_factor)
 {
     return fmav_msg_mag_cal_report_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         compass_id, cal_mask, cal_status, autosaved, fitness, ofs_x, ofs_y, ofs_z, diag_x, diag_y, diag_z, offdiag_x, offdiag_y, offdiag_z, orientation_confidence, old_orientation, new_orientation, scale_factor,

@@ -52,13 +52,13 @@ typedef struct _fmav_manual_setpoint_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_setpoint_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, float roll, float pitch, float yaw, float thrust, uint8_t mode_switch, uint8_t manual_override_switch,
     fmav_status_t* _status)
 {
-    fmav_manual_setpoint_t* _payload = (fmav_manual_setpoint_t*)msg->payload;
+    fmav_manual_setpoint_t* _payload = (fmav_manual_setpoint_t*)_msg->payload;
 
     _payload->time_boot_ms = time_boot_ms;
     _payload->roll = roll;
@@ -69,43 +69,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_setpoint_pack(
     _payload->manual_override_switch = manual_override_switch;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_MANUAL_SETPOINT;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_MANUAL_SETPOINT_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_MANUAL_SETPOINT;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_MANUAL_SETPOINT_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_MANUAL_SETPOINT_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_setpoint_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_manual_setpoint_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_manual_setpoint_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->time_boot_ms, _payload->roll, _payload->pitch, _payload->yaw, _payload->thrust, _payload->mode_switch, _payload->manual_override_switch,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_setpoint_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, float roll, float pitch, float yaw, float thrust, uint8_t mode_switch, uint8_t manual_override_switch,
     fmav_status_t* _status)
 {
-    fmav_manual_setpoint_t* _payload = (fmav_manual_setpoint_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_manual_setpoint_t* _payload = (fmav_manual_setpoint_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_boot_ms = time_boot_ms;
     _payload->roll = roll;
@@ -116,14 +115,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_setpoint_pack_to_frame_b
     _payload->manual_override_switch = manual_override_switch;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_MANUAL_SETPOINT;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_MANUAL_SETPOINT >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_MANUAL_SETPOINT >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_MANUAL_SETPOINT;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_MANUAL_SETPOINT >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_MANUAL_SETPOINT >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_MANUAL_SETPOINT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MANUAL_SETPOINT_CRCEXTRA,
         _status);
@@ -131,14 +130,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_setpoint_pack_to_frame_b
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_setpoint_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_manual_setpoint_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_manual_setpoint_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->time_boot_ms, _payload->roll, _payload->pitch, _payload->yaw, _payload->thrust, _payload->mode_switch, _payload->manual_override_switch,
         _status);
 }
@@ -308,12 +307,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_manual_setpoint_get_field_manual
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_manual_setpoint_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint32_t time_boot_ms, float roll, float pitch, float yaw, float thrust, uint8_t mode_switch, uint8_t manual_override_switch)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_manual_setpoint_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         time_boot_ms, roll, pitch, yaw, thrust, mode_switch, manual_override_switch,
         _status);
 }
@@ -322,14 +321,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_manual_setpoint_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_manual_setpoint_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, float roll, float pitch, float yaw, float thrust, uint8_t mode_switch, uint8_t manual_override_switch)
 {
     return fmav_msg_manual_setpoint_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         time_boot_ms, roll, pitch, yaw, thrust, mode_switch, manual_override_switch,

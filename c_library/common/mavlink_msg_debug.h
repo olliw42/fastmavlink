@@ -44,70 +44,69 @@ typedef struct _fmav_debug_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_debug_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, uint8_t ind, float value,
     fmav_status_t* _status)
 {
-    fmav_debug_t* _payload = (fmav_debug_t*)msg->payload;
+    fmav_debug_t* _payload = (fmav_debug_t*)_msg->payload;
 
     _payload->time_boot_ms = time_boot_ms;
     _payload->value = value;
     _payload->ind = ind;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_DEBUG;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_DEBUG_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_DEBUG;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_DEBUG_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_DEBUG_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_debug_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_debug_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_debug_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->time_boot_ms, _payload->ind, _payload->value,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_debug_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, uint8_t ind, float value,
     fmav_status_t* _status)
 {
-    fmav_debug_t* _payload = (fmav_debug_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_debug_t* _payload = (fmav_debug_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_boot_ms = time_boot_ms;
     _payload->value = value;
     _payload->ind = ind;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_DEBUG;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_DEBUG >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_DEBUG >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_DEBUG;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_DEBUG >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_DEBUG >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_DEBUG_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_DEBUG_CRCEXTRA,
         _status);
@@ -115,14 +114,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_debug_pack_to_frame_buf(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_debug_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_debug_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_debug_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->time_boot_ms, _payload->ind, _payload->value,
         _status);
 }
@@ -256,12 +255,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_debug_get_field_ind(const fmav_m
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_debug_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint32_t time_boot_ms, uint8_t ind, float value)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_debug_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         time_boot_ms, ind, value,
         _status);
 }
@@ -270,14 +269,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_debug_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_debug_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, uint8_t ind, float value)
 {
     return fmav_msg_debug_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         time_boot_ms, ind, value,

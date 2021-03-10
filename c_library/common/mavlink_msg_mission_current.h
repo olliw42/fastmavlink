@@ -40,66 +40,65 @@ typedef struct _fmav_mission_current_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_current_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint16_t seq,
     fmav_status_t* _status)
 {
-    fmav_mission_current_t* _payload = (fmav_mission_current_t*)msg->payload;
+    fmav_mission_current_t* _payload = (fmav_mission_current_t*)_msg->payload;
 
     _payload->seq = seq;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_MISSION_CURRENT;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_MISSION_CURRENT_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_MISSION_CURRENT;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_MISSION_CURRENT_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_MISSION_CURRENT_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_current_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_mission_current_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_mission_current_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->seq,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_current_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint16_t seq,
     fmav_status_t* _status)
 {
-    fmav_mission_current_t* _payload = (fmav_mission_current_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_mission_current_t* _payload = (fmav_mission_current_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->seq = seq;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_MISSION_CURRENT;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_MISSION_CURRENT >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_MISSION_CURRENT >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_MISSION_CURRENT;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_MISSION_CURRENT >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_MISSION_CURRENT >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_MISSION_CURRENT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MISSION_CURRENT_CRCEXTRA,
         _status);
@@ -107,14 +106,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_current_pack_to_frame_b
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_current_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_mission_current_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_mission_current_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->seq,
         _status);
 }
@@ -230,12 +229,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_current_get_field_seq(c
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_mission_current_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint16_t seq)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_mission_current_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         seq,
         _status);
 }
@@ -244,14 +243,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_mission_current_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_mission_current_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint16_t seq)
 {
     return fmav_msg_mission_current_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         seq,

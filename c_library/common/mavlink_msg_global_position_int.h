@@ -56,13 +56,13 @@ typedef struct _fmav_global_position_int_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_global_position_int_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, int32_t lat, int32_t lon, int32_t alt, int32_t relative_alt, int16_t vx, int16_t vy, int16_t vz, uint16_t hdg,
     fmav_status_t* _status)
 {
-    fmav_global_position_int_t* _payload = (fmav_global_position_int_t*)msg->payload;
+    fmav_global_position_int_t* _payload = (fmav_global_position_int_t*)_msg->payload;
 
     _payload->time_boot_ms = time_boot_ms;
     _payload->lat = lat;
@@ -75,43 +75,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_global_position_int_pack(
     _payload->hdg = hdg;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_GLOBAL_POSITION_INT;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_GLOBAL_POSITION_INT_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_GLOBAL_POSITION_INT;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_GLOBAL_POSITION_INT_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_GLOBAL_POSITION_INT_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_global_position_int_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_global_position_int_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_global_position_int_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->time_boot_ms, _payload->lat, _payload->lon, _payload->alt, _payload->relative_alt, _payload->vx, _payload->vy, _payload->vz, _payload->hdg,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_global_position_int_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, int32_t lat, int32_t lon, int32_t alt, int32_t relative_alt, int16_t vx, int16_t vy, int16_t vz, uint16_t hdg,
     fmav_status_t* _status)
 {
-    fmav_global_position_int_t* _payload = (fmav_global_position_int_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_global_position_int_t* _payload = (fmav_global_position_int_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_boot_ms = time_boot_ms;
     _payload->lat = lat;
@@ -124,14 +123,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_global_position_int_pack_to_fra
     _payload->hdg = hdg;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_GLOBAL_POSITION_INT;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_GLOBAL_POSITION_INT >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_GLOBAL_POSITION_INT >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_GLOBAL_POSITION_INT;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_GLOBAL_POSITION_INT >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_GLOBAL_POSITION_INT >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_GLOBAL_POSITION_INT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_GLOBAL_POSITION_INT_CRCEXTRA,
         _status);
@@ -139,14 +138,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_global_position_int_pack_to_fra
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_global_position_int_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_global_position_int_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_global_position_int_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->time_boot_ms, _payload->lat, _payload->lon, _payload->alt, _payload->relative_alt, _payload->vx, _payload->vy, _payload->vz, _payload->hdg,
         _status);
 }
@@ -334,12 +333,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_global_position_int_get_field_h
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_global_position_int_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint32_t time_boot_ms, int32_t lat, int32_t lon, int32_t alt, int32_t relative_alt, int16_t vx, int16_t vy, int16_t vz, uint16_t hdg)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_global_position_int_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         time_boot_ms, lat, lon, alt, relative_alt, vx, vy, vz, hdg,
         _status);
 }
@@ -348,14 +347,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_global_position_int_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_global_position_int_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, int32_t lat, int32_t lon, int32_t alt, int32_t relative_alt, int16_t vx, int16_t vy, int16_t vz, uint16_t hdg)
 {
     return fmav_msg_global_position_int_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         time_boot_ms, lat, lon, alt, relative_alt, vx, vy, vz, hdg,

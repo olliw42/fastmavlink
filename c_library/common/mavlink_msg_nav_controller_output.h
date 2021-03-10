@@ -54,13 +54,13 @@ typedef struct _fmav_nav_controller_output_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_controller_output_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     float nav_roll, float nav_pitch, int16_t nav_bearing, int16_t target_bearing, uint16_t wp_dist, float alt_error, float aspd_error, float xtrack_error,
     fmav_status_t* _status)
 {
-    fmav_nav_controller_output_t* _payload = (fmav_nav_controller_output_t*)msg->payload;
+    fmav_nav_controller_output_t* _payload = (fmav_nav_controller_output_t*)_msg->payload;
 
     _payload->nav_roll = nav_roll;
     _payload->nav_pitch = nav_pitch;
@@ -72,43 +72,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_controller_output_pack(
     _payload->wp_dist = wp_dist;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_controller_output_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_nav_controller_output_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_nav_controller_output_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->nav_roll, _payload->nav_pitch, _payload->nav_bearing, _payload->target_bearing, _payload->wp_dist, _payload->alt_error, _payload->aspd_error, _payload->xtrack_error,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_controller_output_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     float nav_roll, float nav_pitch, int16_t nav_bearing, int16_t target_bearing, uint16_t wp_dist, float alt_error, float aspd_error, float xtrack_error,
     fmav_status_t* _status)
 {
-    fmav_nav_controller_output_t* _payload = (fmav_nav_controller_output_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_nav_controller_output_t* _payload = (fmav_nav_controller_output_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->nav_roll = nav_roll;
     _payload->nav_pitch = nav_pitch;
@@ -120,14 +119,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_controller_output_pack_to_f
     _payload->wp_dist = wp_dist;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_CRCEXTRA,
         _status);
@@ -135,14 +134,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_controller_output_pack_to_f
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_controller_output_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_nav_controller_output_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_nav_controller_output_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->nav_roll, _payload->nav_pitch, _payload->nav_bearing, _payload->target_bearing, _payload->wp_dist, _payload->alt_error, _payload->aspd_error, _payload->xtrack_error,
         _status);
 }
@@ -321,12 +320,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_controller_output_get_field
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_nav_controller_output_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     float nav_roll, float nav_pitch, int16_t nav_bearing, int16_t target_bearing, uint16_t wp_dist, float alt_error, float aspd_error, float xtrack_error)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_nav_controller_output_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         nav_roll, nav_pitch, nav_bearing, target_bearing, wp_dist, alt_error, aspd_error, xtrack_error,
         _status);
 }
@@ -335,14 +334,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_nav_controller_output_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_nav_controller_output_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     float nav_roll, float nav_pitch, int16_t nav_bearing, int16_t target_bearing, uint16_t wp_dist, float alt_error, float aspd_error, float xtrack_error)
 {
     return fmav_msg_nav_controller_output_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         nav_roll, nav_pitch, nav_bearing, target_bearing, wp_dist, alt_error, aspd_error, xtrack_error,

@@ -732,6 +732,15 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_is_v2(fmav_message_t* msg)
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_frame_len(fmav_message_t* msg)
+{
+    return (uint16_t)msg->len +
+           ((msg->magic == FASTMAVLINK_MAGIC_V2) ? FASTMAVLINK_HEADER_V2_LEN : FASTMAVLINK_HEADER_V1_LEN) +
+           FASTMAVLINK_CHECKSUM_LEN +
+           ((msg->incompat_flags & FASTMAVLINK_INCOMPAT_FLAGS_SIGNED) ? FASTMAVLINK_SIGNATURE_LEN : 0);
+}
+
+
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_get_target_sysid(fmav_message_t* msg)
 {
     return msg->target_sysid;

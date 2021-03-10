@@ -75,13 +75,13 @@ typedef struct _fmav_utm_global_position_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_utm_global_position_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time, const uint8_t* uas_id, int32_t lat, int32_t lon, int32_t alt, int32_t relative_alt, int16_t vx, int16_t vy, int16_t vz, uint16_t h_acc, uint16_t v_acc, uint16_t vel_acc, int32_t next_lat, int32_t next_lon, int32_t next_alt, uint16_t update_rate, uint8_t flight_state, uint8_t flags,
     fmav_status_t* _status)
 {
-    fmav_utm_global_position_t* _payload = (fmav_utm_global_position_t*)msg->payload;
+    fmav_utm_global_position_t* _payload = (fmav_utm_global_position_t*)_msg->payload;
 
     _payload->time = time;
     _payload->lat = lat;
@@ -102,43 +102,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_utm_global_position_pack(
     _payload->flags = flags;
     memcpy(&(_payload->uas_id), uas_id, sizeof(uint8_t)*18);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_UTM_GLOBAL_POSITION;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_UTM_GLOBAL_POSITION;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_utm_global_position_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_utm_global_position_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_utm_global_position_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->time, _payload->uas_id, _payload->lat, _payload->lon, _payload->alt, _payload->relative_alt, _payload->vx, _payload->vy, _payload->vz, _payload->h_acc, _payload->v_acc, _payload->vel_acc, _payload->next_lat, _payload->next_lon, _payload->next_alt, _payload->update_rate, _payload->flight_state, _payload->flags,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_utm_global_position_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time, const uint8_t* uas_id, int32_t lat, int32_t lon, int32_t alt, int32_t relative_alt, int16_t vx, int16_t vy, int16_t vz, uint16_t h_acc, uint16_t v_acc, uint16_t vel_acc, int32_t next_lat, int32_t next_lon, int32_t next_alt, uint16_t update_rate, uint8_t flight_state, uint8_t flags,
     fmav_status_t* _status)
 {
-    fmav_utm_global_position_t* _payload = (fmav_utm_global_position_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_utm_global_position_t* _payload = (fmav_utm_global_position_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time = time;
     _payload->lat = lat;
@@ -159,14 +158,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_utm_global_position_pack_to_fra
     _payload->flags = flags;
     memcpy(&(_payload->uas_id), uas_id, sizeof(uint8_t)*18);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_UTM_GLOBAL_POSITION;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_UTM_GLOBAL_POSITION >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_UTM_GLOBAL_POSITION >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_UTM_GLOBAL_POSITION;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_UTM_GLOBAL_POSITION >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_UTM_GLOBAL_POSITION >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_CRCEXTRA,
         _status);
@@ -174,14 +173,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_utm_global_position_pack_to_fra
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_utm_global_position_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_utm_global_position_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_utm_global_position_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->time, _payload->uas_id, _payload->lat, _payload->lon, _payload->alt, _payload->relative_alt, _payload->vx, _payload->vy, _payload->vz, _payload->h_acc, _payload->v_acc, _payload->vel_acc, _payload->next_lat, _payload->next_lon, _payload->next_alt, _payload->update_rate, _payload->flight_state, _payload->flags,
         _status);
 }
@@ -451,12 +450,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_utm_global_position_get_field_ua
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_utm_global_position_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint64_t time, const uint8_t* uas_id, int32_t lat, int32_t lon, int32_t alt, int32_t relative_alt, int16_t vx, int16_t vy, int16_t vz, uint16_t h_acc, uint16_t v_acc, uint16_t vel_acc, int32_t next_lat, int32_t next_lon, int32_t next_alt, uint16_t update_rate, uint8_t flight_state, uint8_t flags)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_utm_global_position_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         time, uas_id, lat, lon, alt, relative_alt, vx, vy, vz, h_acc, v_acc, vel_acc, next_lat, next_lon, next_alt, update_rate, flight_state, flags,
         _status);
 }
@@ -465,14 +464,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_utm_global_position_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_utm_global_position_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time, const uint8_t* uas_id, int32_t lat, int32_t lon, int32_t alt, int32_t relative_alt, int16_t vx, int16_t vy, int16_t vz, uint16_t h_acc, uint16_t v_acc, uint16_t vel_acc, int32_t next_lat, int32_t next_lon, int32_t next_alt, uint16_t update_rate, uint8_t flight_state, uint8_t flags)
 {
     return fmav_msg_utm_global_position_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         time, uas_id, lat, lon, alt, relative_alt, vx, vy, vz, h_acc, v_acc, vel_acc, next_lat, next_lon, next_alt, update_rate, flight_state, flags,

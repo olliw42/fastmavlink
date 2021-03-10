@@ -52,13 +52,13 @@ typedef struct _fmav_nav_filter_bias_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_filter_bias_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint64_t usec, float accel_0, float accel_1, float accel_2, float gyro_0, float gyro_1, float gyro_2,
     fmav_status_t* _status)
 {
-    fmav_nav_filter_bias_t* _payload = (fmav_nav_filter_bias_t*)msg->payload;
+    fmav_nav_filter_bias_t* _payload = (fmav_nav_filter_bias_t*)_msg->payload;
 
     _payload->usec = usec;
     _payload->accel_0 = accel_0;
@@ -69,43 +69,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_filter_bias_pack(
     _payload->gyro_2 = gyro_2;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_NAV_FILTER_BIAS;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_NAV_FILTER_BIAS_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_NAV_FILTER_BIAS;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_NAV_FILTER_BIAS_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_NAV_FILTER_BIAS_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_filter_bias_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_nav_filter_bias_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_nav_filter_bias_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->usec, _payload->accel_0, _payload->accel_1, _payload->accel_2, _payload->gyro_0, _payload->gyro_1, _payload->gyro_2,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_filter_bias_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint64_t usec, float accel_0, float accel_1, float accel_2, float gyro_0, float gyro_1, float gyro_2,
     fmav_status_t* _status)
 {
-    fmav_nav_filter_bias_t* _payload = (fmav_nav_filter_bias_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_nav_filter_bias_t* _payload = (fmav_nav_filter_bias_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->usec = usec;
     _payload->accel_0 = accel_0;
@@ -116,14 +115,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_filter_bias_pack_to_frame_b
     _payload->gyro_2 = gyro_2;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_NAV_FILTER_BIAS;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_NAV_FILTER_BIAS >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_NAV_FILTER_BIAS >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_NAV_FILTER_BIAS;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_NAV_FILTER_BIAS >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_NAV_FILTER_BIAS >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_NAV_FILTER_BIAS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_NAV_FILTER_BIAS_CRCEXTRA,
         _status);
@@ -131,14 +130,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_filter_bias_pack_to_frame_b
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_nav_filter_bias_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_nav_filter_bias_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_nav_filter_bias_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->usec, _payload->accel_0, _payload->accel_1, _payload->accel_2, _payload->gyro_0, _payload->gyro_1, _payload->gyro_2,
         _status);
 }
@@ -308,12 +307,12 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_nav_filter_bias_get_field_gyro_2(c
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_nav_filter_bias_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint64_t usec, float accel_0, float accel_1, float accel_2, float gyro_0, float gyro_1, float gyro_2)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_nav_filter_bias_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         usec, accel_0, accel_1, accel_2, gyro_0, gyro_1, gyro_2,
         _status);
 }
@@ -322,14 +321,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_nav_filter_bias_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_nav_filter_bias_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint64_t usec, float accel_0, float accel_1, float accel_2, float gyro_0, float gyro_1, float gyro_2)
 {
     return fmav_msg_nav_filter_bias_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         usec, accel_0, accel_1, accel_2, gyro_0, gyro_1, gyro_2,

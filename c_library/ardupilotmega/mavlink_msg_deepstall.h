@@ -58,13 +58,13 @@ typedef struct _fmav_deepstall_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_deepstall_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     int32_t landing_lat, int32_t landing_lon, int32_t path_lat, int32_t path_lon, int32_t arc_entry_lat, int32_t arc_entry_lon, float altitude, float expected_travel_distance, float cross_track_error, uint8_t stage,
     fmav_status_t* _status)
 {
-    fmav_deepstall_t* _payload = (fmav_deepstall_t*)msg->payload;
+    fmav_deepstall_t* _payload = (fmav_deepstall_t*)_msg->payload;
 
     _payload->landing_lat = landing_lat;
     _payload->landing_lon = landing_lon;
@@ -78,43 +78,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_deepstall_pack(
     _payload->stage = stage;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_DEEPSTALL;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_DEEPSTALL_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_DEEPSTALL;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_DEEPSTALL_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_DEEPSTALL_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_deepstall_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_deepstall_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_deepstall_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->landing_lat, _payload->landing_lon, _payload->path_lat, _payload->path_lon, _payload->arc_entry_lat, _payload->arc_entry_lon, _payload->altitude, _payload->expected_travel_distance, _payload->cross_track_error, _payload->stage,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_deepstall_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     int32_t landing_lat, int32_t landing_lon, int32_t path_lat, int32_t path_lon, int32_t arc_entry_lat, int32_t arc_entry_lon, float altitude, float expected_travel_distance, float cross_track_error, uint8_t stage,
     fmav_status_t* _status)
 {
-    fmav_deepstall_t* _payload = (fmav_deepstall_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_deepstall_t* _payload = (fmav_deepstall_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->landing_lat = landing_lat;
     _payload->landing_lon = landing_lon;
@@ -128,14 +127,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_deepstall_pack_to_frame_buf(
     _payload->stage = stage;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_DEEPSTALL;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_DEEPSTALL >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_DEEPSTALL >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_DEEPSTALL;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_DEEPSTALL >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_DEEPSTALL >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_DEEPSTALL_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_DEEPSTALL_CRCEXTRA,
         _status);
@@ -143,14 +142,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_deepstall_pack_to_frame_buf(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_deepstall_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_deepstall_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_deepstall_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->landing_lat, _payload->landing_lon, _payload->path_lat, _payload->path_lon, _payload->arc_entry_lat, _payload->arc_entry_lon, _payload->altitude, _payload->expected_travel_distance, _payload->cross_track_error, _payload->stage,
         _status);
 }
@@ -347,12 +346,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_deepstall_get_field_stage(const 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_deepstall_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     int32_t landing_lat, int32_t landing_lon, int32_t path_lat, int32_t path_lon, int32_t arc_entry_lat, int32_t arc_entry_lon, float altitude, float expected_travel_distance, float cross_track_error, uint8_t stage)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_deepstall_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         landing_lat, landing_lon, path_lat, path_lon, arc_entry_lat, arc_entry_lon, altitude, expected_travel_distance, cross_track_error, stage,
         _status);
 }
@@ -361,14 +360,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_deepstall_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_deepstall_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     int32_t landing_lat, int32_t landing_lon, int32_t path_lat, int32_t path_lon, int32_t arc_entry_lat, int32_t arc_entry_lon, float altitude, float expected_travel_distance, float cross_track_error, uint8_t stage)
 {
     return fmav_msg_deepstall_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         landing_lat, landing_lon, path_lat, path_lon, arc_entry_lat, arc_entry_lon, altitude, expected_travel_distance, cross_track_error, stage,

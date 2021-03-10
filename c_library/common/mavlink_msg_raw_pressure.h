@@ -48,13 +48,13 @@ typedef struct _fmav_raw_pressure_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_pressure_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, int16_t press_abs, int16_t press_diff1, int16_t press_diff2, int16_t temperature,
     fmav_status_t* _status)
 {
-    fmav_raw_pressure_t* _payload = (fmav_raw_pressure_t*)msg->payload;
+    fmav_raw_pressure_t* _payload = (fmav_raw_pressure_t*)_msg->payload;
 
     _payload->time_usec = time_usec;
     _payload->press_abs = press_abs;
@@ -63,43 +63,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_pressure_pack(
     _payload->temperature = temperature;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_RAW_PRESSURE;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_RAW_PRESSURE_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_RAW_PRESSURE;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_RAW_PRESSURE_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_RAW_PRESSURE_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_pressure_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_raw_pressure_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_raw_pressure_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->time_usec, _payload->press_abs, _payload->press_diff1, _payload->press_diff2, _payload->temperature,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_pressure_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, int16_t press_abs, int16_t press_diff1, int16_t press_diff2, int16_t temperature,
     fmav_status_t* _status)
 {
-    fmav_raw_pressure_t* _payload = (fmav_raw_pressure_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_raw_pressure_t* _payload = (fmav_raw_pressure_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_usec = time_usec;
     _payload->press_abs = press_abs;
@@ -108,14 +107,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_pressure_pack_to_frame_buf(
     _payload->temperature = temperature;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_RAW_PRESSURE;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_RAW_PRESSURE >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_RAW_PRESSURE >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_RAW_PRESSURE;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_RAW_PRESSURE >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_RAW_PRESSURE >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_RAW_PRESSURE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_RAW_PRESSURE_CRCEXTRA,
         _status);
@@ -123,14 +122,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_pressure_pack_to_frame_buf(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_raw_pressure_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_raw_pressure_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_raw_pressure_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->time_usec, _payload->press_abs, _payload->press_diff1, _payload->press_diff2, _payload->temperature,
         _status);
 }
@@ -282,12 +281,12 @@ FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_raw_pressure_get_field_temperatu
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_raw_pressure_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint64_t time_usec, int16_t press_abs, int16_t press_diff1, int16_t press_diff2, int16_t temperature)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_raw_pressure_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         time_usec, press_abs, press_diff1, press_diff2, temperature,
         _status);
 }
@@ -296,14 +295,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_raw_pressure_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_raw_pressure_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, int16_t press_abs, int16_t press_diff1, int16_t press_diff2, int16_t temperature)
 {
     return fmav_msg_raw_pressure_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         time_usec, press_abs, press_diff1, press_diff2, temperature,

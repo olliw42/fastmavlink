@@ -42,68 +42,67 @@ typedef struct _fmav_camera_trigger_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_trigger_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, uint32_t seq,
     fmav_status_t* _status)
 {
-    fmav_camera_trigger_t* _payload = (fmav_camera_trigger_t*)msg->payload;
+    fmav_camera_trigger_t* _payload = (fmav_camera_trigger_t*)_msg->payload;
 
     _payload->time_usec = time_usec;
     _payload->seq = seq;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_CAMERA_TRIGGER;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_CAMERA_TRIGGER_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_CAMERA_TRIGGER;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_CAMERA_TRIGGER_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_CAMERA_TRIGGER_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_trigger_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_camera_trigger_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_camera_trigger_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->time_usec, _payload->seq,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_trigger_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, uint32_t seq,
     fmav_status_t* _status)
 {
-    fmav_camera_trigger_t* _payload = (fmav_camera_trigger_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_camera_trigger_t* _payload = (fmav_camera_trigger_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_usec = time_usec;
     _payload->seq = seq;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_CAMERA_TRIGGER;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_CAMERA_TRIGGER >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_CAMERA_TRIGGER >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_CAMERA_TRIGGER;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_CAMERA_TRIGGER >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_CAMERA_TRIGGER >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_CAMERA_TRIGGER_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_CAMERA_TRIGGER_CRCEXTRA,
         _status);
@@ -111,14 +110,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_trigger_pack_to_frame_bu
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_trigger_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_camera_trigger_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_camera_trigger_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->time_usec, _payload->seq,
         _status);
 }
@@ -243,12 +242,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_camera_trigger_get_field_seq(co
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_trigger_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint64_t time_usec, uint32_t seq)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_camera_trigger_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         time_usec, seq,
         _status);
 }
@@ -257,14 +256,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_trigger_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_trigger_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, uint32_t seq)
 {
     return fmav_msg_camera_trigger_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         time_usec, seq,

@@ -52,13 +52,13 @@ typedef struct _fmav_safety_allowed_area_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_safety_allowed_area_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint8_t frame, float p1x, float p1y, float p1z, float p2x, float p2y, float p2z,
     fmav_status_t* _status)
 {
-    fmav_safety_allowed_area_t* _payload = (fmav_safety_allowed_area_t*)msg->payload;
+    fmav_safety_allowed_area_t* _payload = (fmav_safety_allowed_area_t*)_msg->payload;
 
     _payload->p1x = p1x;
     _payload->p1y = p1y;
@@ -69,43 +69,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_safety_allowed_area_pack(
     _payload->frame = frame;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_SAFETY_ALLOWED_AREA;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_SAFETY_ALLOWED_AREA_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_SAFETY_ALLOWED_AREA;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_SAFETY_ALLOWED_AREA_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_SAFETY_ALLOWED_AREA_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_safety_allowed_area_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_safety_allowed_area_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_safety_allowed_area_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->frame, _payload->p1x, _payload->p1y, _payload->p1z, _payload->p2x, _payload->p2y, _payload->p2z,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_safety_allowed_area_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint8_t frame, float p1x, float p1y, float p1z, float p2x, float p2y, float p2z,
     fmav_status_t* _status)
 {
-    fmav_safety_allowed_area_t* _payload = (fmav_safety_allowed_area_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_safety_allowed_area_t* _payload = (fmav_safety_allowed_area_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->p1x = p1x;
     _payload->p1y = p1y;
@@ -116,14 +115,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_safety_allowed_area_pack_to_fra
     _payload->frame = frame;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_SAFETY_ALLOWED_AREA;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_SAFETY_ALLOWED_AREA >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_SAFETY_ALLOWED_AREA >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_SAFETY_ALLOWED_AREA;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_SAFETY_ALLOWED_AREA >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_SAFETY_ALLOWED_AREA >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_SAFETY_ALLOWED_AREA_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_SAFETY_ALLOWED_AREA_CRCEXTRA,
         _status);
@@ -131,14 +130,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_safety_allowed_area_pack_to_fra
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_safety_allowed_area_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_safety_allowed_area_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_safety_allowed_area_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->frame, _payload->p1x, _payload->p1y, _payload->p1z, _payload->p2x, _payload->p2y, _payload->p2z,
         _status);
 }
@@ -308,12 +307,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_safety_allowed_area_get_field_fr
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_safety_allowed_area_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint8_t frame, float p1x, float p1y, float p1z, float p2x, float p2y, float p2z)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_safety_allowed_area_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         frame, p1x, p1y, p1z, p2x, p2y, p2z,
         _status);
 }
@@ -322,14 +321,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_safety_allowed_area_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_safety_allowed_area_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint8_t frame, float p1x, float p1y, float p1z, float p2x, float p2y, float p2z)
 {
     return fmav_msg_safety_allowed_area_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         frame, p1x, p1y, p1z, p2x, p2y, p2z,

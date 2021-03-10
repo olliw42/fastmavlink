@@ -58,13 +58,13 @@ typedef struct _fmav_rally_point_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rally_point_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint8_t target_system, uint8_t target_component, uint8_t idx, uint8_t count, int32_t lat, int32_t lng, int16_t alt, int16_t break_alt, uint16_t land_dir, uint8_t flags,
     fmav_status_t* _status)
 {
-    fmav_rally_point_t* _payload = (fmav_rally_point_t*)msg->payload;
+    fmav_rally_point_t* _payload = (fmav_rally_point_t*)_msg->payload;
 
     _payload->lat = lat;
     _payload->lng = lng;
@@ -78,43 +78,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rally_point_pack(
     _payload->flags = flags;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_RALLY_POINT;
-
-    msg->target_sysid = target_system;
-    msg->target_compid = target_component;
-    msg->crc_extra = FASTMAVLINK_MSG_RALLY_POINT_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_RALLY_POINT;
+    _msg->target_sysid = target_system;
+    _msg->target_compid = target_component;
+    _msg->crc_extra = FASTMAVLINK_MSG_RALLY_POINT_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_RALLY_POINT_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rally_point_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_rally_point_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_rally_point_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->target_system, _payload->target_component, _payload->idx, _payload->count, _payload->lat, _payload->lng, _payload->alt, _payload->break_alt, _payload->land_dir, _payload->flags,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rally_point_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint8_t target_system, uint8_t target_component, uint8_t idx, uint8_t count, int32_t lat, int32_t lng, int16_t alt, int16_t break_alt, uint16_t land_dir, uint8_t flags,
     fmav_status_t* _status)
 {
-    fmav_rally_point_t* _payload = (fmav_rally_point_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_rally_point_t* _payload = (fmav_rally_point_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->lat = lat;
     _payload->lng = lng;
@@ -128,14 +127,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rally_point_pack_to_frame_buf(
     _payload->flags = flags;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_RALLY_POINT;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_RALLY_POINT >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_RALLY_POINT >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_RALLY_POINT;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_RALLY_POINT >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_RALLY_POINT >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_RALLY_POINT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_RALLY_POINT_CRCEXTRA,
         _status);
@@ -143,14 +142,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rally_point_pack_to_frame_buf(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_rally_point_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_rally_point_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_rally_point_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->target_system, _payload->target_component, _payload->idx, _payload->count, _payload->lat, _payload->lng, _payload->alt, _payload->break_alt, _payload->land_dir, _payload->flags,
         _status);
 }
@@ -347,12 +346,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_rally_point_get_field_flags(cons
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_rally_point_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint8_t target_system, uint8_t target_component, uint8_t idx, uint8_t count, int32_t lat, int32_t lng, int16_t alt, int16_t break_alt, uint16_t land_dir, uint8_t flags)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_rally_point_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         target_system, target_component, idx, count, lat, lng, alt, break_alt, land_dir, flags,
         _status);
 }
@@ -361,14 +360,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_rally_point_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_rally_point_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint8_t target_system, uint8_t target_component, uint8_t idx, uint8_t count, int32_t lat, int32_t lng, int16_t alt, int16_t break_alt, uint16_t land_dir, uint8_t flags)
 {
     return fmav_msg_rally_point_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         target_system, target_component, idx, count, lat, lng, alt, break_alt, land_dir, flags,

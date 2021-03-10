@@ -51,13 +51,13 @@ typedef struct _fmav_protocol_version_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_protocol_version_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint16_t version, uint16_t min_version, uint16_t max_version, const uint8_t* spec_version_hash, const uint8_t* library_version_hash,
     fmav_status_t* _status)
 {
-    fmav_protocol_version_t* _payload = (fmav_protocol_version_t*)msg->payload;
+    fmav_protocol_version_t* _payload = (fmav_protocol_version_t*)_msg->payload;
 
     _payload->version = version;
     _payload->min_version = min_version;
@@ -65,43 +65,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_protocol_version_pack(
     memcpy(&(_payload->spec_version_hash), spec_version_hash, sizeof(uint8_t)*8);
     memcpy(&(_payload->library_version_hash), library_version_hash, sizeof(uint8_t)*8);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_PROTOCOL_VERSION;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_PROTOCOL_VERSION_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_PROTOCOL_VERSION;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_PROTOCOL_VERSION_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_PROTOCOL_VERSION_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_protocol_version_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_protocol_version_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_protocol_version_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->version, _payload->min_version, _payload->max_version, _payload->spec_version_hash, _payload->library_version_hash,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_protocol_version_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint16_t version, uint16_t min_version, uint16_t max_version, const uint8_t* spec_version_hash, const uint8_t* library_version_hash,
     fmav_status_t* _status)
 {
-    fmav_protocol_version_t* _payload = (fmav_protocol_version_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_protocol_version_t* _payload = (fmav_protocol_version_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->version = version;
     _payload->min_version = min_version;
@@ -109,14 +108,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_protocol_version_pack_to_frame_
     memcpy(&(_payload->spec_version_hash), spec_version_hash, sizeof(uint8_t)*8);
     memcpy(&(_payload->library_version_hash), library_version_hash, sizeof(uint8_t)*8);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_PROTOCOL_VERSION;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_PROTOCOL_VERSION >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_PROTOCOL_VERSION >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_PROTOCOL_VERSION;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_PROTOCOL_VERSION >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_PROTOCOL_VERSION >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_PROTOCOL_VERSION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_PROTOCOL_VERSION_CRCEXTRA,
         _status);
@@ -124,14 +123,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_protocol_version_pack_to_frame_
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_protocol_version_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_protocol_version_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_protocol_version_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->version, _payload->min_version, _payload->max_version, _payload->spec_version_hash, _payload->library_version_hash,
         _status);
 }
@@ -290,12 +289,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_protocol_version_get_field_libra
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_protocol_version_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint16_t version, uint16_t min_version, uint16_t max_version, const uint8_t* spec_version_hash, const uint8_t* library_version_hash)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_protocol_version_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         version, min_version, max_version, spec_version_hash, library_version_hash,
         _status);
 }
@@ -304,14 +303,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_protocol_version_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_protocol_version_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint16_t version, uint16_t min_version, uint16_t max_version, const uint8_t* spec_version_hash, const uint8_t* library_version_hash)
 {
     return fmav_msg_protocol_version_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         version, min_version, max_version, spec_version_hash, library_version_hash,

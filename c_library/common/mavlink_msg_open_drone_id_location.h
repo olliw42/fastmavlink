@@ -77,13 +77,13 @@ typedef struct _fmav_open_drone_id_location_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_location_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t status, uint16_t direction, uint16_t speed_horizontal, int16_t speed_vertical, int32_t latitude, int32_t longitude, float altitude_barometric, float altitude_geodetic, uint8_t height_reference, float height, uint8_t horizontal_accuracy, uint8_t vertical_accuracy, uint8_t barometer_accuracy, uint8_t speed_accuracy, float timestamp, uint8_t timestamp_accuracy,
     fmav_status_t* _status)
 {
-    fmav_open_drone_id_location_t* _payload = (fmav_open_drone_id_location_t*)msg->payload;
+    fmav_open_drone_id_location_t* _payload = (fmav_open_drone_id_location_t*)_msg->payload;
 
     _payload->latitude = latitude;
     _payload->longitude = longitude;
@@ -105,43 +105,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_location_pack(
     _payload->timestamp_accuracy = timestamp_accuracy;
     memcpy(&(_payload->id_or_mac), id_or_mac, sizeof(uint8_t)*20);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_LOCATION;
-
-    msg->target_sysid = target_system;
-    msg->target_compid = target_component;
-    msg->crc_extra = FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_LOCATION;
+    _msg->target_sysid = target_system;
+    _msg->target_compid = target_component;
+    _msg->crc_extra = FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_location_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_open_drone_id_location_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_open_drone_id_location_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->target_system, _payload->target_component, _payload->id_or_mac, _payload->status, _payload->direction, _payload->speed_horizontal, _payload->speed_vertical, _payload->latitude, _payload->longitude, _payload->altitude_barometric, _payload->altitude_geodetic, _payload->height_reference, _payload->height, _payload->horizontal_accuracy, _payload->vertical_accuracy, _payload->barometer_accuracy, _payload->speed_accuracy, _payload->timestamp, _payload->timestamp_accuracy,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_location_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t status, uint16_t direction, uint16_t speed_horizontal, int16_t speed_vertical, int32_t latitude, int32_t longitude, float altitude_barometric, float altitude_geodetic, uint8_t height_reference, float height, uint8_t horizontal_accuracy, uint8_t vertical_accuracy, uint8_t barometer_accuracy, uint8_t speed_accuracy, float timestamp, uint8_t timestamp_accuracy,
     fmav_status_t* _status)
 {
-    fmav_open_drone_id_location_t* _payload = (fmav_open_drone_id_location_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_open_drone_id_location_t* _payload = (fmav_open_drone_id_location_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->latitude = latitude;
     _payload->longitude = longitude;
@@ -163,14 +162,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_location_pack_to_
     _payload->timestamp_accuracy = timestamp_accuracy;
     memcpy(&(_payload->id_or_mac), id_or_mac, sizeof(uint8_t)*20);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_LOCATION;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_LOCATION >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_LOCATION >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_LOCATION;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_LOCATION >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_LOCATION >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_OPEN_DRONE_ID_LOCATION_CRCEXTRA,
         _status);
@@ -178,14 +177,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_location_pack_to_
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_location_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_open_drone_id_location_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_open_drone_id_location_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->target_system, _payload->target_component, _payload->id_or_mac, _payload->status, _payload->direction, _payload->speed_horizontal, _payload->speed_vertical, _payload->latitude, _payload->longitude, _payload->altitude_barometric, _payload->altitude_geodetic, _payload->height_reference, _payload->height, _payload->horizontal_accuracy, _payload->vertical_accuracy, _payload->barometer_accuracy, _payload->speed_accuracy, _payload->timestamp, _payload->timestamp_accuracy,
         _status);
 }
@@ -464,12 +463,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_location_get_field
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_open_drone_id_location_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t status, uint16_t direction, uint16_t speed_horizontal, int16_t speed_vertical, int32_t latitude, int32_t longitude, float altitude_barometric, float altitude_geodetic, uint8_t height_reference, float height, uint8_t horizontal_accuracy, uint8_t vertical_accuracy, uint8_t barometer_accuracy, uint8_t speed_accuracy, float timestamp, uint8_t timestamp_accuracy)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_open_drone_id_location_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         target_system, target_component, id_or_mac, status, direction, speed_horizontal, speed_vertical, latitude, longitude, altitude_barometric, altitude_geodetic, height_reference, height, horizontal_accuracy, vertical_accuracy, barometer_accuracy, speed_accuracy, timestamp, timestamp_accuracy,
         _status);
 }
@@ -478,14 +477,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_open_drone_id_location_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_open_drone_id_location_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t status, uint16_t direction, uint16_t speed_horizontal, int16_t speed_vertical, int32_t latitude, int32_t longitude, float altitude_barometric, float altitude_geodetic, uint8_t height_reference, float height, uint8_t horizontal_accuracy, uint8_t vertical_accuracy, uint8_t barometer_accuracy, uint8_t speed_accuracy, float timestamp, uint8_t timestamp_accuracy)
 {
     return fmav_msg_open_drone_id_location_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         target_system, target_component, id_or_mac, status, direction, speed_horizontal, speed_vertical, latitude, longitude, altitude_barometric, altitude_geodetic, height_reference, height, horizontal_accuracy, vertical_accuracy, barometer_accuracy, speed_accuracy, timestamp, timestamp_accuracy,

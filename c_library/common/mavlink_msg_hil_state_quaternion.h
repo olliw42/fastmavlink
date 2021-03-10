@@ -71,13 +71,13 @@ typedef struct _fmav_hil_state_quaternion_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_state_quaternion_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, const float* attitude_quaternion, float rollspeed, float pitchspeed, float yawspeed, int32_t lat, int32_t lon, int32_t alt, int16_t vx, int16_t vy, int16_t vz, uint16_t ind_airspeed, uint16_t true_airspeed, int16_t xacc, int16_t yacc, int16_t zacc,
     fmav_status_t* _status)
 {
-    fmav_hil_state_quaternion_t* _payload = (fmav_hil_state_quaternion_t*)msg->payload;
+    fmav_hil_state_quaternion_t* _payload = (fmav_hil_state_quaternion_t*)_msg->payload;
 
     _payload->time_usec = time_usec;
     _payload->rollspeed = rollspeed;
@@ -96,43 +96,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_state_quaternion_pack(
     _payload->zacc = zacc;
     memcpy(&(_payload->attitude_quaternion), attitude_quaternion, sizeof(float)*4);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_HIL_STATE_QUATERNION;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_HIL_STATE_QUATERNION_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_HIL_STATE_QUATERNION;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_HIL_STATE_QUATERNION_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_HIL_STATE_QUATERNION_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_state_quaternion_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_hil_state_quaternion_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_hil_state_quaternion_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->time_usec, _payload->attitude_quaternion, _payload->rollspeed, _payload->pitchspeed, _payload->yawspeed, _payload->lat, _payload->lon, _payload->alt, _payload->vx, _payload->vy, _payload->vz, _payload->ind_airspeed, _payload->true_airspeed, _payload->xacc, _payload->yacc, _payload->zacc,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_state_quaternion_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, const float* attitude_quaternion, float rollspeed, float pitchspeed, float yawspeed, int32_t lat, int32_t lon, int32_t alt, int16_t vx, int16_t vy, int16_t vz, uint16_t ind_airspeed, uint16_t true_airspeed, int16_t xacc, int16_t yacc, int16_t zacc,
     fmav_status_t* _status)
 {
-    fmav_hil_state_quaternion_t* _payload = (fmav_hil_state_quaternion_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_hil_state_quaternion_t* _payload = (fmav_hil_state_quaternion_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_usec = time_usec;
     _payload->rollspeed = rollspeed;
@@ -151,14 +150,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_state_quaternion_pack_to_fr
     _payload->zacc = zacc;
     memcpy(&(_payload->attitude_quaternion), attitude_quaternion, sizeof(float)*4);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_HIL_STATE_QUATERNION;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_HIL_STATE_QUATERNION >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_HIL_STATE_QUATERNION >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_HIL_STATE_QUATERNION;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_HIL_STATE_QUATERNION >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_HIL_STATE_QUATERNION >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_HIL_STATE_QUATERNION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_HIL_STATE_QUATERNION_CRCEXTRA,
         _status);
@@ -166,14 +165,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_state_quaternion_pack_to_fr
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_state_quaternion_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_hil_state_quaternion_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_hil_state_quaternion_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->time_usec, _payload->attitude_quaternion, _payload->rollspeed, _payload->pitchspeed, _payload->yawspeed, _payload->lat, _payload->lon, _payload->alt, _payload->vx, _payload->vy, _payload->vz, _payload->ind_airspeed, _payload->true_airspeed, _payload->xacc, _payload->yacc, _payload->zacc,
         _status);
 }
@@ -425,12 +424,12 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_hil_state_quaternion_get_field_att
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_hil_state_quaternion_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint64_t time_usec, const float* attitude_quaternion, float rollspeed, float pitchspeed, float yawspeed, int32_t lat, int32_t lon, int32_t alt, int16_t vx, int16_t vy, int16_t vz, uint16_t ind_airspeed, uint16_t true_airspeed, int16_t xacc, int16_t yacc, int16_t zacc)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_hil_state_quaternion_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         time_usec, attitude_quaternion, rollspeed, pitchspeed, yawspeed, lat, lon, alt, vx, vy, vz, ind_airspeed, true_airspeed, xacc, yacc, zacc,
         _status);
 }
@@ -439,14 +438,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_hil_state_quaternion_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_hil_state_quaternion_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, const float* attitude_quaternion, float rollspeed, float pitchspeed, float yawspeed, int32_t lat, int32_t lon, int32_t alt, int16_t vx, int16_t vy, int16_t vz, uint16_t ind_airspeed, uint16_t true_airspeed, int16_t xacc, int16_t yacc, int16_t zacc)
 {
     return fmav_msg_hil_state_quaternion_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         time_usec, attitude_quaternion, rollspeed, pitchspeed, yawspeed, lat, lon, alt, vx, vy, vz, ind_airspeed, true_airspeed, xacc, yacc, zacc,

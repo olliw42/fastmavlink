@@ -65,13 +65,13 @@ typedef struct _fmav_adsb_vehicle_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adsb_vehicle_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint32_t ICAO_address, int32_t lat, int32_t lon, uint8_t altitude_type, int32_t altitude, uint16_t heading, uint16_t hor_velocity, int16_t ver_velocity, const char* callsign, uint8_t emitter_type, uint8_t tslc, uint16_t flags, uint16_t squawk,
     fmav_status_t* _status)
 {
-    fmav_adsb_vehicle_t* _payload = (fmav_adsb_vehicle_t*)msg->payload;
+    fmav_adsb_vehicle_t* _payload = (fmav_adsb_vehicle_t*)_msg->payload;
 
     _payload->ICAO_address = ICAO_address;
     _payload->lat = lat;
@@ -87,43 +87,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adsb_vehicle_pack(
     _payload->tslc = tslc;
     memcpy(&(_payload->callsign), callsign, sizeof(char)*9);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_ADSB_VEHICLE;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_ADSB_VEHICLE_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_ADSB_VEHICLE;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_ADSB_VEHICLE_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_ADSB_VEHICLE_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adsb_vehicle_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_adsb_vehicle_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_adsb_vehicle_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->ICAO_address, _payload->lat, _payload->lon, _payload->altitude_type, _payload->altitude, _payload->heading, _payload->hor_velocity, _payload->ver_velocity, _payload->callsign, _payload->emitter_type, _payload->tslc, _payload->flags, _payload->squawk,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adsb_vehicle_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint32_t ICAO_address, int32_t lat, int32_t lon, uint8_t altitude_type, int32_t altitude, uint16_t heading, uint16_t hor_velocity, int16_t ver_velocity, const char* callsign, uint8_t emitter_type, uint8_t tslc, uint16_t flags, uint16_t squawk,
     fmav_status_t* _status)
 {
-    fmav_adsb_vehicle_t* _payload = (fmav_adsb_vehicle_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_adsb_vehicle_t* _payload = (fmav_adsb_vehicle_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->ICAO_address = ICAO_address;
     _payload->lat = lat;
@@ -139,14 +138,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adsb_vehicle_pack_to_frame_buf(
     _payload->tslc = tslc;
     memcpy(&(_payload->callsign), callsign, sizeof(char)*9);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_ADSB_VEHICLE;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_ADSB_VEHICLE >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_ADSB_VEHICLE >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_ADSB_VEHICLE;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_ADSB_VEHICLE >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_ADSB_VEHICLE >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_ADSB_VEHICLE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ADSB_VEHICLE_CRCEXTRA,
         _status);
@@ -154,14 +153,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adsb_vehicle_pack_to_frame_buf(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adsb_vehicle_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_adsb_vehicle_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_adsb_vehicle_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->ICAO_address, _payload->lat, _payload->lon, _payload->altitude_type, _payload->altitude, _payload->heading, _payload->hor_velocity, _payload->ver_velocity, _payload->callsign, _payload->emitter_type, _payload->tslc, _payload->flags, _payload->squawk,
         _status);
 }
@@ -386,12 +385,12 @@ FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_adsb_vehicle_get_field_callsign(uin
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_adsb_vehicle_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint32_t ICAO_address, int32_t lat, int32_t lon, uint8_t altitude_type, int32_t altitude, uint16_t heading, uint16_t hor_velocity, int16_t ver_velocity, const char* callsign, uint8_t emitter_type, uint8_t tslc, uint16_t flags, uint16_t squawk)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_adsb_vehicle_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         ICAO_address, lat, lon, altitude_type, altitude, heading, hor_velocity, ver_velocity, callsign, emitter_type, tslc, flags, squawk,
         _status);
 }
@@ -400,14 +399,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_adsb_vehicle_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_adsb_vehicle_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint32_t ICAO_address, int32_t lat, int32_t lon, uint8_t altitude_type, int32_t altitude, uint16_t heading, uint16_t hor_velocity, int16_t ver_velocity, const char* callsign, uint8_t emitter_type, uint8_t tslc, uint16_t flags, uint16_t squawk)
 {
     return fmav_msg_adsb_vehicle_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         ICAO_address, lat, lon, altitude_type, altitude, heading, hor_velocity, ver_velocity, callsign, emitter_type, tslc, flags, squawk,

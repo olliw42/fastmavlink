@@ -66,13 +66,13 @@ typedef struct _fmav_position_target_local_ned_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_position_target_local_ned_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, uint8_t coordinate_frame, uint16_t type_mask, float x, float y, float z, float vx, float vy, float vz, float afx, float afy, float afz, float yaw, float yaw_rate,
     fmav_status_t* _status)
 {
-    fmav_position_target_local_ned_t* _payload = (fmav_position_target_local_ned_t*)msg->payload;
+    fmav_position_target_local_ned_t* _payload = (fmav_position_target_local_ned_t*)_msg->payload;
 
     _payload->time_boot_ms = time_boot_ms;
     _payload->x = x;
@@ -90,43 +90,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_position_target_local_ned_pack(
     _payload->coordinate_frame = coordinate_frame;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_POSITION_TARGET_LOCAL_NED;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_POSITION_TARGET_LOCAL_NED_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_POSITION_TARGET_LOCAL_NED;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_POSITION_TARGET_LOCAL_NED_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_POSITION_TARGET_LOCAL_NED_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_position_target_local_ned_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_position_target_local_ned_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_position_target_local_ned_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->time_boot_ms, _payload->coordinate_frame, _payload->type_mask, _payload->x, _payload->y, _payload->z, _payload->vx, _payload->vy, _payload->vz, _payload->afx, _payload->afy, _payload->afz, _payload->yaw, _payload->yaw_rate,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_position_target_local_ned_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, uint8_t coordinate_frame, uint16_t type_mask, float x, float y, float z, float vx, float vy, float vz, float afx, float afy, float afz, float yaw, float yaw_rate,
     fmav_status_t* _status)
 {
-    fmav_position_target_local_ned_t* _payload = (fmav_position_target_local_ned_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_position_target_local_ned_t* _payload = (fmav_position_target_local_ned_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_boot_ms = time_boot_ms;
     _payload->x = x;
@@ -144,14 +143,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_position_target_local_ned_pack_
     _payload->coordinate_frame = coordinate_frame;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_POSITION_TARGET_LOCAL_NED;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_POSITION_TARGET_LOCAL_NED >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_POSITION_TARGET_LOCAL_NED >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_POSITION_TARGET_LOCAL_NED;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_POSITION_TARGET_LOCAL_NED >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_POSITION_TARGET_LOCAL_NED >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_POSITION_TARGET_LOCAL_NED_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_POSITION_TARGET_LOCAL_NED_CRCEXTRA,
         _status);
@@ -159,14 +158,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_position_target_local_ned_pack_
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_position_target_local_ned_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_position_target_local_ned_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_position_target_local_ned_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->time_boot_ms, _payload->coordinate_frame, _payload->type_mask, _payload->x, _payload->y, _payload->z, _payload->vx, _payload->vy, _payload->vz, _payload->afx, _payload->afy, _payload->afz, _payload->yaw, _payload->yaw_rate,
         _status);
 }
@@ -399,12 +398,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_position_target_local_ned_get_fi
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_position_target_local_ned_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint32_t time_boot_ms, uint8_t coordinate_frame, uint16_t type_mask, float x, float y, float z, float vx, float vy, float vz, float afx, float afy, float afz, float yaw, float yaw_rate)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_position_target_local_ned_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         time_boot_ms, coordinate_frame, type_mask, x, y, z, vx, vy, vz, afx, afy, afz, yaw, yaw_rate,
         _status);
 }
@@ -413,14 +412,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_position_target_local_ned_pa
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_position_target_local_ned_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, uint8_t coordinate_frame, uint16_t type_mask, float x, float y, float z, float vx, float vy, float vz, float afx, float afy, float afz, float yaw, float yaw_rate)
 {
     return fmav_msg_position_target_local_ned_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         time_boot_ms, coordinate_frame, type_mask, x, y, z, vx, vy, vz, afx, afy, afz, yaw, yaw_rate,

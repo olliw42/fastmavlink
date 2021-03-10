@@ -48,13 +48,13 @@ typedef struct _fmav_time_estimate_to_target_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_time_estimate_to_target_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     int32_t safe_return, int32_t land, int32_t mission_next_item, int32_t mission_end, int32_t commanded_action,
     fmav_status_t* _status)
 {
-    fmav_time_estimate_to_target_t* _payload = (fmav_time_estimate_to_target_t*)msg->payload;
+    fmav_time_estimate_to_target_t* _payload = (fmav_time_estimate_to_target_t*)_msg->payload;
 
     _payload->safe_return = safe_return;
     _payload->land = land;
@@ -63,43 +63,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_time_estimate_to_target_pack(
     _payload->commanded_action = commanded_action;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_TIME_ESTIMATE_TO_TARGET;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_TIME_ESTIMATE_TO_TARGET_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_TIME_ESTIMATE_TO_TARGET;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_TIME_ESTIMATE_TO_TARGET_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_TIME_ESTIMATE_TO_TARGET_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_time_estimate_to_target_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_time_estimate_to_target_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_time_estimate_to_target_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->safe_return, _payload->land, _payload->mission_next_item, _payload->mission_end, _payload->commanded_action,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_time_estimate_to_target_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     int32_t safe_return, int32_t land, int32_t mission_next_item, int32_t mission_end, int32_t commanded_action,
     fmav_status_t* _status)
 {
-    fmav_time_estimate_to_target_t* _payload = (fmav_time_estimate_to_target_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_time_estimate_to_target_t* _payload = (fmav_time_estimate_to_target_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->safe_return = safe_return;
     _payload->land = land;
@@ -108,14 +107,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_time_estimate_to_target_pack_to
     _payload->commanded_action = commanded_action;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_TIME_ESTIMATE_TO_TARGET;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_TIME_ESTIMATE_TO_TARGET >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_TIME_ESTIMATE_TO_TARGET >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_TIME_ESTIMATE_TO_TARGET;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_TIME_ESTIMATE_TO_TARGET >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_TIME_ESTIMATE_TO_TARGET >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_TIME_ESTIMATE_TO_TARGET_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_TIME_ESTIMATE_TO_TARGET_CRCEXTRA,
         _status);
@@ -123,14 +122,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_time_estimate_to_target_pack_to
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_time_estimate_to_target_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_time_estimate_to_target_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_time_estimate_to_target_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->safe_return, _payload->land, _payload->mission_next_item, _payload->mission_end, _payload->commanded_action,
         _status);
 }
@@ -282,12 +281,12 @@ FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_time_estimate_to_target_get_fiel
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_time_estimate_to_target_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     int32_t safe_return, int32_t land, int32_t mission_next_item, int32_t mission_end, int32_t commanded_action)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_time_estimate_to_target_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         safe_return, land, mission_next_item, mission_end, commanded_action,
         _status);
 }
@@ -296,14 +295,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_time_estimate_to_target_pack
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_time_estimate_to_target_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     int32_t safe_return, int32_t land, int32_t mission_next_item, int32_t mission_end, int32_t commanded_action)
 {
     return fmav_msg_time_estimate_to_target_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         safe_return, land, mission_next_item, mission_end, commanded_action,

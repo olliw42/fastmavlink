@@ -50,13 +50,13 @@ typedef struct _fmav_ap_adc_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ap_adc_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint16_t adc1, uint16_t adc2, uint16_t adc3, uint16_t adc4, uint16_t adc5, uint16_t adc6,
     fmav_status_t* _status)
 {
-    fmav_ap_adc_t* _payload = (fmav_ap_adc_t*)msg->payload;
+    fmav_ap_adc_t* _payload = (fmav_ap_adc_t*)_msg->payload;
 
     _payload->adc1 = adc1;
     _payload->adc2 = adc2;
@@ -66,43 +66,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ap_adc_pack(
     _payload->adc6 = adc6;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_AP_ADC;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_AP_ADC_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_AP_ADC;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_AP_ADC_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_AP_ADC_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ap_adc_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_ap_adc_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_ap_adc_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->adc1, _payload->adc2, _payload->adc3, _payload->adc4, _payload->adc5, _payload->adc6,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ap_adc_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint16_t adc1, uint16_t adc2, uint16_t adc3, uint16_t adc4, uint16_t adc5, uint16_t adc6,
     fmav_status_t* _status)
 {
-    fmav_ap_adc_t* _payload = (fmav_ap_adc_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_ap_adc_t* _payload = (fmav_ap_adc_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->adc1 = adc1;
     _payload->adc2 = adc2;
@@ -112,14 +111,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ap_adc_pack_to_frame_buf(
     _payload->adc6 = adc6;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_AP_ADC;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_AP_ADC >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_AP_ADC >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_AP_ADC;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_AP_ADC >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_AP_ADC >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_AP_ADC_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_AP_ADC_CRCEXTRA,
         _status);
@@ -127,14 +126,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ap_adc_pack_to_frame_buf(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ap_adc_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_ap_adc_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_ap_adc_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->adc1, _payload->adc2, _payload->adc3, _payload->adc4, _payload->adc5, _payload->adc6,
         _status);
 }
@@ -295,12 +294,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ap_adc_get_field_adc6(const fma
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_ap_adc_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint16_t adc1, uint16_t adc2, uint16_t adc3, uint16_t adc4, uint16_t adc5, uint16_t adc6)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_ap_adc_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         adc1, adc2, adc3, adc4, adc5, adc6,
         _status);
 }
@@ -309,14 +308,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_ap_adc_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_ap_adc_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint16_t adc1, uint16_t adc2, uint16_t adc3, uint16_t adc4, uint16_t adc5, uint16_t adc6)
 {
     return fmav_msg_ap_adc_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         adc1, adc2, adc3, adc4, adc5, adc6,

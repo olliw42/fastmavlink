@@ -43,66 +43,65 @@ typedef struct _fmav_array_test_3_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_3_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint8_t v, const uint32_t* ar_u32,
     fmav_status_t* _status)
 {
-    fmav_array_test_3_t* _payload = (fmav_array_test_3_t*)msg->payload;
+    fmav_array_test_3_t* _payload = (fmav_array_test_3_t*)_msg->payload;
 
     _payload->v = v;
     memcpy(&(_payload->ar_u32), ar_u32, sizeof(uint32_t)*4);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_ARRAY_TEST_3;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_ARRAY_TEST_3_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_ARRAY_TEST_3;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_ARRAY_TEST_3_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_ARRAY_TEST_3_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_3_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_array_test_3_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_array_test_3_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->v, _payload->ar_u32,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_3_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint8_t v, const uint32_t* ar_u32,
     fmav_status_t* _status)
 {
-    fmav_array_test_3_t* _payload = (fmav_array_test_3_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_array_test_3_t* _payload = (fmav_array_test_3_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->v = v;
     memcpy(&(_payload->ar_u32), ar_u32, sizeof(uint32_t)*4);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_ARRAY_TEST_3;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_ARRAY_TEST_3 >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_ARRAY_TEST_3 >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_ARRAY_TEST_3;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_ARRAY_TEST_3 >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_ARRAY_TEST_3 >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_ARRAY_TEST_3_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ARRAY_TEST_3_CRCEXTRA,
         _status);
@@ -110,14 +109,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_3_pack_to_frame_buf(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_3_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_array_test_3_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_array_test_3_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->v, _payload->ar_u32,
         _status);
 }
@@ -243,12 +242,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_array_test_3_get_field_ar_u32(u
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_array_test_3_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint8_t v, const uint32_t* ar_u32)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_array_test_3_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         v, ar_u32,
         _status);
 }
@@ -257,14 +256,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_array_test_3_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_array_test_3_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint8_t v, const uint32_t* ar_u32)
 {
     return fmav_msg_array_test_3_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         v, ar_u32,

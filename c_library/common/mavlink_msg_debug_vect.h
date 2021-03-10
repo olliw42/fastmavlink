@@ -49,13 +49,13 @@ typedef struct _fmav_debug_vect_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_debug_vect_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const char* name, uint64_t time_usec, float x, float y, float z,
     fmav_status_t* _status)
 {
-    fmav_debug_vect_t* _payload = (fmav_debug_vect_t*)msg->payload;
+    fmav_debug_vect_t* _payload = (fmav_debug_vect_t*)_msg->payload;
 
     _payload->time_usec = time_usec;
     _payload->x = x;
@@ -63,43 +63,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_debug_vect_pack(
     _payload->z = z;
     memcpy(&(_payload->name), name, sizeof(char)*10);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_DEBUG_VECT;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_DEBUG_VECT_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_DEBUG_VECT;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_DEBUG_VECT_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_DEBUG_VECT_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_debug_vect_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_debug_vect_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_debug_vect_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->name, _payload->time_usec, _payload->x, _payload->y, _payload->z,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_debug_vect_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const char* name, uint64_t time_usec, float x, float y, float z,
     fmav_status_t* _status)
 {
-    fmav_debug_vect_t* _payload = (fmav_debug_vect_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_debug_vect_t* _payload = (fmav_debug_vect_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_usec = time_usec;
     _payload->x = x;
@@ -107,14 +106,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_debug_vect_pack_to_frame_buf(
     _payload->z = z;
     memcpy(&(_payload->name), name, sizeof(char)*10);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_DEBUG_VECT;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_DEBUG_VECT >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_DEBUG_VECT >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_DEBUG_VECT;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_DEBUG_VECT >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_DEBUG_VECT >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_DEBUG_VECT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_DEBUG_VECT_CRCEXTRA,
         _status);
@@ -122,14 +121,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_debug_vect_pack_to_frame_buf(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_debug_vect_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_debug_vect_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_debug_vect_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->name, _payload->time_usec, _payload->x, _payload->y, _payload->z,
         _status);
 }
@@ -282,12 +281,12 @@ FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_debug_vect_get_field_name(uint16_t 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_debug_vect_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     const char* name, uint64_t time_usec, float x, float y, float z)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_debug_vect_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         name, time_usec, x, y, z,
         _status);
 }
@@ -296,14 +295,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_debug_vect_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_debug_vect_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     const char* name, uint64_t time_usec, float x, float y, float z)
 {
     return fmav_msg_debug_vect_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         name, time_usec, x, y, z,

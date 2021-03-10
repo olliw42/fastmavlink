@@ -60,13 +60,13 @@ typedef struct _fmav_hil_controls_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_controls_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, float roll_ailerons, float pitch_elevator, float yaw_rudder, float throttle, float aux1, float aux2, float aux3, float aux4, uint8_t mode, uint8_t nav_mode,
     fmav_status_t* _status)
 {
-    fmav_hil_controls_t* _payload = (fmav_hil_controls_t*)msg->payload;
+    fmav_hil_controls_t* _payload = (fmav_hil_controls_t*)_msg->payload;
 
     _payload->time_usec = time_usec;
     _payload->roll_ailerons = roll_ailerons;
@@ -81,43 +81,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_controls_pack(
     _payload->nav_mode = nav_mode;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_HIL_CONTROLS;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_HIL_CONTROLS_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_HIL_CONTROLS;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_HIL_CONTROLS_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_HIL_CONTROLS_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_controls_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_hil_controls_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_hil_controls_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->time_usec, _payload->roll_ailerons, _payload->pitch_elevator, _payload->yaw_rudder, _payload->throttle, _payload->aux1, _payload->aux2, _payload->aux3, _payload->aux4, _payload->mode, _payload->nav_mode,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_controls_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, float roll_ailerons, float pitch_elevator, float yaw_rudder, float throttle, float aux1, float aux2, float aux3, float aux4, uint8_t mode, uint8_t nav_mode,
     fmav_status_t* _status)
 {
-    fmav_hil_controls_t* _payload = (fmav_hil_controls_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_hil_controls_t* _payload = (fmav_hil_controls_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_usec = time_usec;
     _payload->roll_ailerons = roll_ailerons;
@@ -132,14 +131,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_controls_pack_to_frame_buf(
     _payload->nav_mode = nav_mode;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_HIL_CONTROLS;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_HIL_CONTROLS >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_HIL_CONTROLS >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_HIL_CONTROLS;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_HIL_CONTROLS >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_HIL_CONTROLS >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_HIL_CONTROLS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_HIL_CONTROLS_CRCEXTRA,
         _status);
@@ -147,14 +146,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_controls_pack_to_frame_buf(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_controls_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_hil_controls_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_hil_controls_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->time_usec, _payload->roll_ailerons, _payload->pitch_elevator, _payload->yaw_rudder, _payload->throttle, _payload->aux1, _payload->aux2, _payload->aux3, _payload->aux4, _payload->mode, _payload->nav_mode,
         _status);
 }
@@ -360,12 +359,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_hil_controls_get_field_nav_mode(
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_hil_controls_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint64_t time_usec, float roll_ailerons, float pitch_elevator, float yaw_rudder, float throttle, float aux1, float aux2, float aux3, float aux4, uint8_t mode, uint8_t nav_mode)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_hil_controls_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         time_usec, roll_ailerons, pitch_elevator, yaw_rudder, throttle, aux1, aux2, aux3, aux4, mode, nav_mode,
         _status);
 }
@@ -374,14 +373,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_hil_controls_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_hil_controls_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, float roll_ailerons, float pitch_elevator, float yaw_rudder, float throttle, float aux1, float aux2, float aux3, float aux4, uint8_t mode, uint8_t nav_mode)
 {
     return fmav_msg_hil_controls_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         time_usec, roll_ailerons, pitch_elevator, yaw_rudder, throttle, aux1, aux2, aux3, aux4, mode, nav_mode,

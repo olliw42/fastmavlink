@@ -57,13 +57,13 @@ typedef struct _fmav_mag_cal_progress_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_progress_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint8_t compass_id, uint8_t cal_mask, uint8_t cal_status, uint8_t attempt, uint8_t completion_pct, const uint8_t* completion_mask, float direction_x, float direction_y, float direction_z,
     fmav_status_t* _status)
 {
-    fmav_mag_cal_progress_t* _payload = (fmav_mag_cal_progress_t*)msg->payload;
+    fmav_mag_cal_progress_t* _payload = (fmav_mag_cal_progress_t*)_msg->payload;
 
     _payload->direction_x = direction_x;
     _payload->direction_y = direction_y;
@@ -75,43 +75,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_progress_pack(
     _payload->completion_pct = completion_pct;
     memcpy(&(_payload->completion_mask), completion_mask, sizeof(uint8_t)*10);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_MAG_CAL_PROGRESS;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_MAG_CAL_PROGRESS_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_MAG_CAL_PROGRESS;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_MAG_CAL_PROGRESS_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_MAG_CAL_PROGRESS_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_progress_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_mag_cal_progress_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_mag_cal_progress_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->compass_id, _payload->cal_mask, _payload->cal_status, _payload->attempt, _payload->completion_pct, _payload->completion_mask, _payload->direction_x, _payload->direction_y, _payload->direction_z,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_progress_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint8_t compass_id, uint8_t cal_mask, uint8_t cal_status, uint8_t attempt, uint8_t completion_pct, const uint8_t* completion_mask, float direction_x, float direction_y, float direction_z,
     fmav_status_t* _status)
 {
-    fmav_mag_cal_progress_t* _payload = (fmav_mag_cal_progress_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_mag_cal_progress_t* _payload = (fmav_mag_cal_progress_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->direction_x = direction_x;
     _payload->direction_y = direction_y;
@@ -123,14 +122,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_progress_pack_to_frame_
     _payload->completion_pct = completion_pct;
     memcpy(&(_payload->completion_mask), completion_mask, sizeof(uint8_t)*10);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_MAG_CAL_PROGRESS;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_MAG_CAL_PROGRESS >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_MAG_CAL_PROGRESS >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_MAG_CAL_PROGRESS;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_MAG_CAL_PROGRESS >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_MAG_CAL_PROGRESS >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_MAG_CAL_PROGRESS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_MAG_CAL_PROGRESS_CRCEXTRA,
         _status);
@@ -138,14 +137,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_progress_pack_to_frame_
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mag_cal_progress_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_mag_cal_progress_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_mag_cal_progress_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->compass_id, _payload->cal_mask, _payload->cal_status, _payload->attempt, _payload->completion_pct, _payload->completion_mask, _payload->direction_x, _payload->direction_y, _payload->direction_z,
         _status);
 }
@@ -334,12 +333,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mag_cal_progress_get_field_compl
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_mag_cal_progress_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint8_t compass_id, uint8_t cal_mask, uint8_t cal_status, uint8_t attempt, uint8_t completion_pct, const uint8_t* completion_mask, float direction_x, float direction_y, float direction_z)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_mag_cal_progress_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         compass_id, cal_mask, cal_status, attempt, completion_pct, completion_mask, direction_x, direction_y, direction_z,
         _status);
 }
@@ -348,14 +347,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_mag_cal_progress_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_mag_cal_progress_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint8_t compass_id, uint8_t cal_mask, uint8_t cal_status, uint8_t attempt, uint8_t completion_pct, const uint8_t* completion_mask, float direction_x, float direction_y, float direction_z)
 {
     return fmav_msg_mag_cal_progress_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         compass_id, cal_mask, cal_status, attempt, completion_pct, completion_mask, direction_x, direction_y, direction_z,

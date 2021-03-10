@@ -77,13 +77,13 @@ typedef struct _fmav_control_system_state_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_control_system_state_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, float x_acc, float y_acc, float z_acc, float x_vel, float y_vel, float z_vel, float x_pos, float y_pos, float z_pos, float airspeed, const float* vel_variance, const float* pos_variance, const float* q, float roll_rate, float pitch_rate, float yaw_rate,
     fmav_status_t* _status)
 {
-    fmav_control_system_state_t* _payload = (fmav_control_system_state_t*)msg->payload;
+    fmav_control_system_state_t* _payload = (fmav_control_system_state_t*)_msg->payload;
 
     _payload->time_usec = time_usec;
     _payload->x_acc = x_acc;
@@ -103,43 +103,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_control_system_state_pack(
     memcpy(&(_payload->pos_variance), pos_variance, sizeof(float)*3);
     memcpy(&(_payload->q), q, sizeof(float)*4);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_CONTROL_SYSTEM_STATE;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_CONTROL_SYSTEM_STATE;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_control_system_state_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_control_system_state_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_control_system_state_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->time_usec, _payload->x_acc, _payload->y_acc, _payload->z_acc, _payload->x_vel, _payload->y_vel, _payload->z_vel, _payload->x_pos, _payload->y_pos, _payload->z_pos, _payload->airspeed, _payload->vel_variance, _payload->pos_variance, _payload->q, _payload->roll_rate, _payload->pitch_rate, _payload->yaw_rate,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_control_system_state_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, float x_acc, float y_acc, float z_acc, float x_vel, float y_vel, float z_vel, float x_pos, float y_pos, float z_pos, float airspeed, const float* vel_variance, const float* pos_variance, const float* q, float roll_rate, float pitch_rate, float yaw_rate,
     fmav_status_t* _status)
 {
-    fmav_control_system_state_t* _payload = (fmav_control_system_state_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_control_system_state_t* _payload = (fmav_control_system_state_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_usec = time_usec;
     _payload->x_acc = x_acc;
@@ -159,14 +158,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_control_system_state_pack_to_fr
     memcpy(&(_payload->pos_variance), pos_variance, sizeof(float)*3);
     memcpy(&(_payload->q), q, sizeof(float)*4);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_CONTROL_SYSTEM_STATE;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_CONTROL_SYSTEM_STATE >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_CONTROL_SYSTEM_STATE >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_CONTROL_SYSTEM_STATE;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_CONTROL_SYSTEM_STATE >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_CONTROL_SYSTEM_STATE >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_CRCEXTRA,
         _status);
@@ -174,14 +173,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_control_system_state_pack_to_fr
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_control_system_state_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_control_system_state_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_control_system_state_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->time_usec, _payload->x_acc, _payload->y_acc, _payload->z_acc, _payload->x_vel, _payload->y_vel, _payload->z_vel, _payload->x_pos, _payload->y_pos, _payload->z_pos, _payload->airspeed, _payload->vel_variance, _payload->pos_variance, _payload->q, _payload->roll_rate, _payload->pitch_rate, _payload->yaw_rate,
         _status);
 }
@@ -454,12 +453,12 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_control_system_state_get_field_q(u
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_control_system_state_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint64_t time_usec, float x_acc, float y_acc, float z_acc, float x_vel, float y_vel, float z_vel, float x_pos, float y_pos, float z_pos, float airspeed, const float* vel_variance, const float* pos_variance, const float* q, float roll_rate, float pitch_rate, float yaw_rate)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_control_system_state_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         time_usec, x_acc, y_acc, z_acc, x_vel, y_vel, z_vel, x_pos, y_pos, z_pos, airspeed, vel_variance, pos_variance, q, roll_rate, pitch_rate, yaw_rate,
         _status);
 }
@@ -468,14 +467,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_control_system_state_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_control_system_state_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, float x_acc, float y_acc, float z_acc, float x_vel, float y_vel, float z_vel, float x_pos, float y_pos, float z_pos, float airspeed, const float* vel_variance, const float* pos_variance, const float* q, float roll_rate, float pitch_rate, float yaw_rate)
 {
     return fmav_msg_control_system_state_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         time_usec, x_acc, y_acc, z_acc, x_vel, y_vel, z_vel, x_pos, y_pos, z_pos, airspeed, vel_variance, pos_variance, q, roll_rate, pitch_rate, yaw_rate,

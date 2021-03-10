@@ -62,13 +62,13 @@ typedef struct _fmav_airspeed_autocal_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_airspeed_autocal_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     float vx, float vy, float vz, float diff_pressure, float EAS2TAS, float ratio, float state_x, float state_y, float state_z, float Pax, float Pby, float Pcz,
     fmav_status_t* _status)
 {
-    fmav_airspeed_autocal_t* _payload = (fmav_airspeed_autocal_t*)msg->payload;
+    fmav_airspeed_autocal_t* _payload = (fmav_airspeed_autocal_t*)_msg->payload;
 
     _payload->vx = vx;
     _payload->vy = vy;
@@ -84,43 +84,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_airspeed_autocal_pack(
     _payload->Pcz = Pcz;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_AIRSPEED_AUTOCAL;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_AIRSPEED_AUTOCAL;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_airspeed_autocal_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_airspeed_autocal_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_airspeed_autocal_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->vx, _payload->vy, _payload->vz, _payload->diff_pressure, _payload->EAS2TAS, _payload->ratio, _payload->state_x, _payload->state_y, _payload->state_z, _payload->Pax, _payload->Pby, _payload->Pcz,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_airspeed_autocal_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     float vx, float vy, float vz, float diff_pressure, float EAS2TAS, float ratio, float state_x, float state_y, float state_z, float Pax, float Pby, float Pcz,
     fmav_status_t* _status)
 {
-    fmav_airspeed_autocal_t* _payload = (fmav_airspeed_autocal_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_airspeed_autocal_t* _payload = (fmav_airspeed_autocal_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->vx = vx;
     _payload->vy = vy;
@@ -136,14 +135,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_airspeed_autocal_pack_to_frame_
     _payload->Pcz = Pcz;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_AIRSPEED_AUTOCAL;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_AIRSPEED_AUTOCAL >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_AIRSPEED_AUTOCAL >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_AIRSPEED_AUTOCAL;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_AIRSPEED_AUTOCAL >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_AIRSPEED_AUTOCAL >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_CRCEXTRA,
         _status);
@@ -151,14 +150,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_airspeed_autocal_pack_to_frame_
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_airspeed_autocal_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_airspeed_autocal_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_airspeed_autocal_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->vx, _payload->vy, _payload->vz, _payload->diff_pressure, _payload->EAS2TAS, _payload->ratio, _payload->state_x, _payload->state_y, _payload->state_z, _payload->Pax, _payload->Pby, _payload->Pcz,
         _status);
 }
@@ -373,12 +372,12 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_airspeed_autocal_get_field_Pcz(con
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_airspeed_autocal_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     float vx, float vy, float vz, float diff_pressure, float EAS2TAS, float ratio, float state_x, float state_y, float state_z, float Pax, float Pby, float Pcz)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_airspeed_autocal_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         vx, vy, vz, diff_pressure, EAS2TAS, ratio, state_x, state_y, state_z, Pax, Pby, Pcz,
         _status);
 }
@@ -387,14 +386,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_airspeed_autocal_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_airspeed_autocal_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     float vx, float vy, float vz, float diff_pressure, float EAS2TAS, float ratio, float state_x, float state_y, float state_z, float Pax, float Pby, float Pcz)
 {
     return fmav_msg_airspeed_autocal_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         vx, vy, vz, diff_pressure, EAS2TAS, ratio, state_x, state_y, state_z, Pax, Pby, Pcz,

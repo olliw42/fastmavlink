@@ -50,13 +50,13 @@ typedef struct _fmav_ahrs2_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs2_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     float roll, float pitch, float yaw, float altitude, int32_t lat, int32_t lng,
     fmav_status_t* _status)
 {
-    fmav_ahrs2_t* _payload = (fmav_ahrs2_t*)msg->payload;
+    fmav_ahrs2_t* _payload = (fmav_ahrs2_t*)_msg->payload;
 
     _payload->roll = roll;
     _payload->pitch = pitch;
@@ -66,43 +66,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs2_pack(
     _payload->lng = lng;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_AHRS2;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_AHRS2_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_AHRS2;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_AHRS2_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_AHRS2_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs2_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_ahrs2_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_ahrs2_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->roll, _payload->pitch, _payload->yaw, _payload->altitude, _payload->lat, _payload->lng,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs2_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     float roll, float pitch, float yaw, float altitude, int32_t lat, int32_t lng,
     fmav_status_t* _status)
 {
-    fmav_ahrs2_t* _payload = (fmav_ahrs2_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_ahrs2_t* _payload = (fmav_ahrs2_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->roll = roll;
     _payload->pitch = pitch;
@@ -112,14 +111,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs2_pack_to_frame_buf(
     _payload->lng = lng;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_AHRS2;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_AHRS2 >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_AHRS2 >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_AHRS2;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_AHRS2 >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_AHRS2 >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_AHRS2_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_AHRS2_CRCEXTRA,
         _status);
@@ -127,14 +126,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs2_pack_to_frame_buf(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ahrs2_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_ahrs2_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_ahrs2_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->roll, _payload->pitch, _payload->yaw, _payload->altitude, _payload->lat, _payload->lng,
         _status);
 }
@@ -295,12 +294,12 @@ FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_ahrs2_get_field_lng(const fmav_m
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_ahrs2_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     float roll, float pitch, float yaw, float altitude, int32_t lat, int32_t lng)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_ahrs2_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         roll, pitch, yaw, altitude, lat, lng,
         _status);
 }
@@ -309,14 +308,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_ahrs2_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_ahrs2_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     float roll, float pitch, float yaw, float altitude, int32_t lat, int32_t lng)
 {
     return fmav_msg_ahrs2_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         roll, pitch, yaw, altitude, lat, lng,

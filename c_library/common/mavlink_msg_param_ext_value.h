@@ -51,13 +51,13 @@ typedef struct _fmav_param_ext_value_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ext_value_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const char* param_id, const char* param_value, uint8_t param_type, uint16_t param_count, uint16_t param_index,
     fmav_status_t* _status)
 {
-    fmav_param_ext_value_t* _payload = (fmav_param_ext_value_t*)msg->payload;
+    fmav_param_ext_value_t* _payload = (fmav_param_ext_value_t*)_msg->payload;
 
     _payload->param_count = param_count;
     _payload->param_index = param_index;
@@ -65,43 +65,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ext_value_pack(
     memcpy(&(_payload->param_id), param_id, sizeof(char)*16);
     memcpy(&(_payload->param_value), param_value, sizeof(char)*128);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_PARAM_EXT_VALUE;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_PARAM_EXT_VALUE_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_PARAM_EXT_VALUE;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_PARAM_EXT_VALUE_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_PARAM_EXT_VALUE_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ext_value_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_param_ext_value_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_param_ext_value_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->param_id, _payload->param_value, _payload->param_type, _payload->param_count, _payload->param_index,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ext_value_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const char* param_id, const char* param_value, uint8_t param_type, uint16_t param_count, uint16_t param_index,
     fmav_status_t* _status)
 {
-    fmav_param_ext_value_t* _payload = (fmav_param_ext_value_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_param_ext_value_t* _payload = (fmav_param_ext_value_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->param_count = param_count;
     _payload->param_index = param_index;
@@ -109,14 +108,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ext_value_pack_to_frame_b
     memcpy(&(_payload->param_id), param_id, sizeof(char)*16);
     memcpy(&(_payload->param_value), param_value, sizeof(char)*128);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_PARAM_EXT_VALUE;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_PARAM_EXT_VALUE >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_PARAM_EXT_VALUE >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_PARAM_EXT_VALUE;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_PARAM_EXT_VALUE >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_PARAM_EXT_VALUE >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_PARAM_EXT_VALUE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_PARAM_EXT_VALUE_CRCEXTRA,
         _status);
@@ -124,14 +123,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ext_value_pack_to_frame_b
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_param_ext_value_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_param_ext_value_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_param_ext_value_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->param_id, _payload->param_value, _payload->param_type, _payload->param_count, _payload->param_index,
         _status);
 }
@@ -290,12 +289,12 @@ FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_param_ext_value_get_field_param_val
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_param_ext_value_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     const char* param_id, const char* param_value, uint8_t param_type, uint16_t param_count, uint16_t param_index)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_param_ext_value_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         param_id, param_value, param_type, param_count, param_index,
         _status);
 }
@@ -304,14 +303,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_param_ext_value_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_param_ext_value_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     const char* param_id, const char* param_value, uint8_t param_type, uint16_t param_count, uint16_t param_index)
 {
     return fmav_msg_param_ext_value_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         param_id, param_value, param_type, param_count, param_index,

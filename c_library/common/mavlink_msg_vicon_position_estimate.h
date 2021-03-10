@@ -55,13 +55,13 @@ typedef struct _fmav_vicon_position_estimate_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vicon_position_estimate_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint64_t usec, float x, float y, float z, float roll, float pitch, float yaw, const float* covariance,
     fmav_status_t* _status)
 {
-    fmav_vicon_position_estimate_t* _payload = (fmav_vicon_position_estimate_t*)msg->payload;
+    fmav_vicon_position_estimate_t* _payload = (fmav_vicon_position_estimate_t*)_msg->payload;
 
     _payload->usec = usec;
     _payload->x = x;
@@ -72,43 +72,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vicon_position_estimate_pack(
     _payload->yaw = yaw;
     memcpy(&(_payload->covariance), covariance, sizeof(float)*21);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_VICON_POSITION_ESTIMATE;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_VICON_POSITION_ESTIMATE;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vicon_position_estimate_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_vicon_position_estimate_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_vicon_position_estimate_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->usec, _payload->x, _payload->y, _payload->z, _payload->roll, _payload->pitch, _payload->yaw, _payload->covariance,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vicon_position_estimate_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint64_t usec, float x, float y, float z, float roll, float pitch, float yaw, const float* covariance,
     fmav_status_t* _status)
 {
-    fmav_vicon_position_estimate_t* _payload = (fmav_vicon_position_estimate_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_vicon_position_estimate_t* _payload = (fmav_vicon_position_estimate_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->usec = usec;
     _payload->x = x;
@@ -119,14 +118,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vicon_position_estimate_pack_to
     _payload->yaw = yaw;
     memcpy(&(_payload->covariance), covariance, sizeof(float)*21);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_VICON_POSITION_ESTIMATE;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_VICON_POSITION_ESTIMATE >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_VICON_POSITION_ESTIMATE >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_VICON_POSITION_ESTIMATE;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_VICON_POSITION_ESTIMATE >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_VICON_POSITION_ESTIMATE >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_VICON_POSITION_ESTIMATE_CRCEXTRA,
         _status);
@@ -134,14 +133,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vicon_position_estimate_pack_to
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vicon_position_estimate_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_vicon_position_estimate_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_vicon_position_estimate_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->usec, _payload->x, _payload->y, _payload->z, _payload->roll, _payload->pitch, _payload->yaw, _payload->covariance,
         _status);
 }
@@ -321,12 +320,12 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vicon_position_estimate_get_field_
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_vicon_position_estimate_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint64_t usec, float x, float y, float z, float roll, float pitch, float yaw, const float* covariance)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_vicon_position_estimate_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         usec, x, y, z, roll, pitch, yaw, covariance,
         _status);
 }
@@ -335,14 +334,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_vicon_position_estimate_pack
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_vicon_position_estimate_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint64_t usec, float x, float y, float z, float roll, float pitch, float yaw, const float* covariance)
 {
     return fmav_msg_vicon_position_estimate_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         usec, x, y, z, roll, pitch, yaw, covariance,

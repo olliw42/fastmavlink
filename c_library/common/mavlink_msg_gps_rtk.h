@@ -64,13 +64,13 @@ typedef struct _fmav_gps_rtk_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_rtk_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_last_baseline_ms, uint8_t rtk_receiver_id, uint16_t wn, uint32_t tow, uint8_t rtk_health, uint8_t rtk_rate, uint8_t nsats, uint8_t baseline_coords_type, int32_t baseline_a_mm, int32_t baseline_b_mm, int32_t baseline_c_mm, uint32_t accuracy, int32_t iar_num_hypotheses,
     fmav_status_t* _status)
 {
-    fmav_gps_rtk_t* _payload = (fmav_gps_rtk_t*)msg->payload;
+    fmav_gps_rtk_t* _payload = (fmav_gps_rtk_t*)_msg->payload;
 
     _payload->time_last_baseline_ms = time_last_baseline_ms;
     _payload->tow = tow;
@@ -87,43 +87,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_rtk_pack(
     _payload->baseline_coords_type = baseline_coords_type;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_GPS_RTK;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_GPS_RTK_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_GPS_RTK;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_GPS_RTK_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_GPS_RTK_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_rtk_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_gps_rtk_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_gps_rtk_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->time_last_baseline_ms, _payload->rtk_receiver_id, _payload->wn, _payload->tow, _payload->rtk_health, _payload->rtk_rate, _payload->nsats, _payload->baseline_coords_type, _payload->baseline_a_mm, _payload->baseline_b_mm, _payload->baseline_c_mm, _payload->accuracy, _payload->iar_num_hypotheses,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_rtk_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_last_baseline_ms, uint8_t rtk_receiver_id, uint16_t wn, uint32_t tow, uint8_t rtk_health, uint8_t rtk_rate, uint8_t nsats, uint8_t baseline_coords_type, int32_t baseline_a_mm, int32_t baseline_b_mm, int32_t baseline_c_mm, uint32_t accuracy, int32_t iar_num_hypotheses,
     fmav_status_t* _status)
 {
-    fmav_gps_rtk_t* _payload = (fmav_gps_rtk_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_gps_rtk_t* _payload = (fmav_gps_rtk_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_last_baseline_ms = time_last_baseline_ms;
     _payload->tow = tow;
@@ -140,14 +139,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_rtk_pack_to_frame_buf(
     _payload->baseline_coords_type = baseline_coords_type;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_GPS_RTK;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_GPS_RTK >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_GPS_RTK >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_GPS_RTK;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_GPS_RTK >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_GPS_RTK >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_GPS_RTK_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_GPS_RTK_CRCEXTRA,
         _status);
@@ -155,14 +154,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_rtk_pack_to_frame_buf(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps_rtk_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_gps_rtk_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_gps_rtk_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->time_last_baseline_ms, _payload->rtk_receiver_id, _payload->wn, _payload->tow, _payload->rtk_health, _payload->rtk_rate, _payload->nsats, _payload->baseline_coords_type, _payload->baseline_a_mm, _payload->baseline_b_mm, _payload->baseline_c_mm, _payload->accuracy, _payload->iar_num_hypotheses,
         _status);
 }
@@ -386,12 +385,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gps_rtk_get_field_baseline_coord
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_gps_rtk_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint32_t time_last_baseline_ms, uint8_t rtk_receiver_id, uint16_t wn, uint32_t tow, uint8_t rtk_health, uint8_t rtk_rate, uint8_t nsats, uint8_t baseline_coords_type, int32_t baseline_a_mm, int32_t baseline_b_mm, int32_t baseline_c_mm, uint32_t accuracy, int32_t iar_num_hypotheses)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_gps_rtk_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         time_last_baseline_ms, rtk_receiver_id, wn, tow, rtk_health, rtk_rate, nsats, baseline_coords_type, baseline_a_mm, baseline_b_mm, baseline_c_mm, accuracy, iar_num_hypotheses,
         _status);
 }
@@ -400,14 +399,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_gps_rtk_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_gps_rtk_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_last_baseline_ms, uint8_t rtk_receiver_id, uint16_t wn, uint32_t tow, uint8_t rtk_health, uint8_t rtk_rate, uint8_t nsats, uint8_t baseline_coords_type, int32_t baseline_a_mm, int32_t baseline_b_mm, int32_t baseline_c_mm, uint32_t accuracy, int32_t iar_num_hypotheses)
 {
     return fmav_msg_gps_rtk_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         time_last_baseline_ms, rtk_receiver_id, wn, tow, rtk_health, rtk_rate, nsats, baseline_coords_type, baseline_a_mm, baseline_b_mm, baseline_c_mm, accuracy, iar_num_hypotheses,

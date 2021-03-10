@@ -63,13 +63,13 @@ typedef struct _fmav_camera_image_captured_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_image_captured_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, uint64_t time_utc, uint8_t camera_id, int32_t lat, int32_t lon, int32_t alt, int32_t relative_alt, const float* q, int32_t image_index, int8_t capture_result, const char* file_url,
     fmav_status_t* _status)
 {
-    fmav_camera_image_captured_t* _payload = (fmav_camera_image_captured_t*)msg->payload;
+    fmav_camera_image_captured_t* _payload = (fmav_camera_image_captured_t*)_msg->payload;
 
     _payload->time_utc = time_utc;
     _payload->time_boot_ms = time_boot_ms;
@@ -83,43 +83,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_image_captured_pack(
     memcpy(&(_payload->q), q, sizeof(float)*4);
     memcpy(&(_payload->file_url), file_url, sizeof(char)*205);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_image_captured_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_camera_image_captured_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_camera_image_captured_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->time_boot_ms, _payload->time_utc, _payload->camera_id, _payload->lat, _payload->lon, _payload->alt, _payload->relative_alt, _payload->q, _payload->image_index, _payload->capture_result, _payload->file_url,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_image_captured_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, uint64_t time_utc, uint8_t camera_id, int32_t lat, int32_t lon, int32_t alt, int32_t relative_alt, const float* q, int32_t image_index, int8_t capture_result, const char* file_url,
     fmav_status_t* _status)
 {
-    fmav_camera_image_captured_t* _payload = (fmav_camera_image_captured_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_camera_image_captured_t* _payload = (fmav_camera_image_captured_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_utc = time_utc;
     _payload->time_boot_ms = time_boot_ms;
@@ -133,14 +132,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_image_captured_pack_to_f
     memcpy(&(_payload->q), q, sizeof(float)*4);
     memcpy(&(_payload->file_url), file_url, sizeof(char)*205);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_CAMERA_IMAGE_CAPTURED_CRCEXTRA,
         _status);
@@ -148,14 +147,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_image_captured_pack_to_f
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_image_captured_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_camera_image_captured_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_camera_image_captured_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->time_boot_ms, _payload->time_utc, _payload->camera_id, _payload->lat, _payload->lon, _payload->alt, _payload->relative_alt, _payload->q, _payload->image_index, _payload->capture_result, _payload->file_url,
         _status);
 }
@@ -368,12 +367,12 @@ FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_camera_image_captured_get_field_fil
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_image_captured_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint32_t time_boot_ms, uint64_t time_utc, uint8_t camera_id, int32_t lat, int32_t lon, int32_t alt, int32_t relative_alt, const float* q, int32_t image_index, int8_t capture_result, const char* file_url)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_camera_image_captured_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         time_boot_ms, time_utc, camera_id, lat, lon, alt, relative_alt, q, image_index, capture_result, file_url,
         _status);
 }
@@ -382,14 +381,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_image_captured_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_image_captured_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, uint64_t time_utc, uint8_t camera_id, int32_t lat, int32_t lon, int32_t alt, int32_t relative_alt, const float* q, int32_t image_index, int8_t capture_result, const char* file_url)
 {
     return fmav_msg_camera_image_captured_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         time_boot_ms, time_utc, camera_id, lat, lon, alt, relative_alt, q, image_index, capture_result, file_url,

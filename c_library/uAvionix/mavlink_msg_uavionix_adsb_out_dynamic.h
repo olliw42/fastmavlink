@@ -70,13 +70,13 @@ typedef struct _fmav_uavionix_adsb_out_dynamic_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_dynamic_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint32_t utcTime, int32_t gpsLat, int32_t gpsLon, int32_t gpsAlt, uint8_t gpsFix, uint8_t numSats, int32_t baroAltMSL, uint32_t accuracyHor, uint16_t accuracyVert, uint16_t accuracyVel, int16_t velVert, int16_t velNS, int16_t VelEW, uint8_t emergencyStatus, uint16_t state, uint16_t squawk,
     fmav_status_t* _status)
 {
-    fmav_uavionix_adsb_out_dynamic_t* _payload = (fmav_uavionix_adsb_out_dynamic_t*)msg->payload;
+    fmav_uavionix_adsb_out_dynamic_t* _payload = (fmav_uavionix_adsb_out_dynamic_t*)_msg->payload;
 
     _payload->utcTime = utcTime;
     _payload->gpsLat = gpsLat;
@@ -96,43 +96,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_dynamic_pack(
     _payload->emergencyStatus = emergencyStatus;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_DYNAMIC;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_DYNAMIC;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_dynamic_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_uavionix_adsb_out_dynamic_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_uavionix_adsb_out_dynamic_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->utcTime, _payload->gpsLat, _payload->gpsLon, _payload->gpsAlt, _payload->gpsFix, _payload->numSats, _payload->baroAltMSL, _payload->accuracyHor, _payload->accuracyVert, _payload->accuracyVel, _payload->velVert, _payload->velNS, _payload->VelEW, _payload->emergencyStatus, _payload->state, _payload->squawk,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_dynamic_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint32_t utcTime, int32_t gpsLat, int32_t gpsLon, int32_t gpsAlt, uint8_t gpsFix, uint8_t numSats, int32_t baroAltMSL, uint32_t accuracyHor, uint16_t accuracyVert, uint16_t accuracyVel, int16_t velVert, int16_t velNS, int16_t VelEW, uint8_t emergencyStatus, uint16_t state, uint16_t squawk,
     fmav_status_t* _status)
 {
-    fmav_uavionix_adsb_out_dynamic_t* _payload = (fmav_uavionix_adsb_out_dynamic_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_uavionix_adsb_out_dynamic_t* _payload = (fmav_uavionix_adsb_out_dynamic_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->utcTime = utcTime;
     _payload->gpsLat = gpsLat;
@@ -152,14 +151,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_dynamic_pack_
     _payload->emergencyStatus = emergencyStatus;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_DYNAMIC;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_DYNAMIC >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_DYNAMIC >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_DYNAMIC;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_DYNAMIC >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_DYNAMIC >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_UAVIONIX_ADSB_OUT_DYNAMIC_CRCEXTRA,
         _status);
@@ -167,14 +166,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_dynamic_pack_
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_uavionix_adsb_out_dynamic_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_uavionix_adsb_out_dynamic_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_uavionix_adsb_out_dynamic_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->utcTime, _payload->gpsLat, _payload->gpsLon, _payload->gpsAlt, _payload->gpsFix, _payload->numSats, _payload->baroAltMSL, _payload->accuracyHor, _payload->accuracyVert, _payload->accuracyVel, _payload->velVert, _payload->velNS, _payload->VelEW, _payload->emergencyStatus, _payload->state, _payload->squawk,
         _status);
 }
@@ -425,12 +424,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_uavionix_adsb_out_dynamic_get_fi
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_uavionix_adsb_out_dynamic_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint32_t utcTime, int32_t gpsLat, int32_t gpsLon, int32_t gpsAlt, uint8_t gpsFix, uint8_t numSats, int32_t baroAltMSL, uint32_t accuracyHor, uint16_t accuracyVert, uint16_t accuracyVel, int16_t velVert, int16_t velNS, int16_t VelEW, uint8_t emergencyStatus, uint16_t state, uint16_t squawk)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_uavionix_adsb_out_dynamic_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         utcTime, gpsLat, gpsLon, gpsAlt, gpsFix, numSats, baroAltMSL, accuracyHor, accuracyVert, accuracyVel, velVert, velNS, VelEW, emergencyStatus, state, squawk,
         _status);
 }
@@ -439,14 +438,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_uavionix_adsb_out_dynamic_pa
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_uavionix_adsb_out_dynamic_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint32_t utcTime, int32_t gpsLat, int32_t gpsLon, int32_t gpsAlt, uint8_t gpsFix, uint8_t numSats, int32_t baroAltMSL, uint32_t accuracyHor, uint16_t accuracyVert, uint16_t accuracyVel, int16_t velVert, int16_t velNS, int16_t VelEW, uint8_t emergencyStatus, uint16_t state, uint16_t squawk)
 {
     return fmav_msg_uavionix_adsb_out_dynamic_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         utcTime, gpsLat, gpsLon, gpsAlt, gpsFix, numSats, baroAltMSL, accuracyHor, accuracyVert, accuracyVel, velVert, velNS, VelEW, emergencyStatus, state, squawk,

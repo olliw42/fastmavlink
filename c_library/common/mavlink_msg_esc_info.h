@@ -61,13 +61,13 @@ typedef struct _fmav_esc_info_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_info_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint8_t index, uint64_t time_usec, uint16_t counter, uint8_t count, uint8_t connection_type, uint8_t info, const uint16_t* failure_flags, const uint32_t* error_count, const uint8_t* temperature,
     fmav_status_t* _status)
 {
-    fmav_esc_info_t* _payload = (fmav_esc_info_t*)msg->payload;
+    fmav_esc_info_t* _payload = (fmav_esc_info_t*)_msg->payload;
 
     _payload->time_usec = time_usec;
     _payload->counter = counter;
@@ -79,43 +79,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_info_pack(
     memcpy(&(_payload->failure_flags), failure_flags, sizeof(uint16_t)*4);
     memcpy(&(_payload->temperature), temperature, sizeof(uint8_t)*4);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_ESC_INFO;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_ESC_INFO_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_ESC_INFO;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_ESC_INFO_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_ESC_INFO_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_info_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_esc_info_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_esc_info_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->index, _payload->time_usec, _payload->counter, _payload->count, _payload->connection_type, _payload->info, _payload->failure_flags, _payload->error_count, _payload->temperature,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_info_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint8_t index, uint64_t time_usec, uint16_t counter, uint8_t count, uint8_t connection_type, uint8_t info, const uint16_t* failure_flags, const uint32_t* error_count, const uint8_t* temperature,
     fmav_status_t* _status)
 {
-    fmav_esc_info_t* _payload = (fmav_esc_info_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_esc_info_t* _payload = (fmav_esc_info_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_usec = time_usec;
     _payload->counter = counter;
@@ -127,14 +126,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_info_pack_to_frame_buf(
     memcpy(&(_payload->failure_flags), failure_flags, sizeof(uint16_t)*4);
     memcpy(&(_payload->temperature), temperature, sizeof(uint8_t)*4);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_ESC_INFO;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_ESC_INFO >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_ESC_INFO >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_ESC_INFO;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_ESC_INFO >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_ESC_INFO >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_ESC_INFO_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ESC_INFO_CRCEXTRA,
         _status);
@@ -142,14 +141,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_info_pack_to_frame_buf(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_esc_info_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_esc_info_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_esc_info_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->index, _payload->time_usec, _payload->counter, _payload->count, _payload->connection_type, _payload->info, _payload->failure_flags, _payload->error_count, _payload->temperature,
         _status);
 }
@@ -350,12 +349,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_esc_info_get_field_temperature(u
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_esc_info_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint8_t index, uint64_t time_usec, uint16_t counter, uint8_t count, uint8_t connection_type, uint8_t info, const uint16_t* failure_flags, const uint32_t* error_count, const uint8_t* temperature)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_esc_info_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         index, time_usec, counter, count, connection_type, info, failure_flags, error_count, temperature,
         _status);
 }
@@ -364,14 +363,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_esc_info_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_esc_info_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint8_t index, uint64_t time_usec, uint16_t counter, uint8_t count, uint8_t connection_type, uint8_t info, const uint16_t* failure_flags, const uint32_t* error_count, const uint8_t* temperature)
 {
     return fmav_msg_esc_info_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         index, time_usec, counter, count, connection_type, info, failure_flags, error_count, temperature,

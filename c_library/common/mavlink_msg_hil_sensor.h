@@ -70,13 +70,13 @@ typedef struct _fmav_hil_sensor_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_sensor_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, float xacc, float yacc, float zacc, float xgyro, float ygyro, float zgyro, float xmag, float ymag, float zmag, float abs_pressure, float diff_pressure, float pressure_alt, float temperature, uint32_t fields_updated, uint8_t id,
     fmav_status_t* _status)
 {
-    fmav_hil_sensor_t* _payload = (fmav_hil_sensor_t*)msg->payload;
+    fmav_hil_sensor_t* _payload = (fmav_hil_sensor_t*)_msg->payload;
 
     _payload->time_usec = time_usec;
     _payload->xacc = xacc;
@@ -96,43 +96,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_sensor_pack(
     _payload->id = id;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_HIL_SENSOR;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_HIL_SENSOR_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_HIL_SENSOR;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_HIL_SENSOR_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_HIL_SENSOR_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_sensor_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_hil_sensor_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_hil_sensor_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->time_usec, _payload->xacc, _payload->yacc, _payload->zacc, _payload->xgyro, _payload->ygyro, _payload->zgyro, _payload->xmag, _payload->ymag, _payload->zmag, _payload->abs_pressure, _payload->diff_pressure, _payload->pressure_alt, _payload->temperature, _payload->fields_updated, _payload->id,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_sensor_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, float xacc, float yacc, float zacc, float xgyro, float ygyro, float zgyro, float xmag, float ymag, float zmag, float abs_pressure, float diff_pressure, float pressure_alt, float temperature, uint32_t fields_updated, uint8_t id,
     fmav_status_t* _status)
 {
-    fmav_hil_sensor_t* _payload = (fmav_hil_sensor_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_hil_sensor_t* _payload = (fmav_hil_sensor_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_usec = time_usec;
     _payload->xacc = xacc;
@@ -152,14 +151,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_sensor_pack_to_frame_buf(
     _payload->id = id;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_HIL_SENSOR;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_HIL_SENSOR >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_HIL_SENSOR >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_HIL_SENSOR;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_HIL_SENSOR >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_HIL_SENSOR >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_HIL_SENSOR_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_HIL_SENSOR_CRCEXTRA,
         _status);
@@ -167,14 +166,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_sensor_pack_to_frame_buf(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_sensor_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_hil_sensor_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_hil_sensor_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->time_usec, _payload->xacc, _payload->yacc, _payload->zacc, _payload->xgyro, _payload->ygyro, _payload->zgyro, _payload->xmag, _payload->ymag, _payload->zmag, _payload->abs_pressure, _payload->diff_pressure, _payload->pressure_alt, _payload->temperature, _payload->fields_updated, _payload->id,
         _status);
 }
@@ -425,12 +424,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_hil_sensor_get_field_id(const fm
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_hil_sensor_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint64_t time_usec, float xacc, float yacc, float zacc, float xgyro, float ygyro, float zgyro, float xmag, float ymag, float zmag, float abs_pressure, float diff_pressure, float pressure_alt, float temperature, uint32_t fields_updated, uint8_t id)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_hil_sensor_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         time_usec, xacc, yacc, zacc, xgyro, ygyro, zgyro, xmag, ymag, zmag, abs_pressure, diff_pressure, pressure_alt, temperature, fields_updated, id,
         _status);
 }
@@ -439,14 +438,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_hil_sensor_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_hil_sensor_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, float xacc, float yacc, float zacc, float xgyro, float ygyro, float zgyro, float xmag, float ymag, float zmag, float abs_pressure, float diff_pressure, float pressure_alt, float temperature, uint32_t fields_updated, uint8_t id)
 {
     return fmav_msg_hil_sensor_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         time_usec, xacc, yacc, zacc, xgyro, ygyro, zgyro, xmag, ymag, zmag, abs_pressure, diff_pressure, pressure_alt, temperature, fields_updated, id,

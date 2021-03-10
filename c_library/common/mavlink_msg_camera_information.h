@@ -69,13 +69,13 @@ typedef struct _fmav_camera_information_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_information_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, const uint8_t* vendor_name, const uint8_t* model_name, uint32_t firmware_version, float focal_length, float sensor_size_h, float sensor_size_v, uint16_t resolution_h, uint16_t resolution_v, uint8_t lens_id, uint32_t flags, uint16_t cam_definition_version, const char* cam_definition_uri,
     fmav_status_t* _status)
 {
-    fmav_camera_information_t* _payload = (fmav_camera_information_t*)msg->payload;
+    fmav_camera_information_t* _payload = (fmav_camera_information_t*)_msg->payload;
 
     _payload->time_boot_ms = time_boot_ms;
     _payload->firmware_version = firmware_version;
@@ -91,43 +91,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_information_pack(
     memcpy(&(_payload->model_name), model_name, sizeof(uint8_t)*32);
     memcpy(&(_payload->cam_definition_uri), cam_definition_uri, sizeof(char)*140);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_CAMERA_INFORMATION;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_CAMERA_INFORMATION_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_CAMERA_INFORMATION;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_CAMERA_INFORMATION_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_CAMERA_INFORMATION_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_information_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_camera_information_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_camera_information_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->time_boot_ms, _payload->vendor_name, _payload->model_name, _payload->firmware_version, _payload->focal_length, _payload->sensor_size_h, _payload->sensor_size_v, _payload->resolution_h, _payload->resolution_v, _payload->lens_id, _payload->flags, _payload->cam_definition_version, _payload->cam_definition_uri,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_information_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, const uint8_t* vendor_name, const uint8_t* model_name, uint32_t firmware_version, float focal_length, float sensor_size_h, float sensor_size_v, uint16_t resolution_h, uint16_t resolution_v, uint8_t lens_id, uint32_t flags, uint16_t cam_definition_version, const char* cam_definition_uri,
     fmav_status_t* _status)
 {
-    fmav_camera_information_t* _payload = (fmav_camera_information_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_camera_information_t* _payload = (fmav_camera_information_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_boot_ms = time_boot_ms;
     _payload->firmware_version = firmware_version;
@@ -143,14 +142,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_information_pack_to_fram
     memcpy(&(_payload->model_name), model_name, sizeof(uint8_t)*32);
     memcpy(&(_payload->cam_definition_uri), cam_definition_uri, sizeof(char)*140);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_CAMERA_INFORMATION;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_CAMERA_INFORMATION >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_CAMERA_INFORMATION >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_CAMERA_INFORMATION;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_CAMERA_INFORMATION >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_CAMERA_INFORMATION >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_CAMERA_INFORMATION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_CAMERA_INFORMATION_CRCEXTRA,
         _status);
@@ -158,14 +157,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_information_pack_to_fram
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_information_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_camera_information_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_camera_information_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->time_boot_ms, _payload->vendor_name, _payload->model_name, _payload->firmware_version, _payload->focal_length, _payload->sensor_size_h, _payload->sensor_size_v, _payload->resolution_h, _payload->resolution_v, _payload->lens_id, _payload->flags, _payload->cam_definition_version, _payload->cam_definition_uri,
         _status);
 }
@@ -402,12 +401,12 @@ FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_camera_information_get_field_cam_de
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_information_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint32_t time_boot_ms, const uint8_t* vendor_name, const uint8_t* model_name, uint32_t firmware_version, float focal_length, float sensor_size_h, float sensor_size_v, uint16_t resolution_h, uint16_t resolution_v, uint8_t lens_id, uint32_t flags, uint16_t cam_definition_version, const char* cam_definition_uri)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_camera_information_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         time_boot_ms, vendor_name, model_name, firmware_version, focal_length, sensor_size_h, sensor_size_v, resolution_h, resolution_v, lens_id, flags, cam_definition_version, cam_definition_uri,
         _status);
 }
@@ -416,14 +415,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_information_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_information_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, const uint8_t* vendor_name, const uint8_t* model_name, uint32_t firmware_version, float focal_length, float sensor_size_h, float sensor_size_v, uint16_t resolution_h, uint16_t resolution_v, uint8_t lens_id, uint32_t flags, uint16_t cam_definition_version, const char* cam_definition_uri)
 {
     return fmav_msg_camera_information_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         time_boot_ms, vendor_name, model_name, firmware_version, focal_length, sensor_size_h, sensor_size_v, resolution_h, resolution_v, lens_id, flags, cam_definition_version, cam_definition_uri,

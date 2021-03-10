@@ -45,68 +45,67 @@ typedef struct _fmav_data16_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data16_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint8_t type, uint8_t len, const uint8_t* data,
     fmav_status_t* _status)
 {
-    fmav_data16_t* _payload = (fmav_data16_t*)msg->payload;
+    fmav_data16_t* _payload = (fmav_data16_t*)_msg->payload;
 
     _payload->type = type;
     _payload->len = len;
     memcpy(&(_payload->data), data, sizeof(uint8_t)*16);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_DATA16;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_DATA16_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_DATA16;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_DATA16_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_DATA16_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data16_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_data16_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_data16_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->type, _payload->len, _payload->data,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data16_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint8_t type, uint8_t len, const uint8_t* data,
     fmav_status_t* _status)
 {
-    fmav_data16_t* _payload = (fmav_data16_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_data16_t* _payload = (fmav_data16_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->type = type;
     _payload->len = len;
     memcpy(&(_payload->data), data, sizeof(uint8_t)*16);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_DATA16;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_DATA16 >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_DATA16 >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_DATA16;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_DATA16 >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_DATA16 >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_DATA16_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_DATA16_CRCEXTRA,
         _status);
@@ -114,14 +113,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data16_pack_to_frame_buf(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data16_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_data16_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_data16_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->type, _payload->len, _payload->data,
         _status);
 }
@@ -256,12 +255,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_data16_get_field_data(uint16_t i
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_data16_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint8_t type, uint8_t len, const uint8_t* data)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_data16_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         type, len, data,
         _status);
 }
@@ -270,14 +269,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_data16_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_data16_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint8_t type, uint8_t len, const uint8_t* data)
 {
     return fmav_msg_data16_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         type, len, data,

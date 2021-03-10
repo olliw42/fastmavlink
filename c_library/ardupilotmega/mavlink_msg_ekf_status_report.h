@@ -52,13 +52,13 @@ typedef struct _fmav_ekf_status_report_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ekf_status_report_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint16_t flags, float velocity_variance, float pos_horiz_variance, float pos_vert_variance, float compass_variance, float terrain_alt_variance, float airspeed_variance,
     fmav_status_t* _status)
 {
-    fmav_ekf_status_report_t* _payload = (fmav_ekf_status_report_t*)msg->payload;
+    fmav_ekf_status_report_t* _payload = (fmav_ekf_status_report_t*)_msg->payload;
 
     _payload->velocity_variance = velocity_variance;
     _payload->pos_horiz_variance = pos_horiz_variance;
@@ -69,43 +69,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ekf_status_report_pack(
     _payload->airspeed_variance = airspeed_variance;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_EKF_STATUS_REPORT;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_EKF_STATUS_REPORT_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_EKF_STATUS_REPORT;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_EKF_STATUS_REPORT_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ekf_status_report_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_ekf_status_report_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_ekf_status_report_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->flags, _payload->velocity_variance, _payload->pos_horiz_variance, _payload->pos_vert_variance, _payload->compass_variance, _payload->terrain_alt_variance, _payload->airspeed_variance,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ekf_status_report_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint16_t flags, float velocity_variance, float pos_horiz_variance, float pos_vert_variance, float compass_variance, float terrain_alt_variance, float airspeed_variance,
     fmav_status_t* _status)
 {
-    fmav_ekf_status_report_t* _payload = (fmav_ekf_status_report_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_ekf_status_report_t* _payload = (fmav_ekf_status_report_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->velocity_variance = velocity_variance;
     _payload->pos_horiz_variance = pos_horiz_variance;
@@ -116,14 +115,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ekf_status_report_pack_to_frame
     _payload->airspeed_variance = airspeed_variance;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_EKF_STATUS_REPORT;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_EKF_STATUS_REPORT >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_EKF_STATUS_REPORT >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_EKF_STATUS_REPORT;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_EKF_STATUS_REPORT >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_EKF_STATUS_REPORT >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_EKF_STATUS_REPORT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_EKF_STATUS_REPORT_CRCEXTRA,
         _status);
@@ -131,14 +130,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ekf_status_report_pack_to_frame
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ekf_status_report_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_ekf_status_report_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_ekf_status_report_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->flags, _payload->velocity_variance, _payload->pos_horiz_variance, _payload->pos_vert_variance, _payload->compass_variance, _payload->terrain_alt_variance, _payload->airspeed_variance,
         _status);
 }
@@ -308,12 +307,12 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_ekf_status_report_get_field_airspe
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_ekf_status_report_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint16_t flags, float velocity_variance, float pos_horiz_variance, float pos_vert_variance, float compass_variance, float terrain_alt_variance, float airspeed_variance)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_ekf_status_report_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         flags, velocity_variance, pos_horiz_variance, pos_vert_variance, compass_variance, terrain_alt_variance, airspeed_variance,
         _status);
 }
@@ -322,14 +321,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_ekf_status_report_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_ekf_status_report_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint16_t flags, float velocity_variance, float pos_horiz_variance, float pos_vert_variance, float compass_variance, float terrain_alt_variance, float airspeed_variance)
 {
     return fmav_msg_ekf_status_report_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         flags, velocity_variance, pos_horiz_variance, pos_vert_variance, compass_variance, terrain_alt_variance, airspeed_variance,

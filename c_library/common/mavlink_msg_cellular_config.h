@@ -61,13 +61,13 @@ typedef struct _fmav_cellular_config_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_cellular_config_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint8_t enable_lte, uint8_t enable_pin, const char* pin, const char* new_pin, const char* apn, const char* puk, uint8_t roaming, uint8_t response,
     fmav_status_t* _status)
 {
-    fmav_cellular_config_t* _payload = (fmav_cellular_config_t*)msg->payload;
+    fmav_cellular_config_t* _payload = (fmav_cellular_config_t*)_msg->payload;
 
     _payload->enable_lte = enable_lte;
     _payload->enable_pin = enable_pin;
@@ -78,43 +78,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_cellular_config_pack(
     memcpy(&(_payload->apn), apn, sizeof(char)*32);
     memcpy(&(_payload->puk), puk, sizeof(char)*16);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_CELLULAR_CONFIG;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_CELLULAR_CONFIG_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_CELLULAR_CONFIG;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_CELLULAR_CONFIG_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_CELLULAR_CONFIG_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_cellular_config_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_cellular_config_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_cellular_config_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->enable_lte, _payload->enable_pin, _payload->pin, _payload->new_pin, _payload->apn, _payload->puk, _payload->roaming, _payload->response,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_cellular_config_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint8_t enable_lte, uint8_t enable_pin, const char* pin, const char* new_pin, const char* apn, const char* puk, uint8_t roaming, uint8_t response,
     fmav_status_t* _status)
 {
-    fmav_cellular_config_t* _payload = (fmav_cellular_config_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_cellular_config_t* _payload = (fmav_cellular_config_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->enable_lte = enable_lte;
     _payload->enable_pin = enable_pin;
@@ -125,14 +124,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_cellular_config_pack_to_frame_b
     memcpy(&(_payload->apn), apn, sizeof(char)*32);
     memcpy(&(_payload->puk), puk, sizeof(char)*16);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_CELLULAR_CONFIG;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_CELLULAR_CONFIG >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_CELLULAR_CONFIG >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_CELLULAR_CONFIG;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_CELLULAR_CONFIG >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_CELLULAR_CONFIG >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_CELLULAR_CONFIG_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_CELLULAR_CONFIG_CRCEXTRA,
         _status);
@@ -140,14 +139,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_cellular_config_pack_to_frame_b
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_cellular_config_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_cellular_config_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_cellular_config_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->enable_lte, _payload->enable_pin, _payload->pin, _payload->new_pin, _payload->apn, _payload->puk, _payload->roaming, _payload->response,
         _status);
 }
@@ -345,12 +344,12 @@ FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_cellular_config_get_field_puk(uint1
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_cellular_config_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint8_t enable_lte, uint8_t enable_pin, const char* pin, const char* new_pin, const char* apn, const char* puk, uint8_t roaming, uint8_t response)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_cellular_config_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         enable_lte, enable_pin, pin, new_pin, apn, puk, roaming, response,
         _status);
 }
@@ -359,14 +358,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_cellular_config_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_cellular_config_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint8_t enable_lte, uint8_t enable_pin, const char* pin, const char* new_pin, const char* apn, const char* puk, uint8_t roaming, uint8_t response)
 {
     return fmav_msg_cellular_config_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         enable_lte, enable_pin, pin, new_pin, apn, puk, roaming, response,

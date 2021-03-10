@@ -60,13 +60,13 @@ typedef struct _fmav_generator_status_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_generator_status_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint64_t status, uint16_t generator_speed, float battery_current, float load_current, float power_generated, float bus_voltage, int16_t rectifier_temperature, float bat_current_setpoint, int16_t generator_temperature, uint32_t runtime, int32_t time_until_maintenance,
     fmav_status_t* _status)
 {
-    fmav_generator_status_t* _payload = (fmav_generator_status_t*)msg->payload;
+    fmav_generator_status_t* _payload = (fmav_generator_status_t*)_msg->payload;
 
     _payload->status = status;
     _payload->battery_current = battery_current;
@@ -81,43 +81,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_generator_status_pack(
     _payload->generator_temperature = generator_temperature;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_GENERATOR_STATUS;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_GENERATOR_STATUS_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_GENERATOR_STATUS;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_GENERATOR_STATUS_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_GENERATOR_STATUS_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_generator_status_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_generator_status_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_generator_status_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->status, _payload->generator_speed, _payload->battery_current, _payload->load_current, _payload->power_generated, _payload->bus_voltage, _payload->rectifier_temperature, _payload->bat_current_setpoint, _payload->generator_temperature, _payload->runtime, _payload->time_until_maintenance,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_generator_status_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint64_t status, uint16_t generator_speed, float battery_current, float load_current, float power_generated, float bus_voltage, int16_t rectifier_temperature, float bat_current_setpoint, int16_t generator_temperature, uint32_t runtime, int32_t time_until_maintenance,
     fmav_status_t* _status)
 {
-    fmav_generator_status_t* _payload = (fmav_generator_status_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_generator_status_t* _payload = (fmav_generator_status_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->status = status;
     _payload->battery_current = battery_current;
@@ -132,14 +131,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_generator_status_pack_to_frame_
     _payload->generator_temperature = generator_temperature;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_GENERATOR_STATUS;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_GENERATOR_STATUS >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_GENERATOR_STATUS >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_GENERATOR_STATUS;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_GENERATOR_STATUS >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_GENERATOR_STATUS >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_GENERATOR_STATUS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_GENERATOR_STATUS_CRCEXTRA,
         _status);
@@ -147,14 +146,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_generator_status_pack_to_frame_
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_generator_status_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_generator_status_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_generator_status_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->status, _payload->generator_speed, _payload->battery_current, _payload->load_current, _payload->power_generated, _payload->bus_voltage, _payload->rectifier_temperature, _payload->bat_current_setpoint, _payload->generator_temperature, _payload->runtime, _payload->time_until_maintenance,
         _status);
 }
@@ -360,12 +359,12 @@ FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_generator_status_get_field_gener
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_generator_status_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint64_t status, uint16_t generator_speed, float battery_current, float load_current, float power_generated, float bus_voltage, int16_t rectifier_temperature, float bat_current_setpoint, int16_t generator_temperature, uint32_t runtime, int32_t time_until_maintenance)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_generator_status_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         status, generator_speed, battery_current, load_current, power_generated, bus_voltage, rectifier_temperature, bat_current_setpoint, generator_temperature, runtime, time_until_maintenance,
         _status);
 }
@@ -374,14 +373,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_generator_status_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_generator_status_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint64_t status, uint16_t generator_speed, float battery_current, float load_current, float power_generated, float bus_voltage, int16_t rectifier_temperature, float bat_current_setpoint, int16_t generator_temperature, uint32_t runtime, int32_t time_until_maintenance)
 {
     return fmav_msg_generator_status_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         status, generator_speed, battery_current, load_current, power_generated, bus_voltage, rectifier_temperature, bat_current_setpoint, generator_temperature, runtime, time_until_maintenance,

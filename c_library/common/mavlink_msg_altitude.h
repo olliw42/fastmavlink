@@ -52,13 +52,13 @@ typedef struct _fmav_altitude_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_altitude_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, float altitude_monotonic, float altitude_amsl, float altitude_local, float altitude_relative, float altitude_terrain, float bottom_clearance,
     fmav_status_t* _status)
 {
-    fmav_altitude_t* _payload = (fmav_altitude_t*)msg->payload;
+    fmav_altitude_t* _payload = (fmav_altitude_t*)_msg->payload;
 
     _payload->time_usec = time_usec;
     _payload->altitude_monotonic = altitude_monotonic;
@@ -69,43 +69,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_altitude_pack(
     _payload->bottom_clearance = bottom_clearance;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_ALTITUDE;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_ALTITUDE_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_ALTITUDE;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_ALTITUDE_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_ALTITUDE_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_altitude_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_altitude_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_altitude_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->time_usec, _payload->altitude_monotonic, _payload->altitude_amsl, _payload->altitude_local, _payload->altitude_relative, _payload->altitude_terrain, _payload->bottom_clearance,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_altitude_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, float altitude_monotonic, float altitude_amsl, float altitude_local, float altitude_relative, float altitude_terrain, float bottom_clearance,
     fmav_status_t* _status)
 {
-    fmav_altitude_t* _payload = (fmav_altitude_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_altitude_t* _payload = (fmav_altitude_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_usec = time_usec;
     _payload->altitude_monotonic = altitude_monotonic;
@@ -116,14 +115,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_altitude_pack_to_frame_buf(
     _payload->bottom_clearance = bottom_clearance;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_ALTITUDE;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_ALTITUDE >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_ALTITUDE >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_ALTITUDE;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_ALTITUDE >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_ALTITUDE >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_ALTITUDE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ALTITUDE_CRCEXTRA,
         _status);
@@ -131,14 +130,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_altitude_pack_to_frame_buf(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_altitude_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_altitude_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_altitude_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->time_usec, _payload->altitude_monotonic, _payload->altitude_amsl, _payload->altitude_local, _payload->altitude_relative, _payload->altitude_terrain, _payload->bottom_clearance,
         _status);
 }
@@ -308,12 +307,12 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_altitude_get_field_bottom_clearanc
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_altitude_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint64_t time_usec, float altitude_monotonic, float altitude_amsl, float altitude_local, float altitude_relative, float altitude_terrain, float bottom_clearance)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_altitude_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         time_usec, altitude_monotonic, altitude_amsl, altitude_local, altitude_relative, altitude_terrain, bottom_clearance,
         _status);
 }
@@ -322,14 +321,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_altitude_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_altitude_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, float altitude_monotonic, float altitude_amsl, float altitude_local, float altitude_relative, float altitude_terrain, float bottom_clearance)
 {
     return fmav_msg_altitude_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         time_usec, altitude_monotonic, altitude_amsl, altitude_local, altitude_relative, altitude_terrain, bottom_clearance,

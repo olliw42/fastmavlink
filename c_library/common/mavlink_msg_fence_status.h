@@ -48,13 +48,13 @@ typedef struct _fmav_fence_status_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_fence_status_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint8_t breach_status, uint16_t breach_count, uint8_t breach_type, uint32_t breach_time, uint8_t breach_mitigation,
     fmav_status_t* _status)
 {
-    fmav_fence_status_t* _payload = (fmav_fence_status_t*)msg->payload;
+    fmav_fence_status_t* _payload = (fmav_fence_status_t*)_msg->payload;
 
     _payload->breach_time = breach_time;
     _payload->breach_count = breach_count;
@@ -63,43 +63,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_fence_status_pack(
     _payload->breach_mitigation = breach_mitigation;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_FENCE_STATUS;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_FENCE_STATUS_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_FENCE_STATUS;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_FENCE_STATUS_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_FENCE_STATUS_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_fence_status_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_fence_status_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_fence_status_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->breach_status, _payload->breach_count, _payload->breach_type, _payload->breach_time, _payload->breach_mitigation,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_fence_status_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint8_t breach_status, uint16_t breach_count, uint8_t breach_type, uint32_t breach_time, uint8_t breach_mitigation,
     fmav_status_t* _status)
 {
-    fmav_fence_status_t* _payload = (fmav_fence_status_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_fence_status_t* _payload = (fmav_fence_status_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->breach_time = breach_time;
     _payload->breach_count = breach_count;
@@ -108,14 +107,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_fence_status_pack_to_frame_buf(
     _payload->breach_mitigation = breach_mitigation;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_FENCE_STATUS;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_FENCE_STATUS >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_FENCE_STATUS >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_FENCE_STATUS;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_FENCE_STATUS >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_FENCE_STATUS >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_FENCE_STATUS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_FENCE_STATUS_CRCEXTRA,
         _status);
@@ -123,14 +122,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_fence_status_pack_to_frame_buf(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_fence_status_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_fence_status_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_fence_status_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->breach_status, _payload->breach_count, _payload->breach_type, _payload->breach_time, _payload->breach_mitigation,
         _status);
 }
@@ -282,12 +281,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_fence_status_get_field_breach_mi
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_fence_status_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint8_t breach_status, uint16_t breach_count, uint8_t breach_type, uint32_t breach_time, uint8_t breach_mitigation)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_fence_status_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         breach_status, breach_count, breach_type, breach_time, breach_mitigation,
         _status);
 }
@@ -296,14 +295,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_fence_status_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_fence_status_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint8_t breach_status, uint16_t breach_count, uint8_t breach_type, uint32_t breach_time, uint8_t breach_mitigation)
 {
     return fmav_msg_fence_status_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         breach_status, breach_count, breach_type, breach_time, breach_mitigation,

@@ -53,13 +53,13 @@ typedef struct _fmav_open_drone_id_basic_id_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_basic_id_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t id_type, uint8_t ua_type, const uint8_t* uas_id,
     fmav_status_t* _status)
 {
-    fmav_open_drone_id_basic_id_t* _payload = (fmav_open_drone_id_basic_id_t*)msg->payload;
+    fmav_open_drone_id_basic_id_t* _payload = (fmav_open_drone_id_basic_id_t*)_msg->payload;
 
     _payload->target_system = target_system;
     _payload->target_component = target_component;
@@ -68,43 +68,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_basic_id_pack(
     memcpy(&(_payload->id_or_mac), id_or_mac, sizeof(uint8_t)*20);
     memcpy(&(_payload->uas_id), uas_id, sizeof(uint8_t)*20);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_BASIC_ID;
-
-    msg->target_sysid = target_system;
-    msg->target_compid = target_component;
-    msg->crc_extra = FASTMAVLINK_MSG_OPEN_DRONE_ID_BASIC_ID_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_BASIC_ID;
+    _msg->target_sysid = target_system;
+    _msg->target_compid = target_component;
+    _msg->crc_extra = FASTMAVLINK_MSG_OPEN_DRONE_ID_BASIC_ID_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_OPEN_DRONE_ID_BASIC_ID_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_basic_id_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_open_drone_id_basic_id_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_open_drone_id_basic_id_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->target_system, _payload->target_component, _payload->id_or_mac, _payload->id_type, _payload->ua_type, _payload->uas_id,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_basic_id_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t id_type, uint8_t ua_type, const uint8_t* uas_id,
     fmav_status_t* _status)
 {
-    fmav_open_drone_id_basic_id_t* _payload = (fmav_open_drone_id_basic_id_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_open_drone_id_basic_id_t* _payload = (fmav_open_drone_id_basic_id_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->target_system = target_system;
     _payload->target_component = target_component;
@@ -113,14 +112,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_basic_id_pack_to_
     memcpy(&(_payload->id_or_mac), id_or_mac, sizeof(uint8_t)*20);
     memcpy(&(_payload->uas_id), uas_id, sizeof(uint8_t)*20);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_BASIC_ID;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_BASIC_ID >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_BASIC_ID >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_BASIC_ID;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_BASIC_ID >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_BASIC_ID >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_OPEN_DRONE_ID_BASIC_ID_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_OPEN_DRONE_ID_BASIC_ID_CRCEXTRA,
         _status);
@@ -128,14 +127,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_basic_id_pack_to_
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_basic_id_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_open_drone_id_basic_id_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_open_drone_id_basic_id_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->target_system, _payload->target_component, _payload->id_or_mac, _payload->id_type, _payload->ua_type, _payload->uas_id,
         _status);
 }
@@ -303,12 +302,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_basic_id_get_field
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_open_drone_id_basic_id_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t id_type, uint8_t ua_type, const uint8_t* uas_id)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_open_drone_id_basic_id_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         target_system, target_component, id_or_mac, id_type, ua_type, uas_id,
         _status);
 }
@@ -317,14 +316,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_open_drone_id_basic_id_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_open_drone_id_basic_id_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t id_type, uint8_t ua_type, const uint8_t* uas_id)
 {
     return fmav_msg_open_drone_id_basic_id_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         target_system, target_component, id_or_mac, id_type, ua_type, uas_id,

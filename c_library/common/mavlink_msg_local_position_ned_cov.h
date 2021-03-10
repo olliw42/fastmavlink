@@ -63,13 +63,13 @@ typedef struct _fmav_local_position_ned_cov_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_local_position_ned_cov_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, uint8_t estimator_type, float x, float y, float z, float vx, float vy, float vz, float ax, float ay, float az, const float* covariance,
     fmav_status_t* _status)
 {
-    fmav_local_position_ned_cov_t* _payload = (fmav_local_position_ned_cov_t*)msg->payload;
+    fmav_local_position_ned_cov_t* _payload = (fmav_local_position_ned_cov_t*)_msg->payload;
 
     _payload->time_usec = time_usec;
     _payload->x = x;
@@ -84,43 +84,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_local_position_ned_cov_pack(
     _payload->estimator_type = estimator_type;
     memcpy(&(_payload->covariance), covariance, sizeof(float)*45);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_LOCAL_POSITION_NED_COV;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_LOCAL_POSITION_NED_COV_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_LOCAL_POSITION_NED_COV;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_LOCAL_POSITION_NED_COV_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_LOCAL_POSITION_NED_COV_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_local_position_ned_cov_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_local_position_ned_cov_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_local_position_ned_cov_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->time_usec, _payload->estimator_type, _payload->x, _payload->y, _payload->z, _payload->vx, _payload->vy, _payload->vz, _payload->ax, _payload->ay, _payload->az, _payload->covariance,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_local_position_ned_cov_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, uint8_t estimator_type, float x, float y, float z, float vx, float vy, float vz, float ax, float ay, float az, const float* covariance,
     fmav_status_t* _status)
 {
-    fmav_local_position_ned_cov_t* _payload = (fmav_local_position_ned_cov_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_local_position_ned_cov_t* _payload = (fmav_local_position_ned_cov_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_usec = time_usec;
     _payload->x = x;
@@ -135,14 +134,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_local_position_ned_cov_pack_to_
     _payload->estimator_type = estimator_type;
     memcpy(&(_payload->covariance), covariance, sizeof(float)*45);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_LOCAL_POSITION_NED_COV;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_LOCAL_POSITION_NED_COV >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_LOCAL_POSITION_NED_COV >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_LOCAL_POSITION_NED_COV;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_LOCAL_POSITION_NED_COV >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_LOCAL_POSITION_NED_COV >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_LOCAL_POSITION_NED_COV_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_LOCAL_POSITION_NED_COV_CRCEXTRA,
         _status);
@@ -150,14 +149,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_local_position_ned_cov_pack_to_
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_local_position_ned_cov_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_local_position_ned_cov_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_local_position_ned_cov_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->time_usec, _payload->estimator_type, _payload->x, _payload->y, _payload->z, _payload->vx, _payload->vy, _payload->vz, _payload->ax, _payload->ay, _payload->az, _payload->covariance,
         _status);
 }
@@ -373,12 +372,12 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_local_position_ned_cov_get_field_c
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_local_position_ned_cov_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint64_t time_usec, uint8_t estimator_type, float x, float y, float z, float vx, float vy, float vz, float ax, float ay, float az, const float* covariance)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_local_position_ned_cov_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         time_usec, estimator_type, x, y, z, vx, vy, vz, ax, ay, az, covariance,
         _status);
 }
@@ -387,14 +386,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_local_position_ned_cov_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_local_position_ned_cov_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, uint8_t estimator_type, float x, float y, float z, float vx, float vy, float vz, float ax, float ay, float az, const float* covariance)
 {
     return fmav_msg_local_position_ned_cov_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         time_usec, estimator_type, x, y, z, vx, vy, vz, ax, ay, az, covariance,

@@ -60,13 +60,13 @@ typedef struct _fmav_link_node_status_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_link_node_status_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint64_t timestamp, uint8_t tx_buf, uint8_t rx_buf, uint32_t tx_rate, uint32_t rx_rate, uint16_t rx_parse_err, uint16_t tx_overflows, uint16_t rx_overflows, uint32_t messages_sent, uint32_t messages_received, uint32_t messages_lost,
     fmav_status_t* _status)
 {
-    fmav_link_node_status_t* _payload = (fmav_link_node_status_t*)msg->payload;
+    fmav_link_node_status_t* _payload = (fmav_link_node_status_t*)_msg->payload;
 
     _payload->timestamp = timestamp;
     _payload->tx_rate = tx_rate;
@@ -81,43 +81,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_link_node_status_pack(
     _payload->rx_buf = rx_buf;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_LINK_NODE_STATUS;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_LINK_NODE_STATUS_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_LINK_NODE_STATUS;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_LINK_NODE_STATUS_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_LINK_NODE_STATUS_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_link_node_status_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_link_node_status_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_link_node_status_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->timestamp, _payload->tx_buf, _payload->rx_buf, _payload->tx_rate, _payload->rx_rate, _payload->rx_parse_err, _payload->tx_overflows, _payload->rx_overflows, _payload->messages_sent, _payload->messages_received, _payload->messages_lost,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_link_node_status_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint64_t timestamp, uint8_t tx_buf, uint8_t rx_buf, uint32_t tx_rate, uint32_t rx_rate, uint16_t rx_parse_err, uint16_t tx_overflows, uint16_t rx_overflows, uint32_t messages_sent, uint32_t messages_received, uint32_t messages_lost,
     fmav_status_t* _status)
 {
-    fmav_link_node_status_t* _payload = (fmav_link_node_status_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_link_node_status_t* _payload = (fmav_link_node_status_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->timestamp = timestamp;
     _payload->tx_rate = tx_rate;
@@ -132,14 +131,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_link_node_status_pack_to_frame_
     _payload->rx_buf = rx_buf;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_LINK_NODE_STATUS;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_LINK_NODE_STATUS >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_LINK_NODE_STATUS >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_LINK_NODE_STATUS;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_LINK_NODE_STATUS >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_LINK_NODE_STATUS >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_LINK_NODE_STATUS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_LINK_NODE_STATUS_CRCEXTRA,
         _status);
@@ -147,14 +146,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_link_node_status_pack_to_frame_
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_link_node_status_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_link_node_status_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_link_node_status_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->timestamp, _payload->tx_buf, _payload->rx_buf, _payload->tx_rate, _payload->rx_rate, _payload->rx_parse_err, _payload->tx_overflows, _payload->rx_overflows, _payload->messages_sent, _payload->messages_received, _payload->messages_lost,
         _status);
 }
@@ -360,12 +359,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_link_node_status_get_field_rx_bu
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_link_node_status_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint64_t timestamp, uint8_t tx_buf, uint8_t rx_buf, uint32_t tx_rate, uint32_t rx_rate, uint16_t rx_parse_err, uint16_t tx_overflows, uint16_t rx_overflows, uint32_t messages_sent, uint32_t messages_received, uint32_t messages_lost)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_link_node_status_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         timestamp, tx_buf, rx_buf, tx_rate, rx_rate, rx_parse_err, tx_overflows, rx_overflows, messages_sent, messages_received, messages_lost,
         _status);
 }
@@ -374,14 +373,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_link_node_status_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_link_node_status_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint64_t timestamp, uint8_t tx_buf, uint8_t rx_buf, uint32_t tx_rate, uint32_t rx_rate, uint16_t rx_parse_err, uint16_t tx_overflows, uint16_t rx_overflows, uint32_t messages_sent, uint32_t messages_received, uint32_t messages_lost)
 {
     return fmav_msg_link_node_status_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         timestamp, tx_buf, rx_buf, tx_rate, rx_rate, rx_parse_err, tx_overflows, rx_overflows, messages_sent, messages_received, messages_lost,

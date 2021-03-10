@@ -65,13 +65,13 @@ typedef struct _fmav_video_stream_information_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_information_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint8_t stream_id, uint8_t count, uint8_t type, uint16_t flags, float framerate, uint16_t resolution_h, uint16_t resolution_v, uint32_t bitrate, uint16_t rotation, uint16_t hfov, const char* name, const char* uri,
     fmav_status_t* _status)
 {
-    fmav_video_stream_information_t* _payload = (fmav_video_stream_information_t*)msg->payload;
+    fmav_video_stream_information_t* _payload = (fmav_video_stream_information_t*)_msg->payload;
 
     _payload->framerate = framerate;
     _payload->bitrate = bitrate;
@@ -86,43 +86,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_information_pack(
     memcpy(&(_payload->name), name, sizeof(char)*32);
     memcpy(&(_payload->uri), uri, sizeof(char)*160);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_VIDEO_STREAM_INFORMATION;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_VIDEO_STREAM_INFORMATION;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_information_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_video_stream_information_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_video_stream_information_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->stream_id, _payload->count, _payload->type, _payload->flags, _payload->framerate, _payload->resolution_h, _payload->resolution_v, _payload->bitrate, _payload->rotation, _payload->hfov, _payload->name, _payload->uri,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_information_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint8_t stream_id, uint8_t count, uint8_t type, uint16_t flags, float framerate, uint16_t resolution_h, uint16_t resolution_v, uint32_t bitrate, uint16_t rotation, uint16_t hfov, const char* name, const char* uri,
     fmav_status_t* _status)
 {
-    fmav_video_stream_information_t* _payload = (fmav_video_stream_information_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_video_stream_information_t* _payload = (fmav_video_stream_information_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->framerate = framerate;
     _payload->bitrate = bitrate;
@@ -137,14 +136,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_information_pack_t
     memcpy(&(_payload->name), name, sizeof(char)*32);
     memcpy(&(_payload->uri), uri, sizeof(char)*160);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_VIDEO_STREAM_INFORMATION;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_VIDEO_STREAM_INFORMATION >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_VIDEO_STREAM_INFORMATION >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_VIDEO_STREAM_INFORMATION;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_VIDEO_STREAM_INFORMATION >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_VIDEO_STREAM_INFORMATION >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_VIDEO_STREAM_INFORMATION_CRCEXTRA,
         _status);
@@ -152,14 +151,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_information_pack_t
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_information_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_video_stream_information_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_video_stream_information_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->stream_id, _payload->count, _payload->type, _payload->flags, _payload->framerate, _payload->resolution_h, _payload->resolution_v, _payload->bitrate, _payload->rotation, _payload->hfov, _payload->name, _payload->uri,
         _status);
 }
@@ -381,12 +380,12 @@ FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_video_stream_information_get_field_
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_video_stream_information_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint8_t stream_id, uint8_t count, uint8_t type, uint16_t flags, float framerate, uint16_t resolution_h, uint16_t resolution_v, uint32_t bitrate, uint16_t rotation, uint16_t hfov, const char* name, const char* uri)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_video_stream_information_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         stream_id, count, type, flags, framerate, resolution_h, resolution_v, bitrate, rotation, hfov, name, uri,
         _status);
 }
@@ -395,14 +394,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_video_stream_information_pac
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_video_stream_information_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint8_t stream_id, uint8_t count, uint8_t type, uint16_t flags, float framerate, uint16_t resolution_h, uint16_t resolution_v, uint32_t bitrate, uint16_t rotation, uint16_t hfov, const char* name, const char* uri)
 {
     return fmav_msg_video_stream_information_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         stream_id, count, type, flags, framerate, resolution_h, resolution_v, bitrate, rotation, hfov, name, uri,

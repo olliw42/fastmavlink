@@ -50,13 +50,13 @@ typedef struct _fmav_vfr_hud_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vfr_hud_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     float airspeed, float groundspeed, int16_t heading, uint16_t throttle, float alt, float climb,
     fmav_status_t* _status)
 {
-    fmav_vfr_hud_t* _payload = (fmav_vfr_hud_t*)msg->payload;
+    fmav_vfr_hud_t* _payload = (fmav_vfr_hud_t*)_msg->payload;
 
     _payload->airspeed = airspeed;
     _payload->groundspeed = groundspeed;
@@ -66,43 +66,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vfr_hud_pack(
     _payload->throttle = throttle;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_VFR_HUD;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_VFR_HUD_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_VFR_HUD;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_VFR_HUD_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_VFR_HUD_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vfr_hud_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_vfr_hud_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_vfr_hud_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->airspeed, _payload->groundspeed, _payload->heading, _payload->throttle, _payload->alt, _payload->climb,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vfr_hud_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     float airspeed, float groundspeed, int16_t heading, uint16_t throttle, float alt, float climb,
     fmav_status_t* _status)
 {
-    fmav_vfr_hud_t* _payload = (fmav_vfr_hud_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_vfr_hud_t* _payload = (fmav_vfr_hud_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->airspeed = airspeed;
     _payload->groundspeed = groundspeed;
@@ -112,14 +111,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vfr_hud_pack_to_frame_buf(
     _payload->throttle = throttle;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_VFR_HUD;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_VFR_HUD >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_VFR_HUD >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_VFR_HUD;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_VFR_HUD >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_VFR_HUD >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_VFR_HUD_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_VFR_HUD_CRCEXTRA,
         _status);
@@ -127,14 +126,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vfr_hud_pack_to_frame_buf(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vfr_hud_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_vfr_hud_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_vfr_hud_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->airspeed, _payload->groundspeed, _payload->heading, _payload->throttle, _payload->alt, _payload->climb,
         _status);
 }
@@ -295,12 +294,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vfr_hud_get_field_throttle(cons
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_vfr_hud_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     float airspeed, float groundspeed, int16_t heading, uint16_t throttle, float alt, float climb)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_vfr_hud_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         airspeed, groundspeed, heading, throttle, alt, climb,
         _status);
 }
@@ -309,14 +308,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_vfr_hud_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_vfr_hud_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     float airspeed, float groundspeed, int16_t heading, uint16_t throttle, float alt, float climb)
 {
     return fmav_msg_vfr_hud_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         airspeed, groundspeed, heading, throttle, alt, climb,

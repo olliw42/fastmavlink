@@ -44,70 +44,69 @@ typedef struct _fmav_ualberta_sys_status_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ualberta_sys_status_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint8_t mode, uint8_t nav_mode, uint8_t pilot,
     fmav_status_t* _status)
 {
-    fmav_ualberta_sys_status_t* _payload = (fmav_ualberta_sys_status_t*)msg->payload;
+    fmav_ualberta_sys_status_t* _payload = (fmav_ualberta_sys_status_t*)_msg->payload;
 
     _payload->mode = mode;
     _payload->nav_mode = nav_mode;
     _payload->pilot = pilot;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_UALBERTA_SYS_STATUS;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_UALBERTA_SYS_STATUS_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_UALBERTA_SYS_STATUS;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_UALBERTA_SYS_STATUS_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_UALBERTA_SYS_STATUS_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ualberta_sys_status_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_ualberta_sys_status_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_ualberta_sys_status_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->mode, _payload->nav_mode, _payload->pilot,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ualberta_sys_status_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint8_t mode, uint8_t nav_mode, uint8_t pilot,
     fmav_status_t* _status)
 {
-    fmav_ualberta_sys_status_t* _payload = (fmav_ualberta_sys_status_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_ualberta_sys_status_t* _payload = (fmav_ualberta_sys_status_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->mode = mode;
     _payload->nav_mode = nav_mode;
     _payload->pilot = pilot;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_UALBERTA_SYS_STATUS;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_UALBERTA_SYS_STATUS >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_UALBERTA_SYS_STATUS >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_UALBERTA_SYS_STATUS;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_UALBERTA_SYS_STATUS >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_UALBERTA_SYS_STATUS >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_UALBERTA_SYS_STATUS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_UALBERTA_SYS_STATUS_CRCEXTRA,
         _status);
@@ -115,14 +114,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ualberta_sys_status_pack_to_fra
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_ualberta_sys_status_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_ualberta_sys_status_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_ualberta_sys_status_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->mode, _payload->nav_mode, _payload->pilot,
         _status);
 }
@@ -256,12 +255,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_ualberta_sys_status_get_field_pi
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_ualberta_sys_status_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint8_t mode, uint8_t nav_mode, uint8_t pilot)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_ualberta_sys_status_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         mode, nav_mode, pilot,
         _status);
 }
@@ -270,14 +269,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_ualberta_sys_status_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_ualberta_sys_status_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint8_t mode, uint8_t nav_mode, uint8_t pilot)
 {
     return fmav_msg_ualberta_sys_status_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         mode, nav_mode, pilot,

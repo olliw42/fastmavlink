@@ -45,68 +45,67 @@ typedef struct _fmav_named_value_int_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_named_value_int_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, const char* name, int32_t value,
     fmav_status_t* _status)
 {
-    fmav_named_value_int_t* _payload = (fmav_named_value_int_t*)msg->payload;
+    fmav_named_value_int_t* _payload = (fmav_named_value_int_t*)_msg->payload;
 
     _payload->time_boot_ms = time_boot_ms;
     _payload->value = value;
     memcpy(&(_payload->name), name, sizeof(char)*10);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_NAMED_VALUE_INT;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_NAMED_VALUE_INT_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_NAMED_VALUE_INT;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_NAMED_VALUE_INT_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_NAMED_VALUE_INT_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_named_value_int_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_named_value_int_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_named_value_int_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->time_boot_ms, _payload->name, _payload->value,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_named_value_int_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, const char* name, int32_t value,
     fmav_status_t* _status)
 {
-    fmav_named_value_int_t* _payload = (fmav_named_value_int_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_named_value_int_t* _payload = (fmav_named_value_int_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_boot_ms = time_boot_ms;
     _payload->value = value;
     memcpy(&(_payload->name), name, sizeof(char)*10);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_NAMED_VALUE_INT;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_NAMED_VALUE_INT >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_NAMED_VALUE_INT >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_NAMED_VALUE_INT;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_NAMED_VALUE_INT >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_NAMED_VALUE_INT >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_NAMED_VALUE_INT_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_NAMED_VALUE_INT_CRCEXTRA,
         _status);
@@ -114,14 +113,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_named_value_int_pack_to_frame_b
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_named_value_int_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_named_value_int_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_named_value_int_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->time_boot_ms, _payload->name, _payload->value,
         _status);
 }
@@ -256,12 +255,12 @@ FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_named_value_int_get_field_name(uint
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_named_value_int_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint32_t time_boot_ms, const char* name, int32_t value)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_named_value_int_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         time_boot_ms, name, value,
         _status);
 }
@@ -270,14 +269,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_named_value_int_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_named_value_int_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, const char* name, int32_t value)
 {
     return fmav_msg_named_value_int_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         time_boot_ms, name, value,

@@ -56,13 +56,13 @@ typedef struct _fmav_gimbal_manager_information_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_manager_information_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, uint32_t cap_flags, uint8_t gimbal_device_id, float roll_min, float roll_max, float pitch_min, float pitch_max, float yaw_min, float yaw_max,
     fmav_status_t* _status)
 {
-    fmav_gimbal_manager_information_t* _payload = (fmav_gimbal_manager_information_t*)msg->payload;
+    fmav_gimbal_manager_information_t* _payload = (fmav_gimbal_manager_information_t*)_msg->payload;
 
     _payload->time_boot_ms = time_boot_ms;
     _payload->cap_flags = cap_flags;
@@ -75,43 +75,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_manager_information_pack
     _payload->gimbal_device_id = gimbal_device_id;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_GIMBAL_MANAGER_INFORMATION_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_GIMBAL_MANAGER_INFORMATION_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_GIMBAL_MANAGER_INFORMATION_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_manager_information_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_gimbal_manager_information_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_gimbal_manager_information_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->time_boot_ms, _payload->cap_flags, _payload->gimbal_device_id, _payload->roll_min, _payload->roll_max, _payload->pitch_min, _payload->pitch_max, _payload->yaw_min, _payload->yaw_max,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_manager_information_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, uint32_t cap_flags, uint8_t gimbal_device_id, float roll_min, float roll_max, float pitch_min, float pitch_max, float yaw_min, float yaw_max,
     fmav_status_t* _status)
 {
-    fmav_gimbal_manager_information_t* _payload = (fmav_gimbal_manager_information_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_gimbal_manager_information_t* _payload = (fmav_gimbal_manager_information_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_boot_ms = time_boot_ms;
     _payload->cap_flags = cap_flags;
@@ -124,14 +123,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_manager_information_pack
     _payload->gimbal_device_id = gimbal_device_id;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_GIMBAL_MANAGER_INFORMATION_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_GIMBAL_MANAGER_INFORMATION_CRCEXTRA,
         _status);
@@ -139,14 +138,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_manager_information_pack
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_manager_information_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_gimbal_manager_information_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_gimbal_manager_information_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->time_boot_ms, _payload->cap_flags, _payload->gimbal_device_id, _payload->roll_min, _payload->roll_max, _payload->pitch_min, _payload->pitch_max, _payload->yaw_min, _payload->yaw_max,
         _status);
 }
@@ -334,12 +333,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gimbal_manager_information_get_f
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_gimbal_manager_information_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint32_t time_boot_ms, uint32_t cap_flags, uint8_t gimbal_device_id, float roll_min, float roll_max, float pitch_min, float pitch_max, float yaw_min, float yaw_max)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_gimbal_manager_information_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         time_boot_ms, cap_flags, gimbal_device_id, roll_min, roll_max, pitch_min, pitch_max, yaw_min, yaw_max,
         _status);
 }
@@ -348,14 +347,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_gimbal_manager_information_p
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_gimbal_manager_information_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, uint32_t cap_flags, uint8_t gimbal_device_id, float roll_min, float roll_max, float pitch_min, float pitch_max, float yaw_min, float yaw_max)
 {
     return fmav_msg_gimbal_manager_information_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         time_boot_ms, cap_flags, gimbal_device_id, roll_min, roll_max, pitch_min, pitch_max, yaw_min, yaw_max,

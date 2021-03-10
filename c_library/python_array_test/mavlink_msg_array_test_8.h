@@ -47,68 +47,67 @@ typedef struct _fmav_array_test_8_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_8_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint32_t v3, const double* ar_d, const uint16_t* ar_u16,
     fmav_status_t* _status)
 {
-    fmav_array_test_8_t* _payload = (fmav_array_test_8_t*)msg->payload;
+    fmav_array_test_8_t* _payload = (fmav_array_test_8_t*)_msg->payload;
 
     _payload->v3 = v3;
     memcpy(&(_payload->ar_d), ar_d, sizeof(double)*2);
     memcpy(&(_payload->ar_u16), ar_u16, sizeof(uint16_t)*2);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_ARRAY_TEST_8;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_ARRAY_TEST_8_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_ARRAY_TEST_8;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_ARRAY_TEST_8_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_ARRAY_TEST_8_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_8_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_array_test_8_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_array_test_8_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->v3, _payload->ar_d, _payload->ar_u16,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_8_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint32_t v3, const double* ar_d, const uint16_t* ar_u16,
     fmav_status_t* _status)
 {
-    fmav_array_test_8_t* _payload = (fmav_array_test_8_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_array_test_8_t* _payload = (fmav_array_test_8_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->v3 = v3;
     memcpy(&(_payload->ar_d), ar_d, sizeof(double)*2);
     memcpy(&(_payload->ar_u16), ar_u16, sizeof(uint16_t)*2);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_ARRAY_TEST_8;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_ARRAY_TEST_8 >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_ARRAY_TEST_8 >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_ARRAY_TEST_8;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_ARRAY_TEST_8 >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_ARRAY_TEST_8 >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_ARRAY_TEST_8_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ARRAY_TEST_8_CRCEXTRA,
         _status);
@@ -116,14 +115,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_8_pack_to_frame_buf(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_8_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_array_test_8_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_array_test_8_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->v3, _payload->ar_d, _payload->ar_u16,
         _status);
 }
@@ -264,12 +263,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_array_test_8_get_field_ar_u16(u
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_array_test_8_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint32_t v3, const double* ar_d, const uint16_t* ar_u16)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_array_test_8_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         v3, ar_d, ar_u16,
         _status);
 }
@@ -278,14 +277,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_array_test_8_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_array_test_8_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint32_t v3, const double* ar_d, const uint16_t* ar_u16)
 {
     return fmav_msg_array_test_8_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         v3, ar_d, ar_u16,

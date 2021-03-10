@@ -50,13 +50,13 @@ typedef struct _fmav_orbit_execution_status_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_orbit_execution_status_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, float radius, uint8_t frame, int32_t x, int32_t y, float z,
     fmav_status_t* _status)
 {
-    fmav_orbit_execution_status_t* _payload = (fmav_orbit_execution_status_t*)msg->payload;
+    fmav_orbit_execution_status_t* _payload = (fmav_orbit_execution_status_t*)_msg->payload;
 
     _payload->time_usec = time_usec;
     _payload->radius = radius;
@@ -66,43 +66,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_orbit_execution_status_pack(
     _payload->frame = frame;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_ORBIT_EXECUTION_STATUS;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_ORBIT_EXECUTION_STATUS_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_ORBIT_EXECUTION_STATUS;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_ORBIT_EXECUTION_STATUS_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_ORBIT_EXECUTION_STATUS_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_orbit_execution_status_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_orbit_execution_status_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_orbit_execution_status_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->time_usec, _payload->radius, _payload->frame, _payload->x, _payload->y, _payload->z,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_orbit_execution_status_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, float radius, uint8_t frame, int32_t x, int32_t y, float z,
     fmav_status_t* _status)
 {
-    fmav_orbit_execution_status_t* _payload = (fmav_orbit_execution_status_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_orbit_execution_status_t* _payload = (fmav_orbit_execution_status_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_usec = time_usec;
     _payload->radius = radius;
@@ -112,14 +111,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_orbit_execution_status_pack_to_
     _payload->frame = frame;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_ORBIT_EXECUTION_STATUS;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_ORBIT_EXECUTION_STATUS >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_ORBIT_EXECUTION_STATUS >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_ORBIT_EXECUTION_STATUS;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_ORBIT_EXECUTION_STATUS >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_ORBIT_EXECUTION_STATUS >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_ORBIT_EXECUTION_STATUS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ORBIT_EXECUTION_STATUS_CRCEXTRA,
         _status);
@@ -127,14 +126,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_orbit_execution_status_pack_to_
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_orbit_execution_status_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_orbit_execution_status_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_orbit_execution_status_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->time_usec, _payload->radius, _payload->frame, _payload->x, _payload->y, _payload->z,
         _status);
 }
@@ -295,12 +294,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_orbit_execution_status_get_field
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_orbit_execution_status_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint64_t time_usec, float radius, uint8_t frame, int32_t x, int32_t y, float z)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_orbit_execution_status_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         time_usec, radius, frame, x, y, z,
         _status);
 }
@@ -309,14 +308,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_orbit_execution_status_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_orbit_execution_status_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, float radius, uint8_t frame, int32_t x, int32_t y, float z)
 {
     return fmav_msg_orbit_execution_status_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         time_usec, radius, frame, x, y, z,

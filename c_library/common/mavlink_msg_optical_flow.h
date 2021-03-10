@@ -58,13 +58,13 @@ typedef struct _fmav_optical_flow_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_optical_flow_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, uint8_t sensor_id, int16_t flow_x, int16_t flow_y, float flow_comp_m_x, float flow_comp_m_y, uint8_t quality, float ground_distance, float flow_rate_x, float flow_rate_y,
     fmav_status_t* _status)
 {
-    fmav_optical_flow_t* _payload = (fmav_optical_flow_t*)msg->payload;
+    fmav_optical_flow_t* _payload = (fmav_optical_flow_t*)_msg->payload;
 
     _payload->time_usec = time_usec;
     _payload->flow_comp_m_x = flow_comp_m_x;
@@ -78,43 +78,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_optical_flow_pack(
     _payload->flow_rate_y = flow_rate_y;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_OPTICAL_FLOW;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_OPTICAL_FLOW_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_OPTICAL_FLOW;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_OPTICAL_FLOW_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_OPTICAL_FLOW_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_optical_flow_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_optical_flow_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_optical_flow_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->time_usec, _payload->sensor_id, _payload->flow_x, _payload->flow_y, _payload->flow_comp_m_x, _payload->flow_comp_m_y, _payload->quality, _payload->ground_distance, _payload->flow_rate_x, _payload->flow_rate_y,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_optical_flow_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, uint8_t sensor_id, int16_t flow_x, int16_t flow_y, float flow_comp_m_x, float flow_comp_m_y, uint8_t quality, float ground_distance, float flow_rate_x, float flow_rate_y,
     fmav_status_t* _status)
 {
-    fmav_optical_flow_t* _payload = (fmav_optical_flow_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_optical_flow_t* _payload = (fmav_optical_flow_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_usec = time_usec;
     _payload->flow_comp_m_x = flow_comp_m_x;
@@ -128,14 +127,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_optical_flow_pack_to_frame_buf(
     _payload->flow_rate_y = flow_rate_y;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_OPTICAL_FLOW;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_OPTICAL_FLOW >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_OPTICAL_FLOW >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_OPTICAL_FLOW;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_OPTICAL_FLOW >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_OPTICAL_FLOW >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_OPTICAL_FLOW_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_OPTICAL_FLOW_CRCEXTRA,
         _status);
@@ -143,14 +142,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_optical_flow_pack_to_frame_buf(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_optical_flow_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_optical_flow_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_optical_flow_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->time_usec, _payload->sensor_id, _payload->flow_x, _payload->flow_y, _payload->flow_comp_m_x, _payload->flow_comp_m_y, _payload->quality, _payload->ground_distance, _payload->flow_rate_x, _payload->flow_rate_y,
         _status);
 }
@@ -347,12 +346,12 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_optical_flow_get_field_flow_rate_y
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_optical_flow_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint64_t time_usec, uint8_t sensor_id, int16_t flow_x, int16_t flow_y, float flow_comp_m_x, float flow_comp_m_y, uint8_t quality, float ground_distance, float flow_rate_x, float flow_rate_y)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_optical_flow_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         time_usec, sensor_id, flow_x, flow_y, flow_comp_m_x, flow_comp_m_y, quality, ground_distance, flow_rate_x, flow_rate_y,
         _status);
 }
@@ -361,14 +360,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_optical_flow_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_optical_flow_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, uint8_t sensor_id, int16_t flow_x, int16_t flow_y, float flow_comp_m_x, float flow_comp_m_y, uint8_t quality, float ground_distance, float flow_rate_x, float flow_rate_y)
 {
     return fmav_msg_optical_flow_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         time_usec, sensor_id, flow_x, flow_y, flow_comp_m_x, flow_comp_m_y, quality, ground_distance, flow_rate_x, flow_rate_y,

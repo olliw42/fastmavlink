@@ -51,13 +51,13 @@ typedef struct _fmav_vision_speed_estimate_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_speed_estimate_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint64_t usec, float x, float y, float z, const float* covariance, uint8_t reset_counter,
     fmav_status_t* _status)
 {
-    fmav_vision_speed_estimate_t* _payload = (fmav_vision_speed_estimate_t*)msg->payload;
+    fmav_vision_speed_estimate_t* _payload = (fmav_vision_speed_estimate_t*)_msg->payload;
 
     _payload->usec = usec;
     _payload->x = x;
@@ -66,43 +66,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_speed_estimate_pack(
     _payload->reset_counter = reset_counter;
     memcpy(&(_payload->covariance), covariance, sizeof(float)*9);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_VISION_SPEED_ESTIMATE;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_VISION_SPEED_ESTIMATE;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_speed_estimate_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_vision_speed_estimate_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_vision_speed_estimate_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->usec, _payload->x, _payload->y, _payload->z, _payload->covariance, _payload->reset_counter,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_speed_estimate_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint64_t usec, float x, float y, float z, const float* covariance, uint8_t reset_counter,
     fmav_status_t* _status)
 {
-    fmav_vision_speed_estimate_t* _payload = (fmav_vision_speed_estimate_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_vision_speed_estimate_t* _payload = (fmav_vision_speed_estimate_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->usec = usec;
     _payload->x = x;
@@ -111,14 +110,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_speed_estimate_pack_to_f
     _payload->reset_counter = reset_counter;
     memcpy(&(_payload->covariance), covariance, sizeof(float)*9);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_VISION_SPEED_ESTIMATE;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_VISION_SPEED_ESTIMATE >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_VISION_SPEED_ESTIMATE >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_VISION_SPEED_ESTIMATE;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_VISION_SPEED_ESTIMATE >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_VISION_SPEED_ESTIMATE >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_VISION_SPEED_ESTIMATE_CRCEXTRA,
         _status);
@@ -126,14 +125,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_speed_estimate_pack_to_f
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_vision_speed_estimate_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_vision_speed_estimate_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_vision_speed_estimate_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->usec, _payload->x, _payload->y, _payload->z, _payload->covariance, _payload->reset_counter,
         _status);
 }
@@ -295,12 +294,12 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_vision_speed_estimate_get_field_co
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_vision_speed_estimate_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint64_t usec, float x, float y, float z, const float* covariance, uint8_t reset_counter)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_vision_speed_estimate_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         usec, x, y, z, covariance, reset_counter,
         _status);
 }
@@ -309,14 +308,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_vision_speed_estimate_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_vision_speed_estimate_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint64_t usec, float x, float y, float z, const float* covariance, uint8_t reset_counter)
 {
     return fmav_msg_vision_speed_estimate_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         usec, x, y, z, covariance, reset_counter,

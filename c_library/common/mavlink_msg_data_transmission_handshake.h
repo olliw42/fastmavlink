@@ -52,13 +52,13 @@ typedef struct _fmav_data_transmission_handshake_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data_transmission_handshake_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint8_t type, uint32_t size, uint16_t width, uint16_t height, uint16_t packets, uint8_t payload, uint8_t jpg_quality,
     fmav_status_t* _status)
 {
-    fmav_data_transmission_handshake_t* _payload = (fmav_data_transmission_handshake_t*)msg->payload;
+    fmav_data_transmission_handshake_t* _payload = (fmav_data_transmission_handshake_t*)_msg->payload;
 
     _payload->size = size;
     _payload->width = width;
@@ -69,43 +69,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data_transmission_handshake_pac
     _payload->jpg_quality = jpg_quality;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data_transmission_handshake_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_data_transmission_handshake_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_data_transmission_handshake_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->type, _payload->size, _payload->width, _payload->height, _payload->packets, _payload->payload, _payload->jpg_quality,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data_transmission_handshake_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint8_t type, uint32_t size, uint16_t width, uint16_t height, uint16_t packets, uint8_t payload, uint8_t jpg_quality,
     fmav_status_t* _status)
 {
-    fmav_data_transmission_handshake_t* _payload = (fmav_data_transmission_handshake_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_data_transmission_handshake_t* _payload = (fmav_data_transmission_handshake_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->size = size;
     _payload->width = width;
@@ -116,14 +115,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data_transmission_handshake_pac
     _payload->jpg_quality = jpg_quality;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_DATA_TRANSMISSION_HANDSHAKE_CRCEXTRA,
         _status);
@@ -131,14 +130,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data_transmission_handshake_pac
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_data_transmission_handshake_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_data_transmission_handshake_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_data_transmission_handshake_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->type, _payload->size, _payload->width, _payload->height, _payload->packets, _payload->payload, _payload->jpg_quality,
         _status);
 }
@@ -308,12 +307,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_data_transmission_handshake_get_
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_data_transmission_handshake_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint8_t type, uint32_t size, uint16_t width, uint16_t height, uint16_t packets, uint8_t payload, uint8_t jpg_quality)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_data_transmission_handshake_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         type, size, width, height, packets, payload, jpg_quality,
         _status);
 }
@@ -322,14 +321,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_data_transmission_handshake_
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_data_transmission_handshake_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint8_t type, uint32_t size, uint16_t width, uint16_t height, uint16_t packets, uint8_t payload, uint8_t jpg_quality)
 {
     return fmav_msg_data_transmission_handshake_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         type, size, width, height, packets, payload, jpg_quality,

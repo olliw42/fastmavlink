@@ -51,13 +51,13 @@ typedef struct _fmav_device_op_read_reply_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_device_op_read_reply_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint32_t request_id, uint8_t result, uint8_t regstart, uint8_t count, const uint8_t* data, uint8_t bank,
     fmav_status_t* _status)
 {
-    fmav_device_op_read_reply_t* _payload = (fmav_device_op_read_reply_t*)msg->payload;
+    fmav_device_op_read_reply_t* _payload = (fmav_device_op_read_reply_t*)_msg->payload;
 
     _payload->request_id = request_id;
     _payload->result = result;
@@ -66,43 +66,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_device_op_read_reply_pack(
     _payload->bank = bank;
     memcpy(&(_payload->data), data, sizeof(uint8_t)*128);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_DEVICE_OP_READ_REPLY;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_DEVICE_OP_READ_REPLY;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_device_op_read_reply_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_device_op_read_reply_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_device_op_read_reply_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->request_id, _payload->result, _payload->regstart, _payload->count, _payload->data, _payload->bank,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_device_op_read_reply_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint32_t request_id, uint8_t result, uint8_t regstart, uint8_t count, const uint8_t* data, uint8_t bank,
     fmav_status_t* _status)
 {
-    fmav_device_op_read_reply_t* _payload = (fmav_device_op_read_reply_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_device_op_read_reply_t* _payload = (fmav_device_op_read_reply_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->request_id = request_id;
     _payload->result = result;
@@ -111,14 +110,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_device_op_read_reply_pack_to_fr
     _payload->bank = bank;
     memcpy(&(_payload->data), data, sizeof(uint8_t)*128);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_DEVICE_OP_READ_REPLY;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_DEVICE_OP_READ_REPLY >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_DEVICE_OP_READ_REPLY >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_DEVICE_OP_READ_REPLY;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_DEVICE_OP_READ_REPLY >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_DEVICE_OP_READ_REPLY >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_DEVICE_OP_READ_REPLY_CRCEXTRA,
         _status);
@@ -126,14 +125,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_device_op_read_reply_pack_to_fr
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_device_op_read_reply_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_device_op_read_reply_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_device_op_read_reply_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->request_id, _payload->result, _payload->regstart, _payload->count, _payload->data, _payload->bank,
         _status);
 }
@@ -295,12 +294,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_device_op_read_reply_get_field_d
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_device_op_read_reply_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint32_t request_id, uint8_t result, uint8_t regstart, uint8_t count, const uint8_t* data, uint8_t bank)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_device_op_read_reply_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         request_id, result, regstart, count, data, bank,
         _status);
 }
@@ -309,14 +308,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_device_op_read_reply_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_device_op_read_reply_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint32_t request_id, uint8_t result, uint8_t regstart, uint8_t count, const uint8_t* data, uint8_t bank)
 {
     return fmav_msg_device_op_read_reply_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         request_id, result, regstart, count, data, bank,

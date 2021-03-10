@@ -92,13 +92,13 @@ typedef struct _fmav_high_latency2_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency2_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint32_t timestamp, uint8_t type, uint8_t autopilot, uint16_t custom_mode, int32_t latitude, int32_t longitude, int16_t altitude, int16_t target_altitude, uint8_t heading, uint8_t target_heading, uint16_t target_distance, uint8_t throttle, uint8_t airspeed, uint8_t airspeed_sp, uint8_t groundspeed, uint8_t windspeed, uint8_t wind_heading, uint8_t eph, uint8_t epv, int8_t temperature_air, int8_t climb_rate, int8_t battery, uint16_t wp_num, uint16_t failure_flags, int8_t custom0, int8_t custom1, int8_t custom2,
     fmav_status_t* _status)
 {
-    fmav_high_latency2_t* _payload = (fmav_high_latency2_t*)msg->payload;
+    fmav_high_latency2_t* _payload = (fmav_high_latency2_t*)_msg->payload;
 
     _payload->timestamp = timestamp;
     _payload->latitude = latitude;
@@ -129,43 +129,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency2_pack(
     _payload->custom2 = custom2;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_HIGH_LATENCY2;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_HIGH_LATENCY2_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_HIGH_LATENCY2;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_HIGH_LATENCY2_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_HIGH_LATENCY2_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency2_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_high_latency2_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_high_latency2_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->timestamp, _payload->type, _payload->autopilot, _payload->custom_mode, _payload->latitude, _payload->longitude, _payload->altitude, _payload->target_altitude, _payload->heading, _payload->target_heading, _payload->target_distance, _payload->throttle, _payload->airspeed, _payload->airspeed_sp, _payload->groundspeed, _payload->windspeed, _payload->wind_heading, _payload->eph, _payload->epv, _payload->temperature_air, _payload->climb_rate, _payload->battery, _payload->wp_num, _payload->failure_flags, _payload->custom0, _payload->custom1, _payload->custom2,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency2_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint32_t timestamp, uint8_t type, uint8_t autopilot, uint16_t custom_mode, int32_t latitude, int32_t longitude, int16_t altitude, int16_t target_altitude, uint8_t heading, uint8_t target_heading, uint16_t target_distance, uint8_t throttle, uint8_t airspeed, uint8_t airspeed_sp, uint8_t groundspeed, uint8_t windspeed, uint8_t wind_heading, uint8_t eph, uint8_t epv, int8_t temperature_air, int8_t climb_rate, int8_t battery, uint16_t wp_num, uint16_t failure_flags, int8_t custom0, int8_t custom1, int8_t custom2,
     fmav_status_t* _status)
 {
-    fmav_high_latency2_t* _payload = (fmav_high_latency2_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_high_latency2_t* _payload = (fmav_high_latency2_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->timestamp = timestamp;
     _payload->latitude = latitude;
@@ -196,14 +195,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency2_pack_to_frame_buf
     _payload->custom2 = custom2;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_HIGH_LATENCY2;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_HIGH_LATENCY2 >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_HIGH_LATENCY2 >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_HIGH_LATENCY2;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_HIGH_LATENCY2 >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_HIGH_LATENCY2 >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_HIGH_LATENCY2_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_HIGH_LATENCY2_CRCEXTRA,
         _status);
@@ -211,14 +210,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency2_pack_to_frame_buf
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_high_latency2_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_high_latency2_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_high_latency2_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->timestamp, _payload->type, _payload->autopilot, _payload->custom_mode, _payload->latitude, _payload->longitude, _payload->altitude, _payload->target_altitude, _payload->heading, _payload->target_heading, _payload->target_distance, _payload->throttle, _payload->airspeed, _payload->airspeed_sp, _payload->groundspeed, _payload->windspeed, _payload->wind_heading, _payload->eph, _payload->epv, _payload->temperature_air, _payload->climb_rate, _payload->battery, _payload->wp_num, _payload->failure_flags, _payload->custom0, _payload->custom1, _payload->custom2,
         _status);
 }
@@ -568,12 +567,12 @@ FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_high_latency2_get_field_custom2(c
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_high_latency2_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint32_t timestamp, uint8_t type, uint8_t autopilot, uint16_t custom_mode, int32_t latitude, int32_t longitude, int16_t altitude, int16_t target_altitude, uint8_t heading, uint8_t target_heading, uint16_t target_distance, uint8_t throttle, uint8_t airspeed, uint8_t airspeed_sp, uint8_t groundspeed, uint8_t windspeed, uint8_t wind_heading, uint8_t eph, uint8_t epv, int8_t temperature_air, int8_t climb_rate, int8_t battery, uint16_t wp_num, uint16_t failure_flags, int8_t custom0, int8_t custom1, int8_t custom2)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_high_latency2_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         timestamp, type, autopilot, custom_mode, latitude, longitude, altitude, target_altitude, heading, target_heading, target_distance, throttle, airspeed, airspeed_sp, groundspeed, windspeed, wind_heading, eph, epv, temperature_air, climb_rate, battery, wp_num, failure_flags, custom0, custom1, custom2,
         _status);
 }
@@ -582,14 +581,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_high_latency2_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_high_latency2_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint32_t timestamp, uint8_t type, uint8_t autopilot, uint16_t custom_mode, int32_t latitude, int32_t longitude, int16_t altitude, int16_t target_altitude, uint8_t heading, uint8_t target_heading, uint16_t target_distance, uint8_t throttle, uint8_t airspeed, uint8_t airspeed_sp, uint8_t groundspeed, uint8_t windspeed, uint8_t wind_heading, uint8_t eph, uint8_t epv, int8_t temperature_air, int8_t climb_rate, int8_t battery, uint16_t wp_num, uint16_t failure_flags, int8_t custom0, int8_t custom1, int8_t custom2)
 {
     return fmav_msg_high_latency2_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         timestamp, type, autopilot, custom_mode, latitude, longitude, altitude, target_altitude, heading, target_heading, target_distance, throttle, airspeed, airspeed_sp, groundspeed, windspeed, wind_heading, eph, epv, temperature_air, climb_rate, battery, wp_num, failure_flags, custom0, custom1, custom2,

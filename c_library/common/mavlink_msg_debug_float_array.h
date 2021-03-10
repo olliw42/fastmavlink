@@ -49,70 +49,69 @@ typedef struct _fmav_debug_float_array_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_debug_float_array_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, const char* name, uint16_t array_id, const float* data,
     fmav_status_t* _status)
 {
-    fmav_debug_float_array_t* _payload = (fmav_debug_float_array_t*)msg->payload;
+    fmav_debug_float_array_t* _payload = (fmav_debug_float_array_t*)_msg->payload;
 
     _payload->time_usec = time_usec;
     _payload->array_id = array_id;
     memcpy(&(_payload->name), name, sizeof(char)*10);
     memcpy(&(_payload->data), data, sizeof(float)*58);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_DEBUG_FLOAT_ARRAY_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_DEBUG_FLOAT_ARRAY_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_DEBUG_FLOAT_ARRAY_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_debug_float_array_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_debug_float_array_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_debug_float_array_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->time_usec, _payload->name, _payload->array_id, _payload->data,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_debug_float_array_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, const char* name, uint16_t array_id, const float* data,
     fmav_status_t* _status)
 {
-    fmav_debug_float_array_t* _payload = (fmav_debug_float_array_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_debug_float_array_t* _payload = (fmav_debug_float_array_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_usec = time_usec;
     _payload->array_id = array_id;
     memcpy(&(_payload->name), name, sizeof(char)*10);
     memcpy(&(_payload->data), data, sizeof(float)*58);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_DEBUG_FLOAT_ARRAY_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_DEBUG_FLOAT_ARRAY_CRCEXTRA,
         _status);
@@ -120,14 +119,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_debug_float_array_pack_to_frame
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_debug_float_array_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_debug_float_array_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_debug_float_array_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->time_usec, _payload->name, _payload->array_id, _payload->data,
         _status);
 }
@@ -277,12 +276,12 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_debug_float_array_get_field_data(u
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_debug_float_array_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint64_t time_usec, const char* name, uint16_t array_id, const float* data)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_debug_float_array_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         time_usec, name, array_id, data,
         _status);
 }
@@ -291,14 +290,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_debug_float_array_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_debug_float_array_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint64_t time_usec, const char* name, uint16_t array_id, const float* data)
 {
     return fmav_msg_debug_float_array_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         time_usec, name, array_id, data,

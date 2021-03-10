@@ -64,13 +64,13 @@ typedef struct _fmav_adap_tuning_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adap_tuning_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint8_t axis, float desired, float achieved, float error, float theta, float omega, float sigma, float theta_dot, float omega_dot, float sigma_dot, float f, float f_dot, float u,
     fmav_status_t* _status)
 {
-    fmav_adap_tuning_t* _payload = (fmav_adap_tuning_t*)msg->payload;
+    fmav_adap_tuning_t* _payload = (fmav_adap_tuning_t*)_msg->payload;
 
     _payload->desired = desired;
     _payload->achieved = achieved;
@@ -87,43 +87,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adap_tuning_pack(
     _payload->axis = axis;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_ADAP_TUNING;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_ADAP_TUNING_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_ADAP_TUNING;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_ADAP_TUNING_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_ADAP_TUNING_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adap_tuning_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_adap_tuning_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_adap_tuning_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->axis, _payload->desired, _payload->achieved, _payload->error, _payload->theta, _payload->omega, _payload->sigma, _payload->theta_dot, _payload->omega_dot, _payload->sigma_dot, _payload->f, _payload->f_dot, _payload->u,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adap_tuning_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint8_t axis, float desired, float achieved, float error, float theta, float omega, float sigma, float theta_dot, float omega_dot, float sigma_dot, float f, float f_dot, float u,
     fmav_status_t* _status)
 {
-    fmav_adap_tuning_t* _payload = (fmav_adap_tuning_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_adap_tuning_t* _payload = (fmav_adap_tuning_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->desired = desired;
     _payload->achieved = achieved;
@@ -140,14 +139,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adap_tuning_pack_to_frame_buf(
     _payload->axis = axis;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_ADAP_TUNING;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_ADAP_TUNING >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_ADAP_TUNING >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_ADAP_TUNING;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_ADAP_TUNING >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_ADAP_TUNING >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_ADAP_TUNING_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_ADAP_TUNING_CRCEXTRA,
         _status);
@@ -155,14 +154,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adap_tuning_pack_to_frame_buf(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_adap_tuning_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_adap_tuning_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_adap_tuning_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->axis, _payload->desired, _payload->achieved, _payload->error, _payload->theta, _payload->omega, _payload->sigma, _payload->theta_dot, _payload->omega_dot, _payload->sigma_dot, _payload->f, _payload->f_dot, _payload->u,
         _status);
 }
@@ -386,12 +385,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_adap_tuning_get_field_axis(const
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_adap_tuning_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint8_t axis, float desired, float achieved, float error, float theta, float omega, float sigma, float theta_dot, float omega_dot, float sigma_dot, float f, float f_dot, float u)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_adap_tuning_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         axis, desired, achieved, error, theta, omega, sigma, theta_dot, omega_dot, sigma_dot, f, f_dot, u,
         _status);
 }
@@ -400,14 +399,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_adap_tuning_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_adap_tuning_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint8_t axis, float desired, float achieved, float error, float theta, float omega, float sigma, float theta_dot, float omega_dot, float sigma_dot, float f, float f_dot, float u)
 {
     return fmav_msg_adap_tuning_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         axis, desired, achieved, error, theta, omega, sigma, theta_dot, omega_dot, sigma_dot, f, f_dot, u,

@@ -63,13 +63,13 @@ typedef struct _fmav_distance_sensor_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, uint16_t min_distance, uint16_t max_distance, uint16_t current_distance, uint8_t type, uint8_t id, uint8_t orientation, uint8_t covariance, float horizontal_fov, float vertical_fov, const float* quaternion, uint8_t signal_quality,
     fmav_status_t* _status)
 {
-    fmav_distance_sensor_t* _payload = (fmav_distance_sensor_t*)msg->payload;
+    fmav_distance_sensor_t* _payload = (fmav_distance_sensor_t*)_msg->payload;
 
     _payload->time_boot_ms = time_boot_ms;
     _payload->min_distance = min_distance;
@@ -84,43 +84,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_pack(
     _payload->signal_quality = signal_quality;
     memcpy(&(_payload->quaternion), quaternion, sizeof(float)*4);
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_DISTANCE_SENSOR;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_DISTANCE_SENSOR_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_DISTANCE_SENSOR;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_DISTANCE_SENSOR_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_distance_sensor_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_distance_sensor_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->time_boot_ms, _payload->min_distance, _payload->max_distance, _payload->current_distance, _payload->type, _payload->id, _payload->orientation, _payload->covariance, _payload->horizontal_fov, _payload->vertical_fov, _payload->quaternion, _payload->signal_quality,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, uint16_t min_distance, uint16_t max_distance, uint16_t current_distance, uint8_t type, uint8_t id, uint8_t orientation, uint8_t covariance, float horizontal_fov, float vertical_fov, const float* quaternion, uint8_t signal_quality,
     fmav_status_t* _status)
 {
-    fmav_distance_sensor_t* _payload = (fmav_distance_sensor_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_distance_sensor_t* _payload = (fmav_distance_sensor_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->time_boot_ms = time_boot_ms;
     _payload->min_distance = min_distance;
@@ -135,14 +134,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_pack_to_frame_b
     _payload->signal_quality = signal_quality;
     memcpy(&(_payload->quaternion), quaternion, sizeof(float)*4);
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_DISTANCE_SENSOR;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_DISTANCE_SENSOR >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_DISTANCE_SENSOR >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_DISTANCE_SENSOR;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_DISTANCE_SENSOR >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_DISTANCE_SENSOR >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_DISTANCE_SENSOR_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_DISTANCE_SENSOR_CRCEXTRA,
         _status);
@@ -150,14 +149,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_pack_to_frame_b
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_distance_sensor_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_distance_sensor_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_distance_sensor_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->time_boot_ms, _payload->min_distance, _payload->max_distance, _payload->current_distance, _payload->type, _payload->id, _payload->orientation, _payload->covariance, _payload->horizontal_fov, _payload->vertical_fov, _payload->quaternion, _payload->signal_quality,
         _status);
 }
@@ -373,12 +372,12 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_distance_sensor_get_field_quaterni
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_distance_sensor_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     uint32_t time_boot_ms, uint16_t min_distance, uint16_t max_distance, uint16_t current_distance, uint8_t type, uint8_t id, uint8_t orientation, uint8_t covariance, float horizontal_fov, float vertical_fov, const float* quaternion, uint8_t signal_quality)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_distance_sensor_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         time_boot_ms, min_distance, max_distance, current_distance, type, id, orientation, covariance, horizontal_fov, vertical_fov, quaternion, signal_quality,
         _status);
 }
@@ -387,14 +386,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_distance_sensor_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_distance_sensor_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     uint32_t time_boot_ms, uint16_t min_distance, uint16_t max_distance, uint16_t current_distance, uint8_t type, uint8_t id, uint8_t orientation, uint8_t covariance, float horizontal_fov, float vertical_fov, const float* quaternion, uint8_t signal_quality)
 {
     return fmav_msg_distance_sensor_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         time_boot_ms, min_distance, max_distance, current_distance, type, id, orientation, covariance, horizontal_fov, vertical_fov, quaternion, signal_quality,

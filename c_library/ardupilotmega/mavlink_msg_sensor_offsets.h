@@ -62,13 +62,13 @@ typedef struct _fmav_sensor_offsets_t {
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sensor_offsets_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     int16_t mag_ofs_x, int16_t mag_ofs_y, int16_t mag_ofs_z, float mag_declination, int32_t raw_press, int32_t raw_temp, float gyro_cal_x, float gyro_cal_y, float gyro_cal_z, float accel_cal_x, float accel_cal_y, float accel_cal_z,
     fmav_status_t* _status)
 {
-    fmav_sensor_offsets_t* _payload = (fmav_sensor_offsets_t*)msg->payload;
+    fmav_sensor_offsets_t* _payload = (fmav_sensor_offsets_t*)_msg->payload;
 
     _payload->mag_declination = mag_declination;
     _payload->raw_press = raw_press;
@@ -84,43 +84,42 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sensor_offsets_pack(
     _payload->mag_ofs_z = mag_ofs_z;
 
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_SENSOR_OFFSETS;
-
-    msg->target_sysid = 0;
-    msg->target_compid = 0;
-    msg->crc_extra = FASTMAVLINK_MSG_SENSOR_OFFSETS_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_SENSOR_OFFSETS;
+    _msg->target_sysid = 0;
+    _msg->target_compid = 0;
+    _msg->crc_extra = FASTMAVLINK_MSG_SENSOR_OFFSETS_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_SENSOR_OFFSETS_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sensor_offsets_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_sensor_offsets_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_sensor_offsets_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         _payload->mag_ofs_x, _payload->mag_ofs_y, _payload->mag_ofs_z, _payload->mag_declination, _payload->raw_press, _payload->raw_temp, _payload->gyro_cal_x, _payload->gyro_cal_y, _payload->gyro_cal_z, _payload->accel_cal_x, _payload->accel_cal_y, _payload->accel_cal_z,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sensor_offsets_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     int16_t mag_ofs_x, int16_t mag_ofs_y, int16_t mag_ofs_z, float mag_declination, int32_t raw_press, int32_t raw_temp, float gyro_cal_x, float gyro_cal_y, float gyro_cal_z, float accel_cal_x, float accel_cal_y, float accel_cal_z,
     fmav_status_t* _status)
 {
-    fmav_sensor_offsets_t* _payload = (fmav_sensor_offsets_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_sensor_offsets_t* _payload = (fmav_sensor_offsets_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->mag_declination = mag_declination;
     _payload->raw_press = raw_press;
@@ -136,14 +135,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sensor_offsets_pack_to_frame_bu
     _payload->mag_ofs_z = mag_ofs_z;
 
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_SENSOR_OFFSETS;
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_SENSOR_OFFSETS >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_SENSOR_OFFSETS >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_SENSOR_OFFSETS;
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_SENSOR_OFFSETS >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_SENSOR_OFFSETS >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_SENSOR_OFFSETS_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_SENSOR_OFFSETS_CRCEXTRA,
         _status);
@@ -151,14 +150,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sensor_offsets_pack_to_frame_bu
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sensor_offsets_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_sensor_offsets_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_sensor_offsets_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         _payload->mag_ofs_x, _payload->mag_ofs_y, _payload->mag_ofs_z, _payload->mag_declination, _payload->raw_press, _payload->raw_temp, _payload->gyro_cal_x, _payload->gyro_cal_y, _payload->gyro_cal_z, _payload->accel_cal_x, _payload->accel_cal_y, _payload->accel_cal_z,
         _status);
 }
@@ -373,12 +372,12 @@ FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_sensor_offsets_get_field_mag_ofs
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_sensor_offsets_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     int16_t mag_ofs_x, int16_t mag_ofs_y, int16_t mag_ofs_z, float mag_declination, int32_t raw_press, int32_t raw_temp, float gyro_cal_x, float gyro_cal_y, float gyro_cal_z, float accel_cal_x, float accel_cal_y, float accel_cal_z)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_sensor_offsets_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         mag_ofs_x, mag_ofs_y, mag_ofs_z, mag_declination, raw_press, raw_temp, gyro_cal_x, gyro_cal_y, gyro_cal_z, accel_cal_x, accel_cal_y, accel_cal_z,
         _status);
 }
@@ -387,14 +386,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_sensor_offsets_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_sensor_offsets_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     int16_t mag_ofs_x, int16_t mag_ofs_y, int16_t mag_ofs_z, float mag_declination, int32_t raw_press, int32_t raw_temp, float gyro_cal_x, float gyro_cal_y, float gyro_cal_z, float accel_cal_x, float accel_cal_y, float accel_cal_z)
 {
     return fmav_msg_sensor_offsets_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         mag_ofs_x, mag_ofs_y, mag_ofs_z, mag_declination, raw_press, raw_temp, gyro_cal_x, gyro_cal_y, gyro_cal_z, accel_cal_x, accel_cal_y, accel_cal_z,
