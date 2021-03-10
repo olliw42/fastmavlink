@@ -44,70 +44,69 @@ ${{ordered_fields:#define FASTMAVLINK_MSG_${msg_name}_FIELD_${name_upper}_OFS  $
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_${name_lower}_pack(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     ${{arg_fields:${array_const}${type}${array_prefix} ${name}, }},
     fmav_status_t* _status)
 {
-    fmav_${name_lower}_t* _payload = (fmav_${name_lower}_t*)msg->payload;
+    fmav_${name_lower}_t* _payload = (fmav_${name_lower}_t*)_msg->payload;
 
 ${{scalar_fields:    _payload->${name} = ${name_for_setting_payload};
 }}
 ${{array_fields:    memcpy(&(_payload->${name}), ${name}, sizeof(${type})*${array_length});
 }}
 
-    msg->sysid = sysid;
-    msg->compid = compid;
-    msg->msgid = FASTMAVLINK_MSG_ID_${name};
-
-    msg->target_sysid = ${target_system_field_name};
-    msg->target_compid = ${target_component_field_name};
-    msg->crc_extra = FASTMAVLINK_MSG_${name}_CRCEXTRA;
+    _msg->sysid = sysid;
+    _msg->compid = compid;
+    _msg->msgid = FASTMAVLINK_MSG_ID_${name};
+    _msg->target_sysid = ${target_system_field_name};
+    _msg->target_compid = ${target_component_field_name};
+    _msg->crc_extra = FASTMAVLINK_MSG_${name}_CRCEXTRA;
 
     return fmav_finalize_msg(
-        msg,
+        _msg,
         FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MAX,
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_${name_lower}_encode(
-    fmav_message_t* msg,
+    fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
     const fmav_${name_lower}_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_${name_lower}_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         ${{arg_fields:_payload->${name}, }},
         _status);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_${name_lower}_pack_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     ${{arg_fields:${array_const}${type}${array_prefix} ${name}, }},
     fmav_status_t* _status)
 {
-    fmav_${name_lower}_t* _payload = (fmav_${name_lower}_t*)(&buf[FASTMAVLINK_HEADER_V2_LEN]);
+    fmav_${name_lower}_t* _payload = (fmav_${name_lower}_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
 ${{scalar_fields:    _payload->${name} = ${name_for_setting_payload};
 }}
 ${{array_fields:    memcpy(&(_payload->${name}), ${name}, sizeof(${type})*${array_length});
 }}
 
-    buf[5] = sysid;
-    buf[6] = compid;
-    buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_${name};
-    buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_${name} >> 8);
-    buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_${name} >> 16);
+    _buf[5] = sysid;
+    _buf[6] = compid;
+    _buf[7] = (uint8_t)FASTMAVLINK_MSG_ID_${name};
+    _buf[8] = ((uint32_t)FASTMAVLINK_MSG_ID_${name} >> 8);
+    _buf[9] = ((uint32_t)FASTMAVLINK_MSG_ID_${name} >> 16);
 
     return fmav_finalize_frame_buf(
-        buf,
+        _buf,
         FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MAX,
         FASTMAVLINK_MSG_${name}_CRCEXTRA,
         _status);
@@ -115,14 +114,14 @@ ${{array_fields:    memcpy(&(_payload->${name}), ${name}, sizeof(${type})*${arra
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_${name_lower}_encode_to_frame_buf(
-    uint8_t* buf,
+    uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
     const fmav_${name_lower}_t* _payload,
     fmav_status_t* _status)
 {
     return fmav_msg_${name_lower}_pack_to_frame_buf(
-        buf, sysid, compid,
+        _buf, sysid, compid,
         ${{arg_fields:_payload->${name}, }},
         _status);
 }
@@ -257,12 +256,12 @@ ${{array_fields:#define MAVLINK_MSG_${msg_name}_FIELD_${name_upper}_LEN ${array_
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_${name_lower}_pack(
     uint8_t sysid,
     uint8_t compid,
-    mavlink_message_t* msg,
+    mavlink_message_t* _msg,
     ${{arg_fields:${array_const}${type}${array_prefix} ${name}, }})
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_${name_lower}_pack(
-        msg, sysid, compid,
+        _msg, sysid, compid,
         ${{arg_fields:${name}, }},
         _status);
 }
@@ -271,14 +270,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_${name_lower}_pack(
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_${name_lower}_pack_txbuf(
-    char* buf,
+    char* _buf,
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
     ${{arg_fields:${array_const}${type}${array_prefix} ${name}, }})
 {
     return fmav_msg_${name_lower}_pack_to_frame_buf(
-        (uint8_t*)buf,
+        (uint8_t*)_buf,
         sysid,
         compid,
         ${{arg_fields:${name}, }},
