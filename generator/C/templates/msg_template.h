@@ -12,7 +12,7 @@
 //-- Message ${name}
 //----------------------------------------
 
-// fields are ordered, as they are on the wire
+// fields are ordered, as they appear on the wire
 FASTMAVLINK_PACK(
 typedef struct _fmav_${name_lower}_t {
 ${{ordered_fields:    ${type} ${name}${array_suffix};
@@ -40,7 +40,7 @@ ${{ordered_fields:#define FASTMAVLINK_MSG_${msg_name}_FIELD_${name_upper}_OFS  $
 
 
 //----------------------------------------
-//-- Message ${name} packing routines, for sending
+//-- Message ${name} pack,encode routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_${name_lower}_pack(

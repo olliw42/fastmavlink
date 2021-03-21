@@ -43,9 +43,9 @@ typedef enum {
 typedef struct _fmav_result {
 //result of parser or check, whichever was last
     uint8_t res; // see FASTMAVLINK_PARSE_RESULT
-//result of parser
+//result of parser, or packing into frame_buf
     uint16_t frame_len;
-//result of check
+//result of check, or packing into frame_buf
     uint32_t msgid;
     uint8_t sysid;
     uint8_t compid;

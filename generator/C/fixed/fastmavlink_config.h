@@ -28,7 +28,7 @@
 
 
 #ifndef FASTMAVLINK_HEARTBEAT_MAVLINK_VERSION
-  #define FASTMAVLINK_HEARTBEAT_MAVLINK_VERSION  3 // you should not modify this
+  #define FASTMAVLINK_HEARTBEAT_MAVLINK_VERSION  3 // you should usually not modify this
 #endif
 
 
@@ -36,15 +36,20 @@
 #define FASTMAVLINK_MESSAGE_CRCS
 */
 
+
 /*
 #define FASTMAVLINK_SERIAL_WRITE_CHAR
 */
 
+
 /*
-FASTMAVLINK_DIALECT_VERSION
+// Allows to overwrite the build date of the library. You should usually not need this.
+#define FASTMAVLINK_BUILD_DATE
 */
 
 /*
+// Allows to exclude the enum definitions. You should usually not need this. Can be usefull
+// e.g. when fastMavlink is used together with pymavlink-mavgen, such as in tests.
 #define FASTMAVLINK_EXCLUDE_ENUMS
 */
 
