@@ -142,12 +142,17 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_finalize_msg(fmav_message_t* msg, f
     fmav_crc_accumulate(&crc, msg->crc_extra); // msg->crc_extra was set in generator
     msg->checksum = crc;
 
-    memset(msg->signature_a, 0, FASTMAVLINK_SIGNATURE_LEN);
-
     // msg->target_sysid was set in generator
     // msg->target_compid was set in generator
     // msg->crc_extra was set in generator
     // msg->payload_max_len was set in generator
+
+#if FASTMAVLINK_ALWAYS_ZEROFILL
+    // ensure that payload is zero filled
+    if (msg->len < msg->payload_max_len) {
+        memset(&(msg->payload[msg->len]), 0, msg->payload_max_len - msg->len);
+    }
+#endif
 
     return (uint16_t)msg->len + FASTMAVLINK_HEADER_V2_LEN + FASTMAVLINK_CHECKSUM_LEN;
 }
@@ -229,7 +234,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_check_msg(fmav_message_t* msg, fmav_
 {
     msg->target_sysid = 0;
     msg->target_compid = 0;
-    msg->crc_extra = 0;
 
     const fmav_message_entry_t* msg_entry = fmav_get_message_entry(msg->msgid);
     if (!msg_entry) {
@@ -363,15 +367,17 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_check_frame_buf(fmav_result_t* resul
         result->sysid = buf[5];
         result->compid = buf[6];
         result->msgid = buf[7] + ((uint32_t)buf[8] << 8) + ((uint32_t)buf[9] << 16);
+        result->frame_len = (uint16_t)buf[1] + FASTMAVLINK_HEADER_V2_LEN + FASTMAVLINK_CHECKSUM_LEN;
+        if (buf[2] & FASTMAVLINK_INCOMPAT_FLAGS_SIGNED) result->frame_len += FASTMAVLINK_SIGNATURE_LEN;
     } else {
         result->sysid = buf[3];
         result->compid = buf[4];
         result->msgid = buf[5];
+        result->frame_len = (uint16_t)buf[1] + FASTMAVLINK_HEADER_V1_LEN + FASTMAVLINK_CHECKSUM_LEN;
     }
 
     result->target_sysid = 0;
     result->target_compid = 0;
-    result->crc_extra = 0;
 
     const fmav_message_entry_t* msg_entry = fmav_get_message_entry(result->msgid);
     if (!msg_entry) {
@@ -423,9 +429,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_check_frame_buf(fmav_result_t* resul
 // msg payload is zero filled
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_frame_buf_to_msg(fmav_message_t* msg, fmav_result_t* result, uint8_t* buf)
 {
-    msg->res = result->res;
-    if (result->res != FASTMAVLINK_PARSE_RESULT_OK) return;
-
     uint16_t pos = 0;
 
     msg->magic = buf[0];
@@ -490,6 +493,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_and_check_to_frame_buf(fmav_re
 
 // convenience wrapper
 // returns 0, or 1
+// msg payload is zero filled
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_msg_wbuf(fmav_message_t* msg, uint8_t* buf, fmav_status_t* status, uint8_t c)
 {
     uint8_t res;
@@ -714,6 +718,24 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_to_frame_buf(uint8_t* buf, fmav
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_to_frame_buf_wresult(fmav_result_t* result, uint8_t* buf, fmav_message_t* msg)
+{
+    result->frame_len = fmav_msg_to_frame_buf(buf, msg);
+
+    result->msgid = msg->msgid;
+    result->sysid = msg->sysid;
+    result->compid = msg->compid;
+    result->target_sysid = msg->target_sysid;
+    result->target_compid = msg->target_compid;
+    result->crc_extra = msg->crc_extra;
+    result->payload_max_len = msg->payload_max_len;
+
+    result->res = msg->res;
+
+    return result->frame_len;
+}
+
+
 #ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_to_serial(fmav_message_t* msg)
@@ -785,6 +807,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_frame_len(fmav_message_t* msg)
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_zerofill(fmav_message_t* msg)
+{
+    if (msg->len < msg->payload_max_len) {
+        memset(&(msg->payload[msg->len]), 0, msg->payload_max_len - msg->len);
+    }
+}
+
+
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_get_target_sysid(fmav_message_t* msg)
 {
     return msg->target_sysid;
@@ -794,16 +824,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_get_target_sysid(fmav_message_t*
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_get_target_compid(fmav_message_t* msg)
 {
     return msg->target_compid;
-}
-
-
-FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_is_for_me_r(uint8_t my_sysid, uint8_t my_compid, fmav_result_t* result)
-{
-  if (result->target_sysid == 0) return 1;
-  if (result->target_sysid != my_sysid) return 0;
-  if (result->target_compid == 0) return 1;
-  if (result->target_compid == my_compid) return 1;
-  return 0;
 }
 
 
@@ -822,6 +842,16 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_is_for_me(uint8_t my_sysid, uint
   if (msg->target_compid == my_compid) return 1;
 
   // The message has a target_compid but it is not ours, so reject
+  return 0;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_result_is_for_me(uint8_t my_sysid, uint8_t my_compid, fmav_result_t* result)
+{
+  if (result->target_sysid == 0) return 1;
+  if (result->target_sysid != my_sysid) return 0;
+  if (result->target_compid == 0) return 1;
+  if (result->target_compid == my_compid) return 1;
   return 0;
 }
 

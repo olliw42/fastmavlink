@@ -245,6 +245,13 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_clearout_link(uint8_t link)
 }
 
 
+// call it once before using the library
+FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_init(void)
+{
+    fmav_router_reset();    
+}
+
+
 #ifdef __cplusplus
 }
 #endif
