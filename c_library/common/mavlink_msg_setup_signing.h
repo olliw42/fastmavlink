@@ -12,7 +12,7 @@
 //-- Message SETUP_SIGNING
 //----------------------------------------
 
-// fields are ordered, as they are on the wire
+// fields are ordered, as they appear on the wire
 FASTMAVLINK_PACK(
 typedef struct _fmav_setup_signing_t {
     uint64_t initial_timestamp;
@@ -43,7 +43,7 @@ typedef struct _fmav_setup_signing_t {
 
 
 //----------------------------------------
-//-- Message SETUP_SIGNING packing routines, for sending
+//-- Message SETUP_SIGNING pack,encode routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_setup_signing_pack(
@@ -66,11 +66,9 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_setup_signing_pack(
     _msg->target_sysid = target_system;
     _msg->target_compid = target_component;
     _msg->crc_extra = FASTMAVLINK_MSG_SETUP_SIGNING_CRCEXTRA;
+    _msg->payload_max_len = FASTMAVLINK_MSG_SETUP_SIGNING_PAYLOAD_LEN_MAX;
 
-    return fmav_finalize_msg(
-        _msg,
-        FASTMAVLINK_MSG_SETUP_SIGNING_PAYLOAD_LEN_MAX,
-        _status);
+    return fmav_finalize_msg(_msg, _status);
 }
 
 
@@ -175,34 +173,26 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_setup_signing_encode_to_serial(
 
 
 //----------------------------------------
-//-- Message SETUP_SIGNING unpacking routines, for receiving
+//-- Message SETUP_SIGNING decode routines, for receiving
 //----------------------------------------
-// for these functions to work correctly, msg payload must have been zero filled before
-// while for the fmav_msg_setup_signing_decode() function, this could be accounted for,
-// there is no easy&reasonable way to do it for the fmav_msg_setup_signing_get_field_yyy() functions.
-// So, we generally require it.
-
-// this should not be needed, but we provide it just in case
-FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_setup_signing_zero_fill(fmav_message_t* msg)
-{
-    if (msg->len < FASTMAVLINK_MSG_SETUP_SIGNING_PAYLOAD_LEN_MAX) {
-        memset(&(((uint8_t*)msg->payload)[msg->len]), 0, FASTMAVLINK_MSG_SETUP_SIGNING_PAYLOAD_LEN_MAX - msg->len); // zero-fill
-    }
-}
-
+// For these functions to work correctly, the msg payload must be zero filled.
+// Call the helper fmav_msg_zerofill() if needed, or set FASTMAVLINK_ALWAYS_ZEROFILL to 1
+// Note that the parse functions do zerofill the msg payload, but that message generator functions
+// do not. This means that for the msg obtained from parsing the below functions can safely be used,
+// but that this is not so for the msg obtained from pack/encode functions.
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_setup_signing_decode(fmav_setup_signing_t* payload, const fmav_message_t* msg)
 {
-    // this assumes msg payload has been zero filled
-    //memcpy(payload, msg->payload, FASTMAVLINK_MSG_SETUP_SIGNING_PAYLOAD_LEN_MAX);
-
-    // let's assume it is not zero filled, this should not be needed, but let's just play it safe
+#if FASTMAVLINK_ALWAYS_ZEROFILL
+    memcpy(payload, msg->payload, msg->len);
+    // ensure that returned payload is zero filled
     if (msg->len < FASTMAVLINK_MSG_SETUP_SIGNING_PAYLOAD_LEN_MAX) {
-        memcpy(payload, msg->payload, msg->len);
-        memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_SETUP_SIGNING_PAYLOAD_LEN_MAX - msg->len); // zero-fill
-    } else {
-        memcpy(payload, msg->payload, FASTMAVLINK_MSG_SETUP_SIGNING_PAYLOAD_LEN_MAX);
+        memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_SETUP_SIGNING_PAYLOAD_LEN_MAX - msg->len);
     }
+#else
+    // this requires that msg payload had been zero filled before
+    memcpy(payload, msg->payload, FASTMAVLINK_MSG_SETUP_SIGNING_PAYLOAD_LEN_MAX);
+#endif
 }
 
 

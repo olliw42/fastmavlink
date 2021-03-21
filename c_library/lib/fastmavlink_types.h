@@ -9,7 +9,7 @@
 
 
 #include <stdint.h>
-#include "fastmavlink_config.h"
+#include "../fastmavlink_config.h"
 #include "fastmavlink_protocol.h"
 
 
@@ -43,9 +43,9 @@ typedef enum {
 typedef struct _fmav_result {
 //result of parser or check, whichever was last
     uint8_t res; // see FASTMAVLINK_PARSE_RESULT
-//result of parser
+//result of parser, or packing into frame_buf
     uint16_t frame_len;
-//result of check
+//result of check, or packing into frame_buf
     uint32_t msgid;
     uint8_t sysid;
     uint8_t compid;
@@ -94,6 +94,7 @@ typedef struct _fmav_message {
     uint8_t target_sysid;
     uint8_t target_compid;
     uint8_t crc_extra;
+    uint8_t payload_max_len;
 } fmav_message_t;
 
 

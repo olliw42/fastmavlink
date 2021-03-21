@@ -8,14 +8,14 @@
 #define FASTMAVLINK_LIB_H
 
 
-#define FASTMAVLINK_VERSION  002
-#define FASTMAVLINK_VERSION_STR  "0.02"
+#define FASTMAVLINK_VERSION  003
+#define FASTMAVLINK_VERSION_STR  "0.03"
 
 
 #define FASTMAVLINK_IN_USE  1
 
 
-#include "fastmavlink_config.h"
+#include "../fastmavlink_config.h"
 #include "fastmavlink_crc.h"
 #include "fastmavlink_protocol.h"
 #include "fastmavlink_types.h"

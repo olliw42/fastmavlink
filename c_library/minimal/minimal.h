@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Wed Mar 10 2021"
+#define FASTMAVLINK_BUILD_DATE  "Sun Mar 21 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -32,9 +32,9 @@ extern "C" {
 #endif
 
 
-#include "../fastmavlink.h"
+#include "../lib/fastmavlink.h"
 #ifdef FASTMAVLINK_PYMAVLINK_ENABLED
-#include "../fastmavlink_pymavlink.h"
+#include "../lib/fastmavlink_pymavlink.h"
 #endif
 
 

@@ -12,7 +12,7 @@
 //-- Message WIND_COV
 //----------------------------------------
 
-// fields are ordered, as they are on the wire
+// fields are ordered, as they appear on the wire
 FASTMAVLINK_PACK(
 typedef struct _fmav_wind_cov_t {
     uint64_t time_usec;
@@ -52,7 +52,7 @@ typedef struct _fmav_wind_cov_t {
 
 
 //----------------------------------------
-//-- Message WIND_COV packing routines, for sending
+//-- Message WIND_COV pack,encode routines, for sending
 //----------------------------------------
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wind_cov_pack(
@@ -81,11 +81,9 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wind_cov_pack(
     _msg->target_sysid = 0;
     _msg->target_compid = 0;
     _msg->crc_extra = FASTMAVLINK_MSG_WIND_COV_CRCEXTRA;
+    _msg->payload_max_len = FASTMAVLINK_MSG_WIND_COV_PAYLOAD_LEN_MAX;
 
-    return fmav_finalize_msg(
-        _msg,
-        FASTMAVLINK_MSG_WIND_COV_PAYLOAD_LEN_MAX,
-        _status);
+    return fmav_finalize_msg(_msg, _status);
 }
 
 
@@ -202,34 +200,26 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_wind_cov_encode_to_serial(
 
 
 //----------------------------------------
-//-- Message WIND_COV unpacking routines, for receiving
+//-- Message WIND_COV decode routines, for receiving
 //----------------------------------------
-// for these functions to work correctly, msg payload must have been zero filled before
-// while for the fmav_msg_wind_cov_decode() function, this could be accounted for,
-// there is no easy&reasonable way to do it for the fmav_msg_wind_cov_get_field_yyy() functions.
-// So, we generally require it.
-
-// this should not be needed, but we provide it just in case
-FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_wind_cov_zero_fill(fmav_message_t* msg)
-{
-    if (msg->len < FASTMAVLINK_MSG_WIND_COV_PAYLOAD_LEN_MAX) {
-        memset(&(((uint8_t*)msg->payload)[msg->len]), 0, FASTMAVLINK_MSG_WIND_COV_PAYLOAD_LEN_MAX - msg->len); // zero-fill
-    }
-}
-
+// For these functions to work correctly, the msg payload must be zero filled.
+// Call the helper fmav_msg_zerofill() if needed, or set FASTMAVLINK_ALWAYS_ZEROFILL to 1
+// Note that the parse functions do zerofill the msg payload, but that message generator functions
+// do not. This means that for the msg obtained from parsing the below functions can safely be used,
+// but that this is not so for the msg obtained from pack/encode functions.
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_wind_cov_decode(fmav_wind_cov_t* payload, const fmav_message_t* msg)
 {
-    // this assumes msg payload has been zero filled
-    //memcpy(payload, msg->payload, FASTMAVLINK_MSG_WIND_COV_PAYLOAD_LEN_MAX);
-
-    // let's assume it is not zero filled, this should not be needed, but let's just play it safe
+#if FASTMAVLINK_ALWAYS_ZEROFILL
+    memcpy(payload, msg->payload, msg->len);
+    // ensure that returned payload is zero filled
     if (msg->len < FASTMAVLINK_MSG_WIND_COV_PAYLOAD_LEN_MAX) {
-        memcpy(payload, msg->payload, msg->len);
-        memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_WIND_COV_PAYLOAD_LEN_MAX - msg->len); // zero-fill
-    } else {
-        memcpy(payload, msg->payload, FASTMAVLINK_MSG_WIND_COV_PAYLOAD_LEN_MAX);
+        memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_WIND_COV_PAYLOAD_LEN_MAX - msg->len);
     }
+#else
+    // this requires that msg payload had been zero filled before
+    memcpy(payload, msg->payload, FASTMAVLINK_MSG_WIND_COV_PAYLOAD_LEN_MAX);
+#endif
 }
 
 

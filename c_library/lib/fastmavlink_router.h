@@ -39,7 +39,7 @@ extern "C" {
 
 
 #include <stdint.h>
-#include "fastmavlink_config.h"
+#include "../fastmavlink_config.h"
 #include "fastmavlink_types.h"
 
 
@@ -68,21 +68,21 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_router_accept(uint8_t target_link, u
 {
     // go through all components on the link and see if the one we are targeting at is there
     for (uint8_t i = 0; i < FASTMAVLINK_ROUTER_COMPONENTS_MAX; i++) {
-        if (!_fmav_router_component_list[i].valid) continue;
+        if (!_fmav_router_component_list[i].valid) continue; // empty
 
-        if (_fmav_router_component_list[i].link != target_link) continue; //not our link
+        if (_fmav_router_component_list[i].link != target_link) continue; // not our link
 
-        if (target_sysid == 0) { //target link has seen at least one component, and target_sysid is broadcast, so ok
+        if (target_sysid == 0) { // target link has seen at least one component, and target_sysid is broadcast, so ok
           return 1;
         }
 
         if (_fmav_router_component_list[i].sysid != target_sysid) continue; //not our system
 
-        if (target_compid == 0) { //target_sysid is on the link, and target_compid is broadcast
+        if (target_compid == 0) { // target_sysid is on the link, and target_compid is broadcast
           return 1;
         }
 
-        if (_fmav_router_component_list[i].compid == target_compid) { //target_sysid and target_compid is on the link
+        if (_fmav_router_component_list[i].compid == target_compid) { // target_sysid and target_compid is on the link
           return 1;
         }
     }
@@ -109,7 +109,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_router_add_component(uint8_t link, u
     if (link >= FASTMAVLINK_ROUTER_LINKS_MAX) return false;
 
     for (uint8_t i = 0; i < FASTMAVLINK_ROUTER_COMPONENTS_MAX; i++) {
-        if (_fmav_router_component_list[i].valid) continue; //already occupied
+        if (_fmav_router_component_list[i].valid) continue; // already occupied
         _fmav_router_component_list[i].valid = 1;
         _fmav_router_component_list[i].link = link;
         _fmav_router_component_list[i].sysid = sysid;
@@ -152,6 +152,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_handle_message_by_id(
     uint8_t target_sysid, uint8_t target_compid
     )
 {
+    // should not occur, but play it safe
     if (link_of_msg >= FASTMAVLINK_ROUTER_LINKS_MAX) {
         for(uint8_t link = 0; link < FASTMAVLINK_ROUTER_LINKS_MAX; link++) {
             _fmav_router_send_to_link[link] = 0;
@@ -160,21 +161,28 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_handle_message_by_id(
     }
 
     // keep list of available components by spying heartbeats
+    // the alternative is that any message is accepted as evidence of presence
+    // in this case always call fmav_router_find_or_add_component()
+    if (msgid == FASTMAVLINK_MSG_ID_HEARTBEAT) {
+        fmav_router_find_or_add_component(link_of_msg, sysid, compid);
+    }
+
     // heartbeats are always send to all links
+    // the alternative is that messages are send out on a link only if at least one component was seen
+    // in this case out-comment this
     if (msgid == FASTMAVLINK_MSG_ID_HEARTBEAT) {
         for(uint8_t link = 0; link < FASTMAVLINK_ROUTER_LINKS_MAX; link++) {
             _fmav_router_send_to_link[link] = 1;
         }
-        _fmav_router_send_to_link[link_of_msg] = 0; //origin of msg, don't reflect it back
-        fmav_router_find_or_add_component(link_of_msg, sysid, compid);
+        _fmav_router_send_to_link[link_of_msg] = 0; // origin of msg, don't reflect it back
         return;
     }
 
-    // determine to which links it has to be send
+    // determine the links it has to be send to
     for (uint8_t link = 0; link < FASTMAVLINK_ROUTER_LINKS_MAX; link++) {
         _fmav_router_send_to_link[link] = 0;
 
-        if (link == link_of_msg) continue; //origin of msg, don't reflect it back
+        if (link == link_of_msg) continue; // origin of msg, don't reflect it back
 
         if (fmav_router_accept(link, target_sysid, target_compid)) {
           _fmav_router_send_to_link[link] = 1;
@@ -217,7 +225,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_router_send_to_link(uint8_t link)
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_add_ourself(uint8_t sysid, uint8_t compid)
 {
-    fmav_router_add_component(0, sysid, compid); //we always add ourself as link 0
+    fmav_router_add_component(0, sysid, compid); // we always add ourself as link 0
 }
 
 
@@ -226,14 +234,21 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_clearout_link(uint8_t link)
     if (link >= FASTMAVLINK_ROUTER_LINKS_MAX) return;
 
     for (uint8_t i = 0; i < FASTMAVLINK_ROUTER_COMPONENTS_MAX; i++) {
-        if (!_fmav_router_component_list[i].valid) continue; //empty entry
-        if (_fmav_router_component_list[i].link == link) { //clear out
+        if (!_fmav_router_component_list[i].valid) continue; // empty entry
+        if (_fmav_router_component_list[i].link == link) { // clear out
             _fmav_router_component_list[i].valid = 0;
             _fmav_router_component_list[i].link = 0;
             _fmav_router_component_list[i].sysid = 0;
             _fmav_router_component_list[i].compid = 0;
         }
     }
+}
+
+
+// call it once before using the library
+FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_init(void)
+{
+    fmav_router_reset();    
 }
 
 

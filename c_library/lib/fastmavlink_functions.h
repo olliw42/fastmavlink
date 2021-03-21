@@ -3,30 +3,35 @@
 // (c) OlliW, OlliW42, www.olliw.eu
 //------------------------------
 // API:
+// (support functions not listed as they usually shall not be directly used)
 //
 // receive into frame buf:
-//   uint8_t fmav_parse_to_frame_buf(fmav_result_t* result, uint8_t* buf, fmav_status_t* status, uint8_t c)
-//   uint8_t fmav_check_frame_buf(fmav_result_t* result, uint8_t* buf)
-//   void fmav_frame_buf_to_msg(fmav_message_t* msg, fmav_result_t* result, uint8_t* buf)
-//   uint8_t fmav_parse_and_check_to_frame_buf(fmav_result_t* result, uint8_t* buf, fmav_status_t* status, uint8_t c)
-//   uint8_t fmav_parse_to_msg_wbuf(fmav_message_t* msg, uint8_t* buf, fmav_status_t* status, uint8_t c)
+//   uint8_t  fmav_parse_to_frame_buf(fmav_result_t* result, uint8_t* buf, fmav_status_t* status, uint8_t c)
+//   uint8_t  fmav_check_frame_buf(fmav_result_t* result, uint8_t* buf)
+//   void     fmav_frame_buf_to_msg(fmav_message_t* msg, fmav_result_t* result, uint8_t* buf)
+//   uint8_t  fmav_parse_and_check_to_frame_buf(fmav_result_t* result, uint8_t* buf, fmav_status_t* status, uint8_t c)
+//   uint8_t  fmav_parse_to_msg_wbuf(fmav_message_t* msg, uint8_t* buf, fmav_status_t* status, uint8_t c)
 //
 // receive into msg:
-//   uint8_t fmav_parse_to_msg(fmav_message_t* msg, fmav_status_t* status, uint8_t c)
+//   uint8_t  fmav_parse_to_msg(fmav_message_t* msg, fmav_status_t* status, uint8_t c)
 //
-// emit from msg:
+// send from msg:
 //   uint16_t fmav_msg_to_frame_buf(uint8_t* buf, fmav_message_t* msg)
+//   uint16_t fmav_msg_to_frame_buf_wresult(fmav_result_t* result, uint8_t* buf, fmav_message_t* msg)
+//   uint16_t fmav_msg_to_serial(fmav_message_t* msg)
 //
 // helper:
-//   uint8_t fmav_msg_is_v2(fmav_message_t* msg)
-//   uint8_t fmav_msg_get_target_sysid(fmav_message_t* msg)
-//   uint8_t fmav_msg_get_target_compid(fmav_message_t* msg)
-//   uint8_t fmav_msg_is_for_me_r(uint8_t my_sysid, uint8_t my_compid, fmav_result_t* result)
-//   uint8_t fmav_msg_is_for_me(uint8_t my_sysid, uint8_t my_compid, fmav_message_t* msg)
-//   void fmav_status_reset_rx(fmav_status_t* status)
-//   void fmav_status_reset_tx(fmav_status_t* status)
-//   void fmav_status_reset(fmav_status_t* status)
-//   void fmav_init(void)
+//   uint8_t  fmav_msg_is_v2(fmav_message_t* msg)
+//   uint16_t fmav_msg_frame_len(fmav_message_t* msg)
+//   void     fmav_msg_zerofill(fmav_message_t* msg)
+//   uint8_t  fmav_msg_get_target_sysid(fmav_message_t* msg)
+//   uint8_t  fmav_msg_get_target_compid(fmav_message_t* msg)
+//   uint8_t  fmav_msg_is_for_me(uint8_t my_sysid, uint8_t my_compid, fmav_message_t* msg)
+//   uint8_t  fmav_msg_result_is_for_me(uint8_t my_sysid, uint8_t my_compid, fmav_result_t* result)
+//   void     fmav_status_reset_rx(fmav_status_t* status)
+//   void     fmav_status_reset_tx(fmav_status_t* status)
+//   void     fmav_status_reset(fmav_status_t* status)
+//   void     fmav_init(void)
 //------------------------------
 
 #pragma once
@@ -35,7 +40,7 @@
 
 
 #include <stdint.h>
-#include "fastmavlink_config.h"
+#include "../fastmavlink_config.h"
 #include "fastmavlink_crc.h"
 #include "fastmavlink_protocol.h"
 #include "fastmavlink_types.h"
@@ -44,6 +49,18 @@
 //------------------------------
 //-- Support functions
 //------------------------------
+// const    fmav_message_entry_t* fmav_get_message_entry(uint32_t msgid)
+// uint32_t fmav_get_message_entry_num(void)
+// const    fmav_message_entry_t* fmav_get_message_entry_by_index(uint32_t i)
+// uint8_t  fmav_payload_len_wo_trailing_zeros(const uint8_t* payload, uint8_t len)
+// uint16_t fmav_finalize_msg(fmav_message_t* msg, fmav_status_t* status)
+// uint16_t fmav_finalize_frame_buf(
+//              uint8_t* buf, uint8_t payload_max_len, uint8_t crc_extra, fmav_status_t* status)
+// uint8_t  fmav_finalize_serial(
+//              uint8_t sysid, uint8_t compid, uint8_t* payload,
+//              uint32_t msgid, uint8_t payload_max_len, uint8_t crc_extra, fmav_status_t* status)
+// uint8_t  fmav_check_msg(fmav_message_t* msg, fmav_status_t* status)
+// void     fmav_parse_reset(fmav_status_t* status)
 
 static const fmav_message_entry_t _fmav_message_crcs[] = FASTMAVLINK_MESSAGE_CRCS;
 
@@ -99,15 +116,17 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_payload_len_wo_trailing_zeros(const 
 }
 
 
-// used in message generators to finalize the message entries
-// msg payload will not be zero filled, we should use it only to send, not to digest
-FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_finalize_msg(
-    fmav_message_t* msg, uint8_t payload_max_len, fmav_status_t* status)
+// used in message generators to finalize the message fields
+// msg payload will not be zero filled
+// we thus should use the generators only to send, not to digest
+// call helper fmav_msg_zerofill() afterwards to zerofill if really needed
+// or set the flag FASTMAVLINK_ALWAYS_ZEROFILL to 1
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_finalize_msg(fmav_message_t* msg, fmav_status_t* status)
 {
     uint8_t headbuf[FASTMAVLINK_HEADER_V2_LEN];
 
     headbuf[0] = msg->magic = FASTMAVLINK_MAGIC_V2;
-    headbuf[1] = msg->len = fmav_payload_len_wo_trailing_zeros(msg->payload, payload_max_len);
+    headbuf[1] = msg->len = fmav_payload_len_wo_trailing_zeros(msg->payload, msg->payload_max_len); // msg->payload_max_len was set in generator
     headbuf[2] = msg->incompat_flags = 0;
     headbuf[3] = msg->compat_flags = 0;
     headbuf[4] = msg->seq = status->tx_seq;
@@ -123,17 +142,23 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_finalize_msg(
     fmav_crc_accumulate(&crc, msg->crc_extra); // msg->crc_extra was set in generator
     msg->checksum = crc;
 
-    memset(msg->signature_a, 0, FASTMAVLINK_SIGNATURE_LEN);
-
     // msg->target_sysid was set in generator
     // msg->target_compid was set in generator
     // msg->crc_extra was set in generator
+    // msg->payload_max_len was set in generator
+
+#if FASTMAVLINK_ALWAYS_ZEROFILL
+    // ensure that payload is zero filled
+    if (msg->len < msg->payload_max_len) {
+        memset(&(msg->payload[msg->len]), 0, msg->payload_max_len - msg->len);
+    }
+#endif
 
     return (uint16_t)msg->len + FASTMAVLINK_HEADER_V2_LEN + FASTMAVLINK_CHECKSUM_LEN;
 }
 
 
-// used in message generators to finalize a tx frame buf
+// used in message generators to finalize the frame buf
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_finalize_frame_buf(
     uint8_t* buf, uint8_t payload_max_len, uint8_t crc_extra, fmav_status_t* status)
 {
@@ -164,6 +189,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_finalize_frame_buf(
 
 #ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
 
+// used in message generators
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_finalize_serial(
     uint8_t sysid, uint8_t compid, uint8_t* payload,
     uint32_t msgid, uint8_t payload_max_len, uint8_t crc_extra, fmav_status_t* status)
@@ -199,15 +225,15 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_finalize_serial(
 #endif
 
 
-// used in fmav_parse_to_msg()
-// msg payload will be zero filled here, so that fmav_parse_to_msg() returns proper msg
+// used in fmav_parse_to_msg() below
 // returns MSGID_UNKNOWN, LENGTH_ERROR, CRC_ERROR, SIGNATURE_ERROR, or OK
-// the checks are only possible if msgid is known, else we need to assume broadcast
+// msg payload will be zero filled, so that fmav_parse_to_msg() returns proper msg
+// the checks are only possible if msgid is known, and also the targets are only then
+// known, else we need to assume broadcast
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_check_msg(fmav_message_t* msg, fmav_status_t* status)
 {
     msg->target_sysid = 0;
     msg->target_compid = 0;
-    msg->crc_extra = 0;
 
     const fmav_message_entry_t* msg_entry = fmav_get_message_entry(msg->msgid);
     if (!msg_entry) {
@@ -229,11 +255,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_check_msg(fmav_message_t* msg, fmav_
     }
 
     // zero fill msg payload
+    // this among others also ensures that the target fields are set properly
     if (msg->len < msg_entry->payload_max_len) {
         memset(&(msg->payload[msg->len]), 0, msg_entry->payload_max_len - msg->len);
     }
 
-    // get further credentials
+    // get further metadata
     if (msg_entry->flags & FASTMAVLINK_MESSAGE_ENTRY_FLAGS_HAS_TARGET_SYSTEM) {
         msg->target_sysid = msg->payload[msg_entry->target_system_ofs];
     }
@@ -241,6 +268,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_check_msg(fmav_message_t* msg, fmav_
         msg->target_compid = msg->payload[msg_entry->target_component_ofs];
     }
     msg->crc_extra = msg_entry->crc_extra;
+    msg->payload_max_len = msg_entry->payload_max_len;
 
     msg->res = FASTMAVLINK_PARSE_RESULT_OK;
     return FASTMAVLINK_PARSE_RESULT_OK;
@@ -259,6 +287,12 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_parse_reset(fmav_status_t* status)
 //------------------------------
 //-- Receive handlers
 //------------------------------
+// uint8_t  fmav_parse_to_frame_buf(fmav_result_t* result, uint8_t* buf, fmav_status_t* status, uint8_t c)
+// uint8_t  fmav_check_frame_buf(fmav_result_t* result, uint8_t* buf)
+// void     fmav_frame_buf_to_msg(fmav_message_t* msg, fmav_result_t* result, uint8_t* buf)
+// uint8_t  fmav_parse_and_check_to_frame_buf(fmav_result_t* result, uint8_t* buf, fmav_status_t* status, uint8_t c)
+// uint8_t  fmav_parse_to_msg_wbuf(fmav_message_t* msg, uint8_t* buf, fmav_status_t* status, uint8_t c)
+// uint8_t  fmav_parse_to_msg(fmav_message_t* msg, fmav_status_t* status, uint8_t c)
 
 // returns NONE, HAS_HEADER, or OK
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_frame_buf(fmav_result_t* result, uint8_t* buf, fmav_status_t* status, uint8_t c)
@@ -325,22 +359,25 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_frame_buf(fmav_result_t* re
 
 
 // returns MSGID_UNKNOWN, LENGTH_ERROR, CRC_ERROR, SIGNATURE_ERROR, or OK
-// the checks are only possible if msgid is known, else we need to assume broadcast
+// the checks are only possible if msgid is known, and also the targets are only then
+// known, else we need to assume broadcast
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_check_frame_buf(fmav_result_t* result, uint8_t* buf)
 {
     if (buf[0] == FASTMAVLINK_MAGIC_V2) {
         result->sysid = buf[5];
         result->compid = buf[6];
         result->msgid = buf[7] + ((uint32_t)buf[8] << 8) + ((uint32_t)buf[9] << 16);
+        result->frame_len = (uint16_t)buf[1] + FASTMAVLINK_HEADER_V2_LEN + FASTMAVLINK_CHECKSUM_LEN;
+        if (buf[2] & FASTMAVLINK_INCOMPAT_FLAGS_SIGNED) result->frame_len += FASTMAVLINK_SIGNATURE_LEN;
     } else {
         result->sysid = buf[3];
         result->compid = buf[4];
         result->msgid = buf[5];
+        result->frame_len = (uint16_t)buf[1] + FASTMAVLINK_HEADER_V1_LEN + FASTMAVLINK_CHECKSUM_LEN;
     }
 
     result->target_sysid = 0;
     result->target_compid = 0;
-    result->crc_extra = 0;
 
     const fmav_message_entry_t* msg_entry = fmav_get_message_entry(result->msgid);
     if (!msg_entry) {
@@ -367,15 +404,15 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_check_frame_buf(fmav_result_t* resul
         return FASTMAVLINK_PARSE_RESULT_CRC_ERROR;
     }
 
-    // get further credentials
+    // get further metadata
     if (msg_entry->flags & FASTMAVLINK_MESSAGE_ENTRY_FLAGS_HAS_TARGET_SYSTEM) {
-        // due to v2 zero triming this field may not be in the buffer, so check
+        // due to v2 zero triming this field may not be in frame buffer, so check
         if (buf[1] > msg_entry->target_system_ofs) {
             result->target_sysid = buf[payload_pos + msg_entry->target_system_ofs];
         }
     }
     if (msg_entry->flags & FASTMAVLINK_MESSAGE_ENTRY_FLAGS_HAS_TARGET_COMPONENT) {
-        // due to v2 zero triming this field may not be in the buffer, so check
+        // due to v2 zero triming this field may not be in frame buffer, so check
         if (buf[1] > msg_entry->target_component_ofs) {
             result->target_compid = buf[payload_pos + msg_entry->target_component_ofs];
         }
@@ -392,9 +429,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_check_frame_buf(fmav_result_t* resul
 // msg payload is zero filled
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_frame_buf_to_msg(fmav_message_t* msg, fmav_result_t* result, uint8_t* buf)
 {
-    msg->res = result->res;
-    if (result->res != FASTMAVLINK_PARSE_RESULT_OK) return;
-
     uint16_t pos = 0;
 
     msg->magic = buf[0];
@@ -431,6 +465,9 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_frame_buf_to_msg(fmav_message_t* msg, f
     msg->target_sysid = result->target_sysid;
     msg->target_compid = result->target_compid;
     msg->crc_extra = result->crc_extra;
+    msg->payload_max_len = result->payload_max_len;
+
+    msg->res = result->res;
 }
 
 
@@ -441,11 +478,11 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_and_check_to_frame_buf(fmav_re
     uint8_t res;
 
     res = fmav_parse_to_frame_buf(result, buf, status, c);
-    // res can be NONE, HAS_HEADER, or OK
+    // result can be NONE, HAS_HEADER, or OK
     if (res != FASTMAVLINK_PARSE_RESULT_OK) return 0;
 
     res = fmav_check_frame_buf(result, buf);
-    // res can be MSGID_UNKNOWN, LENGTH_ERROR, CRC_ERROR, SIGNATURE_ERROR, or OK
+    // result can be MSGID_UNKNOWN, LENGTH_ERROR, CRC_ERROR, SIGNATURE_ERROR, or OK
     if (res == FASTMAVLINK_PARSE_RESULT_MSGID_UNKNOWN || res == FASTMAVLINK_PARSE_RESULT_OK) {
         return 1;
     }
@@ -456,6 +493,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_and_check_to_frame_buf(fmav_re
 
 // convenience wrapper
 // returns 0, or 1
+// msg payload is zero filled
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_msg_wbuf(fmav_message_t* msg, uint8_t* buf, fmav_status_t* status, uint8_t c)
 {
     uint8_t res;
@@ -463,12 +501,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_msg_wbuf(fmav_message_t* ms
 
     res = fmav_parse_to_frame_buf(&result, buf, status, c);
     msg->res = result.res;
-    // res can be NONE, HAS_HEADER, or OK
+    // result can be NONE, HAS_HEADER, or OK
     if (res != FASTMAVLINK_PARSE_RESULT_OK) return 0;
 
     res = fmav_check_frame_buf(&result, buf);
     msg->res = result.res;
-    // res can be MSGID_UNKNOWN, LENGTH_ERROR, CRC_ERROR, SIGNATURE_ERROR, or OK
+    // result can be MSGID_UNKNOWN, LENGTH_ERROR, CRC_ERROR, SIGNATURE_ERROR, or OK
     if (res != FASTMAVLINK_PARSE_RESULT_OK) return 0;
 
     fmav_frame_buf_to_msg(msg, &result, buf);
@@ -478,7 +516,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_msg_wbuf(fmav_message_t* ms
 
 
 // returns NONE, HAS_HEADER, MSGID_UNKNOWN, LENGTH_ERROR, CRC_ERROR, SIGNATURE_ERROR, or OK
-// msg payload is zero filled, in fmav_check_msg()
+// msg payload is zero filled
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_msg(fmav_message_t* msg, fmav_status_t* status, uint8_t c)
 {
     if (status->rx_cnt >= FASTMAVLINK_FRAME_LEN_MAX) { // this should never happen, but play it safe
@@ -637,8 +675,11 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_msg(fmav_message_t* msg, fm
 
 
 //------------------------------
-//-- Emit handlers
+//-- Send handlers
 //------------------------------
+// uint16_t fmav_msg_to_frame_buf(uint8_t* buf, fmav_message_t* msg)
+// uint16_t fmav_msg_to_frame_buf_wresult(fmav_result_t* result, uint8_t* buf, fmav_message_t* msg)
+// uint16_t fmav_msg_to_serial(fmav_message_t* msg)
 
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_to_frame_buf(uint8_t* buf, fmav_message_t* msg)
 {
@@ -674,6 +715,24 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_to_frame_buf(uint8_t* buf, fmav
     }
 
     return pos;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_to_frame_buf_wresult(fmav_result_t* result, uint8_t* buf, fmav_message_t* msg)
+{
+    result->frame_len = fmav_msg_to_frame_buf(buf, msg);
+
+    result->msgid = msg->msgid;
+    result->sysid = msg->sysid;
+    result->compid = msg->compid;
+    result->target_sysid = msg->target_sysid;
+    result->target_compid = msg->target_compid;
+    result->crc_extra = msg->crc_extra;
+    result->payload_max_len = msg->payload_max_len;
+
+    result->res = msg->res;
+
+    return result->frame_len;
 }
 
 
@@ -725,6 +784,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_to_serial(fmav_message_t* msg)
 //------------------------------
 //-- Helper functions
 //------------------------------
+// uint8_t  fmav_msg_is_v2(fmav_message_t* msg)
+// uint16_t fmav_msg_frame_len(fmav_message_t* msg)
+// void     fmav_msg_zerofill(fmav_message_t* msg)
+// uint8_t  fmav_msg_get_target_sysid(fmav_message_t* msg)
+// uint8_t  fmav_msg_get_target_compid(fmav_message_t* msg)
+// uint8_t  fmav_msg_is_for_me(uint8_t my_sysid, uint8_t my_compid, fmav_message_t* msg)
+// uint8_t  fmav_msg_result_is_for_me(uint8_t my_sysid, uint8_t my_compid, fmav_result_t* result)
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_is_v2(fmav_message_t* msg)
 {
@@ -741,6 +807,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_frame_len(fmav_message_t* msg)
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_zerofill(fmav_message_t* msg)
+{
+    if (msg->len < msg->payload_max_len) {
+        memset(&(msg->payload[msg->len]), 0, msg->payload_max_len - msg->len);
+    }
+}
+
+
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_get_target_sysid(fmav_message_t* msg)
 {
     return msg->target_sysid;
@@ -750,16 +824,6 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_get_target_sysid(fmav_message_t*
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_get_target_compid(fmav_message_t* msg)
 {
     return msg->target_compid;
-}
-
-
-FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_is_for_me_r(uint8_t my_sysid, uint8_t my_compid, fmav_result_t* result)
-{
-  if (result->target_sysid == 0) return 1;
-  if (result->target_sysid != my_sysid) return 0;
-  if (result->target_compid == 0) return 1;
-  if (result->target_compid == my_compid) return 1;
-  return 0;
 }
 
 
@@ -782,9 +846,23 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_is_for_me(uint8_t my_sysid, uint
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_result_is_for_me(uint8_t my_sysid, uint8_t my_compid, fmav_result_t* result)
+{
+  if (result->target_sysid == 0) return 1;
+  if (result->target_sysid != my_sysid) return 0;
+  if (result->target_compid == 0) return 1;
+  if (result->target_compid == my_compid) return 1;
+  return 0;
+}
+
+
 //------------------------------
 //-- Init
 //------------------------------
+// void fmav_status_reset_rx(fmav_status_t* status)
+// void fmav_status_reset_tx(fmav_status_t* status)
+// void fmav_status_reset(fmav_status_t* status)
+// void fmav_init(void)
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_status_reset_rx(fmav_status_t* status)
 {
@@ -809,7 +887,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_status_reset(fmav_status_t* status)
 }
 
 
-// call it even if may not do anything
+// call it once before using the library, even if it does not do anything currently
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_init(void)
 {
 }
