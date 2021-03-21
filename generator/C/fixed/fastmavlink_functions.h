@@ -99,15 +99,17 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_payload_len_wo_trailing_zeros(const 
 }
 
 
-// used in message generators to finalize the message entries
-// msg payload will not be zero filled, we should use it only to send, not to digest
-FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_finalize_msg(
-    fmav_message_t* msg, uint8_t payload_max_len, fmav_status_t* status)
+// used in message generators to finalize the message fields
+// msg payload will not be zero filled
+// we thus should use the generators only to send, not to digest
+// call helper fmav_msg_zerofill() afterwards to zerofill if really needed
+// or set the flag FASTMAVLINK_ALWAYS_ZEROFILL to 1
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_finalize_msg(fmav_message_t* msg, fmav_status_t* status)
 {
     uint8_t headbuf[FASTMAVLINK_HEADER_V2_LEN];
 
     headbuf[0] = msg->magic = FASTMAVLINK_MAGIC_V2;
-    headbuf[1] = msg->len = fmav_payload_len_wo_trailing_zeros(msg->payload, payload_max_len);
+    headbuf[1] = msg->len = fmav_payload_len_wo_trailing_zeros(msg->payload, msg->payload_max_len); // msg->payload_max_len was set in generator
     headbuf[2] = msg->incompat_flags = 0;
     headbuf[3] = msg->compat_flags = 0;
     headbuf[4] = msg->seq = status->tx_seq;
@@ -128,6 +130,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_finalize_msg(
     // msg->target_sysid was set in generator
     // msg->target_compid was set in generator
     // msg->crc_extra was set in generator
+    // msg->payload_max_len was set in generator
 
     return (uint16_t)msg->len + FASTMAVLINK_HEADER_V2_LEN + FASTMAVLINK_CHECKSUM_LEN;
 }
@@ -241,6 +244,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_check_msg(fmav_message_t* msg, fmav_
         msg->target_compid = msg->payload[msg_entry->target_component_ofs];
     }
     msg->crc_extra = msg_entry->crc_extra;
+    msg->payload_max_len = msg_entry->payload_max_len;
 
     msg->res = FASTMAVLINK_PARSE_RESULT_OK;
     return FASTMAVLINK_PARSE_RESULT_OK;
@@ -431,6 +435,9 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_frame_buf_to_msg(fmav_message_t* msg, f
     msg->target_sysid = result->target_sysid;
     msg->target_compid = result->target_compid;
     msg->crc_extra = result->crc_extra;
+    msg->payload_max_len = result->payload_max_len;
+
+    msg->res = result->res;
 }
 
 

@@ -63,11 +63,9 @@ ${{array_fields:    memcpy(&(_payload->${name}), ${name}, sizeof(${type})*${arra
     _msg->target_sysid = ${target_system_field_name};
     _msg->target_compid = ${target_component_field_name};
     _msg->crc_extra = FASTMAVLINK_MSG_${name}_CRCEXTRA;
+    _msg->payload_max_len = FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MAX;
 
-    return fmav_finalize_msg(
-        _msg,
-        FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MAX,
-        _status);
+    return fmav_finalize_msg(_msg, _status);
 }
 
 

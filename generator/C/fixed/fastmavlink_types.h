@@ -94,6 +94,7 @@ typedef struct _fmav_message {
     uint8_t target_sysid;
     uint8_t target_compid;
     uint8_t crc_extra;
+    uint8_t payload_max_len;
 } fmav_message_t;
 
 
