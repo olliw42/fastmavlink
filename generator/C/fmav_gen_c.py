@@ -62,7 +62,7 @@ def generateMessageHeaderFile(dialectdir, msg):
     F.close()
 
 
-def copyFixedHeaderFiles(dialectdir, xml):
+def copyFixedHeaderFiles(outputdir, xml):
     '''copy the fixed protocol headers to the target directory'''
     print("Copying fixed headers")
     basedir = os.path.dirname(os.path.realpath(__file__))
@@ -75,10 +75,15 @@ def copyFixedHeaderFiles(dialectdir, xml):
     for fname in os.listdir(srcdir):
         if fname.endswith('.h'):
             headerfile_list.append(fname)
+    fixeddestdir = os.path.realpath(os.path.join(outputdir, 'lib'))
+    mavparse.mkdir_p(fixeddestdir)
     import shutil, filecmp
     for headerfile in headerfile_list:
         src = os.path.realpath(os.path.join(srcdir, headerfile))
-        dest = os.path.realpath(os.path.join(dialectdir, headerfile))
+        if headerfile in ['fastmavlink_config.h']:
+            dest = os.path.realpath(os.path.join(outputdir, headerfile))
+        else:
+            dest = os.path.realpath(os.path.join(fixeddestdir, headerfile))
         if src == dest or (os.path.exists(dest) and filecmp.cmp(src, dest)):
             continue
         shutil.copy(src, dest)
@@ -92,7 +97,7 @@ class templateItem(object):
 
 def generateForOneXml(outputdir, xml):
     '''generate headers for one XML file'''
-    dialectdir= os.path.join(outputdir, xml.basename)
+    dialectdir = os.path.join(outputdir, xml.basename)
     print("Generating C implementation in directory %s" % dialectdir)
     mavparse.mkdir_p(dialectdir)
 

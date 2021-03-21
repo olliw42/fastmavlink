@@ -32,9 +32,9 @@ extern "C" {
 #endif
 
 
-#include "../fastmavlink.h"
+#include "../lib/fastmavlink.h"
 #ifdef FASTMAVLINK_PYMAVLINK_ENABLED
-#include "../fastmavlink_pymavlink.h"
+#include "../lib/fastmavlink_pymavlink.h"
 #endif
 
 

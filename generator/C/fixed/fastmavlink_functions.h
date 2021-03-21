@@ -35,7 +35,7 @@
 
 
 #include <stdint.h>
-#include "fastmavlink_config.h"
+#include "../fastmavlink_config.h"
 #include "fastmavlink_crc.h"
 #include "fastmavlink_protocol.h"
 #include "fastmavlink_types.h"

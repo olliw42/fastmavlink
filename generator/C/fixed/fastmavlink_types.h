@@ -9,7 +9,7 @@
 
 
 #include <stdint.h>
-#include "fastmavlink_config.h"
+#include "../fastmavlink_config.h"
 #include "fastmavlink_protocol.h"
 
 

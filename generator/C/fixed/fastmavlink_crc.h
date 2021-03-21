@@ -10,7 +10,7 @@
 #define FASTMAVLINK_CRC_H
 
 #include <stdint.h>
-#include "fastmavlink_config.h"
+#include "../fastmavlink_config.h"
 
 
 #define X25_INIT_CRC 0xffff
