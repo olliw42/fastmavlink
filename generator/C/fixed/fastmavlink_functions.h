@@ -56,7 +56,7 @@
 // uint16_t fmav_finalize_msg(fmav_message_t* msg, fmav_status_t* status)
 // uint16_t fmav_finalize_frame_buf(
 //              uint8_t* buf, uint8_t payload_max_len, uint8_t crc_extra, fmav_status_t* status)
-// uint8_t  fmav_finalize_serial(
+// uint16_t fmav_finalize_serial(
 //              uint8_t sysid, uint8_t compid, uint8_t* payload,
 //              uint32_t msgid, uint8_t payload_max_len, uint8_t crc_extra, fmav_status_t* status)
 // uint8_t  fmav_check_msg(fmav_message_t* msg, fmav_status_t* status)
@@ -190,7 +190,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_finalize_frame_buf(
 #ifdef FASTMAVLINK_SERIAL_WRITE_CHAR
 
 // used in message generators
-FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_finalize_serial(
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_finalize_serial(
     uint8_t sysid, uint8_t compid, uint8_t* payload,
     uint32_t msgid, uint8_t payload_max_len, uint8_t crc_extra, fmav_status_t* status)
 {
