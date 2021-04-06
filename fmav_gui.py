@@ -30,7 +30,7 @@ else:
     del tkFileDialog
     tkinter.messagebox = tkMessageBox
     del tkMessageBox
-    
+
 from generator import fmav_gen as mavgen
 from generator.modules import fmav_flags as mavflags
 
