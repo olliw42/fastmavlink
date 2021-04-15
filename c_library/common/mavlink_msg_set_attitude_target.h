@@ -24,22 +24,25 @@ typedef struct _fmav_set_attitude_target_t {
     uint8_t target_system;
     uint8_t target_component;
     uint8_t type_mask;
+    float thrust_body[3];
 }) fmav_set_attitude_target_t;
 
 
 #define FASTMAVLINK_MSG_ID_SET_ATTITUDE_TARGET  82
 
-#define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_PAYLOAD_LEN_MAX  39
+#define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_PAYLOAD_LEN_MAX  51
 #define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_CRCEXTRA  49
 
 #define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FLAGS  3
 #define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_TARGET_SYSTEM_OFS  36
 #define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_TARGET_COMPONENT_OFS  37
 
-#define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FRAME_LEN_MAX  64
+#define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FRAME_LEN_MAX  76
 
 #define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_Q_NUM  4 // number of elements in array
 #define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_Q_LEN  16 // length of array = number of bytes
+#define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_THRUST_BODY_NUM  3 // number of elements in array
+#define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_THRUST_BODY_LEN  12 // length of array = number of bytes
 
 #define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_TIME_BOOT_MS_OFS  0
 #define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_Q_OFS  4
@@ -50,6 +53,7 @@ typedef struct _fmav_set_attitude_target_t {
 #define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_TARGET_SYSTEM_OFS  36
 #define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_TARGET_COMPONENT_OFS  37
 #define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_TYPE_MASK_OFS  38
+#define FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_THRUST_BODY_OFS  39
 
 
 //----------------------------------------
@@ -60,7 +64,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_attitude_target_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint8_t target_system, uint8_t target_component, uint8_t type_mask, const float* q, float body_roll_rate, float body_pitch_rate, float body_yaw_rate, float thrust,
+    uint32_t time_boot_ms, uint8_t target_system, uint8_t target_component, uint8_t type_mask, const float* q, float body_roll_rate, float body_pitch_rate, float body_yaw_rate, float thrust, const float* thrust_body,
     fmav_status_t* _status)
 {
     fmav_set_attitude_target_t* _payload = (fmav_set_attitude_target_t*)_msg->payload;
@@ -74,6 +78,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_attitude_target_pack(
     _payload->target_component = target_component;
     _payload->type_mask = type_mask;
     memcpy(&(_payload->q), q, sizeof(float)*4);
+    memcpy(&(_payload->thrust_body), thrust_body, sizeof(float)*3);
 
     _msg->sysid = sysid;
     _msg->compid = compid;
@@ -96,7 +101,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_attitude_target_encode(
 {
     return fmav_msg_set_attitude_target_pack(
         _msg, sysid, compid,
-        _payload->time_boot_ms, _payload->target_system, _payload->target_component, _payload->type_mask, _payload->q, _payload->body_roll_rate, _payload->body_pitch_rate, _payload->body_yaw_rate, _payload->thrust,
+        _payload->time_boot_ms, _payload->target_system, _payload->target_component, _payload->type_mask, _payload->q, _payload->body_roll_rate, _payload->body_pitch_rate, _payload->body_yaw_rate, _payload->thrust, _payload->thrust_body,
         _status);
 }
 
@@ -105,7 +110,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_attitude_target_pack_to_fra
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint8_t target_system, uint8_t target_component, uint8_t type_mask, const float* q, float body_roll_rate, float body_pitch_rate, float body_yaw_rate, float thrust,
+    uint32_t time_boot_ms, uint8_t target_system, uint8_t target_component, uint8_t type_mask, const float* q, float body_roll_rate, float body_pitch_rate, float body_yaw_rate, float thrust, const float* thrust_body,
     fmav_status_t* _status)
 {
     fmav_set_attitude_target_t* _payload = (fmav_set_attitude_target_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -119,6 +124,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_attitude_target_pack_to_fra
     _payload->target_component = target_component;
     _payload->type_mask = type_mask;
     memcpy(&(_payload->q), q, sizeof(float)*4);
+    memcpy(&(_payload->thrust_body), thrust_body, sizeof(float)*3);
 
     _buf[5] = sysid;
     _buf[6] = compid;
@@ -143,7 +149,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_attitude_target_encode_to_f
 {
     return fmav_msg_set_attitude_target_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->time_boot_ms, _payload->target_system, _payload->target_component, _payload->type_mask, _payload->q, _payload->body_roll_rate, _payload->body_pitch_rate, _payload->body_yaw_rate, _payload->thrust,
+        _payload->time_boot_ms, _payload->target_system, _payload->target_component, _payload->type_mask, _payload->q, _payload->body_roll_rate, _payload->body_pitch_rate, _payload->body_yaw_rate, _payload->thrust, _payload->thrust_body,
         _status);
 }
 
@@ -153,7 +159,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_attitude_target_encode_to_f
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_attitude_target_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint8_t target_system, uint8_t target_component, uint8_t type_mask, const float* q, float body_roll_rate, float body_pitch_rate, float body_yaw_rate, float thrust,
+    uint32_t time_boot_ms, uint8_t target_system, uint8_t target_component, uint8_t type_mask, const float* q, float body_roll_rate, float body_pitch_rate, float body_yaw_rate, float thrust, const float* thrust_body,
     fmav_status_t* _status)
 {
     fmav_set_attitude_target_t _payload;
@@ -167,6 +173,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_set_attitude_target_pack_to_ser
     _payload.target_component = target_component;
     _payload.type_mask = type_mask;
     memcpy(&(_payload.q), q, sizeof(float)*4);
+    memcpy(&(_payload.thrust_body), thrust_body, sizeof(float)*3);
 
     return fmav_finalize_serial(
         sysid,
@@ -298,6 +305,19 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_set_attitude_target_get_field_q(ui
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_set_attitude_target_get_field_thrust_body_ptr(const fmav_message_t* msg)
+{
+    return (float*)&(msg->payload[39]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_set_attitude_target_get_field_thrust_body(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_THRUST_BODY_NUM) return 0;
+    return ((float*)&(msg->payload[39]))[index];
+}
+
+
 //----------------------------------------
 //-- Pymavlink wrappers
 //----------------------------------------
@@ -307,15 +327,16 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_set_attitude_target_get_field_q(ui
 
 #define mavlink_set_attitude_target_t  fmav_set_attitude_target_t
 
-#define MAVLINK_MSG_ID_SET_ATTITUDE_TARGET_LEN  39
+#define MAVLINK_MSG_ID_SET_ATTITUDE_TARGET_LEN  51
 #define MAVLINK_MSG_ID_SET_ATTITUDE_TARGET_MIN_LEN  39
-#define MAVLINK_MSG_ID_82_LEN  39
+#define MAVLINK_MSG_ID_82_LEN  51
 #define MAVLINK_MSG_ID_82_MIN_LEN  39
 
 #define MAVLINK_MSG_ID_SET_ATTITUDE_TARGET_CRC  49
 #define MAVLINK_MSG_ID_82_CRC  49
 
 #define MAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_Q_LEN 4
+#define MAVLINK_MSG_SET_ATTITUDE_TARGET_FIELD_THRUST_BODY_LEN 3
 
 
 #if MAVLINK_COMM_NUM_BUFFERS > 0
@@ -324,12 +345,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_set_attitude_target_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint32_t time_boot_ms, uint8_t target_system, uint8_t target_component, uint8_t type_mask, const float* q, float body_roll_rate, float body_pitch_rate, float body_yaw_rate, float thrust)
+    uint32_t time_boot_ms, uint8_t target_system, uint8_t target_component, uint8_t type_mask, const float* q, float body_roll_rate, float body_pitch_rate, float body_yaw_rate, float thrust, const float* thrust_body)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_set_attitude_target_pack(
         _msg, sysid, compid,
-        time_boot_ms, target_system, target_component, type_mask, q, body_roll_rate, body_pitch_rate, body_yaw_rate, thrust,
+        time_boot_ms, target_system, target_component, type_mask, q, body_roll_rate, body_pitch_rate, body_yaw_rate, thrust, thrust_body,
         _status);
 }
 
@@ -341,13 +362,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_set_attitude_target_pack_txb
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint8_t target_system, uint8_t target_component, uint8_t type_mask, const float* q, float body_roll_rate, float body_pitch_rate, float body_yaw_rate, float thrust)
+    uint32_t time_boot_ms, uint8_t target_system, uint8_t target_component, uint8_t type_mask, const float* q, float body_roll_rate, float body_pitch_rate, float body_yaw_rate, float thrust, const float* thrust_body)
 {
     return fmav_msg_set_attitude_target_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        time_boot_ms, target_system, target_component, type_mask, q, body_roll_rate, body_pitch_rate, body_yaw_rate, thrust,
+        time_boot_ms, target_system, target_component, type_mask, q, body_roll_rate, body_pitch_rate, body_yaw_rate, thrust, thrust_body,
         _status);
 }
 

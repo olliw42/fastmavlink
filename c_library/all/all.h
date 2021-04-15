@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Sun Mar 21 2021"
+#define FASTMAVLINK_BUILD_DATE  "Thu Apr 15 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -62,6 +62,7 @@ extern "C" {
 
 #include "../ardupilotmega/ardupilotmega.h"
 #include "../common/common.h"
+#include "../development/development.h"
 #include "../icarous/icarous.h"
 #include "../minimal/minimal.h"
 #include "../python_array_test/python_array_test.h"

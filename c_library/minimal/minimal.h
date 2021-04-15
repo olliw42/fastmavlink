@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Sun Mar 21 2021"
+#define FASTMAVLINK_BUILD_DATE  "Thu Apr 15 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -111,7 +111,8 @@ typedef enum MAV_TYPE {
     MAV_TYPE_SERVO = 33,  // Servo 
     MAV_TYPE_ODID = 34,  // Open Drone ID. See https://mavlink.io/en/services/opendroneid.html. 
     MAV_TYPE_DECAROTOR = 35,  // Decarotor 
-    MAV_TYPE_ENUM_END = 36,  // end marker
+    MAV_TYPE_BATTERY = 36,  // Battery 
+    MAV_TYPE_ENUM_END = 37,  // end marker
 } MAV_TYPE;
 #endif
 
@@ -277,6 +278,8 @@ typedef enum MAV_COMPONENT {
     MAV_COMP_ID_GIMBAL4 = 173,  // Gimbal #4 
     MAV_COMP_ID_GIMBAL5 = 174,  // Gimbal #5. 
     MAV_COMP_ID_GIMBAL6 = 175,  // Gimbal #6. 
+    MAV_COMP_ID_BATTERY = 180,  // Battery #1. 
+    MAV_COMP_ID_BATTERY2 = 181,  // Battery #2. 
     MAV_COMP_ID_MISSIONPLANNER = 190,  // Component that can generate/supply a mission flight plan (e.g. GCS or developer API). 
     MAV_COMP_ID_ONBOARD_COMPUTER = 191,  // Component that lives on the onboard computer (companion computer) and has some generic functionalities, such as settings system parameters and monitoring the status of some processes that don't directly speak mavlink and so on. 
     MAV_COMP_ID_PATHPLANNER = 195,  // Component that finds an optimal path between points based on a certain constraint (e.g. minimum snap, shortest path, cost, etc.). 

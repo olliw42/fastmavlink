@@ -4,8 +4,8 @@
 //------------------------------
 
 #pragma once
-#ifndef FASTMAVLINK_STANDARD_H
-#define FASTMAVLINK_STANDARD_H
+#ifndef FASTMAVLINK_DEVELOPMENT_H
+#define FASTMAVLINK_DEVELOPMENT_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,7 +25,7 @@ extern "C" {
 //-- crc, min length, max length, flag, target sysid offset, target compid offset
 //------------------------------
 
-#include "standard_msg_entries.h"
+#include "development_msg_entries.h"
 
 #ifndef FASTMAVLINK_MESSAGE_CRCS
 #define FASTMAVLINK_MESSAGE_CRCS  FASTMAVLINK_MSG_ENTRIES
@@ -44,7 +44,18 @@ extern "C" {
 
 #ifndef FASTMAVLINK_TEST_EXCLUDE_ENUMS
 
-
+#ifndef FASTMAVLINK_HAS_ENUM_WIFI_NETWORK_SECURITY
+#define FASTMAVLINK_HAS_ENUM_WIFI_NETWORK_SECURITY
+typedef enum WIFI_NETWORK_SECURITY {
+    WIFI_NETWORK_SECURITY_UNDEFINED = 0,  // Undefined or unknown security protocol. 
+    WIFI_NETWORK_SECURITY_OPEN = 1,  // Open network, no security. 
+    WIFI_NETWORK_SECURITY_WEP = 2,  // WEP. 
+    WIFI_NETWORK_SECURITY_WPA1 = 3,  // WPA1. 
+    WIFI_NETWORK_SECURITY_WPA2 = 4,  // WPA2. 
+    WIFI_NETWORK_SECURITY_WPA3 = 5,  // WPA3. 
+    WIFI_NETWORK_SECURITY_ENUM_END = 6,  // end marker
+} WIFI_NETWORK_SECURITY;
+#endif
 
 #endif // FASTMAVLINK_DO_NOT_INCLUDE_ENUMS
 
@@ -53,18 +64,19 @@ extern "C" {
 //-- Message definitions
 //------------------------------
 
-
+#include "./mavlink_msg_mission_checksum.h"
+#include "./mavlink_msg_wifi_network_info.h"
 
 
 //------------------------------
 //-- Dialect includes
 //------------------------------
 
-#include "../common/common.h"
+#include "../standard/standard.h"
 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // FASTMAVLINK_STANDARD_H
+#endif // FASTMAVLINK_DEVELOPMENT_H
