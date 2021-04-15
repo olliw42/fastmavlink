@@ -39,7 +39,8 @@ class MAVParseError(Exception):
 
 
 class MAVEnumEntry(object):
-    '''Holds a MAVlink enum entry field. mavlink.enums.enum.entry'''
+    '''Holds a MAVLink enum entry field.
+    mavlink.enums.enum.entry'''
     def __init__(self, name, value, line_number=0, end_marker=False, origin_file='', description=''):
         self.name = name
         self.value = value
@@ -52,7 +53,7 @@ class MAVEnumEntry(object):
 
 
 class MAVEnumParameter(object):
-    '''Holds a MAVlink enum entry field with parameters, as used for MAV_CMD.
+    '''Holds a MAVLink enum entry field with parameters; used in MAV_CMD enums.
     mavlink.enums.enum.entry.param'''
     def __init__(self, index, label='', units='', enum='', increment='', min_value='', max_value='', default='', reserved=False, description=''):
         self.index = index
@@ -76,7 +77,8 @@ class MAVEnumParameter(object):
 
 
 class MAVEnum(object):
-    '''Holds a MAVlink enum element. mavlink.enums.enum'''
+    '''Holds a MAVLink enum element.
+    mavlink.enums.enum'''
     def __init__(self, name, line_number, description=''):
         self.name = name
         self.line_number = line_number
@@ -88,8 +90,9 @@ class MAVEnum(object):
 
 
 class MAVMessageField(object):
-    '''Holds a MAVlink message field. mavlink.messages.message.field'''
-    def __init__(self, name, type, print_format, enum, display, units, instance, line_number, description=''):
+    '''Holds a MAVLink message field.
+    mavlink.messages.message.field'''
+    def __init__(self, name, type, print_format, enum, display, units, instance, invalid, line_number, description=''):
         self.name = name
         self.name_upper = name.upper()
         self.print_format = print_format
@@ -97,6 +100,7 @@ class MAVMessageField(object):
         self.display = display
         self.units = units
         self.instance = instance
+        self.invalid = invalid
         self.line_number = line_number
         self.description = description.replace("\n","")
 
@@ -152,9 +156,18 @@ class MAVMessageField(object):
 
         self.type_upper = self.type.upper()
 
+        if self.invalid:
+            if self.array_length == 0:
+                if self.invalid.find('[') >= 0 or self.invalid.find(']') >= 0 or self.invalid.find(',') >= 0:
+                    raise MAVParseError("MAVField init(): field '%s' is not an array type but invalid attribute '%s' is" % (self.name, self.invalid))
+            else:
+                if self.invalid.find('[') < 0 or self.invalid.find(']') < 0:
+                    raise MAVParseError("MAVField init(): field '%s' is an array type but invalid attribute '%s' is not" % (self.name, self.invalid))
+
 
 class MAVMessage(object):
-    '''Holds a MAVlink message element. mavlink.messages.message'''
+    '''Holds a MAVLink message element.
+    mavlink.messages.message'''
     def __init__(self, name, id, line_number, description=''):
         self.name = name
         self.name_lower = name.lower()
@@ -165,7 +178,7 @@ class MAVMessage(object):
         self.fields = []
         self.clear()
         self.extensions_start = None
-        
+
     def clear(self):
         '''These are the variables which are set by finalize()'''
         self.field_names = []
@@ -187,7 +200,7 @@ class MAVMessage(object):
         self.target_component_field_name = '0'
 
         self.needs_pack = False
-        
+
     def base_fields(self):
         '''Return number of non-extension fields.'''
         if self.extensions_start is None:
@@ -252,9 +265,9 @@ class MAVMessage(object):
                 self.needs_pack = True
             if self.extensions_start is None or i < self.extensions_start:
                 self.payload_min_length = self.payload_max_length
-                
+
             self.frame_max_length = 10 + self.payload_max_length + 2 + 13
-                
+
             self.ordered_field_names.append(field.name)
             self.ordered_field_types.append(field.type)
             if field.name.find('[') != -1:
@@ -285,11 +298,11 @@ accordingly in this process.
 
 class MAVParseXml(object):
     '''Parse a MAVLink XML file.'''
-    
+
     def __init__(self, filename, parse_flags):
         self.filename = filename
         self.parse_flags = parse_flags
-        
+
         self.basename = os.path.basename(filename)
         if self.basename.lower().endswith(".xml"):
             self.basename = self.basename[:-4]
@@ -308,10 +321,10 @@ class MAVParseXml(object):
         # the crc list is extracted from these
         self.messages_all_by_id = {}
         self.messages_all_by_name = {}
-        
+
         # this field is expanded to account for the included XML files
         self.payload_largest_length = 0
-        
+
         self.version = 0 # version field in the XML file, 0 if none is defined
         self.parse_time = time.strftime("%a %b %d %Y")
 
@@ -338,15 +351,14 @@ class MAVParseXml(object):
 
             elif in_element == "mavlink.messages.message.field":
                 check_attrs(attrs, ['name', 'type'], 'field')
-                print_format = attrs.get('print_format', None)
-                enum = attrs.get('enum', '')
-                display = attrs.get('display', '')
                 units = attrs.get('units', '')
                 if units:
                     units = '[' + units + ']'
-                instance = attrs.get('instance', False)
                 self.messages[-1].fields.append(
-                    MAVMessageField(attrs['name'], attrs['type'], print_format, enum, display, units, instance, p.CurrentLineNumber)
+                    MAVMessageField(
+                        attrs['name'], attrs['type'], attrs.get('print_format', None),
+                        attrs.get('enum', ''), attrs.get('display', ''), units,
+                        attrs.get('instance', False), attrs.get('invalid', None), p.CurrentLineNumber)
                 )
 
             elif in_element == "mavlink.enums.enum":
@@ -371,7 +383,7 @@ class MAVParseXml(object):
                             value = self.enums[-1].highest_value + 1
                         self.enums[-1].highest_value = value
                         print('enum value %u autogenerated' % (value))
-                    else:    
+                    else:
                         raise MAVParseError('MAVParseXml(): enum value for %s missing at %s:%u' % (
                                 attrs['name'], os.path.basename(filename), p.CurrentLineNumber))
                 # check lowest value
@@ -470,11 +482,11 @@ def fmavMergeEnum(enum, ienum):
         if ientry.name in entry_names:
             print("ERROR: Duplicate enum names:\n  %s = %s @ %s:%u" % (
                         entry.name, entry.value, entry.origin_file, entry.line_number))
-            sys.exit(1)            
+            sys.exit(1)
         if ientry.value in entry_values:
             print("ERROR: Duplicate enum values:\n  %s = %s @ %s:%u" % (
                         entry.name, entry.value, entry.origin_file, entry.line_number))
-            sys.exit(1)            
+            sys.exit(1)
         iss = "%s.%s" % (ientry.name, ientry.value)
         if not iss in entry_ss: # not yet in enum
             enum.entry.append(ientry)
@@ -515,7 +527,7 @@ def fmavCheckMessages(xml, ixml):
 
 
 def fmavAddXml(xml, ixml):
-    ''' Merges ixml into xml. This is a most important function. It has 
+    ''' Merges ixml into xml. This is a most important function. It has
     to merge messages, crcs, and enums. It also must check for duplicity
     and consistency.'''
     print("Mergingd XML %s.xml into %s.xml" %(ixml.basename, xml.basename))
@@ -548,9 +560,9 @@ def generateXmlList(filename, validate_func=None, parse_flags=mavflags.PARSE_FLA
     files_set = set()
     xml_list = []
     ordered_xml_list = []
-    
+
     def validate_and_parse(fname):
-        '''Validate and parse the file, and add it to the list.''' 
+        '''Validate and parse the file, and add it to the list.'''
         # validate if possible.
         if validate_func is not None:
             print("Validating %s" % os.path.basename(fname))
@@ -585,12 +597,12 @@ def generateXmlList(filename, validate_func=None, parse_flags=mavflags.PARSE_FLA
                     includeadded = True
             return includeadded
 
-        for n in range(MAXIMUM_INCLUDE_FILE_NESTING):
+        for n in range(MAXIMUM_INCLUDE_FILE_NESTING+1):
+            if n >= MAXIMUM_INCLUDE_FILE_NESTING:
+                print("ERROR include tree is too deeply nested!")
+                sys.exit(1)
             if not expand_oneiteration():
                 break
-        if n >= MAXIMUM_INCLUDE_FILE_NESTING:
-            print("ERROR include tree is too deeply nested!")
-            sys.exit(1)
 
     def update_includes():
         '''Update includes. Goes through all XML files which were found and parsed
@@ -616,7 +628,7 @@ def generateXmlList(filename, validate_func=None, parse_flags=mavflags.PARSE_FLA
             for xml in xml_list:
                 if xml in done:
                     continue
-                # are all includes done for this XML file?    
+                # are all includes done for this XML file?
                 all_includes_done = True
                 for i in xml.includes:
                     fname = fname = include_fname(xml.filename, i)
@@ -645,20 +657,20 @@ def generateXmlList(filename, validate_func=None, parse_flags=mavflags.PARSE_FLA
         for n in range(MAXIMUM_INCLUDE_FILE_NESTING):
             if not update_oneiteration():
                 break
-                
+
         ordered_xml_list.extend(done)
 
     # parse the passed in XML file, to start with
     validate_and_parse(filename)
-    
-    # expand includes 
+
+    # expand includes
     expand_includes()
-    
+
     # update includes, this calls fmavAddXml(xml, ixml) in the proper sequence!!
     update_includes()
-    
+
     fmavFinalizeAllEnums(xml_list)
-        
+
     #return xml_list
     return ordered_xml_list
 
