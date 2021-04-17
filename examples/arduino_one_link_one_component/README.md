@@ -44,7 +44,6 @@ uint8_t send_statustext = 0;
 
 uint32_t tlast_ms = 0;
 
-
 // check the message's target ids to determine if the message is for us
 // returns 0: not for us, 1: is for us
 uint8_t isForMe(fmav_message_t* msg)
@@ -64,7 +63,6 @@ uint8_t isForMe(fmav_message_t* msg)
   // The message has a target_compid but it is not ours, so reject
   return 0;
 }
-
 
 // send the "Hello World" STATUSTEXT message
 // returns 1 if successful, 0 else
@@ -93,7 +91,6 @@ uint8_t sendStatustext(void)
   return 0;
 }
 
-
 // send a HEARTBEAT message
 // returns 1 if successful, 0 else
 uint8_t sendHeartbeat(void)
@@ -120,7 +117,6 @@ uint8_t sendHeartbeat(void)
 
   return 0;
 }
-
 
 // our message handler
 void handleMessage(fmav_message_t* msg)
@@ -152,7 +148,6 @@ void handleMessage(fmav_message_t* msg)
       }break;
   }
 }
-
 
 // this should be called repeatedly
 void spinOnce(void)
@@ -215,7 +210,7 @@ void spinOnce(void)
 }
 ```
 
-See the Arduino sketch [arduino_one_link_one_component_elementary.ino](arduino_one_link_one_component_elementary.ino) for this implementation.
+See the Arduino sketch [arduino_one_link_one_component_elementary.ino](arduino_one_link_one_component_elementary/arduino_one_link_one_component_elementary.ino) for this implementation.
 
 The example is interesting as it shows in detail each and every single step which is involved, and might be helpful for approaching more complicated applications. For the given purpose it is however only of educational value, since the implementation can be significantly improved in several places:
 
@@ -313,7 +308,6 @@ uint8_t send_statustext = 0;
 
 uint32_t tlast_ms = 0;
 
-
 uint8_t sendStatustext(void)
 {
   fmav_statustext_t payload;
@@ -334,7 +328,6 @@ uint8_t sendStatustext(void)
   return 0;
 }
 
-
 uint8_t sendHeartbeat(void)
 {
   uint16_t count = fmav_msg_heartbeat_pack_to_frame_buf(
@@ -350,7 +343,6 @@ uint8_t sendHeartbeat(void)
   return 0;
 }
 
-
 void handleMessage(fmav_message_t* msg)
 {
   switch (msg->msgid) {
@@ -364,7 +356,6 @@ void handleMessage(fmav_message_t* msg)
       }break;
   }
 }
-
 
 void spinOnce(void)
 {
@@ -399,7 +390,7 @@ void spinOnce(void)
 
 We have reduced the RAM footprint, have reduced the stack load somewhat, and have saved CPU cycles. And the code has become cleaner. Not that bad.
 
-See the Arduino sketch [arduino_one_link_one_component_better.ino](arduino_one_link_one_component_better.ino) for this implementation.
+See the Arduino sketch [arduino_one_link_one_component_better.ino](arduino_one_link_one_component_better/arduino_one_link_one_component_better.ino) for this implementation.
 
 
 ## Further Possible Improvements ##
@@ -412,4 +403,4 @@ The "better" implementation may not yet seem perfect in these points:
 
 - In the sending functions `sendStatustext()` and `sendHeartbeat()`, the `tx_buf` buffer could be avoided, if the data of the message would be directly packed into the serial's transmit buffer. This indeed looks very interesting. However, for any reasonably generic MAVLink C library the payload has to be placed into an intermediate payload structure anyways, so that there is not much gain RAM/stack wise, it is just "hidden" from the users eyes. Furthermore, in my experience, except for simple applications, it tends to create more complications than it is helpful.
 
-See the Arduino sketch [arduino_one_link_one_component_better2.ino](arduino_one_link_one_component_better2.ino) for an implementation considering the last two points.
+See the Arduino sketch [arduino_one_link_one_component_better2.ino](arduino_one_link_one_component_better2/arduino_one_link_one_component_better2.ino) for an implementation considering the last two points.
