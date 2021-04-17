@@ -1,7 +1,7 @@
 
 # The fastMavlink Library: Examples #
 
-There are usually so many different ways of how to implement and realize one and the same goal, that code examples hardly can cover them. The following examples hence may not match exactly what you need. They however hopefully provide insight into how the fastMavlink library can be used, and they may serve as starting templates for your own projects.
+There are usually so many different ways of how to implement and realize one and the same goal, that code examples hardly can cover them. The following examples, which are written for Arduino, hence may not match exactly what you need. They however hopefully provide insight into how the fastMavlink library can be used, and they may serve as starting templates for your own projects.
 
 ## Assumed Interface ##
 
@@ -30,20 +30,20 @@ In addition to the above, a timer is also assumed:
 
 For some examples, both a very details code version is presented which uses primitive functions and a more compact (and often more performant) code version which uses higher-level functions. This hopefully helps enlightening the inner working of the fastMavlink library.
 
-In order to test them out easily, Arduino sketches are included.
+In order to test them out easily, the Arduino sketches are included.
 
 ## One Link - One Component ##
 
 This is the simplest and probably most typical type of application. It consists of an electronic device which should behave as a MAVLink component and which is connected to the MAVLink network via a serial connection.
 
-Go to [One Link - One Component](one-link-one-component/).
+Go to [One Link - One Component](arduino_one_link_one_component/).
 
 
 ## Parameters ##
 
-This example builds on the [One Link - One Component](/examples/one-link-one-component) example and adds parameters to the component, using the tool box provided by `fastmavlink_parameters.h`. 
+This example builds on the [One Link - One Component](/examples/arduino_one_link_one_component) example and adds parameters to the component, using the tool box provided by `lib/fastmavlink_parameters.h`. 
 
-Go to [Parameters](parameters/).
+Go to [Parameters](arduino_parameters/).
 
 
 ## Several Links - No Component: MAVLink Router ##
@@ -58,7 +58,7 @@ Explore the next example, [Several Links - One Component](#several-links---one-c
 
 This is a component with several serial ports, which all sould be connectable to the MAVLink network. An example would be an autopilot like ArduPilot or PX4 flight controllers. The autopilot is a MAVLink component, which allows us to configure several serial ports for MAVLink. Another example would be an OpenTx transmitter loaded with firmware of the [MAVLink for OpenTx](http://www.olliw.eu/2020/olliwtelem/) project.
 
-Go to [Several Links - One Component](several-links-one-component/).
+Go to [Several Links - One Component](arduino_several_links_one_component/).
 
 
 ## One Link - Several Components ##

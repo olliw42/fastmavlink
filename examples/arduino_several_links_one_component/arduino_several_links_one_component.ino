@@ -126,7 +126,7 @@ void handleMessage(fmav_message_t* msg);
 #define FASTMAVLINK_ROUTER_LINKS_MAX        3
 #define FASTMAVLINK_ROUTER_COMPONENTS_MAX   12
 
-#include "c_library/fastmavlink_router.h"
+#include "c_library/lib/fastmavlink_router.h"
 
 
 // Define the parameters
@@ -171,7 +171,7 @@ const fmav_param_entry_t fmav_param_list[FASTMAVLINK_PARAM_NUM] = {
     #undef X
 };
 
-#include "c_library/fastmavlink_parameters.h"
+#include "c_library/lib/fastmavlink_parameters.h"
 
 
 // Helpers to send the parameter list

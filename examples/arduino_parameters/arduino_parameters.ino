@@ -132,7 +132,7 @@ const fmav_param_entry_t fmav_param_list[FASTMAVLINK_PARAM_NUM] = {
     #undef X
 };
 
-#include "c_library/fastmavlink_parameters.h"
+#include "c_library/lib/fastmavlink_parameters.h"
 
 
 // Helpers to send the parameter list
