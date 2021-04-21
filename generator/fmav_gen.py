@@ -44,10 +44,9 @@ def fmavgen(opts, args):
 
     file_set = set()
 
-    xml_schema_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), "modules", "mavschema.xsd")
-
-    # enable validation by default, disabling it if explicitly requested
+    # validation enabled by default, disable it if explicitly requested
     if opts.validate_flags & VALIDATE_FLAGS_VALIDATE:
+        xml_schema_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), "modules", "mavschema.xsd")
         try:
             from lxml import etree
             with open(xml_schema_file, 'r') as f:

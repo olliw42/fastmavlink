@@ -164,6 +164,6 @@ def generate(outputdir, filenames, validate_func=None, parse_flags=mavflags.PARS
               (mavparse.totalNumberOfMessages(xml_list), mavparse.totalNumberOfEnums(xml_list), len(xml_list)))
         for xml in xml_list:
             generateForOneXml(outputdir, xml)
-        print("Done") 
     
     copyFixedHeaderFiles(outputdir, xml_list[0])
+    print("Done") 

@@ -47,7 +47,7 @@ opts = mavgen.Opts(outdir, parse_flags=mavflags.PARSE_FLAGS_WARNING_ENUM_VALUE_M
 args = [xmlfile]
 try:
     mavgen.fmavgen(opts,args)
-    print('Successfully Generated Headers', 'Headers generated successfully.')
+    print('Headers generated successfully.')
 
 except Exception as ex:
     exStr = str(ex)

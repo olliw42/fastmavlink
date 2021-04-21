@@ -24,6 +24,7 @@ Classes holding the XML elements
 from . import fmav_flags as mavflags
 
 # message flags, bitmask to help with handling targets
+# is used in message entries list
 MESSAGE_FLAGS_HAS_TARGET_SYSTEM    = 1
 MESSAGE_FLAGS_HAS_TARGET_COMPONENT = 2
 
@@ -574,7 +575,7 @@ def generateXmlList(filename, validate_func=None, parse_flags=mavflags.PARSE_FLA
         # parse and add it
         print("Parsing %s" % os.path.basename(fname))
         xml_list.append(MAVParseXml(fname, parse_flags))
-        files_set.add(fname)
+        files_set.add(os.path.abspath(fname))
 
     def include_fname(a, b):
         return os.path.abspath(os.path.join(os.path.dirname(a), b))
@@ -631,7 +632,7 @@ def generateXmlList(filename, validate_func=None, parse_flags=mavflags.PARSE_FLA
                 # are all includes done for this XML file?
                 all_includes_done = True
                 for i in xml.includes:
-                    fname = fname = include_fname(xml.filename, i)
+                    fname = include_fname(xml.filename, i)
                     if fname not in [x.filename for x in done]:
                         all_includes_done = False
                         break
@@ -650,7 +651,7 @@ def generateXmlList(filename, validate_func=None, parse_flags=mavflags.PARSE_FLA
             if len(done) == len(xml_list):  # all XML files are done, finished
                 return False
             if len(done) == initial_done_length: # no process was made in this iteration
-                print("ERROR include tree cannot be resolved, no base found!")
+                print("ERROR include tree cannot be resolved!")
                 sys.exit(1)
             return True
 
