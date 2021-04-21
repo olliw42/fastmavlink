@@ -3,7 +3,7 @@
 
 FastMavlink is designed to be the most lightweight and most performant [MAVLink](https://mavlink.io/en/) C library, additionally providing novel features.
 
-It may not reach these goals to 100.00%, not now and not then, but as compared to the standard [pymavlink-mavgen](https://github.com/ArduPilot/pymavlink) library it provides much improved performance, in terms of CPU time, flash, RAM footprint, and capabilities.
+It may not reach these goals to 100.00%, not now and not then, but as compared to the standard [pymavlink-mavgen](https://github.com/ArduPilot/pymavlink) library it provides much improved performance, in terms of CPU time, flash, stack and RAM footprint, and capabilities.
 
 This is not achieved by some magic vodoo coding tricks, but simply by a careful design which avoids superfluous calculations, obscure data fields, and unnecessary use of RAM and stack.
 
