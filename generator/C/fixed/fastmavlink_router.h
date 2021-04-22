@@ -20,6 +20,9 @@
 // uint8_t fmav_router_send_to_link(uint8_t link)
 // void fmav_router_add_ourself(uint8_t sysid, uint8_t compid)
 // void fmav_router_clearout_link(uint8_t link)
+// void fmav_router_set_link_properties(uint8_t link, uint8_t properties)
+// void fmav_router_set_link_properties_all(uint8_t properties)
+// void fmav_router_init(void)
 //------------------------------
 
 #pragma once
@@ -55,7 +58,15 @@ typedef struct _fmav_router_component_item {
 } fmav_router_component_item;
 
 
+typedef enum {
+    FASTMAVLINK_ROUTER_LINK_PROPERTY_FLAG_DISCOVER_BY_HEARTBEAT = 0x01,
+    FASTMAVLINK_ROUTER_LINK_PROPERTY_FLAG_ALWAYS_SEND_HEARTBEAT = 0x02,
+} fmav_router_link_property_flags_e;
+
+
 FASTMAVLINK_RAM_SECTION fmav_router_component_item _fmav_router_component_list[FASTMAVLINK_ROUTER_COMPONENTS_MAX];
+
+FASTMAVLINK_RAM_SECTION uint8_t _fmav_router_link_properties[FASTMAVLINK_ROUTER_LINKS_MAX];
 
 FASTMAVLINK_RAM_SECTION uint8_t _fmav_router_send_to_link[FASTMAVLINK_ROUTER_LINKS_MAX];
 
@@ -144,7 +155,6 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_reset(void)
     }
 }
 
-
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_handle_message_by_id(
     uint8_t link_of_msg,
     uint8_t msgid,
@@ -160,22 +170,15 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_handle_message_by_id(
         return;
     }
 
-    // keep list of available components by spying heartbeats
-    // the alternative is that any message is accepted as evidence of presence
-    // in this case always call fmav_router_find_or_add_component()
-    if (msgid == FASTMAVLINK_MSG_ID_HEARTBEAT) {
-        fmav_router_find_or_add_component(link_of_msg, sysid, compid);
-    }
-
-    // heartbeats are always send to all links
-    // the alternative is that messages are send out on a link only if at least one component was seen
-    // in this case out-comment this
-    if (msgid == FASTMAVLINK_MSG_ID_HEARTBEAT) {
-        for(uint8_t link = 0; link < FASTMAVLINK_ROUTER_LINKS_MAX; link++) {
-            _fmav_router_send_to_link[link] = 1;
+    // keep list of available components
+    if (_fmav_router_link_properties[link_of_msg] & FASTMAVLINK_ROUTER_LINK_PROPERTY_FLAG_DISCOVER_BY_HEARTBEAT) {
+        // spy heartbeats as evidence of presence of component
+        if (msgid == FASTMAVLINK_MSG_ID_HEARTBEAT) {
+            fmav_router_find_or_add_component(link_of_msg, sysid, compid);
         }
-        _fmav_router_send_to_link[link_of_msg] = 0; // origin of msg, don't reflect it back
-        return;
+    } else {
+        // accept any message as evidence of presence of component
+        fmav_router_find_or_add_component(link_of_msg, sysid, compid);
     }
 
     // determine the links it has to be send to
@@ -183,6 +186,14 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_handle_message_by_id(
         _fmav_router_send_to_link[link] = 0;
 
         if (link == link_of_msg) continue; // origin of msg, don't reflect it back
+
+        // send heartbeats to all links, which want it to be always send
+        // otherwise messages are send out on a link only if at least one component was seen
+        if ((msgid == FASTMAVLINK_MSG_ID_HEARTBEAT) &&
+            (_fmav_router_link_properties[link] & FASTMAVLINK_ROUTER_LINK_PROPERTY_FLAG_ALWAYS_SEND_HEARTBEAT)) {
+            _fmav_router_send_to_link[link] = 1;
+            continue;
+        }
 
         if (fmav_router_accept(link, target_sysid, target_compid)) {
           _fmav_router_send_to_link[link] = 1;
@@ -245,10 +256,32 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_clearout_link(uint8_t link)
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_set_link_properties(uint8_t link, uint8_t properties)
+{
+    if (link >= FASTMAVLINK_ROUTER_LINKS_MAX) return;
+    _fmav_router_link_properties[link] = properties;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_set_link_properties_all(uint8_t properties)
+{
+    for (uint8_t link = 0; link < FASTMAVLINK_ROUTER_LINKS_MAX; link++) {
+        _fmav_router_link_properties[link] = properties;
+    }
+}
+
+
 // call it once before using the library
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_init(void)
 {
-    fmav_router_reset();    
+    for (uint8_t link = 0; link < FASTMAVLINK_ROUTER_LINKS_MAX; link++) {
+        _fmav_router_link_properties[link] =
+            FASTMAVLINK_ROUTER_LINK_PROPERTY_FLAG_ALWAYS_SEND_HEARTBEAT |
+            FASTMAVLINK_ROUTER_LINK_PROPERTY_FLAG_DISCOVER_BY_HEARTBEAT;
+        _fmav_router_send_to_link[link] = 0;
+    }
+
+    fmav_router_reset();
 }
 
 
