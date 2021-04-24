@@ -29,7 +29,7 @@ Yet to be determined. It will be a permissive licence, along the ideas of the or
 
 The parser can read MAVLink v1 and v2 messages, including the signing packet, and forward them, but it cannot decode signed messages.
 
-Messages can be generated and emitted only in MAVLink v2 format, and without signature. (It would be easy to extend the library to allow sending v1 messages, but, frankly, there should be really no need for sending v1 messages nowadays)
+Messages can be generated and emitted only in MAVLink v2 format, and without signature. (It would be easy to extend the library to allow sending v1 messages, but, frankly, there should be really no need for sending v1 messages nowadays)(Signing is IMHO largely a waste and just complicates thing, security should IMHO be a property of the link and is better handled there)
 
 
 ## C Code Usage ##
@@ -39,13 +39,13 @@ Please see the chapter below on the [C Code Architecture](#c-code-architecture) 
 For examples please go to [The fastMavlink Library: Examples](examples/).
 
 
-In order to use the dialect dialect.xml, include 
+In order to use the dialect xyzdialect.xml, include 
 
 ```C
-#include "path_to_code_generator_output/dialect/dialect.h"
+#include "path_to_code_generator_output/xyzdialect/xyzdialect.h"
 ```
 
-into your project. Note that it is not `".../dialect/mavlink.h"` as it would be for pymavlink-mavgen. If you do so with fastMavlink, it would enable the [pymavlink-mavgen mimicry](#pymavlink-mavgen-mimicry).
+into your project. Note that it is not `".../xyzdialect/mavlink.h"` as it would be for pymavlink-mavgen. If you would do so with fastMavlink, it would enable the [pymavlink-mavgen mimicry](#pymavlink-mavgen-mimicry).
 
 
 ## Router ##
@@ -57,7 +57,7 @@ Please see the examples [Several Links - No Component: MAVLink Router](examples#
 
 ## Test Suite ##
 
-The fastMavlink C library includes what could be the most comprehensive test suite available for MAVLink C code.
+The fastMavlink C library includes a most comprehensive test suite.
 
 Please see [The fastMavlink Library: Test Suite](tests/).
 
@@ -166,6 +166,12 @@ The data in the message fields (data) is encoded into a payload structure (paylo
 - located in fastmavlink_functions.h
 
 
+#### fmav_msg_to_frame_buf_wresult():
+3 -> 4, msg_t  ->   buf
+- very much like fmav_msg_to_frame_buf() but returns a result struture in addition
+- located in fastmavlink_functions.h
+
+
 #### fmav_msg_xxx_pack_to_frame_buf():
 1 -> 4, data ->  buf
 - located in mavlink_msg_xxx.h
@@ -200,10 +206,10 @@ The data in the message fields (data) is encoded into a payload structure (paylo
 The fastMavlink C code library includes function wrappers which mimic those of the pymavlink-mavgen library. This allows us to easily port to fastMavlink, with no or little effort in many cases. The mimicry is activated by including
 
 ```C
-#include "path_to_code_generator_output/dialect/mavlink.h"
+#include "path_to_code_generator_output/xyzdialect/mavlink.h"
 ```
 
-instead of `".../dialect/dialect.h"`. This defines the token `FASTMAVLINK_PYMAVLINK_ENABLED`, which in turn enables the related code. The mimicry works as drop-in-replacement. That is, fastMavlink's enums, structures, and functions are actually used, but simply presented with a different look. Additional work for converting to fastMavlink will typically be required if fields of pymavlink-mavgen's status and message structures are directly used, since they may not be present in fastMavlink's structures.
+instead of `".../xyzdialect/xyzdialect.h"`. This defines the token `FASTMAVLINK_PYMAVLINK_ENABLED`, which in turn enables the mimicry code. The mimicry works as drop-in-replacement. That is, fastMavlink's enums, structures, and functions are actually used, but simply presented with a different look. Additional work for converting to fastMavlink will thus typically be required if fields of pymavlink-mavgen's status and message structures are directly used, since they may not be present in fastMavlink's structures.
 
 
 
