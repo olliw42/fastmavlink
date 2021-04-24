@@ -64,7 +64,7 @@ First off, also these tests are written by a human being, and are hence limited 
 
 There is no test of the parsers with faulty byte streams. (I'd like to subject the parser functions to an entirely random input stream, but have not yet figured out how to check and validate their behavior)
 
-Lastly, I'd liek to admit that the tests are clearly not (yet) written as nicely as I would like to have them and as they could be; there is room for much improvement.
+Lastly, I'd like to frankly admit that the tests are clearly not (yet) written as nicely as I would like to have them and as they could be; there is room for much improvement.
 
 
 
