@@ -4,9 +4,12 @@
 //------------------------------
 // API:
 //
-// requires that these are defined in the outside:
+// requires that these tokens are defined in the outside:
 //   FASTMAVLINK_ROUTER_LINKS_MAX
 //   FASTMAVLINK_ROUTER_COMPONENTS_MAX
+//
+// this token can be defined in the outside to modify behavior:
+//   FASTMAVLINK_ROUTER_LINK_PROPERTY_DEFAULT
 //
 // void fmav_router_reset(void)
 // void fmav_router_handle_message_by_id(
@@ -44,6 +47,13 @@ extern "C" {
 #include <stdint.h>
 #include "../fastmavlink_config.h"
 #include "fastmavlink_types.h"
+
+
+#ifndef FASTMAVLINK_ROUTER_LINK_PROPERTY_DEFAULT
+#define FASTMAVLINK_ROUTER_LINK_PROPERTY_DEFAULT \
+  (FASTMAVLINK_ROUTER_LINK_PROPERTY_FLAG_ALWAYS_SEND_HEARTBEAT | \
+   FASTMAVLINK_ROUTER_LINK_PROPERTY_FLAG_DISCOVER_BY_HEARTBEAT)
+#endif
 
 
 //------------------------------
@@ -275,9 +285,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_set_link_properties_all(uint8_t 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_init(void)
 {
     for (uint8_t link = 0; link < FASTMAVLINK_ROUTER_LINKS_MAX; link++) {
-        _fmav_router_link_properties[link] =
-            FASTMAVLINK_ROUTER_LINK_PROPERTY_FLAG_ALWAYS_SEND_HEARTBEAT |
-            FASTMAVLINK_ROUTER_LINK_PROPERTY_FLAG_DISCOVER_BY_HEARTBEAT;
+        _fmav_router_link_properties[link] = FASTMAVLINK_ROUTER_LINK_PROPERTY_DEFAULT;
         _fmav_router_send_to_link[link] = 0;
     }
 
