@@ -3,7 +3,7 @@
 // (c) OlliW, OlliW42, www.olliw.eu
 //------------------------------
 // API:
-// (support functions are not listed as they usually shall not be used directly)
+// (support functions not listed as they usually shall not be directly used)
 //
 // receive into frame buf:
 //   uint8_t  fmav_parse_to_frame_buf(fmav_result_t* result, uint8_t* buf, fmav_status_t* status, uint8_t c)
