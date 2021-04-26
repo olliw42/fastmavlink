@@ -53,7 +53,7 @@ class MAVEnumEntry(object):
         self.params = []
 
 
-class MAVEnumParameter(object):
+class MAVEnumEntryParam(object):
     '''Holds a MAVLink enum entry field with parameters; used in MAV_CMD enums.
     mavlink.enums.enum.entry.param'''
     def __init__(self, index, label='', units='', enum='', increment='', min_value='', max_value='', default='', reserved=False, description=''):
@@ -77,12 +77,34 @@ class MAVEnumParameter(object):
             self.description = description.strip().replace("\n","")
 
 
+class MAVCmdEnum(object):
+    '''Holds a MAVLink enum element for a MAV_CMD.
+    Comment: Enum elements for MAV_CMD can have the additional attributes hasLocation, isDestination,
+    but there is no formal xml element like for the enum entries, so we need to handle it
+    under mavlink.enums.enum below.
+    mavlink.enums.enum'''
+    def __init__(self, name, hasLocation, isDestination, line_number, description=''):
+        self.name = name
+        self.line_number = line_number
+        self.bitmask = None
+        self.hasLocation = hasLocation
+        self.isDestination = isDestination
+        self.description = description.strip().replace("\n","")
+
+        self.entry = []
+        self.start_value = None
+        self.highest_value = None
+
+
 class MAVEnum(object):
     '''Holds a MAVLink enum element.
     mavlink.enums.enum'''
-    def __init__(self, name, line_number, description=''):
+    def __init__(self, name, bitmask, line_number, description=''):
         self.name = name
         self.line_number = line_number
+        self.bitmask = bitmask
+        self.hasLocation = None
+        self.isDestination = None
         self.description = description.strip().replace("\n","")
 
         self.entry = []
@@ -364,9 +386,19 @@ class MAVParseXml(object):
 
             elif in_element == "mavlink.enums.enum":
                 check_attrs(attrs, ['name'], 'enum')
-                self.enums.append(
-                    MAVEnum(attrs['name'], p.CurrentLineNumber)
-                )
+                # special handling for MAV_CMD enum
+                if 'MAV_CMD' in attrs['name']:
+                    self.enums.append(
+                        MAVCmdEnum(
+                            attrs['name'], 
+                            attrs.get('hasLocation', False), 
+                            attrs.get('isDestination', False), 
+                            p.CurrentLineNumber)
+                    )
+                else:                
+                    self.enums.append(
+                        MAVEnum(attrs['name'], attrs.get('bitmask', False), p.CurrentLineNumber)
+                    )
 
             elif in_element == "mavlink.enums.enum.entry":
                 check_attrs(attrs, ['name'], 'enum entry')
@@ -401,7 +433,7 @@ class MAVParseXml(object):
             elif in_element == "mavlink.enums.enum.entry.param":
                 check_attrs(attrs, ['index'], 'enum param')
                 self.enums[-1].entry[-1].params.append(
-                    MAVEnumParameter(
+                    MAVEnumEntryParam(
                         attrs['index'],
                         label=attrs.get('label', ''), units=attrs.get('units', ''),
                         enum=attrs.get('enum', ''), increment=attrs.get('increment', ''),
@@ -448,7 +480,7 @@ class MAVParseXml(object):
                         continue
                     params_dict = {}
                     for param_index in range (1,8):
-                        params_dict[param_index] = MAVEnumParameter(param_index, reserved='True')
+                        params_dict[param_index] = MAVEnumEntryParam(param_index, reserved='True')
                     for a_param in entry.params:
                         params_dict[int(a_param.index)] = a_param
                     entry.params = params_dict.values()
