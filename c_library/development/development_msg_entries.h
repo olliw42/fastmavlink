@@ -9,9 +9,11 @@
 
 
 //------------------------------
+//-- Message credentials
 //-- The values of msg_entry_t for all messages in the dialect.
+//-- msgid, extra crc, max length, flag, target sysid offset, target compid offset
 //------------------------------
- 
+
 #define FASTMAVLINK_MSG_ENTRY_HEARTBEAT  {0, 50, 9, 0, 0, 0}
 #define FASTMAVLINK_MSG_ENTRY_SYS_STATUS  {1, 124, 31, 0, 0, 0}
 #define FASTMAVLINK_MSG_ENTRY_SYSTEM_TIME  {2, 137, 12, 0, 0, 0}
@@ -109,7 +111,7 @@
 #define FASTMAVLINK_MSG_ENTRY_LOG_ERASE  {121, 237, 2, 3, 0, 1}
 #define FASTMAVLINK_MSG_ENTRY_LOG_REQUEST_END  {122, 203, 2, 3, 0, 1}
 #define FASTMAVLINK_MSG_ENTRY_GPS_INJECT_DATA  {123, 250, 113, 3, 0, 1}
-#define FASTMAVLINK_MSG_ENTRY_GPS2_RAW  {124, 87, 37, 0, 0, 0}
+#define FASTMAVLINK_MSG_ENTRY_GPS2_RAW  {124, 87, 57, 0, 0, 0}
 #define FASTMAVLINK_MSG_ENTRY_POWER_STATUS  {125, 203, 6, 0, 0, 0}
 #define FASTMAVLINK_MSG_ENTRY_SERIAL_CONTROL  {126, 220, 79, 0, 0, 0}
 #define FASTMAVLINK_MSG_ENTRY_GPS_RTK  {127, 25, 35, 0, 0, 0}
@@ -186,6 +188,7 @@
 #define FASTMAVLINK_MSG_ENTRY_GIMBAL_MANAGER_SET_MANUAL_CONTROL  {288, 20, 23, 3, 20, 21}
 #define FASTMAVLINK_MSG_ENTRY_ESC_INFO  {290, 221, 42, 0, 0, 0}
 #define FASTMAVLINK_MSG_ENTRY_ESC_STATUS  {291, 10, 57, 0, 0, 0}
+#define FASTMAVLINK_MSG_ENTRY_AIRSPEED  {295, 41, 20, 0, 0, 0}
 #define FASTMAVLINK_MSG_ENTRY_WIFI_NETWORK_INFO  {298, 237, 37, 0, 0, 0}
 #define FASTMAVLINK_MSG_ENTRY_WIFI_CONFIG_AP  {299, 19, 98, 0, 0, 0}
 #define FASTMAVLINK_MSG_ENTRY_PROTOCOL_VERSION  {300, 217, 22, 0, 0, 0}
@@ -231,15 +234,16 @@
 /*------------------------------
  * If only relatively few MAVLink messages are used, efficiency can
  * be much improved, both memory and computational time wise, by
- * commenting out below all those message entries which are not used,
- * and to write in the user's code:
+ * limiting the known message entries to only those which are used.
  *
- * #define FASTMAVLINK_MESSAGE_CRCS  FASTMAVLINK_MESSAGE_ENTRIES 
+ * This can be achieved by commenting out in the below define of
+ * FASTMAVLINK_MSG_ENTRIES all those message entries which are not used.
  *
- * Alternatively, the above defines can be used to define one's own
- * FASTMAVLINK_MESSAGE_CRCS. It is then MOST important to keep the sequence
- * in order since otherwise the default binary search will fail. E.g.:
- * 
+ * Alternatively, one can define one's own FASTMAVLINK_MESSAGE_CRCS
+ * using the above defines for each message entry. It is then MOST
+ * important to keep the sequence in order since otherwise the default
+ * binary search will fail. For instance:
+ *
  * #include "pathtofastmavlink/thedialect/fmav_msg_entries.h"
  * #define FASTMAVLINK_MESSAGE_CRCS {\
  *     FASTMAVLINK_MSG_ENTRY_PARAM_REQUEST_READ,\
@@ -248,7 +252,7 @@
  *     FASTMAVLINK_MSG_ENTRY_COMMAND_LONG,\
  *     FASTMAVLINK_MSG_ENTRY_AUTOPILOT_VERSION_REQUEST }
  ------------------------------*/
- 
+
 #define FASTMAVLINK_MSG_ENTRIES {\
   FASTMAVLINK_MSG_ENTRY_HEARTBEAT,\
   FASTMAVLINK_MSG_ENTRY_SYS_STATUS,\
@@ -424,6 +428,7 @@
   FASTMAVLINK_MSG_ENTRY_GIMBAL_MANAGER_SET_MANUAL_CONTROL,\
   FASTMAVLINK_MSG_ENTRY_ESC_INFO,\
   FASTMAVLINK_MSG_ENTRY_ESC_STATUS,\
+  FASTMAVLINK_MSG_ENTRY_AIRSPEED,\
   FASTMAVLINK_MSG_ENTRY_WIFI_NETWORK_INFO,\
   FASTMAVLINK_MSG_ENTRY_WIFI_CONFIG_AP,\
   FASTMAVLINK_MSG_ENTRY_PROTOCOL_VERSION,\

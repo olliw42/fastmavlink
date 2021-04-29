@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Sat Apr 24 2021"
+#define FASTMAVLINK_BUILD_DATE  "Thu Apr 29 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -22,7 +22,8 @@ extern "C" {
 
 //------------------------------
 //-- Message credentials
-//-- crc, min length, max length, flag, target sysid offset, target compid offset
+//-- The values of msg_entry_t for all messages in the dialect.
+//-- msgid, extra crc, max length, flag, target sysid offset, target compid offset
 //------------------------------
 
 #include "development_msg_entries.h"
@@ -32,7 +33,12 @@ extern "C" {
 #endif
 
 
+//------------------------------
+//-- FastMavlink lib
+//------------------------------
+
 #include "../lib/fastmavlink.h"
+
 #ifdef FASTMAVLINK_PYMAVLINK_ENABLED
 #include "../lib/fastmavlink_pymavlink.h"
 #endif
@@ -57,6 +63,19 @@ typedef enum WIFI_NETWORK_SECURITY {
 } WIFI_NETWORK_SECURITY;
 #endif
 
+
+#ifndef FASTMAVLINK_HAS_ENUM_AIRSPEED_SENSOR_TYPE
+#define FASTMAVLINK_HAS_ENUM_AIRSPEED_SENSOR_TYPE
+typedef enum AIRSPEED_SENSOR_TYPE {
+    AIRSPEED_SENSOR_TYPE_UNKNOWN = 0,  // Airspeed sensor type unknown/not supplied. 
+    AIRSPEED_SENSOR_TYPE_DIFFERENTIAL = 1,  // Differential airspeed sensor 
+    AIRSPEED_SENSOR_TYPE_MASS_FLOW = 2,  // Mass-flow airspeed sensor. 
+    AIRSPEED_SENSOR_TYPE_WINDVANE = 3,  // Windvane airspeed sensor. 
+    AIRSPEED_SENSOR_TYPE_SYNTHETIC = 4,  // Synthetic/calculated airspeed. 
+    AIRSPEED_SENSOR_TYPE_ENUM_END = 5,  // end marker
+} AIRSPEED_SENSOR_TYPE;
+#endif
+
 #endif // FASTMAVLINK_DO_NOT_INCLUDE_ENUMS
 
 
@@ -65,6 +84,7 @@ typedef enum WIFI_NETWORK_SECURITY {
 //------------------------------
 
 #include "./mavlink_msg_mission_checksum.h"
+#include "./mavlink_msg_airspeed.h"
 #include "./mavlink_msg_wifi_network_info.h"
 
 

@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Sat Apr 24 2021"
+#define FASTMAVLINK_BUILD_DATE  "Thu Apr 29 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -22,7 +22,8 @@ extern "C" {
 
 //------------------------------
 //-- Message credentials
-//-- crc, min length, max length, flag, target sysid offset, target compid offset
+//-- The values of msg_entry_t for all messages in the dialect.
+//-- msgid, extra crc, max length, flag, target sysid offset, target compid offset
 //------------------------------
 
 #include "all_msg_entries.h"
@@ -32,7 +33,12 @@ extern "C" {
 #endif
 
 
+//------------------------------
+//-- FastMavlink lib
+//------------------------------
+
 #include "../lib/fastmavlink.h"
+
 #ifdef FASTMAVLINK_PYMAVLINK_ENABLED
 #include "../lib/fastmavlink_pymavlink.h"
 #endif

@@ -28,19 +28,24 @@ typedef struct _fmav_gps2_raw_t {
     uint8_t satellites_visible;
     uint8_t dgps_numch;
     uint16_t yaw;
+    int32_t alt_ellipsoid;
+    uint32_t h_acc;
+    uint32_t v_acc;
+    uint32_t vel_acc;
+    uint32_t hdg_acc;
 }) fmav_gps2_raw_t;
 
 
 #define FASTMAVLINK_MSG_ID_GPS2_RAW  124
 
-#define FASTMAVLINK_MSG_GPS2_RAW_PAYLOAD_LEN_MAX  37
+#define FASTMAVLINK_MSG_GPS2_RAW_PAYLOAD_LEN_MAX  57
 #define FASTMAVLINK_MSG_GPS2_RAW_CRCEXTRA  87
 
 #define FASTMAVLINK_MSG_GPS2_RAW_FLAGS  0
 #define FASTMAVLINK_MSG_GPS2_RAW_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_GPS2_RAW_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_GPS2_RAW_FRAME_LEN_MAX  62
+#define FASTMAVLINK_MSG_GPS2_RAW_FRAME_LEN_MAX  82
 
 
 
@@ -57,6 +62,11 @@ typedef struct _fmav_gps2_raw_t {
 #define FASTMAVLINK_MSG_GPS2_RAW_FIELD_SATELLITES_VISIBLE_OFS  33
 #define FASTMAVLINK_MSG_GPS2_RAW_FIELD_DGPS_NUMCH_OFS  34
 #define FASTMAVLINK_MSG_GPS2_RAW_FIELD_YAW_OFS  35
+#define FASTMAVLINK_MSG_GPS2_RAW_FIELD_ALT_ELLIPSOID_OFS  37
+#define FASTMAVLINK_MSG_GPS2_RAW_FIELD_H_ACC_OFS  41
+#define FASTMAVLINK_MSG_GPS2_RAW_FIELD_V_ACC_OFS  45
+#define FASTMAVLINK_MSG_GPS2_RAW_FIELD_VEL_ACC_OFS  49
+#define FASTMAVLINK_MSG_GPS2_RAW_FIELD_HDG_ACC_OFS  53
 
 
 //----------------------------------------
@@ -67,7 +77,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_raw_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint64_t time_usec, uint8_t fix_type, int32_t lat, int32_t lon, int32_t alt, uint16_t eph, uint16_t epv, uint16_t vel, uint16_t cog, uint8_t satellites_visible, uint8_t dgps_numch, uint32_t dgps_age, uint16_t yaw,
+    uint64_t time_usec, uint8_t fix_type, int32_t lat, int32_t lon, int32_t alt, uint16_t eph, uint16_t epv, uint16_t vel, uint16_t cog, uint8_t satellites_visible, uint8_t dgps_numch, uint32_t dgps_age, uint16_t yaw, int32_t alt_ellipsoid, uint32_t h_acc, uint32_t v_acc, uint32_t vel_acc, uint32_t hdg_acc,
     fmav_status_t* _status)
 {
     fmav_gps2_raw_t* _payload = (fmav_gps2_raw_t*)_msg->payload;
@@ -85,6 +95,11 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_raw_pack(
     _payload->satellites_visible = satellites_visible;
     _payload->dgps_numch = dgps_numch;
     _payload->yaw = yaw;
+    _payload->alt_ellipsoid = alt_ellipsoid;
+    _payload->h_acc = h_acc;
+    _payload->v_acc = v_acc;
+    _payload->vel_acc = vel_acc;
+    _payload->hdg_acc = hdg_acc;
 
 
     _msg->sysid = sysid;
@@ -108,7 +123,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_raw_encode(
 {
     return fmav_msg_gps2_raw_pack(
         _msg, sysid, compid,
-        _payload->time_usec, _payload->fix_type, _payload->lat, _payload->lon, _payload->alt, _payload->eph, _payload->epv, _payload->vel, _payload->cog, _payload->satellites_visible, _payload->dgps_numch, _payload->dgps_age, _payload->yaw,
+        _payload->time_usec, _payload->fix_type, _payload->lat, _payload->lon, _payload->alt, _payload->eph, _payload->epv, _payload->vel, _payload->cog, _payload->satellites_visible, _payload->dgps_numch, _payload->dgps_age, _payload->yaw, _payload->alt_ellipsoid, _payload->h_acc, _payload->v_acc, _payload->vel_acc, _payload->hdg_acc,
         _status);
 }
 
@@ -117,7 +132,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_raw_pack_to_frame_buf(
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint64_t time_usec, uint8_t fix_type, int32_t lat, int32_t lon, int32_t alt, uint16_t eph, uint16_t epv, uint16_t vel, uint16_t cog, uint8_t satellites_visible, uint8_t dgps_numch, uint32_t dgps_age, uint16_t yaw,
+    uint64_t time_usec, uint8_t fix_type, int32_t lat, int32_t lon, int32_t alt, uint16_t eph, uint16_t epv, uint16_t vel, uint16_t cog, uint8_t satellites_visible, uint8_t dgps_numch, uint32_t dgps_age, uint16_t yaw, int32_t alt_ellipsoid, uint32_t h_acc, uint32_t v_acc, uint32_t vel_acc, uint32_t hdg_acc,
     fmav_status_t* _status)
 {
     fmav_gps2_raw_t* _payload = (fmav_gps2_raw_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -135,6 +150,11 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_raw_pack_to_frame_buf(
     _payload->satellites_visible = satellites_visible;
     _payload->dgps_numch = dgps_numch;
     _payload->yaw = yaw;
+    _payload->alt_ellipsoid = alt_ellipsoid;
+    _payload->h_acc = h_acc;
+    _payload->v_acc = v_acc;
+    _payload->vel_acc = vel_acc;
+    _payload->hdg_acc = hdg_acc;
 
 
     _buf[5] = sysid;
@@ -160,7 +180,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_raw_encode_to_frame_buf(
 {
     return fmav_msg_gps2_raw_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->time_usec, _payload->fix_type, _payload->lat, _payload->lon, _payload->alt, _payload->eph, _payload->epv, _payload->vel, _payload->cog, _payload->satellites_visible, _payload->dgps_numch, _payload->dgps_age, _payload->yaw,
+        _payload->time_usec, _payload->fix_type, _payload->lat, _payload->lon, _payload->alt, _payload->eph, _payload->epv, _payload->vel, _payload->cog, _payload->satellites_visible, _payload->dgps_numch, _payload->dgps_age, _payload->yaw, _payload->alt_ellipsoid, _payload->h_acc, _payload->v_acc, _payload->vel_acc, _payload->hdg_acc,
         _status);
 }
 
@@ -170,7 +190,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_raw_encode_to_frame_buf(
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_raw_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint64_t time_usec, uint8_t fix_type, int32_t lat, int32_t lon, int32_t alt, uint16_t eph, uint16_t epv, uint16_t vel, uint16_t cog, uint8_t satellites_visible, uint8_t dgps_numch, uint32_t dgps_age, uint16_t yaw,
+    uint64_t time_usec, uint8_t fix_type, int32_t lat, int32_t lon, int32_t alt, uint16_t eph, uint16_t epv, uint16_t vel, uint16_t cog, uint8_t satellites_visible, uint8_t dgps_numch, uint32_t dgps_age, uint16_t yaw, int32_t alt_ellipsoid, uint32_t h_acc, uint32_t v_acc, uint32_t vel_acc, uint32_t hdg_acc,
     fmav_status_t* _status)
 {
     fmav_gps2_raw_t _payload;
@@ -188,6 +208,11 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_raw_pack_to_serial(
     _payload.satellites_visible = satellites_visible;
     _payload.dgps_numch = dgps_numch;
     _payload.yaw = yaw;
+    _payload.alt_ellipsoid = alt_ellipsoid;
+    _payload.h_acc = h_acc;
+    _payload.v_acc = v_acc;
+    _payload.vel_acc = vel_acc;
+    _payload.hdg_acc = hdg_acc;
 
 
     return fmav_finalize_serial(
@@ -347,6 +372,46 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_raw_get_field_yaw(const fm
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_gps2_raw_get_field_alt_ellipsoid(const fmav_message_t* msg)
+{
+    int32_t r;
+    memcpy(&r, &(msg->payload[37]), sizeof(int32_t));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_gps2_raw_get_field_h_acc(const fmav_message_t* msg)
+{
+    uint32_t r;
+    memcpy(&r, &(msg->payload[41]), sizeof(uint32_t));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_gps2_raw_get_field_v_acc(const fmav_message_t* msg)
+{
+    uint32_t r;
+    memcpy(&r, &(msg->payload[45]), sizeof(uint32_t));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_gps2_raw_get_field_vel_acc(const fmav_message_t* msg)
+{
+    uint32_t r;
+    memcpy(&r, &(msg->payload[49]), sizeof(uint32_t));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_gps2_raw_get_field_hdg_acc(const fmav_message_t* msg)
+{
+    uint32_t r;
+    memcpy(&r, &(msg->payload[53]), sizeof(uint32_t));
+    return r;
+}
+
+
 
 
 
@@ -359,9 +424,9 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gps2_raw_get_field_yaw(const fm
 
 #define mavlink_gps2_raw_t  fmav_gps2_raw_t
 
-#define MAVLINK_MSG_ID_GPS2_RAW_LEN  37
+#define MAVLINK_MSG_ID_GPS2_RAW_LEN  57
 #define MAVLINK_MSG_ID_GPS2_RAW_MIN_LEN  35
-#define MAVLINK_MSG_ID_124_LEN  37
+#define MAVLINK_MSG_ID_124_LEN  57
 #define MAVLINK_MSG_ID_124_MIN_LEN  35
 
 #define MAVLINK_MSG_ID_GPS2_RAW_CRC  87
@@ -376,12 +441,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_gps2_raw_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint64_t time_usec, uint8_t fix_type, int32_t lat, int32_t lon, int32_t alt, uint16_t eph, uint16_t epv, uint16_t vel, uint16_t cog, uint8_t satellites_visible, uint8_t dgps_numch, uint32_t dgps_age, uint16_t yaw)
+    uint64_t time_usec, uint8_t fix_type, int32_t lat, int32_t lon, int32_t alt, uint16_t eph, uint16_t epv, uint16_t vel, uint16_t cog, uint8_t satellites_visible, uint8_t dgps_numch, uint32_t dgps_age, uint16_t yaw, int32_t alt_ellipsoid, uint32_t h_acc, uint32_t v_acc, uint32_t vel_acc, uint32_t hdg_acc)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_gps2_raw_pack(
         _msg, sysid, compid,
-        time_usec, fix_type, lat, lon, alt, eph, epv, vel, cog, satellites_visible, dgps_numch, dgps_age, yaw,
+        time_usec, fix_type, lat, lon, alt, eph, epv, vel, cog, satellites_visible, dgps_numch, dgps_age, yaw, alt_ellipsoid, h_acc, v_acc, vel_acc, hdg_acc,
         _status);
 }
 
@@ -393,13 +458,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_gps2_raw_pack_txbuf(
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint64_t time_usec, uint8_t fix_type, int32_t lat, int32_t lon, int32_t alt, uint16_t eph, uint16_t epv, uint16_t vel, uint16_t cog, uint8_t satellites_visible, uint8_t dgps_numch, uint32_t dgps_age, uint16_t yaw)
+    uint64_t time_usec, uint8_t fix_type, int32_t lat, int32_t lon, int32_t alt, uint16_t eph, uint16_t epv, uint16_t vel, uint16_t cog, uint8_t satellites_visible, uint8_t dgps_numch, uint32_t dgps_age, uint16_t yaw, int32_t alt_ellipsoid, uint32_t h_acc, uint32_t v_acc, uint32_t vel_acc, uint32_t hdg_acc)
 {
     return fmav_msg_gps2_raw_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        time_usec, fix_type, lat, lon, alt, eph, epv, vel, cog, satellites_visible, dgps_numch, dgps_age, yaw,
+        time_usec, fix_type, lat, lon, alt, eph, epv, vel, cog, satellites_visible, dgps_numch, dgps_age, yaw, alt_ellipsoid, h_acc, v_acc, vel_acc, hdg_acc,
         _status);
 }
 
