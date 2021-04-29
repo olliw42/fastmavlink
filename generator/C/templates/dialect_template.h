@@ -34,7 +34,7 @@ extern "C" {
 
 
 //------------------------------
-//-- FastMavlink library
+//-- FastMavlink lib
 //------------------------------
 
 #include "../lib/fastmavlink.h"
