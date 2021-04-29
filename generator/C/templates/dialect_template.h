@@ -22,7 +22,8 @@ extern "C" {
 
 //------------------------------
 //-- Message credentials
-//-- crc, min length, max length, flag, target sysid offset, target compid offset
+//-- The values of msg_entry_t for all messages in the dialect.
+//-- msgid, extra crc, max length, flag, target sysid offset, target compid offset
 //------------------------------
 
 #include "${basename}_msg_entries.h"
@@ -32,7 +33,12 @@ extern "C" {
 #endif
 
 
+//------------------------------
+//-- FastMavlink library
+//------------------------------
+
 #include "../lib/fastmavlink.h"
+
 #ifdef FASTMAVLINK_PYMAVLINK_ENABLED
 #include "../lib/fastmavlink_pymavlink.h"
 #endif
