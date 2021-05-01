@@ -9,7 +9,7 @@ quite massively modified and modernized by OlliW
 as part of the fastMavlink project
 supports only MAVLink v2, and C currently
 
-fmavgui.py is a GUI front-end for fmavgen.py
+fmav_gui.py is a GUI front-end for fmavgen.py
 """
 import os
 import re   

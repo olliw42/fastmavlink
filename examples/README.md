@@ -66,9 +66,3 @@ Go to [Several Links - One Component](arduino_several_links_one_component/).
 In this application a physical device with only one serial port implements two or more distinct MAVLink components. That is the communication with the device's components all goes via one and the same serial port. An example would be the [STorM32 gimbal controller](http://www.olliw.eu/storm32bgc-wiki/MAVLink_Communication), which implements both a Gimbal component and a Camera component.
 
 TBD
-
-## Code Generation ##
-
-It is shown how to use the Python GUI interface to generate code, as well as a Python script is suggested which allows one to conveniently generate the code, also for home-grown dialects.
-
-TBD

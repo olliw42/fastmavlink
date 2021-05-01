@@ -27,7 +27,7 @@ Yet to be determined. It will be a permissive licence, along the ideas of the or
 
 ## Limitations ##
 
-The parser can read MAVLink v1 and v2 messages, including the signing packet, and forward them, but it cannot decode signed messages.
+The parser can read MAVLink v1 and v2 messages, including the signing packet, and forward them, but it cannot decode signatures.
 
 Messages can be generated and emitted only in MAVLink v2 format, and without signature. (It would be easy to extend the library to allow sending v1 messages, but, frankly, there should be really no need for sending v1 messages nowadays)(Signing is IMHO largely a waste and just complicates thing, security should IMHO be a property of the link and is better handled there)
 
@@ -60,6 +60,13 @@ Please see the examples [Several Links - No Component: MAVLink Router](examples#
 The fastMavlink C library includes a most comprehensive test suite.
 
 Please see [The fastMavlink Library: Test Suite](tests/).
+
+
+## Code Generation ##
+
+As common with MAVLink, the code is created from the MAVLink XML definition files using a 'code generator', which is nothing else than a Python script which is run.
+
+Please see [The fastMavlink Library: Code Generation](generator/) for more details and documentation.
 
 
 ## C Code Architecture ##
