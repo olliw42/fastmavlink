@@ -829,30 +829,30 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_get_target_compid(fmav_message_t
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_is_for_me(uint8_t my_sysid, uint8_t my_compid, fmav_message_t* msg)
 {
-  // The message either has no target_sysid or is broadcast, so accept
-  if (msg->target_sysid == 0) return 1;
+    // the message either has no target_sysid or is broadcast, so accept
+    if (msg->target_sysid == 0) return 1;
 
-  // The message has a target_sysid but it is not ours, so reject
-  if (msg->target_sysid != my_sysid) return 0;
+    // the message has a target_sysid but it is not ours, so reject
+    if (msg->target_sysid != my_sysid) return 0;
 
-  // The message either has no target_compid or is broadcast, so accept
-  if (msg->target_compid == 0) return 1;
+    // the message either has no target_compid or is broadcast, so accept
+    if (msg->target_compid == 0) return 1;
 
-  // The message has a target_compid and it is ours, so accept
-  if (msg->target_compid == my_compid) return 1;
+    // the message has a target_compid and it is ours, so accept
+    if (msg->target_compid == my_compid) return 1;
 
-  // The message has a target_compid but it is not ours, so reject
-  return 0;
+    // the message has a target_compid but it is not ours, so reject
+    return 0;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_result_is_for_me(uint8_t my_sysid, uint8_t my_compid, fmav_result_t* result)
 {
-  if (result->target_sysid == 0) return 1;
-  if (result->target_sysid != my_sysid) return 0;
-  if (result->target_compid == 0) return 1;
-  if (result->target_compid == my_compid) return 1;
-  return 0;
+    if (result->target_sysid == 0) return 1;
+    if (result->target_sysid != my_sysid) return 0;
+    if (result->target_compid == 0) return 1;
+    if (result->target_compid == my_compid) return 1;
+    return 0;
 }
 
 

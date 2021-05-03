@@ -13,7 +13,7 @@
 
 #pragma once
 #ifndef FASTMAVLINK_PARAMETERS_H
-#define FASTMAVLINK_FUNCTIONS_H
+#define FASTMAVLINK_PARAMETERS_H
 
 #ifndef FASTMAVLINK_PARAM_NUM
 #error For fastmavlink_parameters.h, FASTMAVLINK_PARAM_NUM needs to be defined
