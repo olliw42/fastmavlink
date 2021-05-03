@@ -3,7 +3,7 @@
 
 As common with MAVLink, the code is created from the MAVLink XML definition files using a 'code generator', which is nothing else than a Python script. 
 
-The main driver is the fmav_gen.py script located in this folder. It may however not be the most convenient script to use directly, and fastMavlink provides to further scripts which you may find more useful, and which also may serve as examples for how to use fmav_gen.py. These are:
+The main driver is the fmav_gen.py script located in this folder. It may however not be the most convenient script to use directly, and fastMavlink provides two further scripts which you may find more useful, and which also may serve as examples for how to use fmav_gen.py. These are:
 
 * fmav_gen.py: This script, which is located in the root folder, runs a GUI based on tkinter. This might be the easiest approach.
 
