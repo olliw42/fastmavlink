@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 '''
-fmavgenerate_c_library.py
-calls fastMavlink generator for C header files
-(c) olliw, olliw42
+The fastMavlink library
+(c) OlliW, OlliW42, www.olliw.eu
+
+fmav_generate_c_library.py calls fmav_gen.py,
+which is the fastMavlink generator for C header files
 '''
 import os
 import shutil

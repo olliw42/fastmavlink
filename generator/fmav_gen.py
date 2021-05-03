@@ -10,12 +10,18 @@ as part of the fastMavlink project
 supports only MAVLink v2, and C currently
 
 fmav_gen.py is the main entry point
-call fmavgen.fmavgen()
+call fmav_gen.fmavgen()
 '''
 import os
 import re
 import sys
-from .modules import fmav_flags as mavflags
+
+# Let's try find our modules
+if 'fastmavlink' in os.path.abspath(__file__):
+    pl = os.path.abspath(__file__).split('fastmavlink')
+    sys.path.insert(0, os.path.join(pl[0],'fastmavlink'))
+
+from generator.modules import fmav_flags as mavflags
 
 
 VALIDATE_FLAGS_NONE = 0
@@ -23,17 +29,17 @@ VALIDATE_FLAGS_VALIDATE = 1
 VALIDATE_FLAGS_STRICT_UNITS = 2
 
 
-# Set defaults for generating MAVLink code. This is done globally because it is used by the GUI too
+# Set defaults for generating MAVLink code. This is done globally because it is used by the GUI too.
 DEFAULT_LANGUAGE = 'C'
 DEFAULT_VALIDATE_FLAGS = VALIDATE_FLAGS_VALIDATE
+DEFAULT_PARSE_FLAGS = mavflags.PARSE_FLAGS_NONE
 
-
-# List of the supported languages. This is done globally because it is used by the GUI too
+# List of supported languages. This is done globally because it is used by the GUI too.
 supportedLanguages = ["C"]
 
 
 class Opts(object):
-    def __init__(self, output, language=DEFAULT_LANGUAGE, validate_flags=DEFAULT_VALIDATE_FLAGS, parse_flags=mavflags.PARSE_FLAGS_DEFAULT):
+    def __init__(self, output, language=DEFAULT_LANGUAGE, validate_flags=DEFAULT_VALIDATE_FLAGS, parse_flags=DEFAULT_PARSE_FLAGS):
         self.language = language
         self.output = output
         self.validate_flags = validate_flags
@@ -111,7 +117,7 @@ def fmavgen(opts, args):
         validate_func = None
         
     if opts.language == 'c':
-        from .C import fmav_gen_c as mavgen_c
+        from generator.C import fmav_gen_c as mavgen_c
         mavgen_c.generate(opts.output, file_set, validate_func, parse_flags=opts.parse_flags)
     else:
         print("ERROR fmavgen(): Unsupported language %s" % opts.language)
@@ -120,4 +126,42 @@ def fmavgen(opts, args):
 
 
 if __name__ == "__main__":
-    raise DeprecationWarning("Executable was moved to pymavlink.tools.mavgen")
+    from argparse import ArgumentParser as AP
+
+    p = AP(description="Generate fastMAVLink C code from a XML message definition file.")
+    p.add_argument("-o", "--output", dest="output",
+                   default = "out", 
+                   help = "output directory [default: %(default)s]")
+    p.add_argument("-l", "--lang", dest="language", choices=supportedLanguages, 
+                   default = 'c', 
+                   help = "language of generated code [default: %(default)s]")
+    p.add_argument("--no-validate", dest="no_validate", action='store_true',
+                   default = False, 
+                   help = "Do not perform XML validation [default: %(default)s]")
+    p.add_argument("--strict-units", dest="strict_units", action='store_true',
+                   default = False, 
+                   help = "Perform validation of units attributes [default: %(default)s]")
+    p.add_argument("--no-enum-missing-warning", dest="no_enum", action='store_true',
+                   default = False, 
+                   help = "Do not warn if enum values are missing [default: %(default)s]")
+    p.add_argument("dialects", metavar="XML", nargs="+", 
+                   help = "MAVLink XML definition files")
+    opts = p.parse_args()
+    
+    opts.validate_flags = VALIDATE_FLAGS_VALIDATE
+    if opts.no_validate:
+        opts.validate_flags = VALIDATE_FLAGS_NONE
+    if opts.strict_units:
+        opts.validate_flags += VALIDATE_FLAGS_STRICT_UNITS
+    opts.parse_flags = mavflags.PARSE_FLAGS_WARNING_ENUM_VALUE_MISSING
+    if opts.no_enum:
+        opts.parse_flags -= mavflags.PARSE_FLAGS_WARNING_ENUM_VALUE_MISSING
+    args = opts.dialects
+
+    try:
+        fmavgen(opts, args)
+        print('Headers generated successfully.')
+    except Exception as ex:
+        exStr = str(ex)
+        print('Error Generating Headers','{0!s}'.format(exStr))
+        exit()

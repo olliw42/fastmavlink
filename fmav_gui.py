@@ -9,7 +9,7 @@ quite massively modified and modernized by OlliW
 as part of the fastMavlink project
 supports only MAVLink v2, and C currently
 
-fmav_gui.py is a GUI front-end for fmavgen.py
+fmav_gui.py is a GUI front-end for fmav_gen.py
 """
 import os
 import re   
@@ -42,7 +42,7 @@ class Application(Frame):
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.pack_propagate(0)
-        self.grid( sticky=N+S+E+W)
+        self.grid(sticky=N+S+E+W)
         self.createWidgets()
 
     """\
@@ -168,7 +168,7 @@ class Application(Frame):
             self.my_validate_flags += mavgen.VALIDATE_FLAGS_VALIDATE
         if self.strict_units_value.get():
             self.my_validate_flags += mavgen.VALIDATE_FLAGS_STRICT_UNITS
-        self.my_parse_flags = mavflags.PARSE_FLAGS_DEFAULT
+        self.my_parse_flags = mavflags.PARSE_FLAGS_NONE
         if self.warning_enum_value_missing_value.get():
             self.my_parse_flags += mavflags.PARSE_FLAGS_WARNING_ENUM_VALUE_MISSING
         opts = mavgen.Opts(self.out_value.get(), 
@@ -178,7 +178,7 @@ class Application(Frame):
                            );
         args = [self.xml_value.get()]
         try:
-            mavgen.fmavgen(opts,args)
+            mavgen.fmavgen(opts, args)
             tkinter.messagebox.showinfo('Successfully Generated Headers', 'Headers generated successfully.')
 
         except Exception as ex:
@@ -186,20 +186,19 @@ class Application(Frame):
             tkinter.messagebox.showerror('Error Generating Headers','{0!s}'.format(exStr))
             return
 
-"""\
-Format the mavgen exceptions by removing 'ERROR: '.
-"""
-def formatErrorMessage(message):
-    reObj = re.compile(r'^(ERROR):\s+',re.M);
-    matches = re.findall(reObj, message);
-    prefix = ("An error occurred in fmavgen:\n" if len(matches) == 1 else "Errors occurred in fmavgen:\n")
-    message = re.sub(reObj, '\n', message);
-
-    return prefix + message
-
+    """\
+    Format the mavgen exceptions by removing 'ERROR: '.
+    """
+    def formatErrorMessage(message):
+        reObj = re.compile(r'^(ERROR):\s+', re.M);
+        matches = re.findall(reObj, message);
+        prefix = ("An error occurred in fmavgen:\n" if len(matches) == 1 else "Errors occurred in fmavgen:\n")
+        message = re.sub(reObj, '\n', message);
+        return prefix + message
 
 # End of Application class
 # ---------------------------------
+
 
 # ---------------------------------
 # Start

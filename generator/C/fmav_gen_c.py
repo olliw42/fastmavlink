@@ -153,7 +153,7 @@ def generateForOneXml(outputdir, xml):
         generateMessageHeaderFile(dialectdir, msg)
 
 
-def generate(outputdir, filenames, validate_func=None, parse_flags=mavflags.PARSE_FLAGS_DEFAULT):
+def generate(outputdir, filenames, validate_func=None, parse_flags=mavflags.PARSE_FLAGS_NONE):
     '''generate complete MAVLink C implemenation'''
     for fname in filenames:
         print("Run XML %s" % os.path.basename(fname)) 

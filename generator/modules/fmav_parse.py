@@ -585,7 +585,7 @@ Main function and helpers to generate XML containers
 This is what you want to call from the outside.
 '''
 
-def generateXmlList(filename, validate_func=None, parse_flags=mavflags.PARSE_FLAGS_DEFAULT, MAXIMUM_INCLUDE_FILE_NESTING=5):
+def generateXmlList(filename, validate_func=None, parse_flags=mavflags.PARSE_FLAGS_NONE, MAXIMUM_INCLUDE_FILE_NESTING=5):
     '''Expands includes of the given XML file. Even though not really needed, it
     takes the liberty to return an ordered XML list, which reflects the proper
     include tree.'''
