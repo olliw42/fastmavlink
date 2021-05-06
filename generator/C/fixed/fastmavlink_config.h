@@ -79,7 +79,7 @@
 // Alternatively, and usually better, one can define one's own FASTMAVLINK_MESSAGE_CRCS
 // using the required message entry tokens. It is then MOST important to keep the sequence
 // in order since otherwise the default binary search will fail. For instance:
-//
+/*
 // #include "path_to_fastmavlink/xyzdialect/fmav_msg_entries.h"
 // #define FASTMAVLINK_MESSAGE_CRCS {\
 //     FASTMAVLINK_MSG_ENTRY_PARAM_REQUEST_READ,\
@@ -88,7 +88,7 @@
 //     FASTMAVLINK_MSG_ENTRY_COMMAND_LONG,\
 //     FASTMAVLINK_MSG_ENTRY_AUTOPILOT_VERSION_REQUEST }
 // #include "path_to_fastmavlink/xyzdialect/xyzdialect.h"
-//
+*/
 // Note that (usually) one only needs to include those messages which should be received/parsed,
 // since the message entries list is searched only by the parser. Therefore, the number of
 // message entries to include can often be surprisingly small.
