@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Mon May 03 2021"
+#define FASTMAVLINK_BUILD_DATE  "Thu May 06 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -220,7 +220,8 @@ typedef enum MAV_QSHOT_MODE {
     MAV_QSHOT_MODE_POI_TARGETING = 6,  // Start gimbal tracking the point specified by Lat, Lon, Alt. 
     MAV_QSHOT_MODE_SYSID_TARGETING = 7,  // Start gimbal tracking the system with specified system ID. 
     MAV_QSHOT_MODE_CABLECAM_2POINT = 8,  // Start 2-point cable cam quick shot. 
-    MAV_QSHOT_MODE_ENUM_END = 9,  // end marker
+    MAV_QSHOT_MODE_HOME_TARGETING = 9,  // Start gimbal tracking the home location. 
+    MAV_QSHOT_MODE_ENUM_END = 10,  // end marker
 } MAV_QSHOT_MODE;
 #endif
 

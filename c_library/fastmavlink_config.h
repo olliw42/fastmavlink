@@ -45,18 +45,17 @@
 
 // Allows to control zerofilling of payloads.
 //
-// The receive functions, i.e., the parsers, always zerofill the payload, as this must be
-// done for correct operation of the unpack/decode/get_field functions.
-// However, the message generator functions, i.e., the pack/encode functions, do not need
-// to do this for correct operation when used in the typical use case, which consists of
-// generating and then sending the message. However, when unpack/decode/get_field functions
-// are called on the generated messages, this can cause malfunction, as they require
-// zerofilled payloads.
+// The receive/parser functions always zerofill the payload, as this is required for
+// correct operation of the unpack/decode/get_field functions. The message generator
+// functions in contrast, i.e., the pack/encode functions, do not need to do this for
+// correct operation when used in the typical use case, which consists of generating
+// and then sending the message. However, when unpack/decode/get_field functions are called
+// on the generated messages, this can cause malfunction, as they require zerofilled payloads.
 // Zerrofilling is somewhat costly.
-// Hence this flag allows you to control if it should be done always or not.
-// It is set to always (= 1) per default, to prevenet unexpected results for the novice.
-// This has a performance cost, so disable for best performance and call fmav_msg_zerofill()
-// when it is needed.
+// Hence this flag allows you to control if zerofilling should always be done or not.
+// It is enabled (= 1) per default, to prevent unexpected results for the novice. This has
+// a performance cost, so disable for best performance and call fmav_msg_zerofill() when it
+// is needed.
 #ifndef FASTMAVLINK_ALWAYS_ZEROFILL
   #define FASTMAVLINK_ALWAYS_ZEROFILL  1 // always zerofills payload
 #endif
@@ -65,12 +64,20 @@
 // Allows to modify the message entries list.
 //
 // If only relatively few MAVLink messages are used, efficiency can be much improved, both
-// memory and computational time wise, by limiting the known message entries to only those
-// which are used.
-// This can be achieved by commenting out in the thedialect_msg_entries.h file all those
+// memory and computational time wise, by limiting the message entries to those messages
+// which are explictely required.
+//
+// This has two effects:
+// First, the flash space can be much reduced since not all message entries are stored but
+// only those which are needed.
+// Second, cpu time for parsing can be much reduced since the list of message entries is
+// searched for the received message, and a shorter list obviously relates to fast search time.
+// 
+// It can be achieved by commenting out in the file xyzdialect_msg_entries.h all those
 // message entries which are not needed.
+//
 // Alternatively, and usually better, one can define one's own FASTMAVLINK_MESSAGE_CRCS
-// using the required message entry okens. It is then MOST important to keep the sequence
+// using the required message entry tokens. It is then MOST important to keep the sequence
 // in order since otherwise the default binary search will fail. For instance:
 //
 // #include "path_to_fastmavlink/xyzdialect/fmav_msg_entries.h"
@@ -81,6 +88,10 @@
 //     FASTMAVLINK_MSG_ENTRY_COMMAND_LONG,\
 //     FASTMAVLINK_MSG_ENTRY_AUTOPILOT_VERSION_REQUEST }
 // #include "path_to_fastmavlink/xyzdialect/xyzdialect.h"
+//
+// Note that (usually) one only needs to include those messages which should be received/parsed,
+// since the message entries list is searched only by the parser. Therefore, the number of
+// message entries to include can often be surprisingly small.
 /*
 #define FASTMAVLINK_MESSAGE_CRCS
 */

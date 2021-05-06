@@ -45,10 +45,10 @@
 
 // Allows to control zerofilling of payloads.
 //
-// The receive/parser functions always zerofill the payload, as this must be done for
-// correct operation of the unpack/decode/get_field functions. However, the message
-// generator functions in contrast, i.e., the pack/encode functions, do not need to do this
-// for correct operation when used in the typical use case, which consists of generating
+// The receive/parser functions always zerofill the payload, as this is required for
+// correct operation of the unpack/decode/get_field functions. The message generator
+// functions in contrast, i.e., the pack/encode functions, do not need to do this for
+// correct operation when used in the typical use case, which consists of generating
 // and then sending the message. However, when unpack/decode/get_field functions are called
 // on the generated messages, this can cause malfunction, as they require zerofilled payloads.
 // Zerrofilling is somewhat costly.
@@ -89,7 +89,7 @@
 //     FASTMAVLINK_MSG_ENTRY_AUTOPILOT_VERSION_REQUEST }
 // #include "path_to_fastmavlink/xyzdialect/xyzdialect.h"
 //
-// Note that (usually) one only needs to include the messages which should be received/parsed,
+// Note that (usually) one only needs to include those messages which should be received/parsed,
 // since the message entries list is searched only by the parser. Therefore, the number of
 // message entries to include can often be surprisingly small.
 /*

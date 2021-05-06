@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Mon May 03 2021"
+#define FASTMAVLINK_BUILD_DATE  "Thu May 06 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -499,7 +499,8 @@ typedef enum COMP_METADATA_TYPE {
     COMP_METADATA_TYPE_PARAMETER = 1,  // Parameter meta data. 
     COMP_METADATA_TYPE_COMMANDS = 2,  // Meta data which specifies the commands the vehicle supports. (WIP) 
     COMP_METADATA_TYPE_PERIPHERALS = 3,  // Meta data which specifies potential external peripherals that do not talk MAVLink 
-    COMP_METADATA_TYPE_ENUM_END = 4,  // end marker
+    COMP_METADATA_TYPE_EVENTS = 4,  // Meta data for events interface 
+    COMP_METADATA_TYPE_ENUM_END = 5,  // end marker
 } COMP_METADATA_TYPE;
 #endif
 
@@ -2080,6 +2081,24 @@ typedef enum MAG_CAL_STATUS {
 } MAG_CAL_STATUS;
 #endif
 
+
+#ifndef FASTMAVLINK_HAS_ENUM_MAV_EVENT_ERROR_REASON
+#define FASTMAVLINK_HAS_ENUM_MAV_EVENT_ERROR_REASON
+typedef enum MAV_EVENT_ERROR_REASON {
+    MAV_EVENT_ERROR_REASON_UNAVAILABLE = 0,  // The requested event is not available (anymore). 
+    MAV_EVENT_ERROR_REASON_ENUM_END = 1,  // end marker
+} MAV_EVENT_ERROR_REASON;
+#endif
+
+
+#ifndef FASTMAVLINK_HAS_ENUM_MAV_EVENT_CURRENT_SEQUENCE_FLAGS
+#define FASTMAVLINK_HAS_ENUM_MAV_EVENT_CURRENT_SEQUENCE_FLAGS
+typedef enum MAV_EVENT_CURRENT_SEQUENCE_FLAGS {
+    MAV_EVENT_CURRENT_SEQUENCE_FLAGS_RESET = 1,  // A sequence reset has happened (e.g. vehicle reboot). 
+    MAV_EVENT_CURRENT_SEQUENCE_FLAGS_ENUM_END = 2,  // end marker
+} MAV_EVENT_CURRENT_SEQUENCE_FLAGS;
+#endif
+
 #endif // FASTMAVLINK_DO_NOT_INCLUDE_ENUMS
 
 
@@ -2288,6 +2307,10 @@ typedef enum MAG_CAL_STATUS {
 #include "./mavlink_msg_component_information.h"
 #include "./mavlink_msg_play_tune_v2.h"
 #include "./mavlink_msg_supported_tunes.h"
+#include "./mavlink_msg_event.h"
+#include "./mavlink_msg_current_event_sequence.h"
+#include "./mavlink_msg_request_event.h"
+#include "./mavlink_msg_response_event_error.h"
 #include "./mavlink_msg_wheel_distance.h"
 #include "./mavlink_msg_winch_status.h"
 #include "./mavlink_msg_open_drone_id_basic_id.h"
