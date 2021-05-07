@@ -21,9 +21,11 @@ You don't believe all this can be true, you think it must be exaggerated? Well, 
 
 The fastMavlink library is used in two projects of mine, the [STorM32 gimbal controller](http://www.olliw.eu/2013/storm32bgc/) and the [MAVLink for OpenTx](http://www.olliw.eu/2020/olliwtelem/) projects. So, it can claim some maturity. Yet, obviously, the software is offered as is with no explicit or implied warranty, and there is plenty of room to further improve, extend and advance it. Suggestions are welcome.
 
+
 ## Licence ##
 
 Yet to be determined. It will be a permissive licence, along the ideas of the original MAVLink project. That is, the fastMavlink C code library can be used in a closed source application without copyright issues and without any limitations.
+
 
 ## Limitations ##
 
@@ -37,7 +39,6 @@ Messages can be generated and emitted only in MAVLink v2 format, and without sig
 Please see the chapter below on the [C Code Architecture](#c-code-architecture) for a general description. 
 
 For examples please go to [The fastMavlink Library: Examples](examples/).
-
 
 In order to use the dialect xyzdialect.xml, include 
 
@@ -67,6 +68,13 @@ Please see [The fastMavlink Library: Test Suite](tests/).
 As common with MAVLink, the code is created from the MAVLink XML definition files using a 'code generator', which is nothing else than a Python script which is run.
 
 Please see [The fastMavlink Library: Code Generation](generator/) for more details and documentation.
+
+
+## Efficiency and Performance ##
+
+Well, that's certainly worth an extra article.
+
+Please see [The fastMavlink Library: Efficiency and Performance](PERFOMANCE.md).
 
 
 ## C Code Architecture ##
