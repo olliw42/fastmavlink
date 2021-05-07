@@ -61,6 +61,19 @@
 #endif
 
 
+// Allows to modify the message entry structure.
+//
+// When defined, the msgid field in the fmav_message_entry_t structure is declared as
+// uint32_t:24, which makes the fmav_message_entry_t structure exactly 8 bytes wide.
+// Depending on the system and compiler (= alignment) this can lead to a much reduced
+// RAM footprint for the message entries list, but also can result in larger cpu time.
+//
+// Per default this token is not defined, which for most cases should be ok.
+/*
+#define FASTMAVLINK_MESSAGE_ENTRY_MSGID24BIT
+*/
+
+
 // Allows to modify the message entries list.
 //
 // If only relatively few MAVLink messages are used, efficiency can be much improved, both
