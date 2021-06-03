@@ -43,11 +43,12 @@ For examples please go to [The fastMavlink Library: Examples](examples/).
 In order to use the dialect xyzdialect.xml, include 
 
 ```C
-#include "path_to_code_generator_output/xyzdialect/xyzdialect.h"
+#include "path_to_c_code/xyzdialect/xyzdialect.h"
 ```
 
-into your project. Note that it is not `".../xyzdialect/mavlink.h"` as it would be for pymavlink-mavgen. If you would do so with fastMavlink, it would enable the [pymavlink-mavgen mimicry](#pymavlink-mavgen-mimicry).
+into your project, where `path_to_c_code` is the path to the C code on your system. Note that it is not `".../xyzdialect/mavlink.h"` as it would be for pymavlink-mavgen. If you would do so with fastMavlink, it would enable the [pymavlink-mavgen mimicry](#pymavlink-mavgen-mimicry).
 
+The simplest is to use the pre-generated C code provided with this repo in the c_library subfolder. The include path would then look like `#inlcude "location_of_github_repos/fastmavlink/c_ibrary/xyzdialect/xyzdialect.h"`. Alternatively you can gnerate the C code using the python generator scripts, see [Code Generation](#code-generation), in which case `path_to_c_code` would point to the generator's output directory.
 
 ## Router ##
 
