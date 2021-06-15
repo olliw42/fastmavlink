@@ -4,10 +4,9 @@ Copyright Andrew Tridgell 2011
 Released under GNU GPL version 3 or later
 
 The fastMavlink library
-(c) OlliW, OlliW42, www.olliw.eu
-quite massively modified and modernized by OlliW
+by OlliW, OlliW42, www.olliw.eu
+quite massively modified and modernized
 as part of the fastMavlink project
-supports only MAVLink v2
 '''
 import errno
 import operator
