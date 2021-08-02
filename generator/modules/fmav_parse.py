@@ -492,8 +492,8 @@ class MAVParseXml(object):
             self.messages_all_by_id[msg.id] = msg
 
     def __str__(self):
-        return "MAVParseXml for %s from %s (%u message, %u enums)" % (
-               self.basename, self.filename, len(self.messages), len(self.enums))
+        return "MAVParseXml for %s from %s (%u messages, %u enums, %u includes)" % (
+               self.basename, self.filename, len(self.messages), len(self.enums), len(self.includes))
 
 
 '''
