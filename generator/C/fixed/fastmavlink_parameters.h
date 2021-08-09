@@ -87,7 +87,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_param_set_value(uint16_t index, floa
 
     fmav_param_union_t param_entry;
     param_entry.p_float = value;
-    
+
     switch( fmav_param_list[index].type ){
         case MAV_PARAM_TYPE_UINT8:  *((uint8_t*) (fmav_param_list[index].ptr)) = param_entry.p_uint8;  return 1;
         case MAV_PARAM_TYPE_INT8:   *((int8_t*)  (fmav_param_list[index].ptr)) = param_entry.p_int8;   return 1;
@@ -97,7 +97,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_param_set_value(uint16_t index, floa
         case MAV_PARAM_TYPE_INT32:  *((int32_t*) (fmav_param_list[index].ptr)) = param_entry.p_int32;  return 1;
         case MAV_PARAM_TYPE_REAL32: *((float*)   (fmav_param_list[index].ptr)) = param_entry.p_float;  return 1;
     }
-    
+
     return 0;
 }
 
@@ -123,36 +123,37 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_param_get_param_value(fmav_param_val
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_param_do_param_request_read(uint16_t* index, fmav_param_request_read_t* payload)
 {
-    *index = (payload->param_index < 0) ? fmav_param_find_index(payload->param_id) : payload->param_index;
+    int16_t i = (payload->param_index < 0) ? fmav_param_find_index(payload->param_id) : payload->param_index;
 
-    if (*index < 0) return 0; // not found
+    if (i < 0) return 0; // not found
 
-    if (*index >= FASTMAVLINK_PARAM_NUM) return 0;
+    if (i >= FASTMAVLINK_PARAM_NUM) return 0;
 
+    *index = i;
     return 1;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_param_do_param_set(uint16_t* index, fmav_param_set_t* payload)
 {
-    *index = fmav_param_find_index(payload->param_id);
+    int16_t i = fmav_param_find_index(payload->param_id);
 
-    if (*index < 0) return 0; // not found
-    
-    if (payload->param_type != fmav_param_list[*index].type) return 0; // ups ...
+    if (i < 0) return 0; // not found
+
+    if (payload->param_type != fmav_param_list[i].type) return 0; // ups ...
 
 //    fmav_param_set_value(*index, &(payload->param_value));
-
+    *index = i;
     return 1;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_param_do_cmd_do_set_parameter(uint16_t* index, float param1)
 {
-    *index = param1; 
+    *index = param1;
 
     if (*index >= FASTMAVLINK_PARAM_NUM) return 0;
-    
+
     return 1;
 }
 
