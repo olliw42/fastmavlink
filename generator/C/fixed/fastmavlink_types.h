@@ -154,9 +154,9 @@ typedef struct _fmav_param_union {
 
 // for the sake of convenience
 typedef struct _fmav_param_entry {
-    void* ptr;
-    uint8_t type;
-    const char* name; // this is a C string, including a terminating '\0'
+    void* ptr; // pointer to variable storing the parameter value
+    uint8_t type; // type of parameter (MAV_PARAM_TYPE_XXX)
+    const char* name; // this is a C string, including a terminating '\0', do not confuse with MAVLink's param_id
 } fmav_param_entry_t;
 
 
