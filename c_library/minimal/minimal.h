@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Tue Jun 15 2021"
+#define FASTMAVLINK_BUILD_DATE  "Tue Aug 17 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -118,7 +118,8 @@ typedef enum MAV_TYPE {
     MAV_TYPE_ODID = 34,  // Open Drone ID. See https://mavlink.io/en/services/opendroneid.html. 
     MAV_TYPE_DECAROTOR = 35,  // Decarotor 
     MAV_TYPE_BATTERY = 36,  // Battery 
-    MAV_TYPE_ENUM_END = 37,  // end marker
+    MAV_TYPE_PARACHUTE = 37,  // Parachute 
+    MAV_TYPE_ENUM_END = 38,  // end marker
 } MAV_TYPE;
 #endif
 
@@ -279,6 +280,7 @@ typedef enum MAV_COMPONENT {
     MAV_COMP_ID_PERIPHERAL = 158,  // Generic autopilot peripheral component ID. Meant for devices that do not implement the parameter microservice. 
     MAV_COMP_ID_QX1_GIMBAL = 159,  // Gimbal ID for QX1. 
     MAV_COMP_ID_FLARM = 160,  // FLARM collision alert component. 
+    MAV_COMP_ID_PARACHUTE = 161,  // Parachute component. 
     MAV_COMP_ID_GIMBAL2 = 171,  // Gimbal #2. 
     MAV_COMP_ID_GIMBAL3 = 172,  // Gimbal #3. 
     MAV_COMP_ID_GIMBAL4 = 173,  // Gimbal #4 
@@ -288,6 +290,9 @@ typedef enum MAV_COMPONENT {
     MAV_COMP_ID_BATTERY2 = 181,  // Battery #2. 
     MAV_COMP_ID_MISSIONPLANNER = 190,  // Component that can generate/supply a mission flight plan (e.g. GCS or developer API). 
     MAV_COMP_ID_ONBOARD_COMPUTER = 191,  // Component that lives on the onboard computer (companion computer) and has some generic functionalities, such as settings system parameters and monitoring the status of some processes that don't directly speak mavlink and so on. 
+    MAV_COMP_ID_ONBOARD_COMPUTER2 = 192,  // Component that lives on the onboard computer (companion computer) and has some generic functionalities, such as settings system parameters and monitoring the status of some processes that don't directly speak mavlink and so on. 
+    MAV_COMP_ID_ONBOARD_COMPUTER3 = 193,  // Component that lives on the onboard computer (companion computer) and has some generic functionalities, such as settings system parameters and monitoring the status of some processes that don't directly speak mavlink and so on. 
+    MAV_COMP_ID_ONBOARD_COMPUTER4 = 194,  // Component that lives on the onboard computer (companion computer) and has some generic functionalities, such as settings system parameters and monitoring the status of some processes that don't directly speak mavlink and so on. 
     MAV_COMP_ID_PATHPLANNER = 195,  // Component that finds an optimal path between points based on a certain constraint (e.g. minimum snap, shortest path, cost, etc.). 
     MAV_COMP_ID_OBSTACLE_AVOIDANCE = 196,  // Component that plans a collision free path between two points. 
     MAV_COMP_ID_VISUAL_INERTIAL_ODOMETRY = 197,  // Component that provides position estimates using VIO techniques. 

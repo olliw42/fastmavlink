@@ -27,24 +27,31 @@ typedef struct _fmav_smart_battery_info_t {
     uint8_t type;
     char serial_number[16];
     char device_name[50];
+    uint16_t charging_maximum_voltage;
+    uint8_t cells_in_series;
+    uint32_t discharge_maximum_current;
+    uint32_t discharge_maximum_burst_current;
+    char manufacture_date[11];
 }) fmav_smart_battery_info_t;
 
 
 #define FASTMAVLINK_MSG_ID_SMART_BATTERY_INFO  370
 
-#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_PAYLOAD_LEN_MAX  87
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_PAYLOAD_LEN_MAX  109
 #define FASTMAVLINK_MSG_SMART_BATTERY_INFO_CRCEXTRA  75
 
 #define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FLAGS  0
 #define FASTMAVLINK_MSG_SMART_BATTERY_INFO_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_SMART_BATTERY_INFO_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FRAME_LEN_MAX  112
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FRAME_LEN_MAX  134
 
 #define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_SERIAL_NUMBER_NUM  16 // number of elements in array
 #define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_SERIAL_NUMBER_LEN  16 // length of array = number of bytes
 #define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_DEVICE_NAME_NUM  50 // number of elements in array
 #define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_DEVICE_NAME_LEN  50 // length of array = number of bytes
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_MANUFACTURE_DATE_NUM  11 // number of elements in array
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_MANUFACTURE_DATE_LEN  11 // length of array = number of bytes
 
 #define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_CAPACITY_FULL_SPECIFICATION_OFS  0
 #define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_CAPACITY_FULL_OFS  4
@@ -58,6 +65,11 @@ typedef struct _fmav_smart_battery_info_t {
 #define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_TYPE_OFS  20
 #define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_SERIAL_NUMBER_OFS  21
 #define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_DEVICE_NAME_OFS  37
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_CHARGING_MAXIMUM_VOLTAGE_OFS  87
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_CELLS_IN_SERIES_OFS  89
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_DISCHARGE_MAXIMUM_CURRENT_OFS  90
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_DISCHARGE_MAXIMUM_BURST_CURRENT_OFS  94
+#define FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_MANUFACTURE_DATE_OFS  98
 
 
 //----------------------------------------
@@ -68,7 +80,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_smart_battery_info_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t id, uint8_t battery_function, uint8_t type, int32_t capacity_full_specification, int32_t capacity_full, uint16_t cycle_count, const char* serial_number, const char* device_name, uint16_t weight, uint16_t discharge_minimum_voltage, uint16_t charging_minimum_voltage, uint16_t resting_minimum_voltage,
+    uint8_t id, uint8_t battery_function, uint8_t type, int32_t capacity_full_specification, int32_t capacity_full, uint16_t cycle_count, const char* serial_number, const char* device_name, uint16_t weight, uint16_t discharge_minimum_voltage, uint16_t charging_minimum_voltage, uint16_t resting_minimum_voltage, uint16_t charging_maximum_voltage, uint8_t cells_in_series, uint32_t discharge_maximum_current, uint32_t discharge_maximum_burst_current, const char* manufacture_date,
     fmav_status_t* _status)
 {
     fmav_smart_battery_info_t* _payload = (fmav_smart_battery_info_t*)_msg->payload;
@@ -83,8 +95,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_smart_battery_info_pack(
     _payload->id = id;
     _payload->battery_function = battery_function;
     _payload->type = type;
+    _payload->charging_maximum_voltage = charging_maximum_voltage;
+    _payload->cells_in_series = cells_in_series;
+    _payload->discharge_maximum_current = discharge_maximum_current;
+    _payload->discharge_maximum_burst_current = discharge_maximum_burst_current;
     memcpy(&(_payload->serial_number), serial_number, sizeof(char)*16);
     memcpy(&(_payload->device_name), device_name, sizeof(char)*50);
+    memcpy(&(_payload->manufacture_date), manufacture_date, sizeof(char)*11);
 
     _msg->sysid = sysid;
     _msg->compid = compid;
@@ -107,7 +124,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_smart_battery_info_encode(
 {
     return fmav_msg_smart_battery_info_pack(
         _msg, sysid, compid,
-        _payload->id, _payload->battery_function, _payload->type, _payload->capacity_full_specification, _payload->capacity_full, _payload->cycle_count, _payload->serial_number, _payload->device_name, _payload->weight, _payload->discharge_minimum_voltage, _payload->charging_minimum_voltage, _payload->resting_minimum_voltage,
+        _payload->id, _payload->battery_function, _payload->type, _payload->capacity_full_specification, _payload->capacity_full, _payload->cycle_count, _payload->serial_number, _payload->device_name, _payload->weight, _payload->discharge_minimum_voltage, _payload->charging_minimum_voltage, _payload->resting_minimum_voltage, _payload->charging_maximum_voltage, _payload->cells_in_series, _payload->discharge_maximum_current, _payload->discharge_maximum_burst_current, _payload->manufacture_date,
         _status);
 }
 
@@ -116,7 +133,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_smart_battery_info_pack_to_fram
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t id, uint8_t battery_function, uint8_t type, int32_t capacity_full_specification, int32_t capacity_full, uint16_t cycle_count, const char* serial_number, const char* device_name, uint16_t weight, uint16_t discharge_minimum_voltage, uint16_t charging_minimum_voltage, uint16_t resting_minimum_voltage,
+    uint8_t id, uint8_t battery_function, uint8_t type, int32_t capacity_full_specification, int32_t capacity_full, uint16_t cycle_count, const char* serial_number, const char* device_name, uint16_t weight, uint16_t discharge_minimum_voltage, uint16_t charging_minimum_voltage, uint16_t resting_minimum_voltage, uint16_t charging_maximum_voltage, uint8_t cells_in_series, uint32_t discharge_maximum_current, uint32_t discharge_maximum_burst_current, const char* manufacture_date,
     fmav_status_t* _status)
 {
     fmav_smart_battery_info_t* _payload = (fmav_smart_battery_info_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -131,8 +148,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_smart_battery_info_pack_to_fram
     _payload->id = id;
     _payload->battery_function = battery_function;
     _payload->type = type;
+    _payload->charging_maximum_voltage = charging_maximum_voltage;
+    _payload->cells_in_series = cells_in_series;
+    _payload->discharge_maximum_current = discharge_maximum_current;
+    _payload->discharge_maximum_burst_current = discharge_maximum_burst_current;
     memcpy(&(_payload->serial_number), serial_number, sizeof(char)*16);
     memcpy(&(_payload->device_name), device_name, sizeof(char)*50);
+    memcpy(&(_payload->manufacture_date), manufacture_date, sizeof(char)*11);
 
     _buf[5] = sysid;
     _buf[6] = compid;
@@ -157,7 +179,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_smart_battery_info_encode_to_fr
 {
     return fmav_msg_smart_battery_info_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->id, _payload->battery_function, _payload->type, _payload->capacity_full_specification, _payload->capacity_full, _payload->cycle_count, _payload->serial_number, _payload->device_name, _payload->weight, _payload->discharge_minimum_voltage, _payload->charging_minimum_voltage, _payload->resting_minimum_voltage,
+        _payload->id, _payload->battery_function, _payload->type, _payload->capacity_full_specification, _payload->capacity_full, _payload->cycle_count, _payload->serial_number, _payload->device_name, _payload->weight, _payload->discharge_minimum_voltage, _payload->charging_minimum_voltage, _payload->resting_minimum_voltage, _payload->charging_maximum_voltage, _payload->cells_in_series, _payload->discharge_maximum_current, _payload->discharge_maximum_burst_current, _payload->manufacture_date,
         _status);
 }
 
@@ -167,7 +189,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_smart_battery_info_encode_to_fr
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_smart_battery_info_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint8_t id, uint8_t battery_function, uint8_t type, int32_t capacity_full_specification, int32_t capacity_full, uint16_t cycle_count, const char* serial_number, const char* device_name, uint16_t weight, uint16_t discharge_minimum_voltage, uint16_t charging_minimum_voltage, uint16_t resting_minimum_voltage,
+    uint8_t id, uint8_t battery_function, uint8_t type, int32_t capacity_full_specification, int32_t capacity_full, uint16_t cycle_count, const char* serial_number, const char* device_name, uint16_t weight, uint16_t discharge_minimum_voltage, uint16_t charging_minimum_voltage, uint16_t resting_minimum_voltage, uint16_t charging_maximum_voltage, uint8_t cells_in_series, uint32_t discharge_maximum_current, uint32_t discharge_maximum_burst_current, const char* manufacture_date,
     fmav_status_t* _status)
 {
     fmav_smart_battery_info_t _payload;
@@ -182,8 +204,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_smart_battery_info_pack_to_seri
     _payload.id = id;
     _payload.battery_function = battery_function;
     _payload.type = type;
+    _payload.charging_maximum_voltage = charging_maximum_voltage;
+    _payload.cells_in_series = cells_in_series;
+    _payload.discharge_maximum_current = discharge_maximum_current;
+    _payload.discharge_maximum_burst_current = discharge_maximum_burst_current;
     memcpy(&(_payload.serial_number), serial_number, sizeof(char)*16);
     memcpy(&(_payload.device_name), device_name, sizeof(char)*50);
+    memcpy(&(_payload.manufacture_date), manufacture_date, sizeof(char)*11);
 
     return fmav_finalize_serial(
         sysid,
@@ -318,6 +345,38 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_smart_battery_info_get_field_typ
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_smart_battery_info_get_field_charging_maximum_voltage(const fmav_message_t* msg)
+{
+    uint16_t r;
+    memcpy(&r, &(msg->payload[87]), sizeof(uint16_t));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_smart_battery_info_get_field_cells_in_series(const fmav_message_t* msg)
+{
+    uint8_t r;
+    memcpy(&r, &(msg->payload[89]), sizeof(uint8_t));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_smart_battery_info_get_field_discharge_maximum_current(const fmav_message_t* msg)
+{
+    uint32_t r;
+    memcpy(&r, &(msg->payload[90]), sizeof(uint32_t));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_smart_battery_info_get_field_discharge_maximum_burst_current(const fmav_message_t* msg)
+{
+    uint32_t r;
+    memcpy(&r, &(msg->payload[94]), sizeof(uint32_t));
+    return r;
+}
+
+
 FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_smart_battery_info_get_field_serial_number_ptr(const fmav_message_t* msg)
 {
     return (char*)&(msg->payload[21]);
@@ -344,6 +403,19 @@ FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_smart_battery_info_get_field_device
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_smart_battery_info_get_field_manufacture_date_ptr(const fmav_message_t* msg)
+{
+    return (char*)&(msg->payload[98]);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_smart_battery_info_get_field_manufacture_date(uint16_t index, const fmav_message_t* msg)
+{
+    if (index >= FASTMAVLINK_MSG_SMART_BATTERY_INFO_FIELD_MANUFACTURE_DATE_NUM) return 0;
+    return ((char*)&(msg->payload[98]))[index];
+}
+
+
 //----------------------------------------
 //-- Pymavlink wrappers
 //----------------------------------------
@@ -353,9 +425,9 @@ FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_smart_battery_info_get_field_device
 
 #define mavlink_smart_battery_info_t  fmav_smart_battery_info_t
 
-#define MAVLINK_MSG_ID_SMART_BATTERY_INFO_LEN  87
+#define MAVLINK_MSG_ID_SMART_BATTERY_INFO_LEN  109
 #define MAVLINK_MSG_ID_SMART_BATTERY_INFO_MIN_LEN  87
-#define MAVLINK_MSG_ID_370_LEN  87
+#define MAVLINK_MSG_ID_370_LEN  109
 #define MAVLINK_MSG_ID_370_MIN_LEN  87
 
 #define MAVLINK_MSG_ID_SMART_BATTERY_INFO_CRC  75
@@ -363,6 +435,7 @@ FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_smart_battery_info_get_field_device
 
 #define MAVLINK_MSG_SMART_BATTERY_INFO_FIELD_SERIAL_NUMBER_LEN 16
 #define MAVLINK_MSG_SMART_BATTERY_INFO_FIELD_DEVICE_NAME_LEN 50
+#define MAVLINK_MSG_SMART_BATTERY_INFO_FIELD_MANUFACTURE_DATE_LEN 11
 
 
 #if MAVLINK_COMM_NUM_BUFFERS > 0
@@ -371,12 +444,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_smart_battery_info_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint8_t id, uint8_t battery_function, uint8_t type, int32_t capacity_full_specification, int32_t capacity_full, uint16_t cycle_count, const char* serial_number, const char* device_name, uint16_t weight, uint16_t discharge_minimum_voltage, uint16_t charging_minimum_voltage, uint16_t resting_minimum_voltage)
+    uint8_t id, uint8_t battery_function, uint8_t type, int32_t capacity_full_specification, int32_t capacity_full, uint16_t cycle_count, const char* serial_number, const char* device_name, uint16_t weight, uint16_t discharge_minimum_voltage, uint16_t charging_minimum_voltage, uint16_t resting_minimum_voltage, uint16_t charging_maximum_voltage, uint8_t cells_in_series, uint32_t discharge_maximum_current, uint32_t discharge_maximum_burst_current, const char* manufacture_date)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_smart_battery_info_pack(
         _msg, sysid, compid,
-        id, battery_function, type, capacity_full_specification, capacity_full, cycle_count, serial_number, device_name, weight, discharge_minimum_voltage, charging_minimum_voltage, resting_minimum_voltage,
+        id, battery_function, type, capacity_full_specification, capacity_full, cycle_count, serial_number, device_name, weight, discharge_minimum_voltage, charging_minimum_voltage, resting_minimum_voltage, charging_maximum_voltage, cells_in_series, discharge_maximum_current, discharge_maximum_burst_current, manufacture_date,
         _status);
 }
 
@@ -388,13 +461,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_smart_battery_info_pack_txbu
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t id, uint8_t battery_function, uint8_t type, int32_t capacity_full_specification, int32_t capacity_full, uint16_t cycle_count, const char* serial_number, const char* device_name, uint16_t weight, uint16_t discharge_minimum_voltage, uint16_t charging_minimum_voltage, uint16_t resting_minimum_voltage)
+    uint8_t id, uint8_t battery_function, uint8_t type, int32_t capacity_full_specification, int32_t capacity_full, uint16_t cycle_count, const char* serial_number, const char* device_name, uint16_t weight, uint16_t discharge_minimum_voltage, uint16_t charging_minimum_voltage, uint16_t resting_minimum_voltage, uint16_t charging_maximum_voltage, uint8_t cells_in_series, uint32_t discharge_maximum_current, uint32_t discharge_maximum_burst_current, const char* manufacture_date)
 {
     return fmav_msg_smart_battery_info_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        id, battery_function, type, capacity_full_specification, capacity_full, cycle_count, serial_number, device_name, weight, discharge_minimum_voltage, charging_minimum_voltage, resting_minimum_voltage,
+        id, battery_function, type, capacity_full_specification, capacity_full, cycle_count, serial_number, device_name, weight, discharge_minimum_voltage, charging_minimum_voltage, resting_minimum_voltage, charging_maximum_voltage, cells_in_series, discharge_maximum_current, discharge_maximum_burst_current, manufacture_date,
         _status);
 }
 

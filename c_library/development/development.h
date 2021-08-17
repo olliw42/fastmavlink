@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Tue Jun 15 2021"
+#define FASTMAVLINK_BUILD_DATE  "Tue Aug 17 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -86,6 +86,7 @@ typedef enum AIRSPEED_SENSOR_TYPE {
 #include "./mavlink_msg_mission_checksum.h"
 #include "./mavlink_msg_airspeed.h"
 #include "./mavlink_msg_wifi_network_info.h"
+#include "./mavlink_msg_hygrometer_sensor.h"
 
 
 //------------------------------

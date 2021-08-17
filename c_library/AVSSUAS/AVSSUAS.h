@@ -4,8 +4,8 @@
 //------------------------------
 
 #pragma once
-#ifndef FASTMAVLINK_STORM32_H
-#define FASTMAVLINK_STORM32_H
+#ifndef FASTMAVLINK_AVSSUAS_H
+#define FASTMAVLINK_AVSSUAS_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -26,7 +26,7 @@ extern "C" {
 //-- msgid, extra crc, max length, flag, target sysid offset, target compid offset
 //------------------------------
 
-#include "storm32_msg_entries.h"
+#include "AVSSUAS_msg_entries.h"
 
 #ifndef FASTMAVLINK_MESSAGE_CRCS
 #define FASTMAVLINK_MESSAGE_CRCS  FASTMAVLINK_MSG_ENTRIES
@@ -50,182 +50,6 @@ extern "C" {
 
 #ifndef FASTMAVLINK_TEST_EXCLUDE_ENUMS
 
-#ifndef FASTMAVLINK_HAS_ENUM_MAV_STORM32_TUNNEL_PAYLOAD_TYPE
-#define FASTMAVLINK_HAS_ENUM_MAV_STORM32_TUNNEL_PAYLOAD_TYPE
-typedef enum MAV_STORM32_TUNNEL_PAYLOAD_TYPE {
-    MAV_STORM32_TUNNEL_PAYLOAD_TYPE_STORM32_CH1_IN = 200,  // Registered for STorM32 gimbal controller. 
-    MAV_STORM32_TUNNEL_PAYLOAD_TYPE_STORM32_CH1_OUT = 201,  // Registered for STorM32 gimbal controller. 
-    MAV_STORM32_TUNNEL_PAYLOAD_TYPE_STORM32_CH2_IN = 202,  // Registered for STorM32 gimbal controller. 
-    MAV_STORM32_TUNNEL_PAYLOAD_TYPE_STORM32_CH2_OUT = 203,  // Registered for STorM32 gimbal controller. 
-    MAV_STORM32_TUNNEL_PAYLOAD_TYPE_STORM32_CH3_IN = 204,  // Registered for STorM32 gimbal controller. 
-    MAV_STORM32_TUNNEL_PAYLOAD_TYPE_STORM32_CH3_OUT = 205,  // Registered for STorM32 gimbal controller. 
-    MAV_STORM32_TUNNEL_PAYLOAD_TYPE_STORM32_RESERVED6 = 206,  // Registered for STorM32 gimbal controller. 
-    MAV_STORM32_TUNNEL_PAYLOAD_TYPE_STORM32_RESERVED7 = 207,  // Registered for STorM32 gimbal controller. 
-    MAV_STORM32_TUNNEL_PAYLOAD_TYPE_STORM32_RESERVED8 = 208,  // Registered for STorM32 gimbal controller. 
-    MAV_STORM32_TUNNEL_PAYLOAD_TYPE_STORM32_RESERVED9 = 209,  // Registered for STorM32 gimbal controller. 
-    MAV_STORM32_TUNNEL_PAYLOAD_TYPE_ENUM_END = 210,  // end marker
-} MAV_STORM32_TUNNEL_PAYLOAD_TYPE;
-#endif
-
-
-#ifndef FASTMAVLINK_HAS_ENUM_MAV_STORM32_GIMBAL_DEVICE_CAP_FLAGS
-#define FASTMAVLINK_HAS_ENUM_MAV_STORM32_GIMBAL_DEVICE_CAP_FLAGS
-typedef enum MAV_STORM32_GIMBAL_DEVICE_CAP_FLAGS {
-    MAV_STORM32_GIMBAL_DEVICE_CAP_FLAGS_HAS_RETRACT = 1,  // Gimbal device supports a retracted position. 
-    MAV_STORM32_GIMBAL_DEVICE_CAP_FLAGS_HAS_NEUTRAL = 2,  // Gimbal device supports a horizontal, forward looking position, stabilized. Can also be used to reset the gimbal's orientation. 
-    MAV_STORM32_GIMBAL_DEVICE_CAP_FLAGS_HAS_ROLL_AXIS = 4,  // Gimbal device supports rotating around roll axis. 
-    MAV_STORM32_GIMBAL_DEVICE_CAP_FLAGS_HAS_ROLL_FOLLOW = 8,  // Gimbal device supports to follow a roll angle relative to the vehicle. 
-    MAV_STORM32_GIMBAL_DEVICE_CAP_FLAGS_HAS_ROLL_LOCK = 16,  // Gimbal device supports locking to an roll angle (generally that's the default). 
-    MAV_STORM32_GIMBAL_DEVICE_CAP_FLAGS_HAS_PITCH_AXIS = 32,  // Gimbal device supports rotating around pitch axis. 
-    MAV_STORM32_GIMBAL_DEVICE_CAP_FLAGS_HAS_PITCH_FOLLOW = 64,  // Gimbal device supports to follow a pitch angle relative to the vehicle. 
-    MAV_STORM32_GIMBAL_DEVICE_CAP_FLAGS_HAS_PITCH_LOCK = 128,  // Gimbal device supports locking to an pitch angle (generally that's the default). 
-    MAV_STORM32_GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_AXIS = 256,  // Gimbal device supports rotating around yaw axis. 
-    MAV_STORM32_GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_FOLLOW = 512,  // Gimbal device supports to follow a yaw angle relative to the vehicle (generally that's the default). 
-    MAV_STORM32_GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_LOCK = 1024,  // Gimbal device supports locking to a heading angle. 
-    MAV_STORM32_GIMBAL_DEVICE_CAP_FLAGS_HAS_INFINITE_YAW = 2048,  // Gimbal device supports yawing/panning infinitely (e.g. using a slip ring). 
-    MAV_STORM32_GIMBAL_DEVICE_CAP_FLAGS_HAS_ABSOLUTE_YAW = 65536,  // Gimbal device supports absolute yaw angles (this usually requires support by an autopilot, and can be dynamic, i.e., go on and off during runtime). 
-    MAV_STORM32_GIMBAL_DEVICE_CAP_FLAGS_HAS_RC = 131072,  // Gimbal device supports control via an RC input signal. 
-    MAV_STORM32_GIMBAL_DEVICE_CAP_FLAGS_ENUM_END = 131073,  // end marker
-} MAV_STORM32_GIMBAL_DEVICE_CAP_FLAGS;
-#endif
-
-
-#ifndef FASTMAVLINK_HAS_ENUM_MAV_STORM32_GIMBAL_DEVICE_FLAGS
-#define FASTMAVLINK_HAS_ENUM_MAV_STORM32_GIMBAL_DEVICE_FLAGS
-typedef enum MAV_STORM32_GIMBAL_DEVICE_FLAGS {
-    MAV_STORM32_GIMBAL_DEVICE_FLAGS_RETRACT = 1,  // Retracted safe position (no stabilization), takes presedence over NEUTRAL flag. If supported by the gimbal, the angles in the retracted position can be set in addition. 
-    MAV_STORM32_GIMBAL_DEVICE_FLAGS_NEUTRAL = 2,  // Neutral position (horizontal, forward looking, with stabiliziation). 
-    MAV_STORM32_GIMBAL_DEVICE_FLAGS_ROLL_LOCK = 4,  // Lock roll angle to absolute angle relative to horizon (not relative to drone). This is generally the default. 
-    MAV_STORM32_GIMBAL_DEVICE_FLAGS_PITCH_LOCK = 8,  // Lock pitch angle to absolute angle relative to horizon (not relative to drone). This is generally the default. 
-    MAV_STORM32_GIMBAL_DEVICE_FLAGS_YAW_LOCK = 16,  // Lock yaw angle to absolute angle relative to earth (not relative to drone). When the YAW_ABSOLUTE flag is set, the quaternion is in the Earth frame with the x-axis pointing North (yaw absolute), else it is in the Earth frame rotated so that the x-axis is pointing forward (yaw relative to vehicle). 
-    MAV_STORM32_GIMBAL_DEVICE_FLAGS_CAN_ACCEPT_YAW_ABSOLUTE = 256,  // Gimbal device can accept absolute yaw angle input. This flag cannot be set, is only for reporting (attempts to set it are rejected by the gimbal device). 
-    MAV_STORM32_GIMBAL_DEVICE_FLAGS_YAW_ABSOLUTE = 512,  // Yaw angle is absolute (is only accepted if CAN_ACCEPT_YAW_ABSOLUTE is set). If this flag is set, the quaternion is in the Earth frame with the x-axis pointing North (yaw absolute), else it is in the Earth frame rotated so that the x-axis is pointing forward (yaw relative to vehicle). 
-    MAV_STORM32_GIMBAL_DEVICE_FLAGS_RC_EXCLUSIVE = 1024,  // RC control. The RC input signal fed to the gimbal device exclusively controls the gimbal's orientation. Overrides RC_MIXED flag if that is also set. 
-    MAV_STORM32_GIMBAL_DEVICE_FLAGS_RC_MIXED = 2048,  // RC control. The RC input signal fed to the gimbal device is mixed into the gimbal's orientation. Is overriden by RC_EXCLUSIVE flag if that is also set. 
-    MAV_STORM32_GIMBAL_DEVICE_FLAGS_NONE = 65535,  // UINT16_MAX = ignore. 
-    MAV_STORM32_GIMBAL_DEVICE_FLAGS_ENUM_END = 65536,  // end marker
-} MAV_STORM32_GIMBAL_DEVICE_FLAGS;
-#endif
-
-
-#ifndef FASTMAVLINK_HAS_ENUM_MAV_STORM32_GIMBAL_DEVICE_ERROR_FLAGS
-#define FASTMAVLINK_HAS_ENUM_MAV_STORM32_GIMBAL_DEVICE_ERROR_FLAGS
-typedef enum MAV_STORM32_GIMBAL_DEVICE_ERROR_FLAGS {
-    MAV_STORM32_GIMBAL_DEVICE_ERROR_FLAGS_AT_ROLL_LIMIT = 1,  // Gimbal device is limited by hardware roll limit. 
-    MAV_STORM32_GIMBAL_DEVICE_ERROR_FLAGS_AT_PITCH_LIMIT = 2,  // Gimbal device is limited by hardware pitch limit. 
-    MAV_STORM32_GIMBAL_DEVICE_ERROR_FLAGS_AT_YAW_LIMIT = 4,  // Gimbal device is limited by hardware yaw limit. 
-    MAV_STORM32_GIMBAL_DEVICE_ERROR_FLAGS_ENCODER_ERROR = 8,  // There is an error with the gimbal device's encoders. 
-    MAV_STORM32_GIMBAL_DEVICE_ERROR_FLAGS_POWER_ERROR = 16,  // There is an error with the gimbal device's power source. 
-    MAV_STORM32_GIMBAL_DEVICE_ERROR_FLAGS_MOTOR_ERROR = 32,  // There is an error with the gimbal device's motors. 
-    MAV_STORM32_GIMBAL_DEVICE_ERROR_FLAGS_SOFTWARE_ERROR = 64,  // There is an error with the gimbal device's software. 
-    MAV_STORM32_GIMBAL_DEVICE_ERROR_FLAGS_COMMS_ERROR = 128,  // There is an error with the gimbal device's communication. 
-    MAV_STORM32_GIMBAL_DEVICE_ERROR_FLAGS_CALIBRATION_RUNNING = 256,  // Gimbal device is currently calibrating (not an error). 
-    MAV_STORM32_GIMBAL_DEVICE_ERROR_FLAGS_NO_MANAGER = 32768,  // Gimbal device is not assigned to a gimbal manager (not an error). 
-    MAV_STORM32_GIMBAL_DEVICE_ERROR_FLAGS_ENUM_END = 32769,  // end marker
-} MAV_STORM32_GIMBAL_DEVICE_ERROR_FLAGS;
-#endif
-
-
-#ifndef FASTMAVLINK_HAS_ENUM_MAV_STORM32_GIMBAL_MANAGER_CAP_FLAGS
-#define FASTMAVLINK_HAS_ENUM_MAV_STORM32_GIMBAL_MANAGER_CAP_FLAGS
-typedef enum MAV_STORM32_GIMBAL_MANAGER_CAP_FLAGS {
-    MAV_STORM32_GIMBAL_MANAGER_CAP_FLAGS_HAS_PROFILES = 1,  // The gimbal manager supports several profiles. 
-    MAV_STORM32_GIMBAL_MANAGER_CAP_FLAGS_SUPPORTS_CHANGE = 2,  // The gimbal manager supports changing the gimbal manager during run time, i.e. can be enabled/disabled. 
-    MAV_STORM32_GIMBAL_MANAGER_CAP_FLAGS_ENUM_END = 3,  // end marker
-} MAV_STORM32_GIMBAL_MANAGER_CAP_FLAGS;
-#endif
-
-
-#ifndef FASTMAVLINK_HAS_ENUM_MAV_STORM32_GIMBAL_MANAGER_FLAGS
-#define FASTMAVLINK_HAS_ENUM_MAV_STORM32_GIMBAL_MANAGER_FLAGS
-typedef enum MAV_STORM32_GIMBAL_MANAGER_FLAGS {
-    MAV_STORM32_GIMBAL_MANAGER_FLAGS_NONE = 0,  // 0 = ignore. 
-    MAV_STORM32_GIMBAL_MANAGER_FLAGS_RC_ACTIVE = 1,  // Request to set RC input to active, or report RC input is active. Implies RC mixed. RC exclusive is achieved by setting all clients to inactive. 
-    MAV_STORM32_GIMBAL_MANAGER_FLAGS_CLIENT_ONBOARD_ACTIVE = 2,  // Request to set onboard/companion computer client to active, or report this client is active. 
-    MAV_STORM32_GIMBAL_MANAGER_FLAGS_CLIENT_AUTOPILOT_ACTIVE = 4,  // Request to set autopliot client to active, or report this client is active. 
-    MAV_STORM32_GIMBAL_MANAGER_FLAGS_CLIENT_GCS_ACTIVE = 8,  // Request to set GCS client to active, or report this client is active. 
-    MAV_STORM32_GIMBAL_MANAGER_FLAGS_CLIENT_CAMERA_ACTIVE = 16,  // Request to set camera client to active, or report this client is active. 
-    MAV_STORM32_GIMBAL_MANAGER_FLAGS_CLIENT_GCS2_ACTIVE = 32,  // Request to set GCS2 client to active, or report this client is active. 
-    MAV_STORM32_GIMBAL_MANAGER_FLAGS_CLIENT_CAMERA2_ACTIVE = 64,  // Request to set camera2 client to active, or report this client is active. 
-    MAV_STORM32_GIMBAL_MANAGER_FLAGS_CLIENT_CUSTOM_ACTIVE = 128,  // Request to set custom client to active, or report this client is active. 
-    MAV_STORM32_GIMBAL_MANAGER_FLAGS_CLIENT_CUSTOM2_ACTIVE = 256,  // Request to set custom2 client to active, or report this client is active. 
-    MAV_STORM32_GIMBAL_MANAGER_FLAGS_SET_SUPERVISON = 512,  // Request supervision. This flag is only for setting, it is not reported. 
-    MAV_STORM32_GIMBAL_MANAGER_FLAGS_SET_RELEASE = 1024,  // Release supervision. This flag is only for setting, it is not reported. 
-    MAV_STORM32_GIMBAL_MANAGER_FLAGS_ENUM_END = 1025,  // end marker
-} MAV_STORM32_GIMBAL_MANAGER_FLAGS;
-#endif
-
-
-#ifndef FASTMAVLINK_HAS_ENUM_MAV_STORM32_GIMBAL_MANAGER_CLIENT
-#define FASTMAVLINK_HAS_ENUM_MAV_STORM32_GIMBAL_MANAGER_CLIENT
-typedef enum MAV_STORM32_GIMBAL_MANAGER_CLIENT {
-    MAV_STORM32_GIMBAL_MANAGER_CLIENT_NONE = 0,  // For convenience. 
-    MAV_STORM32_GIMBAL_MANAGER_CLIENT_ONBOARD = 1,  // This is the onboard/companion computer client. 
-    MAV_STORM32_GIMBAL_MANAGER_CLIENT_AUTOPILOT = 2,  // This is the autopilot client. 
-    MAV_STORM32_GIMBAL_MANAGER_CLIENT_GCS = 3,  // This is the GCS client. 
-    MAV_STORM32_GIMBAL_MANAGER_CLIENT_CAMERA = 4,  // This is the camera client. 
-    MAV_STORM32_GIMBAL_MANAGER_CLIENT_GCS2 = 5,  // This is the GCS2 client. 
-    MAV_STORM32_GIMBAL_MANAGER_CLIENT_CAMERA2 = 6,  // This is the camera2 client. 
-    MAV_STORM32_GIMBAL_MANAGER_CLIENT_CUSTOM = 7,  // This is the custom client. 
-    MAV_STORM32_GIMBAL_MANAGER_CLIENT_CUSTOM2 = 8,  // This is the custom2 client. 
-    MAV_STORM32_GIMBAL_MANAGER_CLIENT_ENUM_END = 9,  // end marker
-} MAV_STORM32_GIMBAL_MANAGER_CLIENT;
-#endif
-
-
-#ifndef FASTMAVLINK_HAS_ENUM_MAV_STORM32_GIMBAL_MANAGER_SETUP_FLAGS
-#define FASTMAVLINK_HAS_ENUM_MAV_STORM32_GIMBAL_MANAGER_SETUP_FLAGS
-typedef enum MAV_STORM32_GIMBAL_MANAGER_SETUP_FLAGS {
-    MAV_STORM32_GIMBAL_MANAGER_SETUP_FLAGS_ENABLE = 16384,  // Enable gimbal manager. This flag is only for setting, is not reported. 
-    MAV_STORM32_GIMBAL_MANAGER_SETUP_FLAGS_DISABLE = 32768,  // Disable gimbal manager. This flag is only for setting, is not reported. 
-    MAV_STORM32_GIMBAL_MANAGER_SETUP_FLAGS_ENUM_END = 32769,  // end marker
-} MAV_STORM32_GIMBAL_MANAGER_SETUP_FLAGS;
-#endif
-
-
-#ifndef FASTMAVLINK_HAS_ENUM_MAV_STORM32_GIMBAL_MANAGER_PROFILE
-#define FASTMAVLINK_HAS_ENUM_MAV_STORM32_GIMBAL_MANAGER_PROFILE
-typedef enum MAV_STORM32_GIMBAL_MANAGER_PROFILE {
-    MAV_STORM32_GIMBAL_MANAGER_PROFILE_DEFAULT = 0,  // Default profile. Implementation specific. 
-    MAV_STORM32_GIMBAL_MANAGER_PROFILE_CUSTOM = 1,  // Custom profile. Configurable profile according to the STorM32 definition. Is configured with STORM32_GIMBAL_MANAGER_PROFIL. 
-    MAV_STORM32_GIMBAL_MANAGER_PROFILE_COOPERATIVE = 2,  // Default cooperative profile. Uses STorM32 custom profile with default settings to achieve cooperative behavior. 
-    MAV_STORM32_GIMBAL_MANAGER_PROFILE_EXCLUSIVE = 3,  // Default exclusive profile. Uses STorM32 custom profile with default settings to achieve exclusive behavior. 
-    MAV_STORM32_GIMBAL_MANAGER_PROFILE_PRIORITY_COOPERATIVE = 4,  // Default priority profile with cooperative behavior for equal priority. Uses STorM32 custom profile with default settings to achieve priority-based behavior. 
-    MAV_STORM32_GIMBAL_MANAGER_PROFILE_PRIORITY_EXCLUSIVE = 5,  // Default priority profile with exclusive behavior for equal priority. Uses STorM32 custom profile with default settings to achieve priority-based behavior. 
-    MAV_STORM32_GIMBAL_MANAGER_PROFILE_ENUM_END = 6,  // end marker
-} MAV_STORM32_GIMBAL_MANAGER_PROFILE;
-#endif
-
-
-#ifndef FASTMAVLINK_HAS_ENUM_MAV_STORM32_GIMBAL_ACTION
-#define FASTMAVLINK_HAS_ENUM_MAV_STORM32_GIMBAL_ACTION
-typedef enum MAV_STORM32_GIMBAL_ACTION {
-    MAV_STORM32_GIMBAL_ACTION_RECENTER = 1,  // Trigger the gimbal device to recenter the gimbal. 
-    MAV_STORM32_GIMBAL_ACTION_CALIBRATION = 2,  // Trigger the gimbal device to run a calibration. 
-    MAV_STORM32_GIMBAL_ACTION_DISCOVER_MANAGER = 3,  // Trigger gimbal device to (re)discover the gimbal manager during run time. 
-    MAV_STORM32_GIMBAL_ACTION_ENUM_END = 4,  // end marker
-} MAV_STORM32_GIMBAL_ACTION;
-#endif
-
-
-#ifndef FASTMAVLINK_HAS_ENUM_MAV_QSHOT_MODE
-#define FASTMAVLINK_HAS_ENUM_MAV_QSHOT_MODE
-typedef enum MAV_QSHOT_MODE {
-    MAV_QSHOT_MODE_UNDEFINED = 0,  // Undefined shot mode. Can be used to determine if qshots should be used or not. 
-    MAV_QSHOT_MODE_DEFAULT = 1,  // Start normal gimbal operation. Is usally used to return back from a shot. 
-    MAV_QSHOT_MODE_GIMBAL_RETRACT = 2,  // Load and keep safe gimbal position and stop stabilization. 
-    MAV_QSHOT_MODE_GIMBAL_NEUTRAL = 3,  // Load neutral gimbal position and keep it while stabilizing. 
-    MAV_QSHOT_MODE_GIMBAL_MISSION = 4,  // Start mission with gimbal control. 
-    MAV_QSHOT_MODE_GIMBAL_RC_CONTROL = 5,  // Start RC gimbal control. 
-    MAV_QSHOT_MODE_POI_TARGETING = 6,  // Start gimbal tracking the point specified by Lat, Lon, Alt. 
-    MAV_QSHOT_MODE_SYSID_TARGETING = 7,  // Start gimbal tracking the system with specified system ID. 
-    MAV_QSHOT_MODE_CABLECAM_2POINT = 8,  // Start 2-point cable cam quick shot. 
-    MAV_QSHOT_MODE_HOME_TARGETING = 9,  // Start gimbal tracking the home location. 
-    MAV_QSHOT_MODE_ENUM_END = 10,  // end marker
-} MAV_QSHOT_MODE;
-#endif
-
-
 #ifndef FASTMAVLINK_HAS_ENUM_MAV_CMD
 #define FASTMAVLINK_HAS_ENUM_MAV_CMD
 typedef enum MAV_CMD {
@@ -247,7 +71,6 @@ typedef enum MAV_CMD {
     MAV_CMD_NAV_ROI = 80,  // Sets the region of interest (ROI) for a sensor set or the vehicle itself. This can then be used by the vehicle's control system to control the vehicle attitude and the attitude of various sensors such as cameras. | Region of interest mode. | Waypoint index/ target ID. (see MAV_ROI enum) | ROI index (allows a vehicle to manage multiple ROI's) | Empty | x the location of the fixed ROI (see MAV_FRAME) | y | z
     MAV_CMD_NAV_PATHPLANNING = 81,  // Control autonomous path planning on the MAV. | 0: Disable local obstacle avoidance / local path planning (without resetting map), 1: Enable local path planning, 2: Enable and reset local path planning | 0: Disable full path planning (without resetting map), 1: Enable, 2: Enable and reset map/occupancy grid, 3: Enable and reset planned route, but not occupancy grid | Empty | Yaw angle at goal | Latitude/X of goal | Longitude/Y of goal | Altitude/Z of goal
     MAV_CMD_NAV_SPLINE_WAYPOINT = 82,  // Navigate to waypoint using a spline path. | Hold time. (ignored by fixed wing, time to stay at waypoint for rotary wing) | Empty | Empty | Empty | Latitude/X of goal | Longitude/Y of goal | Altitude/Z of goal
-    MAV_CMD_NAV_ALTITUDE_WAIT = 83,  // Mission command to wait for an altitude or downwards vertical speed. This is meant for high altitude balloon launches, allowing the aircraft to be idle until either an altitude is reached or a negative vertical speed is reached (indicating early balloon burst). The wiggle time is how often to wiggle the control surfaces to prevent them seizing up. | Altitude. | Descent speed. | How long to wiggle the control surfaces to prevent them seizing up. | Empty. | Empty. | Empty. | Empty.
     MAV_CMD_NAV_VTOL_TAKEOFF = 84,  // Takeoff from ground using VTOL mode, and transition to forward flight with specified heading. The command should be ignored by vehicles that dont support both VTOL and fixed-wing flight (multicopters, boats,etc.). | Empty | Front transition heading. | Empty | Yaw angle. NaN to use the current system yaw heading mode (e.g. yaw towards next waypoint, yaw to home, etc.). | Latitude | Longitude | Altitude
     MAV_CMD_NAV_VTOL_LAND = 85,  // Land using VTOL mode | Landing behaviour. | Empty | Approach altitude (with the same reference as the Altitude field). NaN if unspecified. | Yaw angle. NaN to use the current system yaw heading mode (e.g. yaw towards next waypoint, yaw to home, etc.). | Latitude | Longitude | Altitude (ground level)
     MAV_CMD_NAV_GUIDED_ENABLE = 92,  // hand control over to an external controller | On / Off (> 0.5f on) | Empty | Empty | Empty | Empty | Empty | Empty
@@ -296,8 +119,6 @@ typedef enum MAV_CMD {
     MAV_CMD_DO_AUTOTUNE_ENABLE = 212,  // Enable/disable autotune. | Enable (1: enable, 0:disable). | Empty. | Empty. | Empty. | Empty. | Empty. | Empty.
     MAV_CMD_NAV_SET_YAW_SPEED = 213,  // Sets a desired vehicle turn angle and speed change. | Yaw angle to adjust steering by. | Speed. | Final angle. (0=absolute, 1=relative) | Empty | Empty | Empty | Empty
     MAV_CMD_DO_SET_CAM_TRIGG_INTERVAL = 214,  // Mission command to set camera trigger interval for this flight. If triggering is enabled, the camera is triggered each time this interval expires. This command can also be used to set the shutter integration time for the camera. | Camera trigger cycle time. -1 or 0 to ignore. | Camera shutter integration time. Should be less than trigger cycle time. -1 or 0 to ignore. | Empty | Empty | Empty | Empty | Empty
-    MAV_CMD_DO_SET_RESUME_REPEAT_DIST = 215,  // Set the distance to be repeated on mission resume | Distance. | Empty. | Empty. | Empty. | Empty. | Empty. | Empty.
-    MAV_CMD_DO_SPRAYER = 216,  // Control attached liquid sprayer | 0: disable sprayer. 1: enable sprayer. | Empty. | Empty. | Empty. | Empty. | Empty. | Empty.
     MAV_CMD_DO_MOUNT_CONTROL_QUAT = 220,  // Mission command to control a camera or antenna mount, using a quaternion as reference. | quaternion param q1, w (1 in null-rotation) | quaternion param q2, x (0 in null-rotation) | quaternion param q3, y (0 in null-rotation) | quaternion param q4, z (0 in null-rotation) | Empty | Empty | Empty
     MAV_CMD_DO_GUIDED_MASTER = 221,  // set id of master controller | System ID | Component ID | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_DO_GUIDED_LIMITS = 222,  // Set limits for external control | Timeout - maximum time that external controller will be allowed to control vehicle. 0 means no timeout. | Altitude (MSL) min - if vehicle moves below this alt, the command will be aborted and the mission will continue. 0 means no lower altitude limit. | Altitude (MSL) max - if vehicle moves above this alt, the command will be aborted and the mission will continue. 0 means no upper altitude limit. | Horizontal move limit - if vehicle moves more than this distance from its location at the moment the command was executed, the command will be aborted and the mission will continue. 0 means no horizontal move limit. | Empty | Empty | Empty
@@ -387,37 +208,34 @@ typedef enum MAV_CMD {
     MAV_CMD_USER_3 = 31012,  // User defined command. Ground Station will not show the Vehicle as flying through this item. Example: MAV_CMD_DO_SET_PARAMETER item. | User defined | User defined | User defined | User defined | User defined | User defined | User defined
     MAV_CMD_USER_4 = 31013,  // User defined command. Ground Station will not show the Vehicle as flying through this item. Example: MAV_CMD_DO_SET_PARAMETER item. | User defined | User defined | User defined | User defined | User defined | User defined | User defined
     MAV_CMD_USER_5 = 31014,  // User defined command. Ground Station will not show the Vehicle as flying through this item. Example: MAV_CMD_DO_SET_PARAMETER item. | User defined | User defined | User defined | User defined | User defined | User defined | User defined
-    MAV_CMD_POWER_OFF_INITIATED = 42000,  // A system wide power-off event has been initiated. | Empty. | Empty. | Empty. | Empty. | Empty. | Empty. | Empty.
-    MAV_CMD_SOLO_BTN_FLY_CLICK = 42001,  // FLY button has been clicked. | Empty. | Empty. | Empty. | Empty. | Empty. | Empty. | Empty.
-    MAV_CMD_SOLO_BTN_FLY_HOLD = 42002,  // FLY button has been held for 1.5 seconds. | Takeoff altitude. | Empty. | Empty. | Empty. | Empty. | Empty. | Empty.
-    MAV_CMD_SOLO_BTN_PAUSE_CLICK = 42003,  // PAUSE button has been clicked. | 1 if Solo is in a shot mode, 0 otherwise. | Empty. | Empty. | Empty. | Empty. | Empty. | Empty.
-    MAV_CMD_FIXED_MAG_CAL = 42004,  // Magnetometer calibration based on fixed position        in earth field given by inclination, declination and intensity. | Magnetic declination. | Magnetic inclination. | Magnetic intensity. | Yaw. | Empty. | Empty. | Empty.
-    MAV_CMD_FIXED_MAG_CAL_FIELD = 42005,  // Magnetometer calibration based on fixed expected field values. | Field strength X. | Field strength Y. | Field strength Z. | Empty. | Empty. | Empty. | Empty.
     MAV_CMD_FIXED_MAG_CAL_YAW = 42006,  // Magnetometer calibration based on provided known yaw. This allows for fast calibration using WMM field tables in the vehicle, given only the known yaw of the vehicle. If Latitude and longitude are both zero then use the current vehicle location. | Yaw of vehicle in earth frame. | CompassMask, 0 for all. | Latitude. | Longitude. | Empty. | Empty. | Empty.
-    MAV_CMD_DO_START_MAG_CAL = 42424,  // Initiate a magnetometer calibration. | Bitmask of magnetometers to calibrate. Use 0 to calibrate all sensors that can be started (sensors may not start if disabled, unhealthy, etc.). The command will NACK if calibration does not start for a sensor explicitly specified by the bitmask. | Automatically retry on failure (0=no retry, 1=retry). | Save without user input (0=require input, 1=autosave). | Delay. | Autoreboot (0=user reboot, 1=autoreboot). | Empty. | Empty.
-    MAV_CMD_DO_ACCEPT_MAG_CAL = 42425,  // Accept a magnetometer calibration. | Bitmask of magnetometers that calibration is accepted (0 means all). | Empty. | Empty. | Empty. | Empty. | Empty. | Empty.
-    MAV_CMD_DO_CANCEL_MAG_CAL = 42426,  // Cancel a running magnetometer calibration. | Bitmask of magnetometers to cancel a running calibration (0 means all). | Empty. | Empty. | Empty. | Empty. | Empty. | Empty.
-    MAV_CMD_SET_FACTORY_TEST_MODE = 42427,  // Command autopilot to get into factory test/diagnostic mode. | 0: activate test mode, 1: exit test mode. | Empty. | Empty. | Empty. | Empty. | Empty. | Empty.
-    MAV_CMD_DO_SEND_BANNER = 42428,  // Reply with the version banner. | Empty. | Empty. | Empty. | Empty. | Empty. | Empty. | Empty.
-    MAV_CMD_ACCELCAL_VEHICLE_POS = 42429,  // Used when doing accelerometer calibration. When sent to the GCS tells it what position to put the vehicle in. When sent to the vehicle says what position the vehicle is in. | Position. | Empty. | Empty. | Empty. | Empty. | Empty. | Empty.
-    MAV_CMD_GIMBAL_RESET = 42501,  // Causes the gimbal to reset and boot as if it was just powered on. | Empty. | Empty. | Empty. | Empty. | Empty. | Empty. | Empty.
-    MAV_CMD_GIMBAL_AXIS_CALIBRATION_STATUS = 42502,  // Reports progress and success or failure of gimbal axis calibration procedure. | Gimbal axis we're reporting calibration progress for. | Current calibration progress for this axis. | Status of the calibration. | Empty. | Empty. | Empty. | Empty.
-    MAV_CMD_GIMBAL_REQUEST_AXIS_CALIBRATION = 42503,  // Starts commutation calibration on the gimbal. | Empty. | Empty. | Empty. | Empty. | Empty. | Empty. | Empty.
-    MAV_CMD_GIMBAL_FULL_RESET = 42505,  // Erases gimbal application and parameters. | Magic number. | Magic number. | Magic number. | Magic number. | Magic number. | Magic number. | Magic number.
     MAV_CMD_DO_WINCH = 42600,  // Command to operate winch. | Winch instance number. | Action to perform. | Length of cable to release (negative to wind). | Release rate (negative to wind). | Empty. | Empty. | Empty.
-    MAV_CMD_FLASH_BOOTLOADER = 42650,  // Update the bootloader | Empty | Empty | Empty | Empty | Magic number - set to 290876 to actually flash | Empty | Empty
-    MAV_CMD_BATTERY_RESET = 42651,  // Reset battery capacity for batteries that accumulate consumed battery via integration. | Bitmask of batteries to reset. Least significant bit is for the first battery. | Battery percentage remaining to set. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
-    MAV_CMD_DEBUG_TRAP = 42700,  // Issue a trap signal to the autopilot process, presumably to enter the debugger. | Magic number - set to 32451 to actually trap. | Empty. | Empty. | Empty. | Empty. | Empty. | Empty.
-    MAV_CMD_SCRIPTING = 42701,  // Control onboard scripting. | Scripting command to execute | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
-    MAV_CMD_GUIDED_CHANGE_SPEED = 43000,  // Change flight speed at a given rate. This slews the vehicle at a controllable rate between it's previous speed and the new one. (affects GUIDED only. Outside GUIDED, aircraft ignores these commands. Designed for onboard companion-computer command-and-control, not normally operator/GCS control.) | Airspeed or groundspeed. | Target Speed | Acceleration rate, 0 to take effect instantly | Empty | Empty | Empty | Empty
-    MAV_CMD_GUIDED_CHANGE_ALTITUDE = 43001,  // Change target altitude at a given rate. This slews the vehicle at a controllable rate between it's previous altitude and the new one. (affects GUIDED only. Outside GUIDED, aircraft ignores these commands. Designed for onboard companion-computer command-and-control, not normally operator/GCS control.) | Empty | Empty | Rate of change, toward new altitude. 0 for maximum rate change. Positive numbers only, as negative numbers will not converge on the new target alt. | Empty | Empty | Empty | Target Altitude
-    MAV_CMD_GUIDED_CHANGE_HEADING = 43002,  // Change to target heading at a given rate, overriding previous heading/s. This slews the vehicle at a controllable rate between it's previous heading and the new one. (affects GUIDED only. Exiting GUIDED returns aircraft to normal behaviour defined elsewhere. Designed for onboard companion-computer command-and-control, not normally operator/GCS control.) | course-over-ground or raw vehicle heading. | Target heading. | Maximum centripetal accelearation, ie rate of change,  toward new heading. | Empty | Empty | Empty | Empty
-    MAV_CMD_STORM32_DO_GIMBAL_MANAGER_CONTROL_PITCHYAW = 60002,  // Command to a gimbal manager to control the gimbal tilt and pan angles. It is possible to set combinations of the values below. E.g. an angle as well as a desired angular rate can be used to get to this angle at a certain angular rate, or an angular rate only will result in continuous turning. NaN is to be used to signal unset. A gimbal device is never to react to this command. | Pitch/tilt angle (positive: tilt up, NaN to be ignored). | Yaw/pan angle (positive: pan to the right, the frame is determined by the STORM32_GIMBAL_DEVICE_FLAGS_YAW_ABSOLUTE flag, NaN to be ignored). | Pitch/tilt rate (positive: tilt up, NaN to be ignored). | Yaw/pan rate (positive: pan to the right, the frame is determined by the STORM32_GIMBAL_DEVICE_FLAGS_YAW_ABSOLUTE flag, NaN to be ignored). | Gimbal device flags. | Gimbal manager flags. | Gimbal ID of the gimbal manager to address (component ID or 1-6 for non-MAVLink gimbal, 0 for all gimbals, send command multiple times for more than one but not all gimbals). The client is copied into bits 8-15.
-    MAV_CMD_STORM32_DO_GIMBAL_MANAGER_SETUP = 60010,  // Command to configure a gimbal manager. A gimbal device is never to react to this command. The selected profile is reported in the STORM32_GIMBAL_MANAGER_STATUS message. | Gimbal manager profile (0 = default). | Gimbal manager setup flags (0 = none). | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Gimbal ID of the gimbal manager to address (component ID or 1-6 for non-MAVLink gimbal, 0 for all gimbals). Send command multiple times for more than one but not all gimbals.
-    MAV_CMD_STORM32_DO_GIMBAL_ACTION = 60011,  // Command to initiate gimbal actions. Usually performed by the gimbal device, but some can also be done by the gimbal manager. It is hence best to broadcast this command. | Gimbal action to initiate (0 = none). | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Gimbal ID of the gimbal to address (component ID or 1-6 for non-MAVLink gimbal, 0 for all gimbals). Send command multiple times for more than one but not all gimbals.
-    MAV_CMD_QSHOT_DO_CONFIGURE = 60020,  // Command to set the shot manager mode. | Set shot mode. | Set shot state or command. The allowed values are specific to the selected shot mode. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
-    MAV_CMD_ENUM_END = 60021,  // end marker
+    MAV_CMD_PRS_SET_ARM = 60050,  // AVSS defined command. Set PRS arm statuses. | PRS arm statuses | User defined | User defined | User defined | User defined | User defined | User defined
+    MAV_CMD_PRS_GET_ARM = 60051,  // AVSS defined command. Gets PRS arm statuses | User defined | User defined | User defined | User defined | User defined | User defined | User defined
+    MAV_CMD_PRS_GET_BATTERY = 60052,  // AVSS defined command.  Get the PRS battery voltage in millivolts | User defined | User defined | User defined | User defined | User defined | User defined | User defined
+    MAV_CMD_PRS_GET_ERR = 60053,  // AVSS defined command. Get the PRS error statuses. | User defined | User defined | User defined | User defined | User defined | User defined | User defined
+    MAV_CMD_PRS_SET_ARM_ALTI = 60070,  // AVSS defined command. Set the ATS arming altitude in meters. | ATS arming altitude | User defined | User defined | User defined | User defined | User defined | User defined
+    MAV_CMD_PRS_GET_ARM_ALTI = 60071,  // AVSS defined command. Get the ATS arming altitude in meters. | User defined | User defined | User defined | User defined | User defined | User defined | User defined
+    MAV_CMD_PRS_SHUTDOWN = 60072,  // AVSS defined command. Shuts down the PRS system. | User defined | User defined | User defined | User defined | User defined | User defined | User defined
+    MAV_CMD_PRS_SET_CHARGE_MV = 60073,  // AVSS defined command. Set the threshold to charge from outside in millivolts | Charge Threshold | User defined | User defined | User defined | User defined | User defined | User defined
+    MAV_CMD_PRS_GET_CHARGE_MV = 60074,  // AVSS defined command. Get the threshold to charge from outside in millivolts. | User defined | User defined | User defined | User defined | User defined | User defined | User defined
+    MAV_CMD_PRS_SET_TIMEOUT = 60075,  // AVSS defined command. Set the timeout between FTS request and deploying the chute. | User defined | User defined | User defined | User defined | User defined | User defined | User defined
+    MAV_CMD_PRS_GET_TIMEOUT = 60076,  // AVSS defined command. Get the timeout between FTS request and deploying the chute. | User defined | User defined | User defined | User defined | User defined | User defined | User defined
+    MAV_CMD_PRS_SET_FTS_CONNECT = 60077,  // AVSS defined command. Set up the PRS to connect to the drone.. | User defined | User defined | User defined | User defined | User defined | User defined | User defined
+    MAV_CMD_PRS_GET_FTS_CONNECT = 60078,  // AVSS defined command. Get the connection status of PRS and drone. | User defined | User defined | User defined | User defined | User defined | User defined | User defined
+    MAV_CMD_ENUM_END = 60079,  // end marker
 } MAV_CMD;
+#endif
+
+
+#ifndef FASTMAVLINK_HAS_ENUM_MAV_AVSS_COMMAND_FAILURE_REASON
+#define FASTMAVLINK_HAS_ENUM_MAV_AVSS_COMMAND_FAILURE_REASON
+typedef enum MAV_AVSS_COMMAND_FAILURE_REASON {
+    PRS_NOT_STEADY = 1,  // AVSS defined command failure reason. PRS not steady. 
+    PRS_DTM_NOT_ARMED = 2,  // AVSS defined command failure reason. PRS DTM not armed. 
+    PRS_OTM_NOT_ARMED = 3,  // AVSS defined command failure reason. PRS OTM not armed. 
+    MAV_AVSS_COMMAND_FAILURE_REASON_ENUM_END = 4,  // end marker
+} MAV_AVSS_COMMAND_FAILURE_REASON;
 #endif
 
 #endif // FASTMAVLINK_DO_NOT_INCLUDE_ENUMS
@@ -427,26 +245,18 @@ typedef enum MAV_CMD {
 //-- Message definitions
 //------------------------------
 
-#include "./mavlink_msg_storm32_gimbal_device_status.h"
-#include "./mavlink_msg_storm32_gimbal_device_control.h"
-#include "./mavlink_msg_storm32_gimbal_manager_information.h"
-#include "./mavlink_msg_storm32_gimbal_manager_status.h"
-#include "./mavlink_msg_storm32_gimbal_manager_control.h"
-#include "./mavlink_msg_storm32_gimbal_manager_control_pitchyaw.h"
-#include "./mavlink_msg_storm32_gimbal_manager_correct_roll.h"
-#include "./mavlink_msg_storm32_gimbal_manager_profile.h"
-#include "./mavlink_msg_qshot_status.h"
+#include "./mavlink_msg_avss_prs_sys_status.h"
 
 
 //------------------------------
 //-- Dialect includes
 //------------------------------
 
-#include "../ardupilotmega/ardupilotmega.h"
+#include "../common/common.h"
 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // FASTMAVLINK_STORM32_H
+#endif // FASTMAVLINK_AVSSUAS_H

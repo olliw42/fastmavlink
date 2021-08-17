@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Tue Jun 15 2021"
+#define FASTMAVLINK_BUILD_DATE  "Tue Aug 17 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -77,6 +77,7 @@ extern "C" {
 #include "../ualberta/ualberta.h"
 #include "../uAvionix/uAvionix.h"
 #include "../storm32/storm32.h"
+#include "../AVSSUAS/AVSSUAS.h"
 
 
 #ifdef __cplusplus

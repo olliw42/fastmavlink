@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Tue Jun 15 2021"
+#define FASTMAVLINK_BUILD_DATE  "Tue Aug 17 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -202,12 +202,15 @@ typedef enum MAVLINK_DATA_STREAM_TYPE {
 #ifndef FASTMAVLINK_HAS_ENUM_FENCE_ACTION
 #define FASTMAVLINK_HAS_ENUM_FENCE_ACTION
 typedef enum FENCE_ACTION {
-    FENCE_ACTION_NONE = 0,  // Disable fenced mode 
-    FENCE_ACTION_GUIDED = 1,  // Switched to guided mode to return point (fence point 0) 
+    FENCE_ACTION_NONE = 0,  // Disable fenced mode. If used in a plan this would mean the next fence is disabled. 
+    FENCE_ACTION_GUIDED = 1,  // Fly to geofence MAV_CMD_NAV_FENCE_RETURN_POINT in GUIDED mode. Note: This action is only supported by ArduPlane, and may not be supported in all versions. 
     FENCE_ACTION_REPORT = 2,  // Report fence breach, but don't take action 
-    FENCE_ACTION_GUIDED_THR_PASS = 3,  // Switched to guided mode to return point (fence point 0) with manual throttle control 
-    FENCE_ACTION_RTL = 4,  // Switch to RTL (return to launch) mode and head for the return point. 
-    FENCE_ACTION_ENUM_END = 5,  // end marker
+    FENCE_ACTION_GUIDED_THR_PASS = 3,  // Fly to geofence MAV_CMD_NAV_FENCE_RETURN_POINT with manual throttle control in GUIDED mode. Note: This action is only supported by ArduPlane, and may not be supported in all versions. 
+    FENCE_ACTION_RTL = 4,  // Return/RTL mode. 
+    FENCE_ACTION_HOLD = 5,  // Hold at current location. 
+    FENCE_ACTION_TERMINATE = 6,  // Termination failsafe. Motors are shut down (some flight stacks may trigger other failsafe actions). 
+    FENCE_ACTION_LAND = 7,  // Land at current location. 
+    FENCE_ACTION_ENUM_END = 8,  // end marker
 } FENCE_ACTION;
 #endif
 
@@ -495,11 +498,11 @@ typedef enum WIFI_CONFIG_AP_MODE {
 #ifndef FASTMAVLINK_HAS_ENUM_COMP_METADATA_TYPE
 #define FASTMAVLINK_HAS_ENUM_COMP_METADATA_TYPE
 typedef enum COMP_METADATA_TYPE {
-    COMP_METADATA_TYPE_GENERAL = 0,  // General information which also includes information on other optional supported COMP_METADATA_TYPE's. Must be supported. Only downloadable from vehicle. 
+    COMP_METADATA_TYPE_GENERAL = 0,  // General information about the component. General metadata includes information about other COMP_METADATA_TYPEs supported by the component. This type must be supported and must be downloadable from vehicle. 
     COMP_METADATA_TYPE_PARAMETER = 1,  // Parameter meta data. 
-    COMP_METADATA_TYPE_COMMANDS = 2,  // Meta data which specifies the commands the vehicle supports. (WIP) 
-    COMP_METADATA_TYPE_PERIPHERALS = 3,  // Meta data which specifies potential external peripherals that do not talk MAVLink 
-    COMP_METADATA_TYPE_EVENTS = 4,  // Meta data for events interface 
+    COMP_METADATA_TYPE_COMMANDS = 2,  // Meta data that specifies which commands and command parameters the vehicle supports. (WIP) 
+    COMP_METADATA_TYPE_PERIPHERALS = 3,  // Meta data that specifies external non-MAVLink peripherals. 
+    COMP_METADATA_TYPE_EVENTS = 4,  // Meta data for the events interface. 
     COMP_METADATA_TYPE_ENUM_END = 5,  // end marker
 } COMP_METADATA_TYPE;
 #endif
@@ -543,12 +546,12 @@ typedef enum MAV_CMD {
     MAV_CMD_NAV_LOITER_TO_ALT = 31,  // Begin loiter at the specified Latitude and Longitude.  If Lat=Lon=0, then loiter at the current position.  Don't consider the navigation command complete (don't leave loiter) until the altitude has been reached. Additionally, if the Heading Required parameter is non-zero the aircraft will not leave the loiter until heading toward the next waypoint. | Leave loiter circle only once heading towards the next waypoint (0 = False) | Loiter radius around waypoint for forward-only moving vehicles (not multicopters). If positive loiter clockwise, negative counter-clockwise, 0 means no change to standard loiter. | Empty | Loiter circle exit location and/or path to next waypoint ("xtrack") for forward-only moving vehicles (not multicopters). 0 for the vehicle to converge towards the center xtrack when it leaves the loiter (the line between the centers of the current and next waypoint), 1 to converge to the direct line between the location that the vehicle exits the loiter radius and the next waypoint. Otherwise the angle (in degrees) between the tangent of the loiter circle and the center xtrack at which the vehicle must leave the loiter (and converge to the center xtrack). NaN to use the current system default xtrack behaviour. | Latitude | Longitude | Altitude
     MAV_CMD_DO_FOLLOW = 32,  // Begin following a target | System ID (of the FOLLOW_TARGET beacon). Send 0 to disable follow-me and return to the default position hold mode. | Reserved | Reserved | Altitude mode: 0: Keep current altitude, 1: keep altitude difference to target, 2: go to a fixed altitude above home. | Altitude above home. (used if mode=2) | Reserved | Time to land in which the MAV should go to the default position hold mode after a message RX timeout.
     MAV_CMD_DO_FOLLOW_REPOSITION = 33,  // Reposition the MAV after a follow target command has been sent | Camera q1 (where 0 is on the ray from the camera to the tracking device) | Camera q2 | Camera q3 | Camera q4 | altitude offset from target | X offset from target | Y offset from target
-    MAV_CMD_DO_ORBIT = 34,  // Start orbiting on the circumference of a circle defined by the parameters. Setting any value NaN results in using defaults. | Radius of the circle. positive: Orbit clockwise. negative: Orbit counter-clockwise. | Tangential Velocity. NaN: Vehicle configuration default. | Yaw behavior of the vehicle. | Reserved (e.g. for dynamic center beacon options) | Center point latitude (if no MAV_FRAME specified) / X coordinate according to MAV_FRAME. NaN: Use current vehicle position or current center if already orbiting. | Center point longitude (if no MAV_FRAME specified) / Y coordinate according to MAV_FRAME. NaN: Use current vehicle position or current center if already orbiting. | Center point altitude (MSL) (if no MAV_FRAME specified) / Z coordinate according to MAV_FRAME. NaN: Use current vehicle position or current center if already orbiting.
+    MAV_CMD_DO_ORBIT = 34,  // Start orbiting on the circumference of a circle defined by the parameters. Setting values to NaN/INT32_MAX (as appropriate) results in using defaults. | Radius of the circle. Positive: orbit clockwise. Negative: orbit counter-clockwise. NaN: Use vehicle default radius, or current radius if already orbiting. | Tangential Velocity. NaN: Use vehicle default velocity, or current velocity if already orbiting. | Yaw behavior of the vehicle. | Orbit around the centre point for this many radians (i.e. for a three-quarter orbit set 270*Pi/180). 0: Orbit forever. NaN: Use vehicle default, or current value if already orbiting. | Center point latitude (if no MAV_FRAME specified) / X coordinate according to MAV_FRAME. INT32_MAX (or NaN if sent in COMMAND_LONG): Use current vehicle position, or current center if already orbiting. | Center point longitude (if no MAV_FRAME specified) / Y coordinate according to MAV_FRAME. INT32_MAX (or NaN if sent in COMMAND_LONG): Use current vehicle position, or current center if already orbiting. | Center point altitude (MSL) (if no MAV_FRAME specified) / Z coordinate according to MAV_FRAME. NaN: Use current vehicle altitude.
     MAV_CMD_NAV_ROI = 80,  // Sets the region of interest (ROI) for a sensor set or the vehicle itself. This can then be used by the vehicle's control system to control the vehicle attitude and the attitude of various sensors such as cameras. | Region of interest mode. | Waypoint index/ target ID. (see MAV_ROI enum) | ROI index (allows a vehicle to manage multiple ROI's) | Empty | x the location of the fixed ROI (see MAV_FRAME) | y | z
     MAV_CMD_NAV_PATHPLANNING = 81,  // Control autonomous path planning on the MAV. | 0: Disable local obstacle avoidance / local path planning (without resetting map), 1: Enable local path planning, 2: Enable and reset local path planning | 0: Disable full path planning (without resetting map), 1: Enable, 2: Enable and reset map/occupancy grid, 3: Enable and reset planned route, but not occupancy grid | Empty | Yaw angle at goal | Latitude/X of goal | Longitude/Y of goal | Altitude/Z of goal
     MAV_CMD_NAV_SPLINE_WAYPOINT = 82,  // Navigate to waypoint using a spline path. | Hold time. (ignored by fixed wing, time to stay at waypoint for rotary wing) | Empty | Empty | Empty | Latitude/X of goal | Longitude/Y of goal | Altitude/Z of goal
     MAV_CMD_NAV_VTOL_TAKEOFF = 84,  // Takeoff from ground using VTOL mode, and transition to forward flight with specified heading. The command should be ignored by vehicles that dont support both VTOL and fixed-wing flight (multicopters, boats,etc.). | Empty | Front transition heading. | Empty | Yaw angle. NaN to use the current system yaw heading mode (e.g. yaw towards next waypoint, yaw to home, etc.). | Latitude | Longitude | Altitude
-    MAV_CMD_NAV_VTOL_LAND = 85,  // Land using VTOL mode | Empty | Empty | Approach altitude (with the same reference as the Altitude field). NaN if unspecified. | Yaw angle. NaN to use the current system yaw heading mode (e.g. yaw towards next waypoint, yaw to home, etc.). | Latitude | Longitude | Altitude (ground level)
+    MAV_CMD_NAV_VTOL_LAND = 85,  // Land using VTOL mode | Landing behaviour. | Empty | Approach altitude (with the same reference as the Altitude field). NaN if unspecified. | Yaw angle. NaN to use the current system yaw heading mode (e.g. yaw towards next waypoint, yaw to home, etc.). | Latitude | Longitude | Altitude (ground level)
     MAV_CMD_NAV_GUIDED_ENABLE = 92,  // hand control over to an external controller | On / Off (> 0.5f on) | Empty | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_NAV_DELAY = 93,  // Delay the next navigation command a number of seconds or until a specified time | Delay (-1 to enable time-of-day fields) | hour (24h format, UTC, -1 to ignore) | minute (24h format, UTC, -1 to ignore) | second (24h format, UTC, -1 to ignore) | Empty | Empty | Empty
     MAV_CMD_NAV_PAYLOAD_PLACE = 94,  // Descend and place payload. Vehicle moves to specified location, descends until it detects a hanging payload has reached the ground, and then releases the payload. If ground is not detected before the reaching the maximum descent value (param1), the command will complete without releasing the payload. | Maximum distance to descend. | Empty | Empty | Empty | Latitude | Longitude | Altitude
@@ -611,6 +614,7 @@ typedef enum MAV_CMD {
     MAV_CMD_OBLIQUE_SURVEY = 260,  // Mission command to set a Camera Auto Mount Pivoting Oblique Survey (Replaces CAM_TRIGG_DIST for this purpose). The camera is triggered each time this distance is exceeded, then the mount moves to the next position. Params 4~6 set-up the angle limits and number of positions for oblique survey, where mount-enabled vehicles automatically roll the camera between shots to emulate an oblique camera setup (providing an increased HFOV). This command can also be used to set the shutter integration time for the camera. | Camera trigger distance. 0 to stop triggering. | Camera shutter integration time. 0 to ignore | The minimum interval in which the camera is capable of taking subsequent pictures repeatedly. 0 to ignore. | Total number of roll positions at which the camera will capture photos (images captures spread evenly across the limits defined by param5). | Angle limits that the camera can be rolled to left and right of center. | Fixed pitch angle that the camera will hold in oblique mode if the mount is actuated in the pitch axis. | Empty
     MAV_CMD_MISSION_START = 300,  // start running a mission | first_item: the first mission item to run | last_item:  the last mission item to run (after this item is run, the mission ends) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_COMPONENT_ARM_DISARM = 400,  // Arms / Disarms a component | 0: disarm, 1: arm | 0: arm-disarm unless prevented by safety checks (i.e. when landed), 21196: force arming/disarming (e.g. allow arming to override preflight checks and disarming in flight) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
+    MAV_CMD_RUN_PREARM_CHECKS = 401,  // Instructs system to run pre-arm checks. This command should return MAV_RESULT_TEMPORARILY_REJECTED in the case the system is armed, otherwise MAV_RESULT_ACCEPTED. Note that the return value from executing this command does not indicate whether the vehicle is armable or not, just whether the system has successfully run/is currently running the checks.  The result of the checks is reflected in the SYS_STATUS message. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_ILLUMINATOR_ON_OFF = 405,  // Turns illuminators ON/OFF. An illuminator is a light source that is used for lighting up dark areas external to the sytstem: e.g. a torch or searchlight (as opposed to a light source for illuminating the system itself, e.g. an indicator light). | 0: Illuminators OFF, 1: Illuminators ON | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_GET_HOME_POSITION = 410,  // Request the home position from the vehicle. | Reserved | Reserved | Reserved | Reserved | Reserved | Reserved | Reserved
     MAV_CMD_INJECT_FAILURE = 420,  // Inject artificial failure for testing purposes. Note that autopilots should implement an additional protection before accepting this command such as a specific param setting. | The unit which is affected by the failure. | The type how the failure manifests itself. | Instance affected by failure (0 to signal all). | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
@@ -665,6 +669,7 @@ typedef enum MAV_CMD {
     MAV_CMD_NAV_FENCE_CIRCLE_EXCLUSION = 5004,  // Circular fence area. The vehicle must stay outside this area.         | Radius. | Reserved | Reserved | Reserved | Latitude | Longitude | Reserved
     MAV_CMD_NAV_RALLY_POINT = 5100,  // Rally point. You can have multiple rally points defined.         | Reserved | Reserved | Reserved | Reserved | Latitude | Longitude | Altitude
     MAV_CMD_UAVCAN_GET_NODE_INFO = 5200,  // Commands the vehicle to respond with a sequence of messages UAVCAN_NODE_INFO, one message per every UAVCAN node that is online. Note that some of the response messages can be lost, which the receiver can detect easily by checking whether every received UAVCAN_NODE_STATUS has a matching message UAVCAN_NODE_INFO received earlier; if not, this command should be sent again in order to request re-transmission of the node information messages. | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0)
+    MAV_CMD_DO_ADSB_OUT_IDENT = 10001,  // Trigger the start of an ADSB-out IDENT. This should only be used when requested to do so by an Air Traffic Controller in controlled airspace. This starts the IDENT which is then typically held for 18 seconds by the hardware per the Mode A, C, and S transponder spec. | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0)
     MAV_CMD_PAYLOAD_PREPARE_DEPLOY = 30001,  // Deploy payload on a Lat / Lon / Alt position. This includes the navigation to reach the required release position and velocity. | Operation mode. 0: prepare single payload deploy (overwriting previous requests), but do not execute it. 1: execute payload deploy immediately (rejecting further deploy commands during execution, but allowing abort). 2: add payload deploy to existing deployment list. | Desired approach vector in compass heading. A negative value indicates the system can define the approach vector at will. | Desired ground speed at release time. This can be overridden by the airframe in case it needs to meet minimum airspeed. A negative value indicates the system can define the ground speed at will. | Minimum altitude clearance to the release position. A negative value indicates the system can define the clearance at will. | Latitude. Note, if used in MISSION_ITEM (deprecated) the units are degrees (unscaled) | Longitude. Note, if used in MISSION_ITEM (deprecated) the units are degrees (unscaled) | Altitude (MSL)
     MAV_CMD_PAYLOAD_CONTROL_DEPLOY = 30002,  // Control the payload deployment. | Operation mode. 0: Abort deployment, continue normal mission. 1: switch to payload deployment mode. 100: delete first payload deployment request. 101: delete all payload deployment requests. | Reserved | Reserved | Reserved | Reserved | Reserved | Reserved
     MAV_CMD_FIXED_MAG_CAL_YAW = 42006,  // Magnetometer calibration based on provided known yaw. This allows for fast calibration using WMM field tables in the vehicle, given only the known yaw of the vehicle. If Latitude and longitude are both zero then use the current vehicle location. | Yaw of vehicle in earth frame. | CompassMask, 0 for all. | Latitude. | Longitude. | Empty. | Empty. | Empty.
@@ -2051,6 +2056,17 @@ typedef enum FAILURE_TYPE {
     FAILURE_TYPE_INTERMITTENT = 7,  // Unit is sometimes working, sometimes not. 
     FAILURE_TYPE_ENUM_END = 8,  // end marker
 } FAILURE_TYPE;
+#endif
+
+
+#ifndef FASTMAVLINK_HAS_ENUM_NAV_VTOL_LAND_OPTIONS
+#define FASTMAVLINK_HAS_ENUM_NAV_VTOL_LAND_OPTIONS
+typedef enum NAV_VTOL_LAND_OPTIONS {
+    NAV_VTOL_LAND_OPTIONS_DEFAULT = 0,  // Default autopilot landing behaviour. 
+    NAV_VTOL_LAND_OPTIONS_FW_DESCENT = 1,  // Descend in fixed wing mode, transitioning to multicopter mode for vertical landing when close to the ground.          The fixed wing descent pattern is at the discretion of the vehicle (e.g. transition altitude, loiter direction, radius, and speed, etc.).                 
+    NAV_VTOL_LAND_OPTIONS_HOVER_DESCENT = 2,  // Land in multicopter mode on reaching the landing co-ordinates (the whole landing is by "hover descent"). 
+    NAV_VTOL_LAND_OPTIONS_ENUM_END = 3,  // end marker
+} NAV_VTOL_LAND_OPTIONS;
 #endif
 
 
