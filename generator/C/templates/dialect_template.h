@@ -68,8 +68,21 @@ ${{entry:    ${name} = ${value},  // ${description} ${{params:| ${description} }
 //-- Message definitions
 //------------------------------
 
+#ifdef FASTMAVLINK_IGNORE_WADDRESSOFPACKEDMEMBER
+  #ifdef __GNUC__
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Waddress-of-packed-member"
+  #endif
+#endif
+
 ${{messages:#include "./mavlink_msg_${name_lower}.h"
 }}
+
+#ifdef FASTMAVLINK_IGNORE_WADDRESSOFPACKEDMEMBER
+  #ifdef __GNUC__
+    #pragma GCC diagnostic pop
+  #endif
+#endif
 
 
 //------------------------------

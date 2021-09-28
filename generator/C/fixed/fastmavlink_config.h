@@ -138,6 +138,12 @@
 #define FASTMAVLINK_EXCLUDE_ENUMS
 */
 
+// Allows to ignore compiler warning "-Waddress-of-packed-member"
+/*
+#define FASTMAVLINK_IGNORE_WADDRESSOFPACKEDMEMBER
+*/
+
+
 #endif // FASTMAVLINK_CONFIG_H
 
 
