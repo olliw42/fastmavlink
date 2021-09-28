@@ -33,6 +33,8 @@ The parser can read MAVLink v1 and v2 messages, including the signing packet, an
 
 Messages can be generated and emitted only in MAVLink v2 format, and without signature. (It would be easy to extend the library to allow sending v1 messages, but, frankly, there should be really no need for sending v1 messages nowadays)(Signing is IMHO largely a waste and just complicates things, security should IMHO be a property of the link and is better handled there)
 
+The code does not work on any platform. (It e.g. uses packed structures and references to members into these packed structures)
+
 
 ## C Code Usage ##
 
