@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Tue Aug 17 2021"
+#define FASTMAVLINK_BUILD_DATE  "Tue Sep 28 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -508,27 +508,6 @@ typedef enum COMP_METADATA_TYPE {
 #endif
 
 
-#ifndef FASTMAVLINK_HAS_ENUM_PARAM_TRANSACTION_TRANSPORT
-#define FASTMAVLINK_HAS_ENUM_PARAM_TRANSACTION_TRANSPORT
-typedef enum PARAM_TRANSACTION_TRANSPORT {
-    PARAM_TRANSACTION_TRANSPORT_PARAM = 0,  // Transaction over param transport. 
-    PARAM_TRANSACTION_TRANSPORT_PARAM_EXT = 1,  // Transaction over param_ext transport. 
-    PARAM_TRANSACTION_TRANSPORT_ENUM_END = 2,  // end marker
-} PARAM_TRANSACTION_TRANSPORT;
-#endif
-
-
-#ifndef FASTMAVLINK_HAS_ENUM_PARAM_TRANSACTION_ACTION
-#define FASTMAVLINK_HAS_ENUM_PARAM_TRANSACTION_ACTION
-typedef enum PARAM_TRANSACTION_ACTION {
-    PARAM_TRANSACTION_ACTION_START = 0,  // Commit the current parameter transaction. 
-    PARAM_TRANSACTION_ACTION_COMMIT = 1,  // Commit the current parameter transaction. 
-    PARAM_TRANSACTION_ACTION_CANCEL = 2,  // Cancel the current parameter transaction. 
-    PARAM_TRANSACTION_ACTION_ENUM_END = 3,  // end marker
-} PARAM_TRANSACTION_ACTION;
-#endif
-
-
 #ifndef FASTMAVLINK_HAS_ENUM_MAV_CMD
 #define FASTMAVLINK_HAS_ENUM_MAV_CMD
 typedef enum MAV_CMD {
@@ -636,7 +615,6 @@ typedef enum MAV_CMD {
     MAV_CMD_SET_CAMERA_FOCUS = 532,  // Set camera focus. Camera must respond with a CAMERA_SETTINGS message (on success). | Focus type | Focus value | Reserved (default:NaN) | Reserved (default:NaN) | Reserved (default:0) | Reserved (default:0) | Reserved (default:NaN)
     MAV_CMD_JUMP_TAG = 600,  // Tagged jump target. Can be jumped to with MAV_CMD_DO_JUMP_TAG. | Tag. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_DO_JUMP_TAG = 601,  // Jump to the matching tag in the mission list. Repeat this action for the specified number of times. A mission should contain a single matching tag for each jump. If this is not the case then a jump to a missing tag should complete the mission, and a jump where there are multiple matching tags should always select the one with the lowest mission sequence number. | Target tag to jump to. | Repeat count. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
-    MAV_CMD_PARAM_TRANSACTION = 900,  // Request to start or end a parameter transaction. Multiple kinds of transport layers can be used to exchange parameters in the transaction (param, param_ext and mavftp). The command response can either be a success/failure or an in progress in case the receiving side takes some time to apply the parameters. | Action to be performed (start, commit, cancel, etc.) | Possible transport layers to set and get parameters via mavlink during a parameter transaction. | Identifier for a specific transaction. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW = 1000,  // High level setpoint to be sent to a gimbal manager to set a gimbal attitude. It is possible to set combinations of the values below. E.g. an angle as well as a desired angular rate can be used to get to this angle at a certain angular rate, or an angular rate only will result in continuous turning. NaN is to be used to signal unset. Note: a gimbal is never to react to this command but only the gimbal manager. | Pitch angle (positive to pitch up, relative to vehicle for FOLLOW mode, relative to world horizon for LOCK mode). | Yaw angle (positive to yaw to the right, relative to vehicle for FOLLOW mode, absolute to North for LOCK mode). | Pitch rate (positive to pitch up). | Yaw rate (positive to yaw to the right). | Gimbal manager flags to use. | Reserved (default:0) | Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal device components. Send command multiple times for more than one gimbal (but not all gimbals).
     MAV_CMD_DO_GIMBAL_MANAGER_CONFIGURE = 1001,  // Gimbal configuration to set which sysid/compid is in primary and secondary control. | Sysid for primary control (0: no one in control, -1: leave unchanged, -2: set itself in control (for missions where the own sysid is still unknown), -3: remove control if currently in control). | Compid for primary control (0: no one in control, -1: leave unchanged, -2: set itself in control (for missions where the own sysid is still unknown), -3: remove control if currently in control). | Sysid for secondary control (0: no one in control, -1: leave unchanged, -2: set itself in control (for missions where the own sysid is still unknown), -3: remove control if currently in control). | Compid for secondary control (0: no one in control, -1: leave unchanged, -2: set itself in control (for missions where the own sysid is still unknown), -3: remove control if currently in control). | Reserved (default:0) | Reserved (default:0) | Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal device components. Send command multiple times for more than one gimbal (but not all gimbals).
     MAV_CMD_IMAGE_START_CAPTURE = 2000,  // Start image capture sequence. Sends CAMERA_IMAGE_CAPTURED after each capture. Use NaN for reserved values. | Reserved (Set to 0) | Desired elapsed time between two consecutive pictures (in seconds). Minimum values depend on hardware (typically greater than 2 seconds). | Total number of images to capture. 0 to capture forever/until MAV_CMD_IMAGE_STOP_CAPTURE. | Capture sequence number starting from 1. This is only valid for single-capture (param3 == 1), otherwise set to 0. Increment the capture ID for each capture command to prevent double captures when a command is re-transmitted. | Reserved (default:NaN) | Reserved (default:NaN) | Reserved (default:NaN)
@@ -1549,52 +1527,6 @@ typedef enum UTM_DATA_AVAIL_FLAGS {
 #endif
 
 
-#ifndef FASTMAVLINK_HAS_ENUM_CELLULAR_NETWORK_RADIO_TYPE
-#define FASTMAVLINK_HAS_ENUM_CELLULAR_NETWORK_RADIO_TYPE
-typedef enum CELLULAR_NETWORK_RADIO_TYPE {
-    CELLULAR_NETWORK_RADIO_TYPE_NONE = 0,  //  
-    CELLULAR_NETWORK_RADIO_TYPE_GSM = 1,  //  
-    CELLULAR_NETWORK_RADIO_TYPE_CDMA = 2,  //  
-    CELLULAR_NETWORK_RADIO_TYPE_WCDMA = 3,  //  
-    CELLULAR_NETWORK_RADIO_TYPE_LTE = 4,  //  
-    CELLULAR_NETWORK_RADIO_TYPE_ENUM_END = 5,  // end marker
-} CELLULAR_NETWORK_RADIO_TYPE;
-#endif
-
-
-#ifndef FASTMAVLINK_HAS_ENUM_CELLULAR_STATUS_FLAG
-#define FASTMAVLINK_HAS_ENUM_CELLULAR_STATUS_FLAG
-typedef enum CELLULAR_STATUS_FLAG {
-    CELLULAR_STATUS_FLAG_UNKNOWN = 0,  // State unknown or not reportable. 
-    CELLULAR_STATUS_FLAG_FAILED = 1,  // Modem is unusable 
-    CELLULAR_STATUS_FLAG_INITIALIZING = 2,  // Modem is being initialized 
-    CELLULAR_STATUS_FLAG_LOCKED = 3,  // Modem is locked 
-    CELLULAR_STATUS_FLAG_DISABLED = 4,  // Modem is not enabled and is powered down 
-    CELLULAR_STATUS_FLAG_DISABLING = 5,  // Modem is currently transitioning to the CELLULAR_STATUS_FLAG_DISABLED state 
-    CELLULAR_STATUS_FLAG_ENABLING = 6,  // Modem is currently transitioning to the CELLULAR_STATUS_FLAG_ENABLED state 
-    CELLULAR_STATUS_FLAG_ENABLED = 7,  // Modem is enabled and powered on but not registered with a network provider and not available for data connections 
-    CELLULAR_STATUS_FLAG_SEARCHING = 8,  // Modem is searching for a network provider to register 
-    CELLULAR_STATUS_FLAG_REGISTERED = 9,  // Modem is registered with a network provider, and data connections and messaging may be available for use 
-    CELLULAR_STATUS_FLAG_DISCONNECTING = 10,  // Modem is disconnecting and deactivating the last active packet data bearer. This state will not be entered if more than one packet data bearer is active and one of the active bearers is deactivated 
-    CELLULAR_STATUS_FLAG_CONNECTING = 11,  // Modem is activating and connecting the first packet data bearer. Subsequent bearer activations when another bearer is already active do not cause this state to be entered 
-    CELLULAR_STATUS_FLAG_CONNECTED = 12,  // One or more packet data bearers is active and connected 
-    CELLULAR_STATUS_FLAG_ENUM_END = 13,  // end marker
-} CELLULAR_STATUS_FLAG;
-#endif
-
-
-#ifndef FASTMAVLINK_HAS_ENUM_CELLULAR_NETWORK_FAILED_REASON
-#define FASTMAVLINK_HAS_ENUM_CELLULAR_NETWORK_FAILED_REASON
-typedef enum CELLULAR_NETWORK_FAILED_REASON {
-    CELLULAR_NETWORK_FAILED_REASON_NONE = 0,  // No error 
-    CELLULAR_NETWORK_FAILED_REASON_UNKNOWN = 1,  // Error state is unknown 
-    CELLULAR_NETWORK_FAILED_REASON_SIM_MISSING = 2,  // SIM is required for the modem but missing 
-    CELLULAR_NETWORK_FAILED_REASON_SIM_ERROR = 3,  // SIM is available, but not usuable for connection 
-    CELLULAR_NETWORK_FAILED_REASON_ENUM_END = 4,  // end marker
-} CELLULAR_NETWORK_FAILED_REASON;
-#endif
-
-
 #ifndef FASTMAVLINK_HAS_ENUM_PRECISION_LAND_MODE
 #define FASTMAVLINK_HAS_ENUM_PRECISION_LAND_MODE
 typedef enum PRECISION_LAND_MODE {
@@ -2122,6 +2054,13 @@ typedef enum MAV_EVENT_CURRENT_SEQUENCE_FLAGS {
 //-- Message definitions
 //------------------------------
 
+#ifdef FASTMAVLINK_IGNORE_WADDRESSOFPACKEDMEMBER
+  #ifdef __GNUC__
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Waddress-of-packed-member"
+  #endif
+#endif
+
 #include "./mavlink_msg_sys_status.h"
 #include "./mavlink_msg_system_time.h"
 #include "./mavlink_msg_ping.h"
@@ -2130,7 +2069,6 @@ typedef enum MAV_EVENT_CURRENT_SEQUENCE_FLAGS {
 #include "./mavlink_msg_auth_key.h"
 #include "./mavlink_msg_link_node_status.h"
 #include "./mavlink_msg_set_mode.h"
-#include "./mavlink_msg_param_ack_transaction.h"
 #include "./mavlink_msg_param_request_read.h"
 #include "./mavlink_msg_param_request_list.h"
 #include "./mavlink_msg_param_value.h"
@@ -2163,7 +2101,6 @@ typedef enum MAV_EVENT_CURRENT_SEQUENCE_FLAGS {
 #include "./mavlink_msg_gps_global_origin.h"
 #include "./mavlink_msg_param_map_rc.h"
 #include "./mavlink_msg_mission_request_int.h"
-#include "./mavlink_msg_mission_changed.h"
 #include "./mavlink_msg_safety_set_allowed_area.h"
 #include "./mavlink_msg_safety_allowed_area.h"
 #include "./mavlink_msg_attitude_quaternion_cov.h"
@@ -2307,7 +2244,6 @@ typedef enum MAV_EVENT_CURRENT_SEQUENCE_FLAGS {
 #include "./mavlink_msg_odometry.h"
 #include "./mavlink_msg_trajectory_representation_waypoints.h"
 #include "./mavlink_msg_trajectory_representation_bezier.h"
-#include "./mavlink_msg_cellular_status.h"
 #include "./mavlink_msg_isbd_link_status.h"
 #include "./mavlink_msg_cellular_config.h"
 #include "./mavlink_msg_raw_rpm.h"
@@ -2336,6 +2272,13 @@ typedef enum MAV_EVENT_CURRENT_SEQUENCE_FLAGS {
 #include "./mavlink_msg_open_drone_id_system.h"
 #include "./mavlink_msg_open_drone_id_operator_id.h"
 #include "./mavlink_msg_open_drone_id_message_pack.h"
+#include "./mavlink_msg_hygrometer_sensor.h"
+
+#ifdef FASTMAVLINK_IGNORE_WADDRESSOFPACKEDMEMBER
+  #ifdef __GNUC__
+    #pragma GCC diagnostic pop
+  #endif
+#endif
 
 
 //------------------------------

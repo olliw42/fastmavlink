@@ -21,7 +21,7 @@ typedef struct _fmav_hygrometer_sensor_t {
 }) fmav_hygrometer_sensor_t;
 
 
-#define FASTMAVLINK_MSG_ID_HYGROMETER_SENSOR  420
+#define FASTMAVLINK_MSG_ID_HYGROMETER_SENSOR  12920
 
 #define FASTMAVLINK_MSG_HYGROMETER_SENSOR_PAYLOAD_LEN_MAX  5
 #define FASTMAVLINK_MSG_HYGROMETER_SENSOR_CRCEXTRA  20
@@ -225,17 +225,17 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_hygrometer_sensor_get_field_id(c
 //----------------------------------------
 #ifdef FASTMAVLINK_PYMAVLINK_ENABLED
 
-#define MAVLINK_MSG_ID_HYGROMETER_SENSOR  420
+#define MAVLINK_MSG_ID_HYGROMETER_SENSOR  12920
 
 #define mavlink_hygrometer_sensor_t  fmav_hygrometer_sensor_t
 
 #define MAVLINK_MSG_ID_HYGROMETER_SENSOR_LEN  5
 #define MAVLINK_MSG_ID_HYGROMETER_SENSOR_MIN_LEN  5
-#define MAVLINK_MSG_ID_420_LEN  5
-#define MAVLINK_MSG_ID_420_MIN_LEN  5
+#define MAVLINK_MSG_ID_12920_LEN  5
+#define MAVLINK_MSG_ID_12920_MIN_LEN  5
 
 #define MAVLINK_MSG_ID_HYGROMETER_SENSOR_CRC  20
-#define MAVLINK_MSG_ID_420_CRC  20
+#define MAVLINK_MSG_ID_12920_CRC  20
 
 
 

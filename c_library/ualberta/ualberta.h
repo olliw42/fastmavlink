@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Tue Aug 17 2021"
+#define FASTMAVLINK_BUILD_DATE  "Tue Sep 28 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -92,9 +92,22 @@ typedef enum UALBERTA_PILOT_MODE {
 //-- Message definitions
 //------------------------------
 
+#ifdef FASTMAVLINK_IGNORE_WADDRESSOFPACKEDMEMBER
+  #ifdef __GNUC__
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Waddress-of-packed-member"
+  #endif
+#endif
+
 #include "./mavlink_msg_nav_filter_bias.h"
 #include "./mavlink_msg_radio_calibration.h"
 #include "./mavlink_msg_ualberta_sys_status.h"
+
+#ifdef FASTMAVLINK_IGNORE_WADDRESSOFPACKEDMEMBER
+  #ifdef __GNUC__
+    #pragma GCC diagnostic pop
+  #endif
+#endif
 
 
 //------------------------------

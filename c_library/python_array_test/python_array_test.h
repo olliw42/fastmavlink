@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Tue Aug 17 2021"
+#define FASTMAVLINK_BUILD_DATE  "Tue Sep 28 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -59,6 +59,13 @@ extern "C" {
 //-- Message definitions
 //------------------------------
 
+#ifdef FASTMAVLINK_IGNORE_WADDRESSOFPACKEDMEMBER
+  #ifdef __GNUC__
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Waddress-of-packed-member"
+  #endif
+#endif
+
 #include "./mavlink_msg_array_test_0.h"
 #include "./mavlink_msg_array_test_1.h"
 #include "./mavlink_msg_array_test_3.h"
@@ -67,6 +74,12 @@ extern "C" {
 #include "./mavlink_msg_array_test_6.h"
 #include "./mavlink_msg_array_test_7.h"
 #include "./mavlink_msg_array_test_8.h"
+
+#ifdef FASTMAVLINK_IGNORE_WADDRESSOFPACKEDMEMBER
+  #ifdef __GNUC__
+    #pragma GCC diagnostic pop
+  #endif
+#endif
 
 
 //------------------------------

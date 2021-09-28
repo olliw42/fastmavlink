@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Tue Aug 17 2021"
+#define FASTMAVLINK_BUILD_DATE  "Tue Sep 28 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -59,7 +59,20 @@ extern "C" {
 //-- Message definitions
 //------------------------------
 
+#ifdef FASTMAVLINK_IGNORE_WADDRESSOFPACKEDMEMBER
+  #ifdef __GNUC__
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Waddress-of-packed-member"
+  #endif
+#endif
 
+
+
+#ifdef FASTMAVLINK_IGNORE_WADDRESSOFPACKEDMEMBER
+  #ifdef __GNUC__
+    #pragma GCC diagnostic pop
+  #endif
+#endif
 
 
 //------------------------------
