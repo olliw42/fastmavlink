@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Tue Sep 28 2021"
+#define FASTMAVLINK_BUILD_DATE  "Fri Oct 01 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -161,7 +161,7 @@ typedef enum CELLULAR_NETWORK_FAILED_REASON {
 //------------------------------
 
 #ifdef FASTMAVLINK_IGNORE_WADDRESSOFPACKEDMEMBER
-  #ifdef __GNUC__
+  #if defined __GNUC__ && __GNUC__ >= 9
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Waddress-of-packed-member"
   #endif
@@ -175,7 +175,7 @@ typedef enum CELLULAR_NETWORK_FAILED_REASON {
 #include "./mavlink_msg_cellular_status.h"
 
 #ifdef FASTMAVLINK_IGNORE_WADDRESSOFPACKEDMEMBER
-  #ifdef __GNUC__
+  #if defined __GNUC__ && __GNUC__ >= 9
     #pragma GCC diagnostic pop
   #endif
 #endif

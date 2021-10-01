@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Tue Sep 28 2021"
+#define FASTMAVLINK_BUILD_DATE  "Fri Oct 01 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -245,7 +245,7 @@ typedef enum MAV_AVSS_COMMAND_FAILURE_REASON {
 //------------------------------
 
 #ifdef FASTMAVLINK_IGNORE_WADDRESSOFPACKEDMEMBER
-  #ifdef __GNUC__
+  #if defined __GNUC__ && __GNUC__ >= 9
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Waddress-of-packed-member"
   #endif
@@ -254,7 +254,7 @@ typedef enum MAV_AVSS_COMMAND_FAILURE_REASON {
 #include "./mavlink_msg_avss_prs_sys_status.h"
 
 #ifdef FASTMAVLINK_IGNORE_WADDRESSOFPACKEDMEMBER
-  #ifdef __GNUC__
+  #if defined __GNUC__ && __GNUC__ >= 9
     #pragma GCC diagnostic pop
   #endif
 #endif
