@@ -134,8 +134,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_param_get_param_value_list(fmav_para
     payload->param_index = index;
     payload->param_type = param_list[index].type;
 
-    memset(payload->param_id, '\0', FASTMAVLINK_PARAM_NAME_LEN); // strncpy() should do it, play it safe
-    strncpy(payload->param_id, param_list[index].name, FASTMAVLINK_PARAM_NAME_LEN);
+    memset(payload->param_id, '\0', FASTMAVLINK_PARAM_NAME_LEN);
+    // according to spec, strncpy(param_id, name, FASTMAVLINK_PARAM_NAME_LEN) should do 
+    // it correctly, but some compilers throw a warning, so play it safe
+    uint8_t len = strlen(param_list[index].name);
+    if (len > FASTMAVLINK_PARAM_NAME_LEN) len = FASTMAVLINK_PARAM_NAME_LEN;
+    memcpy(payload->param_id, param_list[index].name, len);
 
     return 1;
 }
