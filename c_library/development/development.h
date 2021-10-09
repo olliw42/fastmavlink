@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Sat Oct 02 2021"
+#define FASTMAVLINK_BUILD_DATE  "Sat Oct 09 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -121,27 +121,6 @@ typedef enum CELLULAR_NETWORK_RADIO_TYPE {
 #endif
 
 
-#ifndef FASTMAVLINK_HAS_ENUM_CELLULAR_STATUS_FLAG
-#define FASTMAVLINK_HAS_ENUM_CELLULAR_STATUS_FLAG
-typedef enum CELLULAR_STATUS_FLAG {
-    CELLULAR_STATUS_FLAG_UNKNOWN = 0,  // State unknown or not reportable. 
-    CELLULAR_STATUS_FLAG_FAILED = 1,  // Modem is unusable 
-    CELLULAR_STATUS_FLAG_INITIALIZING = 2,  // Modem is being initialized 
-    CELLULAR_STATUS_FLAG_LOCKED = 3,  // Modem is locked 
-    CELLULAR_STATUS_FLAG_DISABLED = 4,  // Modem is not enabled and is powered down 
-    CELLULAR_STATUS_FLAG_DISABLING = 5,  // Modem is currently transitioning to the CELLULAR_STATUS_FLAG_DISABLED state 
-    CELLULAR_STATUS_FLAG_ENABLING = 6,  // Modem is currently transitioning to the CELLULAR_STATUS_FLAG_ENABLED state 
-    CELLULAR_STATUS_FLAG_ENABLED = 7,  // Modem is enabled and powered on but not registered with a network provider and not available for data connections 
-    CELLULAR_STATUS_FLAG_SEARCHING = 8,  // Modem is searching for a network provider to register 
-    CELLULAR_STATUS_FLAG_REGISTERED = 9,  // Modem is registered with a network provider, and data connections and messaging may be available for use 
-    CELLULAR_STATUS_FLAG_DISCONNECTING = 10,  // Modem is disconnecting and deactivating the last active packet data bearer. This state will not be entered if more than one packet data bearer is active and one of the active bearers is deactivated 
-    CELLULAR_STATUS_FLAG_CONNECTING = 11,  // Modem is activating and connecting the first packet data bearer. Subsequent bearer activations when another bearer is already active do not cause this state to be entered 
-    CELLULAR_STATUS_FLAG_CONNECTED = 12,  // One or more packet data bearers is active and connected 
-    CELLULAR_STATUS_FLAG_ENUM_END = 13,  // end marker
-} CELLULAR_STATUS_FLAG;
-#endif
-
-
 #ifndef FASTMAVLINK_HAS_ENUM_CELLULAR_NETWORK_FAILED_REASON
 #define FASTMAVLINK_HAS_ENUM_CELLULAR_NETWORK_FAILED_REASON
 typedef enum CELLULAR_NETWORK_FAILED_REASON {
@@ -151,6 +130,16 @@ typedef enum CELLULAR_NETWORK_FAILED_REASON {
     CELLULAR_NETWORK_FAILED_REASON_SIM_ERROR = 3,  // SIM is available, but not usuable for connection 
     CELLULAR_NETWORK_FAILED_REASON_ENUM_END = 4,  // end marker
 } CELLULAR_NETWORK_FAILED_REASON;
+#endif
+
+
+#ifndef FASTMAVLINK_HAS_ENUM_MAV_CMD
+#define FASTMAVLINK_HAS_ENUM_MAV_CMD
+typedef enum MAV_CMD {
+    MAV_CMD_GROUP_START = 301,  // Define start of a group of mission items. When control reaches this command a GROUP_START message is emitted.          The end of a group is marked using MAV_CMD_GROUP_END with the same group id.          Group ids are expected, but not required, to iterate sequentially.          Groups can be nested. | Mission-unique group id.          Group id is limited because only 24 bit integer can be stored in 32 bit float. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
+    MAV_CMD_GROUP_END = 302,  // Define end of a group of mission items. When control reaches this command a GROUP_END message is emitted.          The start of the group is marked is marked using MAV_CMD_GROUP_START with the same group id.          Group ids are expected, but not required, to iterate sequentially.          Groups can be nested. | Mission-unique group id.          Group id is limited because only 24 bit integer can be stored in 32 bit float. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
+    MAV_CMD_ENUM_END = 303,  // end marker
+} MAV_CMD;
 #endif
 
 #endif // FASTMAVLINK_DO_NOT_INCLUDE_ENUMS
@@ -172,7 +161,6 @@ typedef enum CELLULAR_NETWORK_FAILED_REASON {
 #include "./mavlink_msg_mission_checksum.h"
 #include "./mavlink_msg_airspeed.h"
 #include "./mavlink_msg_wifi_network_info.h"
-#include "./mavlink_msg_cellular_status.h"
 
 #ifdef FASTMAVLINK_IGNORE_WADDRESSOFPACKEDMEMBER
   #if defined __GNUC__ && __GNUC__ >= 9

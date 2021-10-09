@@ -21,7 +21,7 @@ typedef struct _fmav_open_drone_id_authentication_t {
     uint8_t id_or_mac[20];
     uint8_t authentication_type;
     uint8_t data_page;
-    uint8_t page_count;
+    uint8_t last_page_index;
     uint8_t length;
     uint8_t authentication_data[23];
 }) fmav_open_drone_id_authentication_t;
@@ -30,7 +30,7 @@ typedef struct _fmav_open_drone_id_authentication_t {
 #define FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_AUTHENTICATION  12902
 
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_PAYLOAD_LEN_MAX  53
-#define FASTMAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_CRCEXTRA  49
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_CRCEXTRA  140
 
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_FLAGS  3
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_TARGET_SYSTEM_OFS  4
@@ -49,7 +49,7 @@ typedef struct _fmav_open_drone_id_authentication_t {
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_FIELD_ID_OR_MAC_OFS  6
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_FIELD_AUTHENTICATION_TYPE_OFS  26
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_FIELD_DATA_PAGE_OFS  27
-#define FASTMAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_FIELD_PAGE_COUNT_OFS  28
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_FIELD_LAST_PAGE_INDEX_OFS  28
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_FIELD_LENGTH_OFS  29
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_FIELD_AUTHENTICATION_DATA_OFS  30
 
@@ -62,7 +62,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_authentication_pa
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t authentication_type, uint8_t data_page, uint8_t page_count, uint8_t length, uint32_t timestamp, const uint8_t* authentication_data,
+    uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t authentication_type, uint8_t data_page, uint8_t last_page_index, uint8_t length, uint32_t timestamp, const uint8_t* authentication_data,
     fmav_status_t* _status)
 {
     fmav_open_drone_id_authentication_t* _payload = (fmav_open_drone_id_authentication_t*)_msg->payload;
@@ -72,7 +72,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_authentication_pa
     _payload->target_component = target_component;
     _payload->authentication_type = authentication_type;
     _payload->data_page = data_page;
-    _payload->page_count = page_count;
+    _payload->last_page_index = last_page_index;
     _payload->length = length;
     memcpy(&(_payload->id_or_mac), id_or_mac, sizeof(uint8_t)*20);
     memcpy(&(_payload->authentication_data), authentication_data, sizeof(uint8_t)*23);
@@ -98,7 +98,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_authentication_en
 {
     return fmav_msg_open_drone_id_authentication_pack(
         _msg, sysid, compid,
-        _payload->target_system, _payload->target_component, _payload->id_or_mac, _payload->authentication_type, _payload->data_page, _payload->page_count, _payload->length, _payload->timestamp, _payload->authentication_data,
+        _payload->target_system, _payload->target_component, _payload->id_or_mac, _payload->authentication_type, _payload->data_page, _payload->last_page_index, _payload->length, _payload->timestamp, _payload->authentication_data,
         _status);
 }
 
@@ -107,7 +107,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_authentication_pa
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t authentication_type, uint8_t data_page, uint8_t page_count, uint8_t length, uint32_t timestamp, const uint8_t* authentication_data,
+    uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t authentication_type, uint8_t data_page, uint8_t last_page_index, uint8_t length, uint32_t timestamp, const uint8_t* authentication_data,
     fmav_status_t* _status)
 {
     fmav_open_drone_id_authentication_t* _payload = (fmav_open_drone_id_authentication_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -117,7 +117,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_authentication_pa
     _payload->target_component = target_component;
     _payload->authentication_type = authentication_type;
     _payload->data_page = data_page;
-    _payload->page_count = page_count;
+    _payload->last_page_index = last_page_index;
     _payload->length = length;
     memcpy(&(_payload->id_or_mac), id_or_mac, sizeof(uint8_t)*20);
     memcpy(&(_payload->authentication_data), authentication_data, sizeof(uint8_t)*23);
@@ -145,7 +145,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_authentication_en
 {
     return fmav_msg_open_drone_id_authentication_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->target_system, _payload->target_component, _payload->id_or_mac, _payload->authentication_type, _payload->data_page, _payload->page_count, _payload->length, _payload->timestamp, _payload->authentication_data,
+        _payload->target_system, _payload->target_component, _payload->id_or_mac, _payload->authentication_type, _payload->data_page, _payload->last_page_index, _payload->length, _payload->timestamp, _payload->authentication_data,
         _status);
 }
 
@@ -155,7 +155,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_authentication_en
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_authentication_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t authentication_type, uint8_t data_page, uint8_t page_count, uint8_t length, uint32_t timestamp, const uint8_t* authentication_data,
+    uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t authentication_type, uint8_t data_page, uint8_t last_page_index, uint8_t length, uint32_t timestamp, const uint8_t* authentication_data,
     fmav_status_t* _status)
 {
     fmav_open_drone_id_authentication_t _payload;
@@ -165,7 +165,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_authentication_pa
     _payload.target_component = target_component;
     _payload.authentication_type = authentication_type;
     _payload.data_page = data_page;
-    _payload.page_count = page_count;
+    _payload.last_page_index = last_page_index;
     _payload.length = length;
     memcpy(&(_payload.id_or_mac), id_or_mac, sizeof(uint8_t)*20);
     memcpy(&(_payload.authentication_data), authentication_data, sizeof(uint8_t)*23);
@@ -263,7 +263,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_authentication_get
 }
 
 
-FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_authentication_get_field_page_count(const fmav_message_t* msg)
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_authentication_get_field_last_page_index(const fmav_message_t* msg)
 {
     uint8_t r;
     memcpy(&r, &(msg->payload[28]), sizeof(uint8_t));
@@ -319,8 +319,8 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_authentication_get
 #define MAVLINK_MSG_ID_12902_LEN  53
 #define MAVLINK_MSG_ID_12902_MIN_LEN  53
 
-#define MAVLINK_MSG_ID_OPEN_DRONE_ID_AUTHENTICATION_CRC  49
-#define MAVLINK_MSG_ID_12902_CRC  49
+#define MAVLINK_MSG_ID_OPEN_DRONE_ID_AUTHENTICATION_CRC  140
+#define MAVLINK_MSG_ID_12902_CRC  140
 
 #define MAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_FIELD_ID_OR_MAC_LEN 20
 #define MAVLINK_MSG_OPEN_DRONE_ID_AUTHENTICATION_FIELD_AUTHENTICATION_DATA_LEN 23
@@ -332,12 +332,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_open_drone_id_authentication
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t authentication_type, uint8_t data_page, uint8_t page_count, uint8_t length, uint32_t timestamp, const uint8_t* authentication_data)
+    uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t authentication_type, uint8_t data_page, uint8_t last_page_index, uint8_t length, uint32_t timestamp, const uint8_t* authentication_data)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_open_drone_id_authentication_pack(
         _msg, sysid, compid,
-        target_system, target_component, id_or_mac, authentication_type, data_page, page_count, length, timestamp, authentication_data,
+        target_system, target_component, id_or_mac, authentication_type, data_page, last_page_index, length, timestamp, authentication_data,
         _status);
 }
 
@@ -349,13 +349,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_open_drone_id_authentication
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t authentication_type, uint8_t data_page, uint8_t page_count, uint8_t length, uint32_t timestamp, const uint8_t* authentication_data)
+    uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t authentication_type, uint8_t data_page, uint8_t last_page_index, uint8_t length, uint32_t timestamp, const uint8_t* authentication_data)
 {
     return fmav_msg_open_drone_id_authentication_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        target_system, target_component, id_or_mac, authentication_type, data_page, page_count, length, timestamp, authentication_data,
+        target_system, target_component, id_or_mac, authentication_type, data_page, last_page_index, length, timestamp, authentication_data,
         _status);
 }
 

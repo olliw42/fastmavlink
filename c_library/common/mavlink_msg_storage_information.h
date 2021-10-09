@@ -26,19 +26,20 @@ typedef struct _fmav_storage_information_t {
     uint8_t status;
     uint8_t type;
     char name[32];
+    uint8_t storage_usage;
 }) fmav_storage_information_t;
 
 
 #define FASTMAVLINK_MSG_ID_STORAGE_INFORMATION  261
 
-#define FASTMAVLINK_MSG_STORAGE_INFORMATION_PAYLOAD_LEN_MAX  60
+#define FASTMAVLINK_MSG_STORAGE_INFORMATION_PAYLOAD_LEN_MAX  61
 #define FASTMAVLINK_MSG_STORAGE_INFORMATION_CRCEXTRA  179
 
 #define FASTMAVLINK_MSG_STORAGE_INFORMATION_FLAGS  0
 #define FASTMAVLINK_MSG_STORAGE_INFORMATION_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_STORAGE_INFORMATION_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_STORAGE_INFORMATION_FRAME_LEN_MAX  85
+#define FASTMAVLINK_MSG_STORAGE_INFORMATION_FRAME_LEN_MAX  86
 
 #define FASTMAVLINK_MSG_STORAGE_INFORMATION_FIELD_NAME_NUM  32 // number of elements in array
 #define FASTMAVLINK_MSG_STORAGE_INFORMATION_FIELD_NAME_LEN  32 // length of array = number of bytes
@@ -54,6 +55,7 @@ typedef struct _fmav_storage_information_t {
 #define FASTMAVLINK_MSG_STORAGE_INFORMATION_FIELD_STATUS_OFS  26
 #define FASTMAVLINK_MSG_STORAGE_INFORMATION_FIELD_TYPE_OFS  27
 #define FASTMAVLINK_MSG_STORAGE_INFORMATION_FIELD_NAME_OFS  28
+#define FASTMAVLINK_MSG_STORAGE_INFORMATION_FIELD_STORAGE_USAGE_OFS  60
 
 
 //----------------------------------------
@@ -64,7 +66,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storage_information_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint8_t storage_id, uint8_t storage_count, uint8_t status, float total_capacity, float used_capacity, float available_capacity, float read_speed, float write_speed, uint8_t type, const char* name,
+    uint32_t time_boot_ms, uint8_t storage_id, uint8_t storage_count, uint8_t status, float total_capacity, float used_capacity, float available_capacity, float read_speed, float write_speed, uint8_t type, const char* name, uint8_t storage_usage,
     fmav_status_t* _status)
 {
     fmav_storage_information_t* _payload = (fmav_storage_information_t*)_msg->payload;
@@ -79,6 +81,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storage_information_pack(
     _payload->storage_count = storage_count;
     _payload->status = status;
     _payload->type = type;
+    _payload->storage_usage = storage_usage;
     memcpy(&(_payload->name), name, sizeof(char)*32);
 
     _msg->sysid = sysid;
@@ -102,7 +105,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storage_information_encode(
 {
     return fmav_msg_storage_information_pack(
         _msg, sysid, compid,
-        _payload->time_boot_ms, _payload->storage_id, _payload->storage_count, _payload->status, _payload->total_capacity, _payload->used_capacity, _payload->available_capacity, _payload->read_speed, _payload->write_speed, _payload->type, _payload->name,
+        _payload->time_boot_ms, _payload->storage_id, _payload->storage_count, _payload->status, _payload->total_capacity, _payload->used_capacity, _payload->available_capacity, _payload->read_speed, _payload->write_speed, _payload->type, _payload->name, _payload->storage_usage,
         _status);
 }
 
@@ -111,7 +114,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storage_information_pack_to_fra
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint8_t storage_id, uint8_t storage_count, uint8_t status, float total_capacity, float used_capacity, float available_capacity, float read_speed, float write_speed, uint8_t type, const char* name,
+    uint32_t time_boot_ms, uint8_t storage_id, uint8_t storage_count, uint8_t status, float total_capacity, float used_capacity, float available_capacity, float read_speed, float write_speed, uint8_t type, const char* name, uint8_t storage_usage,
     fmav_status_t* _status)
 {
     fmav_storage_information_t* _payload = (fmav_storage_information_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -126,6 +129,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storage_information_pack_to_fra
     _payload->storage_count = storage_count;
     _payload->status = status;
     _payload->type = type;
+    _payload->storage_usage = storage_usage;
     memcpy(&(_payload->name), name, sizeof(char)*32);
 
     _buf[5] = sysid;
@@ -151,7 +155,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storage_information_encode_to_f
 {
     return fmav_msg_storage_information_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->time_boot_ms, _payload->storage_id, _payload->storage_count, _payload->status, _payload->total_capacity, _payload->used_capacity, _payload->available_capacity, _payload->read_speed, _payload->write_speed, _payload->type, _payload->name,
+        _payload->time_boot_ms, _payload->storage_id, _payload->storage_count, _payload->status, _payload->total_capacity, _payload->used_capacity, _payload->available_capacity, _payload->read_speed, _payload->write_speed, _payload->type, _payload->name, _payload->storage_usage,
         _status);
 }
 
@@ -161,7 +165,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storage_information_encode_to_f
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storage_information_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint8_t storage_id, uint8_t storage_count, uint8_t status, float total_capacity, float used_capacity, float available_capacity, float read_speed, float write_speed, uint8_t type, const char* name,
+    uint32_t time_boot_ms, uint8_t storage_id, uint8_t storage_count, uint8_t status, float total_capacity, float used_capacity, float available_capacity, float read_speed, float write_speed, uint8_t type, const char* name, uint8_t storage_usage,
     fmav_status_t* _status)
 {
     fmav_storage_information_t _payload;
@@ -176,6 +180,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_storage_information_pack_to_ser
     _payload.storage_count = storage_count;
     _payload.status = status;
     _payload.type = type;
+    _payload.storage_usage = storage_usage;
     memcpy(&(_payload.name), name, sizeof(char)*32);
 
     return fmav_finalize_serial(
@@ -311,6 +316,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_storage_information_get_field_ty
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_storage_information_get_field_storage_usage(const fmav_message_t* msg)
+{
+    uint8_t r;
+    memcpy(&r, &(msg->payload[60]), sizeof(uint8_t));
+    return r;
+}
+
+
 FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_storage_information_get_field_name_ptr(const fmav_message_t* msg)
 {
     return (char*)&(msg->payload[28]);
@@ -333,9 +346,9 @@ FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_storage_information_get_field_name(
 
 #define mavlink_storage_information_t  fmav_storage_information_t
 
-#define MAVLINK_MSG_ID_STORAGE_INFORMATION_LEN  60
+#define MAVLINK_MSG_ID_STORAGE_INFORMATION_LEN  61
 #define MAVLINK_MSG_ID_STORAGE_INFORMATION_MIN_LEN  27
-#define MAVLINK_MSG_ID_261_LEN  60
+#define MAVLINK_MSG_ID_261_LEN  61
 #define MAVLINK_MSG_ID_261_MIN_LEN  27
 
 #define MAVLINK_MSG_ID_STORAGE_INFORMATION_CRC  179
@@ -350,12 +363,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_storage_information_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint32_t time_boot_ms, uint8_t storage_id, uint8_t storage_count, uint8_t status, float total_capacity, float used_capacity, float available_capacity, float read_speed, float write_speed, uint8_t type, const char* name)
+    uint32_t time_boot_ms, uint8_t storage_id, uint8_t storage_count, uint8_t status, float total_capacity, float used_capacity, float available_capacity, float read_speed, float write_speed, uint8_t type, const char* name, uint8_t storage_usage)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_storage_information_pack(
         _msg, sysid, compid,
-        time_boot_ms, storage_id, storage_count, status, total_capacity, used_capacity, available_capacity, read_speed, write_speed, type, name,
+        time_boot_ms, storage_id, storage_count, status, total_capacity, used_capacity, available_capacity, read_speed, write_speed, type, name, storage_usage,
         _status);
 }
 
@@ -367,13 +380,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_storage_information_pack_txb
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint8_t storage_id, uint8_t storage_count, uint8_t status, float total_capacity, float used_capacity, float available_capacity, float read_speed, float write_speed, uint8_t type, const char* name)
+    uint32_t time_boot_ms, uint8_t storage_id, uint8_t storage_count, uint8_t status, float total_capacity, float used_capacity, float available_capacity, float read_speed, float write_speed, uint8_t type, const char* name, uint8_t storage_usage)
 {
     return fmav_msg_storage_information_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        time_boot_ms, storage_id, storage_count, status, total_capacity, used_capacity, available_capacity, read_speed, write_speed, type, name,
+        time_boot_ms, storage_id, storage_count, status, total_capacity, used_capacity, available_capacity, read_speed, write_speed, type, name, storage_usage,
         _status);
 }
 

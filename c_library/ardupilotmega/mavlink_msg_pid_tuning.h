@@ -22,19 +22,21 @@ typedef struct _fmav_pid_tuning_t {
     float I;
     float D;
     uint8_t axis;
+    float SRate;
+    float PDmod;
 }) fmav_pid_tuning_t;
 
 
 #define FASTMAVLINK_MSG_ID_PID_TUNING  194
 
-#define FASTMAVLINK_MSG_PID_TUNING_PAYLOAD_LEN_MAX  25
+#define FASTMAVLINK_MSG_PID_TUNING_PAYLOAD_LEN_MAX  33
 #define FASTMAVLINK_MSG_PID_TUNING_CRCEXTRA  98
 
 #define FASTMAVLINK_MSG_PID_TUNING_FLAGS  0
 #define FASTMAVLINK_MSG_PID_TUNING_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_PID_TUNING_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_PID_TUNING_FRAME_LEN_MAX  50
+#define FASTMAVLINK_MSG_PID_TUNING_FRAME_LEN_MAX  58
 
 
 
@@ -45,6 +47,8 @@ typedef struct _fmav_pid_tuning_t {
 #define FASTMAVLINK_MSG_PID_TUNING_FIELD_I_OFS  16
 #define FASTMAVLINK_MSG_PID_TUNING_FIELD_D_OFS  20
 #define FASTMAVLINK_MSG_PID_TUNING_FIELD_AXIS_OFS  24
+#define FASTMAVLINK_MSG_PID_TUNING_FIELD_SRATE_OFS  25
+#define FASTMAVLINK_MSG_PID_TUNING_FIELD_PDMOD_OFS  29
 
 
 //----------------------------------------
@@ -55,7 +59,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_pid_tuning_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t axis, float desired, float achieved, float FF, float P, float I, float D,
+    uint8_t axis, float desired, float achieved, float FF, float P, float I, float D, float SRate, float PDmod,
     fmav_status_t* _status)
 {
     fmav_pid_tuning_t* _payload = (fmav_pid_tuning_t*)_msg->payload;
@@ -67,6 +71,8 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_pid_tuning_pack(
     _payload->I = I;
     _payload->D = D;
     _payload->axis = axis;
+    _payload->SRate = SRate;
+    _payload->PDmod = PDmod;
 
 
     _msg->sysid = sysid;
@@ -90,7 +96,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_pid_tuning_encode(
 {
     return fmav_msg_pid_tuning_pack(
         _msg, sysid, compid,
-        _payload->axis, _payload->desired, _payload->achieved, _payload->FF, _payload->P, _payload->I, _payload->D,
+        _payload->axis, _payload->desired, _payload->achieved, _payload->FF, _payload->P, _payload->I, _payload->D, _payload->SRate, _payload->PDmod,
         _status);
 }
 
@@ -99,7 +105,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_pid_tuning_pack_to_frame_buf(
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t axis, float desired, float achieved, float FF, float P, float I, float D,
+    uint8_t axis, float desired, float achieved, float FF, float P, float I, float D, float SRate, float PDmod,
     fmav_status_t* _status)
 {
     fmav_pid_tuning_t* _payload = (fmav_pid_tuning_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -111,6 +117,8 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_pid_tuning_pack_to_frame_buf(
     _payload->I = I;
     _payload->D = D;
     _payload->axis = axis;
+    _payload->SRate = SRate;
+    _payload->PDmod = PDmod;
 
 
     _buf[5] = sysid;
@@ -136,7 +144,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_pid_tuning_encode_to_frame_buf(
 {
     return fmav_msg_pid_tuning_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->axis, _payload->desired, _payload->achieved, _payload->FF, _payload->P, _payload->I, _payload->D,
+        _payload->axis, _payload->desired, _payload->achieved, _payload->FF, _payload->P, _payload->I, _payload->D, _payload->SRate, _payload->PDmod,
         _status);
 }
 
@@ -146,7 +154,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_pid_tuning_encode_to_frame_buf(
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_pid_tuning_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint8_t axis, float desired, float achieved, float FF, float P, float I, float D,
+    uint8_t axis, float desired, float achieved, float FF, float P, float I, float D, float SRate, float PDmod,
     fmav_status_t* _status)
 {
     fmav_pid_tuning_t _payload;
@@ -158,6 +166,8 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_pid_tuning_pack_to_serial(
     _payload.I = I;
     _payload.D = D;
     _payload.axis = axis;
+    _payload.SRate = SRate;
+    _payload.PDmod = PDmod;
 
 
     return fmav_finalize_serial(
@@ -269,6 +279,22 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_pid_tuning_get_field_axis(const 
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_pid_tuning_get_field_SRate(const fmav_message_t* msg)
+{
+    float r;
+    memcpy(&r, &(msg->payload[25]), sizeof(float));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_pid_tuning_get_field_PDmod(const fmav_message_t* msg)
+{
+    float r;
+    memcpy(&r, &(msg->payload[29]), sizeof(float));
+    return r;
+}
+
+
 
 
 
@@ -281,9 +307,9 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_pid_tuning_get_field_axis(const 
 
 #define mavlink_pid_tuning_t  fmav_pid_tuning_t
 
-#define MAVLINK_MSG_ID_PID_TUNING_LEN  25
+#define MAVLINK_MSG_ID_PID_TUNING_LEN  33
 #define MAVLINK_MSG_ID_PID_TUNING_MIN_LEN  25
-#define MAVLINK_MSG_ID_194_LEN  25
+#define MAVLINK_MSG_ID_194_LEN  33
 #define MAVLINK_MSG_ID_194_MIN_LEN  25
 
 #define MAVLINK_MSG_ID_PID_TUNING_CRC  98
@@ -298,12 +324,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_pid_tuning_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint8_t axis, float desired, float achieved, float FF, float P, float I, float D)
+    uint8_t axis, float desired, float achieved, float FF, float P, float I, float D, float SRate, float PDmod)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_pid_tuning_pack(
         _msg, sysid, compid,
-        axis, desired, achieved, FF, P, I, D,
+        axis, desired, achieved, FF, P, I, D, SRate, PDmod,
         _status);
 }
 
@@ -315,13 +341,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_pid_tuning_pack_txbuf(
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t axis, float desired, float achieved, float FF, float P, float I, float D)
+    uint8_t axis, float desired, float achieved, float FF, float P, float I, float D, float SRate, float PDmod)
 {
     return fmav_msg_pid_tuning_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        axis, desired, achieved, FF, P, I, D,
+        axis, desired, achieved, FF, P, I, D, SRate, PDmod,
         _status);
 }
 

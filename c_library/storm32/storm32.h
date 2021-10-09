@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Sat Oct 02 2021"
+#define FASTMAVLINK_BUILD_DATE  "Sat Oct 09 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -65,6 +65,36 @@ typedef enum MAV_STORM32_TUNNEL_PAYLOAD_TYPE {
     MAV_STORM32_TUNNEL_PAYLOAD_TYPE_STORM32_RESERVED9 = 209,  // Registered for STorM32 gimbal controller. 
     MAV_STORM32_TUNNEL_PAYLOAD_TYPE_ENUM_END = 210,  // end marker
 } MAV_STORM32_TUNNEL_PAYLOAD_TYPE;
+#endif
+
+
+#ifndef FASTMAVLINK_HAS_ENUM_MAV_STORM32_GIMBAL_PREARM_FLAGS
+#define FASTMAVLINK_HAS_ENUM_MAV_STORM32_GIMBAL_PREARM_FLAGS
+typedef enum MAV_STORM32_GIMBAL_PREARM_FLAGS {
+    MAV_STORM32_GIMBAL_PREARM_FLAGS_IS_NORMAL = 1,  // STorM32 gimbal is in normal state. 
+    MAV_STORM32_GIMBAL_PREARM_FLAGS_IMUS_WORKING = 2,  // The IMUs are healthy and working normally. 
+    MAV_STORM32_GIMBAL_PREARM_FLAGS_MOTORS_WORKING = 4,  // The motors are active and working normally. 
+    MAV_STORM32_GIMBAL_PREARM_FLAGS_ENCODERS_WORKING = 8,  // The encoders are healthy and working normally. 
+    MAV_STORM32_GIMBAL_PREARM_FLAGS_VOLTAGE_OK = 16,  // A battery voltage is applied and is in range. 
+    MAV_STORM32_GIMBAL_PREARM_FLAGS_VIRTUALCHANNELS_RECEIVING = 32,  // ???. 
+    MAV_STORM32_GIMBAL_PREARM_FLAGS_MAVLINK_RECEIVING = 64,  // Mavlink messages are being received. 
+    MAV_STORM32_GIMBAL_PREARM_FLAGS_STORM32LINK_QFIX = 128,  // The STorM32Link data indicates QFix. 
+    MAV_STORM32_GIMBAL_PREARM_FLAGS_STORM32LINK_WORKING = 256,  // The STorM32Link is working. 
+    MAV_STORM32_GIMBAL_PREARM_FLAGS_CAMERA_CONNECTED = 512,  // The camera has been found and is connected. 
+    MAV_STORM32_GIMBAL_PREARM_FLAGS_AUX0_LOW = 1024,  // The signal on the AUX0 input pin is low. 
+    MAV_STORM32_GIMBAL_PREARM_FLAGS_AUX1_LOW = 2048,  // The signal on the AUX1 input pin is low. 
+    MAV_STORM32_GIMBAL_PREARM_FLAGS_NTLOGGER_WORKING = 4096,  // The NTLogger is working normally. 
+    MAV_STORM32_GIMBAL_PREARM_FLAGS_ENUM_END = 4097,  // end marker
+} MAV_STORM32_GIMBAL_PREARM_FLAGS;
+#endif
+
+
+#ifndef FASTMAVLINK_HAS_ENUM_MAV_STORM32_CAMERA_PREARM_FLAGS
+#define FASTMAVLINK_HAS_ENUM_MAV_STORM32_CAMERA_PREARM_FLAGS
+typedef enum MAV_STORM32_CAMERA_PREARM_FLAGS {
+    MAV_STORM32_CAMERA_PREARM_FLAGS_CONNECTED = 1,  // The camera has been found and is connected. 
+    MAV_STORM32_CAMERA_PREARM_FLAGS_ENUM_END = 2,  // end marker
+} MAV_STORM32_CAMERA_PREARM_FLAGS;
 #endif
 
 
@@ -298,6 +328,8 @@ typedef enum MAV_CMD {
     MAV_CMD_DO_SET_CAM_TRIGG_INTERVAL = 214,  // Mission command to set camera trigger interval for this flight. If triggering is enabled, the camera is triggered each time this interval expires. This command can also be used to set the shutter integration time for the camera. | Camera trigger cycle time. -1 or 0 to ignore. | Camera shutter integration time. Should be less than trigger cycle time. -1 or 0 to ignore. | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_DO_SET_RESUME_REPEAT_DIST = 215,  // Set the distance to be repeated on mission resume | Distance. | Empty. | Empty. | Empty. | Empty. | Empty. | Empty.
     MAV_CMD_DO_SPRAYER = 216,  // Control attached liquid sprayer | 0: disable sprayer. 1: enable sprayer. | Empty. | Empty. | Empty. | Empty. | Empty. | Empty.
+    MAV_CMD_DO_SEND_SCRIPT_MESSAGE = 217,  // Pass instructions onto scripting, a script should be checking for a new command | uint16 ID value to be passed to scripting | float value to be passed to scripting | float value to be passed to scripting | float value to be passed to scripting | Empty. | Empty. | Empty.
+    MAV_CMD_DO_AUX_FUNCTION = 218,  // Execute auxiliary function | Auxiliary Function. | Switch Level. | Empty. | Empty. | Empty. | Empty. | Empty.
     MAV_CMD_DO_MOUNT_CONTROL_QUAT = 220,  // Mission command to control a camera or antenna mount, using a quaternion as reference. | quaternion param q1, w (1 in null-rotation) | quaternion param q2, x (0 in null-rotation) | quaternion param q3, y (0 in null-rotation) | quaternion param q4, z (0 in null-rotation) | Empty | Empty | Empty
     MAV_CMD_DO_GUIDED_MASTER = 221,  // set id of master controller | System ID | Component ID | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_DO_GUIDED_LIMITS = 222,  // Set limits for external control | Timeout - maximum time that external controller will be allowed to control vehicle. 0 means no timeout. | Altitude (MSL) min - if vehicle moves below this alt, the command will be aborted and the mission will continue. 0 means no lower altitude limit. | Altitude (MSL) max - if vehicle moves above this alt, the command will be aborted and the mission will continue. 0 means no upper altitude limit. | Horizontal move limit - if vehicle moves more than this distance from its location at the moment the command was executed, the command will be aborted and the mission will continue. 0 means no horizontal move limit. | Empty | Empty | Empty
@@ -308,7 +340,7 @@ typedef enum MAV_CMD {
     MAV_CMD_PREFLIGHT_SET_SENSOR_OFFSETS = 242,  // Set sensor offsets. This command will be only accepted if in pre-flight mode. | Sensor to adjust the offsets for: 0: gyros, 1: accelerometer, 2: magnetometer, 3: barometer, 4: optical flow, 5: second magnetometer, 6: third magnetometer | X axis offset (or generic dimension 1), in the sensor's raw units | Y axis offset (or generic dimension 2), in the sensor's raw units | Z axis offset (or generic dimension 3), in the sensor's raw units | Generic dimension 4, in the sensor's raw units | Generic dimension 5, in the sensor's raw units | Generic dimension 6, in the sensor's raw units
     MAV_CMD_PREFLIGHT_UAVCAN = 243,  // Trigger UAVCAN configuration (actuator ID assignment and direction mapping). Note that this maps to the legacy UAVCAN v0 function UAVCAN_ENUMERATE, which is intended to be executed just once during initial vehicle configuration (it is not a normal pre-flight command and has been poorly named). | 1: Trigger actuator ID assignment and direction mapping. 0: Cancel command. | Reserved | Reserved | Reserved | Reserved | Reserved | Reserved
     MAV_CMD_PREFLIGHT_STORAGE = 245,  // Request storage of different parameter values and logs. This command will be only accepted if in pre-flight mode. | Parameter storage: 0: READ FROM FLASH/EEPROM, 1: WRITE CURRENT TO FLASH/EEPROM, 2: Reset to defaults, 3: Reset sensor calibration parameter data to factory default (or firmware default if not available) | Mission storage: 0: READ FROM FLASH/EEPROM, 1: WRITE CURRENT TO FLASH/EEPROM, 2: Reset to defaults | Onboard logging: 0: Ignore, 1: Start default rate logging, -1: Stop logging, > 1: logging rate (e.g. set to 1000 for 1000 Hz logging) | Reserved | Empty | Empty | Empty
-    MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN = 246,  // Request the reboot or shutdown of system components. | 0: Do nothing for autopilot, 1: Reboot autopilot, 2: Shutdown autopilot, 3: Reboot autopilot and keep it in the bootloader until upgraded. | 0: Do nothing for onboard computer, 1: Reboot onboard computer, 2: Shutdown onboard computer, 3: Reboot onboard computer and keep it in the bootloader until upgraded. | WIP: 0: Do nothing for camera, 1: Reboot onboard camera, 2: Shutdown onboard camera, 3: Reboot onboard camera and keep it in the bootloader until upgraded | WIP: 0: Do nothing for mount (e.g. gimbal), 1: Reboot mount, 2: Shutdown mount, 3: Reboot mount and keep it in the bootloader until upgraded | Reserved (set to 0) | Reserved (set to 0) | WIP: ID (e.g. camera ID -1 for all IDs)
+    MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN = 246,  // Request the reboot or shutdown of system components. | 0: Do nothing for autopilot, 1: Reboot autopilot, 2: Shutdown autopilot, 3: Reboot autopilot and keep it in the bootloader until upgraded. | 0: Do nothing for onboard computer, 1: Reboot onboard computer, 2: Shutdown onboard computer, 3: Reboot onboard computer and keep it in the bootloader until upgraded. | 0: Do nothing for component, 1: Reboot component, 2: Shutdown component, 3: Reboot component and keep it in the bootloader until upgraded | MAVLink Component ID targeted in param3 (0 for all components). | Reserved (set to 0) | Reserved (set to 0) | WIP: ID (e.g. camera ID -1 for all IDs)
     MAV_CMD_DO_UPGRADE = 247,  // Request a target system to start an upgrade of one (or all) of its components. For example, the command might be sent to a companion computer to cause it to upgrade a connected flight controller. The system doing the upgrade will report progress using the normal command protocol sequence for a long running operation. Command protocol information: https://mavlink.io/en/services/command.html. | Component id of the component to be upgraded. If set to 0, all components should be upgraded. | 0: Do not reboot component after the action is executed, 1: Reboot component after the action is executed. | Reserved | Reserved | Reserved | Reserved | WIP: upgrade progress report rate (can be used for more granular control).
     MAV_CMD_OVERRIDE_GOTO = 252,  // Override current mission with command to pause mission, pause mission and move to position, continue/resume mission. When param 1 indicates that the mission is paused (MAV_GOTO_DO_HOLD), param 2 defines whether it holds in place or moves to another position. | MAV_GOTO_DO_HOLD: pause mission and either hold or move to specified position (depending on param2), MAV_GOTO_DO_CONTINUE: resume mission. | MAV_GOTO_HOLD_AT_CURRENT_POSITION: hold at current position, MAV_GOTO_HOLD_AT_SPECIFIED_POSITION: hold at specified position. | Coordinate frame of hold point. | Desired yaw angle. | Latitude/X position. | Longitude/Y position. | Altitude/Z position.
     MAV_CMD_OBLIQUE_SURVEY = 260,  // Mission command to set a Camera Auto Mount Pivoting Oblique Survey (Replaces CAM_TRIGG_DIST for this purpose). The camera is triggered each time this distance is exceeded, then the mount moves to the next position. Params 4~6 set-up the angle limits and number of positions for oblique survey, where mount-enabled vehicles automatically roll the camera between shots to emulate an oblique camera setup (providing an increased HFOV). This command can also be used to set the shutter integration time for the camera. | Camera trigger distance. 0 to stop triggering. | Camera shutter integration time. 0 to ignore | The minimum interval in which the camera is capable of taking subsequent pictures repeatedly. 0 to ignore. | Total number of roll positions at which the camera will capture photos (images captures spread evenly across the limits defined by param5). | Angle limits that the camera can be rolled to left and right of center. | Fixed pitch angle that the camera will hold in oblique mode if the mount is actuated in the pitch axis. | Empty
@@ -334,6 +366,7 @@ typedef enum MAV_CMD {
     MAV_CMD_SET_CAMERA_MODE = 530,  // Set camera running mode. Use NaN for reserved values. GCS will send a MAV_CMD_REQUEST_VIDEO_STREAM_STATUS command after a mode change if the camera supports video streaming. | Reserved (Set to 0) | Camera mode | Reserved (default:NaN) | Reserved (default:NaN) | Reserved (default:0) | Reserved (default:0) | Reserved (default:NaN)
     MAV_CMD_SET_CAMERA_ZOOM = 531,  // Set camera zoom. Camera must respond with a CAMERA_SETTINGS message (on success). | Zoom type | Zoom value. The range of valid values depend on the zoom type. | Reserved (default:NaN) | Reserved (default:NaN) | Reserved (default:0) | Reserved (default:0) | Reserved (default:NaN)
     MAV_CMD_SET_CAMERA_FOCUS = 532,  // Set camera focus. Camera must respond with a CAMERA_SETTINGS message (on success). | Focus type | Focus value | Reserved (default:NaN) | Reserved (default:NaN) | Reserved (default:0) | Reserved (default:0) | Reserved (default:NaN)
+    MAV_CMD_SET_STORAGE_USAGE = 533,  // Set that a particular storage is the preferred location for saving photos, videos, and/or other media (e.g. to set that an SD card is used for storing videos).          There can only be one preferred save location for each particular media type: setting a media usage flag will clear/reset that same flag if set on any other storage.          If no flag is set the system should use its default storage.          A target system can choose to always use default storage, in which case it should ACK the command with MAV_RESULT_UNSUPPORTED.          A target system can choose to not allow a particular storage to be set as preferred storage, in which case it should ACK the command with MAV_RESULT_DENIED. | Storage ID (1 for first, 2 for second, etc.) | Usage flags | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_JUMP_TAG = 600,  // Tagged jump target. Can be jumped to with MAV_CMD_DO_JUMP_TAG. | Tag. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_DO_JUMP_TAG = 601,  // Jump to the matching tag in the mission list. Repeat this action for the specified number of times. A mission should contain a single matching tag for each jump. If this is not the case then a jump to a missing tag should complete the mission, and a jump where there are multiple matching tags should always select the one with the lowest mission sequence number. | Target tag to jump to. | Repeat count. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW = 1000,  // High level setpoint to be sent to a gimbal manager to set a gimbal attitude. It is possible to set combinations of the values below. E.g. an angle as well as a desired angular rate can be used to get to this angle at a certain angular rate, or an angular rate only will result in continuous turning. NaN is to be used to signal unset. Note: a gimbal is never to react to this command but only the gimbal manager. | Pitch angle (positive to pitch up, relative to vehicle for FOLLOW mode, relative to world horizon for LOCK mode). | Yaw angle (positive to yaw to the right, relative to vehicle for FOLLOW mode, absolute to North for LOCK mode). | Pitch rate (positive to pitch up). | Yaw rate (positive to yaw to the right). | Gimbal manager flags to use. | Reserved (default:0) | Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal device components. Send command multiple times for more than one gimbal (but not all gimbals).
@@ -393,6 +426,7 @@ typedef enum MAV_CMD {
     MAV_CMD_FIXED_MAG_CAL = 42004,  // Magnetometer calibration based on fixed position        in earth field given by inclination, declination and intensity. | Magnetic declination. | Magnetic inclination. | Magnetic intensity. | Yaw. | Empty. | Empty. | Empty.
     MAV_CMD_FIXED_MAG_CAL_FIELD = 42005,  // Magnetometer calibration based on fixed expected field values. | Field strength X. | Field strength Y. | Field strength Z. | Empty. | Empty. | Empty. | Empty.
     MAV_CMD_FIXED_MAG_CAL_YAW = 42006,  // Magnetometer calibration based on provided known yaw. This allows for fast calibration using WMM field tables in the vehicle, given only the known yaw of the vehicle. If Latitude and longitude are both zero then use the current vehicle location. | Yaw of vehicle in earth frame. | CompassMask, 0 for all. | Latitude. | Longitude. | Empty. | Empty. | Empty.
+    MAV_CMD_SET_EKF_SOURCE_SET = 42007,  // Set EKF sensor source set. | Source Set Id. | Empty. | Empty. | Empty. | Empty. | Empty. | Empty.
     MAV_CMD_DO_START_MAG_CAL = 42424,  // Initiate a magnetometer calibration. | Bitmask of magnetometers to calibrate. Use 0 to calibrate all sensors that can be started (sensors may not start if disabled, unhealthy, etc.). The command will NACK if calibration does not start for a sensor explicitly specified by the bitmask. | Automatically retry on failure (0=no retry, 1=retry). | Save without user input (0=require input, 1=autosave). | Delay. | Autoreboot (0=user reboot, 1=autoreboot). | Empty. | Empty.
     MAV_CMD_DO_ACCEPT_MAG_CAL = 42425,  // Accept a magnetometer calibration. | Bitmask of magnetometers that calibration is accepted (0 means all). | Empty. | Empty. | Empty. | Empty. | Empty. | Empty.
     MAV_CMD_DO_CANCEL_MAG_CAL = 42426,  // Cancel a running magnetometer calibration. | Bitmask of magnetometers to cancel a running calibration (0 means all). | Empty. | Empty. | Empty. | Empty. | Empty. | Empty.
@@ -442,6 +476,7 @@ typedef enum MAV_CMD {
 #include "./mavlink_msg_storm32_gimbal_manager_correct_roll.h"
 #include "./mavlink_msg_storm32_gimbal_manager_profile.h"
 #include "./mavlink_msg_qshot_status.h"
+#include "./mavlink_msg_component_prearm_status.h"
 
 #ifdef FASTMAVLINK_IGNORE_WADDRESSOFPACKEDMEMBER
   #if defined __GNUC__ && __GNUC__ >= 9

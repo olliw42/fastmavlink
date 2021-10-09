@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Sat Oct 02 2021"
+#define FASTMAVLINK_BUILD_DATE  "Sat Oct 09 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -159,18 +159,18 @@ typedef enum MAV_SYS_STATUS_SENSOR {
 #define FASTMAVLINK_HAS_ENUM_MAV_FRAME
 typedef enum MAV_FRAME {
     MAV_FRAME_GLOBAL = 0,  // Global (WGS84) coordinate frame + MSL altitude. First value / x: latitude, second value / y: longitude, third value / z: positive altitude over mean sea level (MSL). 
-    MAV_FRAME_LOCAL_NED = 1,  // Local coordinate frame, Z-down (x: North, y: East, z: Down). 
+    MAV_FRAME_LOCAL_NED = 1,  // NED local tangent frame (x: North, y: East, z: Down) with origin fixed relative to earth. 
     MAV_FRAME_MISSION = 2,  // NOT a coordinate frame, indicates a mission command. 
     MAV_FRAME_GLOBAL_RELATIVE_ALT = 3,  // Global (WGS84) coordinate frame + altitude relative to the home position. First value / x: latitude, second value / y: longitude, third value / z: positive altitude with 0 being at the altitude of the home location. 
-    MAV_FRAME_LOCAL_ENU = 4,  // Local coordinate frame, Z-up (x: East, y: North, z: Up). 
-    MAV_FRAME_GLOBAL_INT = 5,  // Global (WGS84) coordinate frame (scaled) + MSL altitude. First value / x: latitude in degrees*1.0e-7, second value / y: longitude in degrees*1.0e-7, third value / z: positive altitude over mean sea level (MSL). 
-    MAV_FRAME_GLOBAL_RELATIVE_ALT_INT = 6,  // Global (WGS84) coordinate frame (scaled) + altitude relative to the home position. First value / x: latitude in degrees*10e-7, second value / y: longitude in degrees*10e-7, third value / z: positive altitude with 0 being at the altitude of the home location. 
-    MAV_FRAME_LOCAL_OFFSET_NED = 7,  // Offset to the current local frame. Anything expressed in this frame should be added to the current local frame position. 
-    MAV_FRAME_BODY_NED = 8,  // Setpoint in body NED frame. This makes sense if all position control is externalized - e.g. useful to command 2 m/s^2 acceleration to the right. 
-    MAV_FRAME_BODY_OFFSET_NED = 9,  // Offset in body NED frame. This makes sense if adding setpoints to the current flight path, to avoid an obstacle - e.g. useful to command 2 m/s^2 acceleration to the east. 
+    MAV_FRAME_LOCAL_ENU = 4,  // ENU local tangent frame (x: East, y: North, z: Up) with origin fixed relative to earth. 
+    MAV_FRAME_GLOBAL_INT = 5,  // Global (WGS84) coordinate frame (scaled) + MSL altitude. First value / x: latitude in degrees*1E7, second value / y: longitude in degrees*1E7, third value / z: positive altitude over mean sea level (MSL). 
+    MAV_FRAME_GLOBAL_RELATIVE_ALT_INT = 6,  // Global (WGS84) coordinate frame (scaled) + altitude relative to the home position. First value / x: latitude in degrees*1E7, second value / y: longitude in degrees*1E7, third value / z: positive altitude with 0 being at the altitude of the home location. 
+    MAV_FRAME_LOCAL_OFFSET_NED = 7,  // NED local tangent frame (x: North, y: East, z: Down) with origin that travels with the vehicle. 
+    MAV_FRAME_BODY_NED = 8,  // Same as MAV_FRAME_LOCAL_NED when used to represent position values. Same as MAV_FRAME_BODY_FRD when used with velocity/accelaration values. 
+    MAV_FRAME_BODY_OFFSET_NED = 9,  // This is the same as MAV_FRAME_BODY_FRD. 
     MAV_FRAME_GLOBAL_TERRAIN_ALT = 10,  // Global (WGS84) coordinate frame with AGL altitude (at the waypoint coordinate). First value / x: latitude in degrees, second value / y: longitude in degrees, third value / z: positive altitude in meters with 0 being at ground level in terrain model. 
-    MAV_FRAME_GLOBAL_TERRAIN_ALT_INT = 11,  // Global (WGS84) coordinate frame (scaled) with AGL altitude (at the waypoint coordinate). First value / x: latitude in degrees*10e-7, second value / y: longitude in degrees*10e-7, third value / z: positive altitude in meters with 0 being at ground level in terrain model. 
-    MAV_FRAME_BODY_FRD = 12,  // Body fixed frame of reference, Z-down (x: Forward, y: Right, z: Down). 
+    MAV_FRAME_GLOBAL_TERRAIN_ALT_INT = 11,  // Global (WGS84) coordinate frame (scaled) with AGL altitude (at the waypoint coordinate). First value / x: latitude in degrees*1E7, second value / y: longitude in degrees*1E7, third value / z: positive altitude in meters with 0 being at ground level in terrain model. 
+    MAV_FRAME_BODY_FRD = 12,  // FRD local tangent frame (x: Forward, y: Right, z: Down) with origin that travels with vehicle. The forward axis is aligned to the front of the vehicle in the horizontal plane. 
     MAV_FRAME_RESERVED_13 = 13,  // MAV_FRAME_BODY_FLU - Body fixed frame of reference, Z-up (x: Forward, y: Left, z: Up). 
     MAV_FRAME_RESERVED_14 = 14,  // MAV_FRAME_MOCAP_NED - Odometry local coordinate frame of data given by a motion capture system, Z-down (x: North, y: East, z: Down). 
     MAV_FRAME_RESERVED_15 = 15,  // MAV_FRAME_MOCAP_ENU - Odometry local coordinate frame of data given by a motion capture system, Z-up (x: East, y: North, z: Up). 
@@ -178,8 +178,8 @@ typedef enum MAV_FRAME {
     MAV_FRAME_RESERVED_17 = 17,  // MAV_FRAME_VISION_ENU - Odometry local coordinate frame of data given by a vision estimation system, Z-up (x: East, y: North, z: Up). 
     MAV_FRAME_RESERVED_18 = 18,  // MAV_FRAME_ESTIM_NED - Odometry local coordinate frame of data given by an estimator running onboard the vehicle, Z-down (x: North, y: East, z: Down). 
     MAV_FRAME_RESERVED_19 = 19,  // MAV_FRAME_ESTIM_ENU - Odometry local coordinate frame of data given by an estimator running onboard the vehicle, Z-up (x: East, y: North, z: Up). 
-    MAV_FRAME_LOCAL_FRD = 20,  // Forward, Right, Down coordinate frame. This is a local frame with Z-down and arbitrary F/R alignment (i.e. not aligned with NED/earth frame). 
-    MAV_FRAME_LOCAL_FLU = 21,  // Forward, Left, Up coordinate frame. This is a local frame with Z-up and arbitrary F/L alignment (i.e. not aligned with ENU/earth frame). 
+    MAV_FRAME_LOCAL_FRD = 20,  // FRD local tangent frame (x: Forward, y: Right, z: Down) with origin fixed relative to earth. The forward axis is aligned to the front of the vehicle in the horizontal plane. 
+    MAV_FRAME_LOCAL_FLU = 21,  // FLU local tangent frame (x: Forward, y: Left, z: Up) with origin fixed relative to earth. The forward axis is aligned to the front of the vehicle in the horizontal plane. 
     MAV_FRAME_ENUM_END = 22,  // end marker
 } MAV_FRAME;
 #endif
@@ -443,6 +443,18 @@ typedef enum STORAGE_TYPE {
 #endif
 
 
+#ifndef FASTMAVLINK_HAS_ENUM_STORAGE_USAGE_FLAG
+#define FASTMAVLINK_HAS_ENUM_STORAGE_USAGE_FLAG
+typedef enum STORAGE_USAGE_FLAG {
+    STORAGE_USAGE_FLAG_SET = 1,  // Always set to 1 (indicates `STORAGE_INFORMATION.storage_usage` is supported). 
+    STORAGE_USAGE_FLAG_PHOTO = 2,  // Storage for saving photos. 
+    STORAGE_USAGE_FLAG_VIDEO = 4,  // Storage for saving videos. 
+    STORAGE_USAGE_FLAG_LOGS = 8,  // Storage for saving logs. 
+    STORAGE_USAGE_FLAG_ENUM_END = 9,  // end marker
+} STORAGE_USAGE_FLAG;
+#endif
+
+
 #ifndef FASTMAVLINK_HAS_ENUM_ORBIT_YAW_BEHAVIOUR
 #define FASTMAVLINK_HAS_ENUM_ORBIT_YAW_BEHAVIOUR
 typedef enum ORBIT_YAW_BEHAVIOUR {
@@ -587,7 +599,7 @@ typedef enum MAV_CMD {
     MAV_CMD_PREFLIGHT_SET_SENSOR_OFFSETS = 242,  // Set sensor offsets. This command will be only accepted if in pre-flight mode. | Sensor to adjust the offsets for: 0: gyros, 1: accelerometer, 2: magnetometer, 3: barometer, 4: optical flow, 5: second magnetometer, 6: third magnetometer | X axis offset (or generic dimension 1), in the sensor's raw units | Y axis offset (or generic dimension 2), in the sensor's raw units | Z axis offset (or generic dimension 3), in the sensor's raw units | Generic dimension 4, in the sensor's raw units | Generic dimension 5, in the sensor's raw units | Generic dimension 6, in the sensor's raw units
     MAV_CMD_PREFLIGHT_UAVCAN = 243,  // Trigger UAVCAN configuration (actuator ID assignment and direction mapping). Note that this maps to the legacy UAVCAN v0 function UAVCAN_ENUMERATE, which is intended to be executed just once during initial vehicle configuration (it is not a normal pre-flight command and has been poorly named). | 1: Trigger actuator ID assignment and direction mapping. 0: Cancel command. | Reserved | Reserved | Reserved | Reserved | Reserved | Reserved
     MAV_CMD_PREFLIGHT_STORAGE = 245,  // Request storage of different parameter values and logs. This command will be only accepted if in pre-flight mode. | Parameter storage: 0: READ FROM FLASH/EEPROM, 1: WRITE CURRENT TO FLASH/EEPROM, 2: Reset to defaults, 3: Reset sensor calibration parameter data to factory default (or firmware default if not available) | Mission storage: 0: READ FROM FLASH/EEPROM, 1: WRITE CURRENT TO FLASH/EEPROM, 2: Reset to defaults | Onboard logging: 0: Ignore, 1: Start default rate logging, -1: Stop logging, > 1: logging rate (e.g. set to 1000 for 1000 Hz logging) | Reserved | Empty | Empty | Empty
-    MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN = 246,  // Request the reboot or shutdown of system components. | 0: Do nothing for autopilot, 1: Reboot autopilot, 2: Shutdown autopilot, 3: Reboot autopilot and keep it in the bootloader until upgraded. | 0: Do nothing for onboard computer, 1: Reboot onboard computer, 2: Shutdown onboard computer, 3: Reboot onboard computer and keep it in the bootloader until upgraded. | WIP: 0: Do nothing for camera, 1: Reboot onboard camera, 2: Shutdown onboard camera, 3: Reboot onboard camera and keep it in the bootloader until upgraded | WIP: 0: Do nothing for mount (e.g. gimbal), 1: Reboot mount, 2: Shutdown mount, 3: Reboot mount and keep it in the bootloader until upgraded | Reserved (set to 0) | Reserved (set to 0) | WIP: ID (e.g. camera ID -1 for all IDs)
+    MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN = 246,  // Request the reboot or shutdown of system components. | 0: Do nothing for autopilot, 1: Reboot autopilot, 2: Shutdown autopilot, 3: Reboot autopilot and keep it in the bootloader until upgraded. | 0: Do nothing for onboard computer, 1: Reboot onboard computer, 2: Shutdown onboard computer, 3: Reboot onboard computer and keep it in the bootloader until upgraded. | 0: Do nothing for component, 1: Reboot component, 2: Shutdown component, 3: Reboot component and keep it in the bootloader until upgraded | MAVLink Component ID targeted in param3 (0 for all components). | Reserved (set to 0) | Reserved (set to 0) | WIP: ID (e.g. camera ID -1 for all IDs)
     MAV_CMD_DO_UPGRADE = 247,  // Request a target system to start an upgrade of one (or all) of its components. For example, the command might be sent to a companion computer to cause it to upgrade a connected flight controller. The system doing the upgrade will report progress using the normal command protocol sequence for a long running operation. Command protocol information: https://mavlink.io/en/services/command.html. | Component id of the component to be upgraded. If set to 0, all components should be upgraded. | 0: Do not reboot component after the action is executed, 1: Reboot component after the action is executed. | Reserved | Reserved | Reserved | Reserved | WIP: upgrade progress report rate (can be used for more granular control).
     MAV_CMD_OVERRIDE_GOTO = 252,  // Override current mission with command to pause mission, pause mission and move to position, continue/resume mission. When param 1 indicates that the mission is paused (MAV_GOTO_DO_HOLD), param 2 defines whether it holds in place or moves to another position. | MAV_GOTO_DO_HOLD: pause mission and either hold or move to specified position (depending on param2), MAV_GOTO_DO_CONTINUE: resume mission. | MAV_GOTO_HOLD_AT_CURRENT_POSITION: hold at current position, MAV_GOTO_HOLD_AT_SPECIFIED_POSITION: hold at specified position. | Coordinate frame of hold point. | Desired yaw angle. | Latitude/X position. | Longitude/Y position. | Altitude/Z position.
     MAV_CMD_OBLIQUE_SURVEY = 260,  // Mission command to set a Camera Auto Mount Pivoting Oblique Survey (Replaces CAM_TRIGG_DIST for this purpose). The camera is triggered each time this distance is exceeded, then the mount moves to the next position. Params 4~6 set-up the angle limits and number of positions for oblique survey, where mount-enabled vehicles automatically roll the camera between shots to emulate an oblique camera setup (providing an increased HFOV). This command can also be used to set the shutter integration time for the camera. | Camera trigger distance. 0 to stop triggering. | Camera shutter integration time. 0 to ignore | The minimum interval in which the camera is capable of taking subsequent pictures repeatedly. 0 to ignore. | Total number of roll positions at which the camera will capture photos (images captures spread evenly across the limits defined by param5). | Angle limits that the camera can be rolled to left and right of center. | Fixed pitch angle that the camera will hold in oblique mode if the mount is actuated in the pitch axis. | Empty
@@ -613,6 +625,7 @@ typedef enum MAV_CMD {
     MAV_CMD_SET_CAMERA_MODE = 530,  // Set camera running mode. Use NaN for reserved values. GCS will send a MAV_CMD_REQUEST_VIDEO_STREAM_STATUS command after a mode change if the camera supports video streaming. | Reserved (Set to 0) | Camera mode | Reserved (default:NaN) | Reserved (default:NaN) | Reserved (default:0) | Reserved (default:0) | Reserved (default:NaN)
     MAV_CMD_SET_CAMERA_ZOOM = 531,  // Set camera zoom. Camera must respond with a CAMERA_SETTINGS message (on success). | Zoom type | Zoom value. The range of valid values depend on the zoom type. | Reserved (default:NaN) | Reserved (default:NaN) | Reserved (default:0) | Reserved (default:0) | Reserved (default:NaN)
     MAV_CMD_SET_CAMERA_FOCUS = 532,  // Set camera focus. Camera must respond with a CAMERA_SETTINGS message (on success). | Focus type | Focus value | Reserved (default:NaN) | Reserved (default:NaN) | Reserved (default:0) | Reserved (default:0) | Reserved (default:NaN)
+    MAV_CMD_SET_STORAGE_USAGE = 533,  // Set that a particular storage is the preferred location for saving photos, videos, and/or other media (e.g. to set that an SD card is used for storing videos).          There can only be one preferred save location for each particular media type: setting a media usage flag will clear/reset that same flag if set on any other storage.          If no flag is set the system should use its default storage.          A target system can choose to always use default storage, in which case it should ACK the command with MAV_RESULT_UNSUPPORTED.          A target system can choose to not allow a particular storage to be set as preferred storage, in which case it should ACK the command with MAV_RESULT_DENIED. | Storage ID (1 for first, 2 for second, etc.) | Usage flags | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_JUMP_TAG = 600,  // Tagged jump target. Can be jumped to with MAV_CMD_DO_JUMP_TAG. | Tag. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_DO_JUMP_TAG = 601,  // Jump to the matching tag in the mission list. Repeat this action for the specified number of times. A mission should contain a single matching tag for each jump. If this is not the case then a jump to a missing tag should complete the mission, and a jump where there are multiple matching tags should always select the one with the lowest mission sequence number. | Target tag to jump to. | Repeat count. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW = 1000,  // High level setpoint to be sent to a gimbal manager to set a gimbal attitude. It is possible to set combinations of the values below. E.g. an angle as well as a desired angular rate can be used to get to this angle at a certain angular rate, or an angular rate only will result in continuous turning. NaN is to be used to signal unset. Note: a gimbal is never to react to this command but only the gimbal manager. | Pitch angle (positive to pitch up, relative to vehicle for FOLLOW mode, relative to world horizon for LOCK mode). | Yaw angle (positive to yaw to the right, relative to vehicle for FOLLOW mode, absolute to North for LOCK mode). | Pitch rate (positive to pitch up). | Yaw rate (positive to yaw to the right). | Gimbal manager flags to use. | Reserved (default:0) | Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal device components. Send command multiple times for more than one gimbal (but not all gimbals).
@@ -1527,6 +1540,27 @@ typedef enum UTM_DATA_AVAIL_FLAGS {
 #endif
 
 
+#ifndef FASTMAVLINK_HAS_ENUM_CELLULAR_STATUS_FLAG
+#define FASTMAVLINK_HAS_ENUM_CELLULAR_STATUS_FLAG
+typedef enum CELLULAR_STATUS_FLAG {
+    CELLULAR_STATUS_FLAG_UNKNOWN = 0,  // State unknown or not reportable. 
+    CELLULAR_STATUS_FLAG_FAILED = 1,  // Modem is unusable 
+    CELLULAR_STATUS_FLAG_INITIALIZING = 2,  // Modem is being initialized 
+    CELLULAR_STATUS_FLAG_LOCKED = 3,  // Modem is locked 
+    CELLULAR_STATUS_FLAG_DISABLED = 4,  // Modem is not enabled and is powered down 
+    CELLULAR_STATUS_FLAG_DISABLING = 5,  // Modem is currently transitioning to the CELLULAR_STATUS_FLAG_DISABLED state 
+    CELLULAR_STATUS_FLAG_ENABLING = 6,  // Modem is currently transitioning to the CELLULAR_STATUS_FLAG_ENABLED state 
+    CELLULAR_STATUS_FLAG_ENABLED = 7,  // Modem is enabled and powered on but not registered with a network provider and not available for data connections 
+    CELLULAR_STATUS_FLAG_SEARCHING = 8,  // Modem is searching for a network provider to register 
+    CELLULAR_STATUS_FLAG_REGISTERED = 9,  // Modem is registered with a network provider, and data connections and messaging may be available for use 
+    CELLULAR_STATUS_FLAG_DISCONNECTING = 10,  // Modem is disconnecting and deactivating the last active packet data bearer. This state will not be entered if more than one packet data bearer is active and one of the active bearers is deactivated 
+    CELLULAR_STATUS_FLAG_CONNECTING = 11,  // Modem is activating and connecting the first packet data bearer. Subsequent bearer activations when another bearer is already active do not cause this state to be entered 
+    CELLULAR_STATUS_FLAG_CONNECTED = 12,  // One or more packet data bearers is active and connected 
+    CELLULAR_STATUS_FLAG_ENUM_END = 13,  // end marker
+} CELLULAR_STATUS_FLAG;
+#endif
+
+
 #ifndef FASTMAVLINK_HAS_ENUM_PRECISION_LAND_MODE
 #define FASTMAVLINK_HAS_ENUM_PRECISION_LAND_MODE
 typedef enum PRECISION_LAND_MODE {
@@ -1575,7 +1609,8 @@ typedef enum MAV_ODID_ID_TYPE {
     MAV_ODID_ID_TYPE_SERIAL_NUMBER = 1,  // Manufacturer Serial Number (ANSI/CTA-2063 format). 
     MAV_ODID_ID_TYPE_CAA_REGISTRATION_ID = 2,  // CAA (Civil Aviation Authority) registered ID. Format: [ICAO Country Code].[CAA Assigned ID]. 
     MAV_ODID_ID_TYPE_UTM_ASSIGNED_UUID = 3,  // UTM (Unmanned Traffic Management) assigned UUID (RFC4122). 
-    MAV_ODID_ID_TYPE_ENUM_END = 4,  // end marker
+    MAV_ODID_ID_TYPE_SPECIFIC_SESSION_ID = 4,  // A 20 byte ID for a specific flight/session. The exact ID type is indicated by the first byte of uas_id and these type values are managed by ICAO. 
+    MAV_ODID_ID_TYPE_ENUM_END = 5,  // end marker
 } MAV_ODID_ID_TYPE;
 #endif
 
@@ -1707,7 +1742,8 @@ typedef enum MAV_ODID_AUTH_TYPE {
     MAV_ODID_AUTH_TYPE_OPERATOR_ID_SIGNATURE = 2,  // Signature for the Operator ID. 
     MAV_ODID_AUTH_TYPE_MESSAGE_SET_SIGNATURE = 3,  // Signature for the entire message set. 
     MAV_ODID_AUTH_TYPE_NETWORK_REMOTE_ID = 4,  // Authentication is provided by Network Remote ID. 
-    MAV_ODID_AUTH_TYPE_ENUM_END = 5,  // end marker
+    MAV_ODID_AUTH_TYPE_SPECIFIC_AUTHENTICATION = 5,  // The exact authentication type is indicated by the first byte of authentication_data and these type values are managed by ICAO. 
+    MAV_ODID_AUTH_TYPE_ENUM_END = 6,  // end marker
 } MAV_ODID_AUTH_TYPE;
 #endif
 
@@ -1995,7 +2031,7 @@ typedef enum FAILURE_TYPE {
 #define FASTMAVLINK_HAS_ENUM_NAV_VTOL_LAND_OPTIONS
 typedef enum NAV_VTOL_LAND_OPTIONS {
     NAV_VTOL_LAND_OPTIONS_DEFAULT = 0,  // Default autopilot landing behaviour. 
-    NAV_VTOL_LAND_OPTIONS_FW_DESCENT = 1,  // Descend in fixed wing mode, transitioning to multicopter mode for vertical landing when close to the ground.          The fixed wing descent pattern is at the discretion of the vehicle (e.g. transition altitude, loiter direction, radius, and speed, etc.).                 
+    NAV_VTOL_LAND_OPTIONS_FW_DESCENT = 1,  // Descend in fixed wing mode, transitioning to multicopter mode for vertical landing when close to the ground.          The fixed wing descent pattern is at the discretion of the vehicle (e.g. transition altitude, loiter direction, radius, and speed, etc.).         
     NAV_VTOL_LAND_OPTIONS_HOVER_DESCENT = 2,  // Land in multicopter mode on reaching the landing co-ordinates (the whole landing is by "hover descent"). 
     NAV_VTOL_LAND_OPTIONS_ENUM_END = 3,  // end marker
 } NAV_VTOL_LAND_OPTIONS;
@@ -2244,6 +2280,9 @@ typedef enum MAV_EVENT_CURRENT_SEQUENCE_FLAGS {
 #include "./mavlink_msg_odometry.h"
 #include "./mavlink_msg_trajectory_representation_waypoints.h"
 #include "./mavlink_msg_trajectory_representation_bezier.h"
+#include "./mavlink_msg_cellular_status.h"
+#include "./mavlink_msg_group_start.h"
+#include "./mavlink_msg_group_end.h"
 #include "./mavlink_msg_isbd_link_status.h"
 #include "./mavlink_msg_cellular_config.h"
 #include "./mavlink_msg_raw_rpm.h"
