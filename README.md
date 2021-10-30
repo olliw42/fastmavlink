@@ -36,21 +36,28 @@ Messages can be generated and emitted only in MAVLink v2 format, and without sig
 The code does not work on any platform. (It e.g. uses packed structures and references to members into these packed structures)
 
 
+## Installation ##
+
+The simplest method to use fastMavlink is to use the pre-generated C code provided with this repository in the `c_library` subfolder. Simply just grab this folder and copy it to any location you like. A more canonical approach would be to clone this repository into your standard location for github projects.
+
+If you want to generate the C code yourself ([Code Generation](#code-generation)), and need the standard xml dialect definition files (which you most likely will), you in addition want to get  the mavlink repository. The canonical approach would be to also clone it into the same location you chose for the fastMavlink repository.  
+
+
 ## C Code Usage ##
 
 Please see the chapter below on the [C Code Architecture](#c-code-architecture) for a general description. 
 
 For examples please go to [The fastMavlink Library: Examples](examples/).
 
-In order to use the dialect xyzdialect.xml, include 
+In order to use the dialect `xyzdialect`, defined in xyzdialect.xml, include the corresponding header file xyzdialect.h into your project:
 
 ```C
 #include "path_to_c_code/xyzdialect/xyzdialect.h"
 ```
 
-into your project, where `path_to_c_code` is the path to the C code on your system. Note that it is not `".../xyzdialect/mavlink.h"` as it would be for pymavlink-mavgen. If you would do so with fastMavlink, it would enable the [pymavlink-mavgen mimicry](#pymavlink-mavgen-mimicry).
+where `path_to_c_code` is the path to the fastMavlink C code on your system. Note that you do not include `".../xyzdialect/mavlink.h"` as you would do for pymavlink-mavgen. If you would do so with fastMavlink, it would enable the [pymavlink-mavgen mimicry](#pymavlink-mavgen-mimicry).
 
-The simplest is to use the pre-generated C code provided with this repo in the c_library subfolder. The include path would then look like `#inlcude "location_of_github_repos/fastmavlink/c_library/xyzdialect/xyzdialect.h"`. Alternatively you can generate the C code using the python generator scripts, see [Code Generation](#code-generation), in which case `path_to_c_code` would point to the generator's output directory.
+The simplest approach is to use the pre-generated C code provided in the `c_library` subfolder. If you cloned this repository, the include path would look like `#inlcude "location_of_github_repos/fastmavlink/c_library/xyzdialect/xyzdialect.h"`. Alternatively you can generate the C code using the python generator scripts, see [Code Generation](#code-generation), in which case `path_to_c_code` would point to the generator's output directory.
 
 ## Router ##
 
@@ -61,7 +68,7 @@ Please see the examples [Several Links - No Component: MAVLink Router](examples#
 
 ## Test Suite ##
 
-The fastMavlink C library includes a most comprehensive test suite.
+The fastMavlink C library includes a comprehensive test suite.
 
 Please see [The fastMavlink Library: Test Suite](tests/).
 
@@ -87,13 +94,13 @@ The C code was architected along the line of the tasks which need to be covered 
 For instance, parsing a message for a MAVLink component with routing capabilities involves these discrete tasks: 
 
 - parsing the received bytes into a working buffer, only considering the information in its header, mainly the len field (= very fast parsing)
-- checking if the message ID is known, checksum is ok, and determining the target IDs
-- forwarding the data in the working buffer to the proper links (no extra effort needed)
+- checking if the message ID is known, if the checksum is ok, and determining the target IDs
+- forwarding the data in the working buffer to the proper link(s) (no extra effort needed)
 - converting the data in the working buffer into a message structure holding the required and relevant information, which can be passed on to the component's message handler
 
-This ensures a most fast parsing and a minimal effort (= CPU time) for forwarding of known and unknown messages, and the proper design of the message structure minimizes the effort (= CPU time) for handling. The discrete tasks are represented by corresponding functions, namely `fmav_parse_to_frame_buf()`, `fmav_check_frame_buf()`, and `fmav_frame_buf_to_msg()`, which can be called in sequence when (and only when) needed. But also the higher-level functions `fmav_parse_and_check_to_frame_buf()` and `fmav_parse_to_msg_wbuf()` are available, which wrap these steps. One also can do it in one "big" step, and directly parse the received bytes into a message structure (i.e., the intermediate working buffer is not needed) with the function `fmav_parse_to_msg()`, which would be preferred then the working buffer content is not needed.
+This ensures a most fast parsing and a minimal effort (= CPU time) for forwarding of known and unknown messages, and the proper design of the message C structure minimizes the effort (= CPU time) for handling. The discrete tasks are represented by corresponding functions, namely `fmav_parse_to_frame_buf()`, `fmav_check_frame_buf()`, and `fmav_frame_buf_to_msg()`, which can be called in sequence when (and only when) needed. But also the higher-level functions `fmav_parse_and_check_to_frame_buf()` and `fmav_parse_to_msg_wbuf()` are available, which wrap these steps. One also can do it in one "big" step, and directly parse the received bytes into a message structure (i.e., the intermediate working buffer is not needed) with the function `fmav_parse_to_msg()`, which would be preferred when the working buffer content is not needed.
 
-In the following the discrete tasks shall be analyzed, as this should help much to understand the fabric of the fastMavlink library.
+In the following, the discrete tasks will be analyzed, as this should help much to understand the fabric of the fastMavlink library.
 
 
 ### Receiving/Parsing
@@ -108,6 +115,8 @@ Receiving/parsing can be disected into (up to) 6 discrete steps:
 
 The received byte (Rx) is parsed into a working buffer (buf), the information in which is then checked (check), and if good converted into a message structure (msg_t), which can be passed on to the message handler. The message handler typically will decode the payload into a payload structure (payload_t), in order to access the data in the individual message fields (data). Importantly, it is not necessary that each step is explicitely executed, and in fact this is usually not optimal. For instance, in simpler applications one may want to parse the received bytes (Rx) directly into a message structure (msg_t), i.e., do Rx -> msg_t, and this would reduce RAM footprint as the working buffer (buf) is then not needed, and it also would save CPU cycles.
 
+The following functions are provided in fastMavlink:
+
 #### fmav_parse_to_frame_buf():
 1 -> 2, Rx -> buf
 - takes c of Rx and fills buf
@@ -117,13 +126,13 @@ The received byte (Rx) is parsed into a working buffer (buf), the information in
 
 #### fmav_check_frame_buf():
 2 -> 3, buf -> check
-- checks if msgid known, length ok, crc ok, retrieves target ids
+- checks if msgid is known, if length is ok, if crc is ok, and retrieves target ids
 - located in fastmavlink_functions.h
 
 
 #### fmav_frame_buf_to_msg():
 3 -> 4, check -> msg_t
-- basically copy and fill, with keeping relevant information
+- basically copy and fill, with keeping relevant information, everything one needs is in msg_t
 - located in fastmavlink_functions.h
 
 
@@ -135,11 +144,12 @@ The received byte (Rx) is parsed into a working buffer (buf), the information in
 
 #### fmav_msg_xxx_decode():
 4 -> 5, msg_t -> payload_t
+- copies the payload data in msg_t to payload_t, allowing access to the message fields
 - located in mavlink_msg_xxx.h
 
 
 #### fmav_msg_xxx_get_field_yyy():
-4 -> 6, msg_t -> sata
+4 -> 6, msg_t -> data
 - located in mavlink_msg_xxx.h
 
 
@@ -166,8 +176,9 @@ Overview of primitive tasks:
 
 Sending can be disected into (up to) 5 discrete steps:
 
-The data in the message fields (data) is encoded into a payload structure (payload_t), which is then packed into a message structure (msg_t), then converted into a working buffer (buf), which can be directly send out (Tx). As before for receiving/parsing, it is not necessary that each step is explicitely executed, and in fact this is usually not optimal. For instance, in simpler applications one may want to pack the data for the message fields (data) directly into the working buffer (buf), i.e., do data -> buf, and this would reduce RAM and/or stack footprint as neither the payload structure (payload_t) nor the message structure (msg_t) need to be involved, and it also would save CPU cycles.
+The data for the message fields (data) is encoded into a payload structure (payload_t), which is then packed into a message structure (msg_t), then converted into a working buffer (buf), which can be directly send out (Tx). As before, it is not necessary that each step is explicitely executed, and in fact this is usually not optimal. For instance, in simpler applications one may want to pack the data for the message fields (data) directly into the working buffer (buf), i.e., do data -> buf, and this would reduce RAM and/or stack footprint as neither the payload structure (payload_t) nor the message structure (msg_t) are needed, and it also would save CPU cycles.
 
+The following functions are provided in fastMavlink:
 
 #### fmav_msg_xxx_pack():
 1 -> 3, data  ->  msg_t
