@@ -180,11 +180,19 @@ class MAVMessageField(object):
 
         if self.invalid:
             if self.array_length == 0:
-                if self.invalid.find('[') >= 0 or self.invalid.find(']') >= 0 or self.invalid.find(',') >= 0:
-                    raise MAVParseError("MAVField init(): field '%s' is not an array type but invalid attribute '%s' is" % (self.name, self.invalid))
+                if self.invalid.find('[') >= 0 or self.invalid.find(']') >= 0 or \
+                   self.invalid.find(',') >= 0 or self.invalid.find(':') >= 0:
+                    raise MAVParseError("MAVField init(): field '%s' is not an array type but invalid attribute '%s' is" % 
+                                        (self.name, self.invalid))
             else:
                 if self.invalid.find('[') < 0 or self.invalid.find(']') < 0:
-                    raise MAVParseError("MAVField init(): field '%s' is an array type but invalid attribute '%s' is not" % (self.name, self.invalid))
+                    raise MAVParseError("MAVField init(): field '%s' is an array type but invalid attribute '%s' is not" % 
+                                        (self.name, self.invalid))
+                if self.invalid.find('[') != 0 or self.invalid.count('[') != 1 or \
+                   self.invalid.find(']') != len(self.invalid)-1 or self.invalid.count(']') != 1 or \
+                   (self.invalid.find(':') >= 0 and (self.invalid.find(':') != len(self.invalid)-2 or self.invalid.count(':') != 1)):
+                    raise MAVParseError("MAVField init(): field '%s', format error in invalid attribute, '%s' is not allowed" % 
+                                        (self.name, self.invalid))
 
 
 class MAVMessage(object):
