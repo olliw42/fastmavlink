@@ -11,6 +11,11 @@
 // this token can be defined in the outside to modify behavior:
 //   FASTMAVLINK_ROUTER_LINK_PROPERTY_DEFAULT
 //
+// timeout mechanism to clear out dead components:
+//   FASTMAVLINK_ROUTER_USE_TIMEOUT: define this token to enable the mechanism
+//   FASTMAVLINK_ROUTER_TIMEOUT_100MS: defines the timeout in 100ms, default is 100 = 10 seconds
+//   uint8_t fmav_router_time_100ms(void): must be provided externally
+//
 // void fmav_router_reset(void)
 // void fmav_router_handle_message_by_id(
 //     uint8_t link_of_msg,
@@ -22,7 +27,7 @@
 // void fmav_router_handle_message_by_msg(uint8_t link_of_msg, fmav_message_t* msg)
 // uint8_t fmav_router_send_to_link(uint8_t link)
 // void fmav_router_add_ourself(uint8_t sysid, uint8_t compid)
-// void fmav_router_clearout_link(uint8_t link)
+// void fmav_router_reset_link(uint8_t link)
 // void fmav_router_set_link_properties(uint8_t link, uint8_t properties)
 // void fmav_router_set_link_properties_all(uint8_t properties)
 // void fmav_router_init(void)
@@ -51,9 +56,18 @@ extern "C" {
 
 #ifndef FASTMAVLINK_ROUTER_LINK_PROPERTY_DEFAULT
 #define FASTMAVLINK_ROUTER_LINK_PROPERTY_DEFAULT \
-  (FASTMAVLINK_ROUTER_LINK_PROPERTY_FLAG_ALWAYS_SEND_HEARTBEAT | \
-   FASTMAVLINK_ROUTER_LINK_PROPERTY_FLAG_DISCOVER_BY_HEARTBEAT)
+    (FASTMAVLINK_ROUTER_LINK_PROPERTY_FLAG_ALWAYS_SEND_HEARTBEAT | \
+     FASTMAVLINK_ROUTER_LINK_PROPERTY_FLAG_DISCOVER_BY_HEARTBEAT | \
+     FASTMAVLINK_ROUTER_LINK_PROPERTY_FLAG_TIMEOUT)
 #endif
+
+
+#ifdef FASTMAVLINK_ROUTER_USE_TIMEOUT
+    uint8_t fmav_router_time_100ms(void); // forward declaration
+#endif
+#ifndef FASTMAVLINK_ROUTER_TIMEOUT_100MS
+    #define FASTMAVLINK_ROUTER_TIMEOUT_100MS  100 // 10 seconds
+#endif    
 
 
 //------------------------------
@@ -65,12 +79,16 @@ typedef struct _fmav_router_component_item {
     uint8_t sysid;
     uint8_t compid;
     uint8_t link; // 0 is ourself, 1 = COMM0, 2 = COMM1, ...
+#ifdef FASTMAVLINK_ROUTER_USE_TIMEOUT
+    uint8_t last_activity_100ms;
+#endif
 } fmav_router_component_item;
 
 
 typedef enum {
     FASTMAVLINK_ROUTER_LINK_PROPERTY_FLAG_DISCOVER_BY_HEARTBEAT = 0x01,
     FASTMAVLINK_ROUTER_LINK_PROPERTY_FLAG_ALWAYS_SEND_HEARTBEAT = 0x02,
+    FASTMAVLINK_ROUTER_LINK_PROPERTY_FLAG_TIMEOUT = 0x04,
 } fmav_router_link_property_flags_e;
 
 
@@ -89,7 +107,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_router_accept(uint8_t target_link, u
 {
     // go through all components on the link and see if the one we are targeting at is there
     for (uint8_t i = 0; i < FASTMAVLINK_ROUTER_COMPONENTS_MAX; i++) {
-        if (!_fmav_router_component_list[i].valid) continue; // empty
+        if (!_fmav_router_component_list[i].valid) continue; // empty entry
 
         if (_fmav_router_component_list[i].link != target_link) continue; // not our link
 
@@ -97,7 +115,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_router_accept(uint8_t target_link, u
           return 1;
         }
 
-        if (_fmav_router_component_list[i].sysid != target_sysid) continue; //not our system
+        if (_fmav_router_component_list[i].sysid != target_sysid) continue; // not our system
 
         if (target_compid == 0) { // target_sysid is on the link, and target_compid is broadcast
           return 1;
@@ -115,8 +133,8 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_router_accept(uint8_t target_link, u
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_router_find_component(uint8_t sysid, uint8_t compid)
 {
     for (uint8_t i = 0; i < FASTMAVLINK_ROUTER_COMPONENTS_MAX; i++) {
-        if (_fmav_router_component_list[i].valid &&
-            _fmav_router_component_list[i].sysid == sysid &&
+        if (!_fmav_router_component_list[i].valid) continue; // empty entry
+        if (_fmav_router_component_list[i].sysid == sysid &&
             _fmav_router_component_list[i].compid == compid) {
             return 1;
         }
@@ -135,6 +153,9 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_router_add_component(uint8_t link, u
         _fmav_router_component_list[i].link = link;
         _fmav_router_component_list[i].sysid = sysid;
         _fmav_router_component_list[i].compid = compid;
+#ifdef FASTMAVLINK_ROUTER_USE_TIMEOUT
+        _fmav_router_component_list[i].last_activity_100ms = fmav_router_time_100ms();
+#endif
         return 1;
     }
     return 0;
@@ -151,6 +172,18 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_router_find_or_add_component(uint8_t
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_reset_component(uint8_t i)
+{
+    _fmav_router_component_list[i].valid = 0;
+    _fmav_router_component_list[i].link = 0;
+    _fmav_router_component_list[i].sysid = 0;
+    _fmav_router_component_list[i].compid = 0;
+#ifdef FASTMAVLINK_ROUTER_USE_TIMEOUT
+    _fmav_router_component_list[i].last_activity_100ms = 0;
+#endif
+}
+
+
 //------------------------------
 //-- API
 //------------------------------
@@ -158,19 +191,16 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_router_find_or_add_component(uint8_t
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_reset(void)
 {
     for (uint8_t i = 0; i < FASTMAVLINK_ROUTER_COMPONENTS_MAX; i++) {
-        _fmav_router_component_list[i].valid = 0;
-        _fmav_router_component_list[i].link = 0;
-        _fmav_router_component_list[i].sysid = 0;
-        _fmav_router_component_list[i].compid = 0;
+        fmav_router_reset_component(i);
     }
 }
+
 
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_handle_message_by_id(
     uint8_t link_of_msg,
     uint8_t msgid,
     uint8_t sysid, uint8_t compid,
-    uint8_t target_sysid, uint8_t target_compid
-    )
+    uint8_t target_sysid, uint8_t target_compid)
 {
     // should not occur, but play it safe
     if (link_of_msg >= FASTMAVLINK_ROUTER_LINKS_MAX) {
@@ -190,6 +220,24 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_handle_message_by_id(
         // accept any message as evidence of presence of component
         fmav_router_find_or_add_component(link_of_msg, sysid, compid);
     }
+    
+    // update timeout for seen component, and clear out dead components
+#ifdef FASTMAVLINK_ROUTER_USE_TIMEOUT
+    for (uint8_t i = 0; i < FASTMAVLINK_ROUTER_COMPONENTS_MAX; i++) {
+        if (!_fmav_router_component_list[i].valid) continue; // empty entry
+        // update timeout for component
+        if (_fmav_router_component_list[i].sysid == sysid && _fmav_router_component_list[i].compid == compid) {
+            _fmav_router_component_list[i].last_activity_100ms = fmav_router_time_100ms();
+            continue; // is alive, so no need to check if dead
+        }
+        // clear out if dead
+        const uint8_t link = _fmav_router_component_list[i].link;
+        if (_fmav_router_link_properties[link] & FASTMAVLINK_ROUTER_LINK_PROPERTY_FLAG_TIMEOUT) {
+            uint8_t dt = fmav_router_time_100ms() - _fmav_router_component_list[i].last_activity_100ms;
+            if (dt > FASTMAVLINK_ROUTER_TIMEOUT_100MS) fmav_router_reset_component(i);
+        }
+    }
+#endif
 
     // determine the links it has to be send to
     for (uint8_t link = 0; link < FASTMAVLINK_ROUTER_LINKS_MAX; link++) {
@@ -250,17 +298,14 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_add_ourself(uint8_t sysid, uint8
 }
 
 
-FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_clearout_link(uint8_t link)
+FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_reset_link(uint8_t link)
 {
     if (link >= FASTMAVLINK_ROUTER_LINKS_MAX) return;
 
     for (uint8_t i = 0; i < FASTMAVLINK_ROUTER_COMPONENTS_MAX; i++) {
         if (!_fmav_router_component_list[i].valid) continue; // empty entry
         if (_fmav_router_component_list[i].link == link) { // clear out
-            _fmav_router_component_list[i].valid = 0;
-            _fmav_router_component_list[i].link = 0;
-            _fmav_router_component_list[i].sysid = 0;
-            _fmav_router_component_list[i].compid = 0;
+            fmav_router_reset_component(i);
         }
     }
 }
