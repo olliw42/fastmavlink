@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Sat Oct 09 2021"
+#define FASTMAVLINK_BUILD_DATE  "Mon Nov 15 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -80,6 +80,7 @@ extern "C" {
 //------------------------------
 
 #include "../ardupilotmega/ardupilotmega.h"
+#include "../ASLUAV/ASLUAV.h"
 #include "../common/common.h"
 #include "../development/development.h"
 #include "../icarous/icarous.h"

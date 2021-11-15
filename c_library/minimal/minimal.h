@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Sat Oct 09 2021"
+#define FASTMAVLINK_BUILD_DATE  "Mon Nov 15 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -73,7 +73,8 @@ typedef enum MAV_AUTOPILOT {
     MAV_AUTOPILOT_ASLUAV = 17,  // ASLUAV autopilot -- http://www.asl.ethz.ch 
     MAV_AUTOPILOT_SMARTAP = 18,  // SmartAP Autopilot - http://sky-drones.com 
     MAV_AUTOPILOT_AIRRAILS = 19,  // AirRails - http://uaventure.com 
-    MAV_AUTOPILOT_ENUM_END = 20,  // end marker
+    MAV_AUTOPILOT_REFLEX = 20,  // Fusion Reflex - https://fusion.engineering 
+    MAV_AUTOPILOT_ENUM_END = 21,  // end marker
 } MAV_AUTOPILOT;
 #endif
 

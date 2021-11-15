@@ -21,19 +21,21 @@ typedef struct _fmav_serial_control_t {
     uint8_t flags;
     uint8_t count;
     uint8_t data[70];
+    uint8_t target_system;
+    uint8_t target_component;
 }) fmav_serial_control_t;
 
 
 #define FASTMAVLINK_MSG_ID_SERIAL_CONTROL  126
 
-#define FASTMAVLINK_MSG_SERIAL_CONTROL_PAYLOAD_LEN_MAX  79
+#define FASTMAVLINK_MSG_SERIAL_CONTROL_PAYLOAD_LEN_MAX  81
 #define FASTMAVLINK_MSG_SERIAL_CONTROL_CRCEXTRA  220
 
-#define FASTMAVLINK_MSG_SERIAL_CONTROL_FLAGS  0
-#define FASTMAVLINK_MSG_SERIAL_CONTROL_TARGET_SYSTEM_OFS  0
-#define FASTMAVLINK_MSG_SERIAL_CONTROL_TARGET_COMPONENT_OFS  0
+#define FASTMAVLINK_MSG_SERIAL_CONTROL_FLAGS  3
+#define FASTMAVLINK_MSG_SERIAL_CONTROL_TARGET_SYSTEM_OFS  79
+#define FASTMAVLINK_MSG_SERIAL_CONTROL_TARGET_COMPONENT_OFS  80
 
-#define FASTMAVLINK_MSG_SERIAL_CONTROL_FRAME_LEN_MAX  104
+#define FASTMAVLINK_MSG_SERIAL_CONTROL_FRAME_LEN_MAX  106
 
 #define FASTMAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_NUM  70 // number of elements in array
 #define FASTMAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN  70 // length of array = number of bytes
@@ -44,6 +46,8 @@ typedef struct _fmav_serial_control_t {
 #define FASTMAVLINK_MSG_SERIAL_CONTROL_FIELD_FLAGS_OFS  7
 #define FASTMAVLINK_MSG_SERIAL_CONTROL_FIELD_COUNT_OFS  8
 #define FASTMAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_OFS  9
+#define FASTMAVLINK_MSG_SERIAL_CONTROL_FIELD_TARGET_SYSTEM_OFS  79
+#define FASTMAVLINK_MSG_SERIAL_CONTROL_FIELD_TARGET_COMPONENT_OFS  80
 
 
 //----------------------------------------
@@ -54,7 +58,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_serial_control_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t device, uint8_t flags, uint16_t timeout, uint32_t baudrate, uint8_t count, const uint8_t* data,
+    uint8_t device, uint8_t flags, uint16_t timeout, uint32_t baudrate, uint8_t count, const uint8_t* data, uint8_t target_system, uint8_t target_component,
     fmav_status_t* _status)
 {
     fmav_serial_control_t* _payload = (fmav_serial_control_t*)_msg->payload;
@@ -64,13 +68,15 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_serial_control_pack(
     _payload->device = device;
     _payload->flags = flags;
     _payload->count = count;
+    _payload->target_system = target_system;
+    _payload->target_component = target_component;
     memcpy(&(_payload->data), data, sizeof(uint8_t)*70);
 
     _msg->sysid = sysid;
     _msg->compid = compid;
     _msg->msgid = FASTMAVLINK_MSG_ID_SERIAL_CONTROL;
-    _msg->target_sysid = 0;
-    _msg->target_compid = 0;
+    _msg->target_sysid = target_system;
+    _msg->target_compid = target_component;
     _msg->crc_extra = FASTMAVLINK_MSG_SERIAL_CONTROL_CRCEXTRA;
     _msg->payload_max_len = FASTMAVLINK_MSG_SERIAL_CONTROL_PAYLOAD_LEN_MAX;
 
@@ -87,7 +93,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_serial_control_encode(
 {
     return fmav_msg_serial_control_pack(
         _msg, sysid, compid,
-        _payload->device, _payload->flags, _payload->timeout, _payload->baudrate, _payload->count, _payload->data,
+        _payload->device, _payload->flags, _payload->timeout, _payload->baudrate, _payload->count, _payload->data, _payload->target_system, _payload->target_component,
         _status);
 }
 
@@ -96,7 +102,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_serial_control_pack_to_frame_bu
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t device, uint8_t flags, uint16_t timeout, uint32_t baudrate, uint8_t count, const uint8_t* data,
+    uint8_t device, uint8_t flags, uint16_t timeout, uint32_t baudrate, uint8_t count, const uint8_t* data, uint8_t target_system, uint8_t target_component,
     fmav_status_t* _status)
 {
     fmav_serial_control_t* _payload = (fmav_serial_control_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -106,6 +112,8 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_serial_control_pack_to_frame_bu
     _payload->device = device;
     _payload->flags = flags;
     _payload->count = count;
+    _payload->target_system = target_system;
+    _payload->target_component = target_component;
     memcpy(&(_payload->data), data, sizeof(uint8_t)*70);
 
     _buf[5] = sysid;
@@ -131,7 +139,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_serial_control_encode_to_frame_
 {
     return fmav_msg_serial_control_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->device, _payload->flags, _payload->timeout, _payload->baudrate, _payload->count, _payload->data,
+        _payload->device, _payload->flags, _payload->timeout, _payload->baudrate, _payload->count, _payload->data, _payload->target_system, _payload->target_component,
         _status);
 }
 
@@ -141,7 +149,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_serial_control_encode_to_frame_
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_serial_control_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint8_t device, uint8_t flags, uint16_t timeout, uint32_t baudrate, uint8_t count, const uint8_t* data,
+    uint8_t device, uint8_t flags, uint16_t timeout, uint32_t baudrate, uint8_t count, const uint8_t* data, uint8_t target_system, uint8_t target_component,
     fmav_status_t* _status)
 {
     fmav_serial_control_t _payload;
@@ -151,6 +159,8 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_serial_control_pack_to_serial(
     _payload.device = device;
     _payload.flags = flags;
     _payload.count = count;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
     memcpy(&(_payload.data), data, sizeof(uint8_t)*70);
 
     return fmav_finalize_serial(
@@ -246,6 +256,22 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_serial_control_get_field_count(c
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_serial_control_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r;
+    memcpy(&r, &(msg->payload[79]), sizeof(uint8_t));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_serial_control_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r;
+    memcpy(&r, &(msg->payload[80]), sizeof(uint8_t));
+    return r;
+}
+
+
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_serial_control_get_field_data_ptr(const fmav_message_t* msg)
 {
     return (uint8_t*)&(msg->payload[9]);
@@ -268,9 +294,9 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_serial_control_get_field_data(ui
 
 #define mavlink_serial_control_t  fmav_serial_control_t
 
-#define MAVLINK_MSG_ID_SERIAL_CONTROL_LEN  79
+#define MAVLINK_MSG_ID_SERIAL_CONTROL_LEN  81
 #define MAVLINK_MSG_ID_SERIAL_CONTROL_MIN_LEN  79
-#define MAVLINK_MSG_ID_126_LEN  79
+#define MAVLINK_MSG_ID_126_LEN  81
 #define MAVLINK_MSG_ID_126_MIN_LEN  79
 
 #define MAVLINK_MSG_ID_SERIAL_CONTROL_CRC  220
@@ -285,12 +311,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_serial_control_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint8_t device, uint8_t flags, uint16_t timeout, uint32_t baudrate, uint8_t count, const uint8_t* data)
+    uint8_t device, uint8_t flags, uint16_t timeout, uint32_t baudrate, uint8_t count, const uint8_t* data, uint8_t target_system, uint8_t target_component)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_serial_control_pack(
         _msg, sysid, compid,
-        device, flags, timeout, baudrate, count, data,
+        device, flags, timeout, baudrate, count, data, target_system, target_component,
         _status);
 }
 
@@ -302,13 +328,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_serial_control_pack_txbuf(
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t device, uint8_t flags, uint16_t timeout, uint32_t baudrate, uint8_t count, const uint8_t* data)
+    uint8_t device, uint8_t flags, uint16_t timeout, uint32_t baudrate, uint8_t count, const uint8_t* data, uint8_t target_system, uint8_t target_component)
 {
     return fmav_msg_serial_control_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        device, flags, timeout, baudrate, count, data,
+        device, flags, timeout, baudrate, count, data, target_system, target_component,
         _status);
 }
 

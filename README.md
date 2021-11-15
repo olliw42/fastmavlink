@@ -9,7 +9,7 @@ This is not achieved by some magic vodoo coding tricks, but simply by a careful 
 
 To give an example: In order to parse a message, determine if it is targeted at the application, and send a response to the proper link, the pymavlink-mavgen C library requires us to search three (3!) times for the target id pairs of the corresponding message id. The fastMavlink library only requires one search, and this is the minimum which is logically needed. Searching is a comparatively costly process, and avoiding unnecessary searches obviously relates to a boost in performance. 
 
-Some of the drawbacks of the pymavlink-mavgen C library were listed and addressed in [mavlink/#1127](https://github.com/mavlink/mavlink/pull/1127), which can serve to further demonstrate the point. However, fastMavlink's C code is not simply an improved version of pymavlink-mavgen's, but pretty much a complete rewrite from scratch. It is therefore also clean, logically structured, and cruft were removed. It inherits some ideas however, such as the header-only design and organization into dialect subfolders, and code for few basic functions.
+Some of the drawbacks of the pymavlink-mavgen C library were listed and addressed in [mavlink/#1127](https://github.com/mavlink/mavlink/pull/1127), which should further demonstrate the point. However, fastMavlink's C code is not simply an improved version of pymavlink-mavgen's, but pretty much a complete rewrite from scratch. It is therefore also clean, logically structured, and cruft were removed. It inherits some ideas however, such as the header-only design and organization into dialect subfolders, and code for few basic functions.
 
 In addition, the fastMavlink C library provides features not provided otherwise but which are quite missed. For instance, it has optimized routines for use in MAVLink routers as well as a MAVLink router library. It offers a pymavlink-mavgen mimicry capability, which can make changing to fastMavlink easy.
 
@@ -17,7 +17,7 @@ The C code is generated using a Python generator from the MAVLink protocol XML d
 
 Lastly, fastMavlink provides a comprehensive test suite.
 
-You don't believe all this can be true, you think it must be exaggerated? Well, when please check it out and judge :)
+You don't believe all this can be true, you think it must be exaggerated? Well, please check it out and judge :)
 
 The fastMavlink library is used in two projects of mine, the [STorM32 gimbal controller](http://www.olliw.eu/2013/storm32bgc/) and the [MAVLink for OpenTx](http://www.olliw.eu/2020/olliwtelem/) projects. So, it can claim some maturity. Yet, obviously, the software is offered as is with no explicit or implied warranty, and there is plenty of room to further improve, extend and advance it. Suggestions are welcome.
 
@@ -38,9 +38,9 @@ The code does not work on any platform. (It e.g. uses packed structures and refe
 
 ## Installation ##
 
-The simplest method to use fastMavlink is to use the pre-generated C code provided with this repository in the `c_library` subfolder. Simply just grab this folder and copy it to any location you like. A more canonical approach would be to clone this repository into your standard location for github projects.
+The simplest method to use fastMavlink is to use the pre-generated C code provided with this repository in the `c_library` subfolder. Simply grab this folder and copy it to any location you like. A more canonical approach would be to clone this repository into your standard location for github projects.
 
-If you want to generate the C code yourself ([Code Generation](#code-generation)), and need the standard xml dialect definition files (which you most likely will), you in addition want to get  the mavlink repository. The canonical approach would be to also clone it into the same location you chose for the fastMavlink repository.  
+If you want to generate the C code yourself ([Code Generation](#code-generation)), and need the standard xml dialect definition files (which you most likely will), then you in addition want to get  the mavlink repository. The canonical approach would be to also clone it into the same location you chose for the fastMavlink repository.  
 
 
 ## C Code Usage ##
@@ -49,15 +49,15 @@ Please see the chapter below on the [C Code Architecture](#c-code-architecture) 
 
 For examples please go to [The fastMavlink Library: Examples](examples/).
 
-In order to use the dialect `xyzdialect`, defined in xyzdialect.xml, include the corresponding header file xyzdialect.h into your project:
+In order to use the dialect `xyzdialect` (defined via a xyzdialect.xml dialect definition file), include the header file xyzdialect.h into your project:
 
 ```C
 #include "path_to_c_code/xyzdialect/xyzdialect.h"
 ```
 
-where `path_to_c_code` is the path to the fastMavlink C code on your system. Note that you do not include `".../xyzdialect/mavlink.h"` as you would do for pymavlink-mavgen. If you would do so with fastMavlink, it would enable the [pymavlink-mavgen mimicry](#pymavlink-mavgen-mimicry).
+where `path_to_c_code` is the path to the fastMavlink C code on your system. Note that you do not include `".../xyzdialect/mavlink.h"` as for pymavlink-mavgen. If you would do this with fastMavlink, it would enable the [pymavlink-mavgen mimicry](#pymavlink-mavgen-mimicry).
 
-The simplest approach is to use the pre-generated C code provided in the `c_library` subfolder. If you cloned this repository, the include path would look like `#inlcude "location_of_github_repos/fastmavlink/c_library/xyzdialect/xyzdialect.h"`. Alternatively you can generate the C code using the python generator scripts, see [Code Generation](#code-generation), in which case `path_to_c_code` would point to the generator's output directory.
+If you cloned this repository and want to use the pre-generated C code provided in the `c_library` subfolder, then the include path would look like `#inlcude "location_of_github_repos/fastmavlink/c_library/xyzdialect/xyzdialect.h"`. If you generated the C code using the python generator scripts, see [Code Generation](#code-generation), then `path_to_c_code` would point to the generator's output directory.
 
 ## Router ##
 

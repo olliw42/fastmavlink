@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Sat Oct 09 2021"
+#define FASTMAVLINK_BUILD_DATE  "Mon Nov 15 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -515,8 +515,64 @@ typedef enum COMP_METADATA_TYPE {
     COMP_METADATA_TYPE_COMMANDS = 2,  // Meta data that specifies which commands and command parameters the vehicle supports. (WIP) 
     COMP_METADATA_TYPE_PERIPHERALS = 3,  // Meta data that specifies external non-MAVLink peripherals. 
     COMP_METADATA_TYPE_EVENTS = 4,  // Meta data for the events interface. 
-    COMP_METADATA_TYPE_ENUM_END = 5,  // end marker
+    COMP_METADATA_TYPE_ACTUATORS = 5,  // Meta data for actuator configuration (motors, servos and vehicle geometry) and testing. 
+    COMP_METADATA_TYPE_ENUM_END = 6,  // end marker
 } COMP_METADATA_TYPE;
+#endif
+
+
+#ifndef FASTMAVLINK_HAS_ENUM_ACTUATOR_CONFIGURATION
+#define FASTMAVLINK_HAS_ENUM_ACTUATOR_CONFIGURATION
+typedef enum ACTUATOR_CONFIGURATION {
+    ACTUATOR_CONFIGURATION_NONE = 0,  // Do nothing. 
+    ACTUATOR_CONFIGURATION_BEEP = 1,  // Command the actuator to beep now. 
+    ACTUATOR_CONFIGURATION_3D_MODE_ON = 2,  // Permanently set the actuator (ESC) to 3D mode (reversible thrust). 
+    ACTUATOR_CONFIGURATION_3D_MODE_OFF = 3,  // Permanently set the actuator (ESC) to non 3D mode (non-reversible thrust). 
+    ACTUATOR_CONFIGURATION_SPIN_DIRECTION1 = 4,  // Permanently set the actuator (ESC) to spin direction 1 (which can be clockwise or counter-clockwise). 
+    ACTUATOR_CONFIGURATION_SPIN_DIRECTION2 = 5,  // Permanently set the actuator (ESC) to spin direction 2 (opposite of direction 1). 
+    ACTUATOR_CONFIGURATION_ENUM_END = 6,  // end marker
+} ACTUATOR_CONFIGURATION;
+#endif
+
+
+#ifndef FASTMAVLINK_HAS_ENUM_ACTUATOR_OUTPUT_FUNCTION
+#define FASTMAVLINK_HAS_ENUM_ACTUATOR_OUTPUT_FUNCTION
+typedef enum ACTUATOR_OUTPUT_FUNCTION {
+    ACTUATOR_OUTPUT_FUNCTION_NONE = 0,  // No function (disabled). 
+    ACTUATOR_OUTPUT_FUNCTION_MOTOR1 = 1,  // Motor 1 
+    ACTUATOR_OUTPUT_FUNCTION_MOTOR2 = 2,  // Motor 2 
+    ACTUATOR_OUTPUT_FUNCTION_MOTOR3 = 3,  // Motor 3 
+    ACTUATOR_OUTPUT_FUNCTION_MOTOR4 = 4,  // Motor 4 
+    ACTUATOR_OUTPUT_FUNCTION_MOTOR5 = 5,  // Motor 5 
+    ACTUATOR_OUTPUT_FUNCTION_MOTOR6 = 6,  // Motor 6 
+    ACTUATOR_OUTPUT_FUNCTION_MOTOR7 = 7,  // Motor 7 
+    ACTUATOR_OUTPUT_FUNCTION_MOTOR8 = 8,  // Motor 8 
+    ACTUATOR_OUTPUT_FUNCTION_MOTOR9 = 9,  // Motor 9 
+    ACTUATOR_OUTPUT_FUNCTION_MOTOR10 = 10,  // Motor 10 
+    ACTUATOR_OUTPUT_FUNCTION_MOTOR11 = 11,  // Motor 11 
+    ACTUATOR_OUTPUT_FUNCTION_MOTOR12 = 12,  // Motor 12 
+    ACTUATOR_OUTPUT_FUNCTION_MOTOR13 = 13,  // Motor 13 
+    ACTUATOR_OUTPUT_FUNCTION_MOTOR14 = 14,  // Motor 14 
+    ACTUATOR_OUTPUT_FUNCTION_MOTOR15 = 15,  // Motor 15 
+    ACTUATOR_OUTPUT_FUNCTION_MOTOR16 = 16,  // Motor 16 
+    ACTUATOR_OUTPUT_FUNCTION_SERVO1 = 33,  // Servo 1 
+    ACTUATOR_OUTPUT_FUNCTION_SERVO2 = 34,  // Servo 2 
+    ACTUATOR_OUTPUT_FUNCTION_SERVO3 = 35,  // Servo 3 
+    ACTUATOR_OUTPUT_FUNCTION_SERVO4 = 36,  // Servo 4 
+    ACTUATOR_OUTPUT_FUNCTION_SERVO5 = 37,  // Servo 5 
+    ACTUATOR_OUTPUT_FUNCTION_SERVO6 = 38,  // Servo 6 
+    ACTUATOR_OUTPUT_FUNCTION_SERVO7 = 39,  // Servo 7 
+    ACTUATOR_OUTPUT_FUNCTION_SERVO8 = 40,  // Servo 8 
+    ACTUATOR_OUTPUT_FUNCTION_SERVO9 = 41,  // Servo 9 
+    ACTUATOR_OUTPUT_FUNCTION_SERVO10 = 42,  // Servo 10 
+    ACTUATOR_OUTPUT_FUNCTION_SERVO11 = 43,  // Servo 11 
+    ACTUATOR_OUTPUT_FUNCTION_SERVO12 = 44,  // Servo 12 
+    ACTUATOR_OUTPUT_FUNCTION_SERVO13 = 45,  // Servo 13 
+    ACTUATOR_OUTPUT_FUNCTION_SERVO14 = 46,  // Servo 14 
+    ACTUATOR_OUTPUT_FUNCTION_SERVO15 = 47,  // Servo 15 
+    ACTUATOR_OUTPUT_FUNCTION_SERVO16 = 48,  // Servo 16 
+    ACTUATOR_OUTPUT_FUNCTION_ENUM_END = 49,  // end marker
+} ACTUATOR_OUTPUT_FUNCTION;
 #endif
 
 
@@ -542,7 +598,7 @@ typedef enum MAV_CMD {
     MAV_CMD_NAV_PATHPLANNING = 81,  // Control autonomous path planning on the MAV. | 0: Disable local obstacle avoidance / local path planning (without resetting map), 1: Enable local path planning, 2: Enable and reset local path planning | 0: Disable full path planning (without resetting map), 1: Enable, 2: Enable and reset map/occupancy grid, 3: Enable and reset planned route, but not occupancy grid | Empty | Yaw angle at goal | Latitude/X of goal | Longitude/Y of goal | Altitude/Z of goal
     MAV_CMD_NAV_SPLINE_WAYPOINT = 82,  // Navigate to waypoint using a spline path. | Hold time. (ignored by fixed wing, time to stay at waypoint for rotary wing) | Empty | Empty | Empty | Latitude/X of goal | Longitude/Y of goal | Altitude/Z of goal
     MAV_CMD_NAV_VTOL_TAKEOFF = 84,  // Takeoff from ground using VTOL mode, and transition to forward flight with specified heading. The command should be ignored by vehicles that dont support both VTOL and fixed-wing flight (multicopters, boats,etc.). | Empty | Front transition heading. | Empty | Yaw angle. NaN to use the current system yaw heading mode (e.g. yaw towards next waypoint, yaw to home, etc.). | Latitude | Longitude | Altitude
-    MAV_CMD_NAV_VTOL_LAND = 85,  // Land using VTOL mode | Landing behaviour. | Empty | Approach altitude (with the same reference as the Altitude field). NaN if unspecified. | Yaw angle. NaN to use the current system yaw heading mode (e.g. yaw towards next waypoint, yaw to home, etc.). | Latitude | Longitude | Altitude (ground level)
+    MAV_CMD_NAV_VTOL_LAND = 85,  // Land using VTOL mode | Landing behaviour. | Empty | Approach altitude (with the same reference as the Altitude field). NaN if unspecified. | Yaw angle. NaN to use the current system yaw heading mode (e.g. yaw towards next waypoint, yaw to home, etc.). | Latitude | Longitude | Altitude (ground level) relative to the current coordinate frame. NaN to use system default landing altitude (ignore value).
     MAV_CMD_NAV_GUIDED_ENABLE = 92,  // hand control over to an external controller | On / Off (> 0.5f on) | Empty | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_NAV_DELAY = 93,  // Delay the next navigation command a number of seconds or until a specified time | Delay (-1 to enable time-of-day fields) | hour (24h format, UTC, -1 to ignore) | minute (24h format, UTC, -1 to ignore) | second (24h format, UTC, -1 to ignore) | Empty | Empty | Empty
     MAV_CMD_NAV_PAYLOAD_PLACE = 94,  // Descend and place payload. Vehicle moves to specified location, descends until it detects a hanging payload has reached the ground, and then releases the payload. If ground is not detected before the reaching the maximum descent value (param1), the command will complete without releasing the payload. | Maximum distance to descend. | Empty | Empty | Empty | Latitude | Longitude | Altitude
@@ -600,10 +656,11 @@ typedef enum MAV_CMD {
     MAV_CMD_PREFLIGHT_UAVCAN = 243,  // Trigger UAVCAN configuration (actuator ID assignment and direction mapping). Note that this maps to the legacy UAVCAN v0 function UAVCAN_ENUMERATE, which is intended to be executed just once during initial vehicle configuration (it is not a normal pre-flight command and has been poorly named). | 1: Trigger actuator ID assignment and direction mapping. 0: Cancel command. | Reserved | Reserved | Reserved | Reserved | Reserved | Reserved
     MAV_CMD_PREFLIGHT_STORAGE = 245,  // Request storage of different parameter values and logs. This command will be only accepted if in pre-flight mode. | Parameter storage: 0: READ FROM FLASH/EEPROM, 1: WRITE CURRENT TO FLASH/EEPROM, 2: Reset to defaults, 3: Reset sensor calibration parameter data to factory default (or firmware default if not available) | Mission storage: 0: READ FROM FLASH/EEPROM, 1: WRITE CURRENT TO FLASH/EEPROM, 2: Reset to defaults | Onboard logging: 0: Ignore, 1: Start default rate logging, -1: Stop logging, > 1: logging rate (e.g. set to 1000 for 1000 Hz logging) | Reserved | Empty | Empty | Empty
     MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN = 246,  // Request the reboot or shutdown of system components. | 0: Do nothing for autopilot, 1: Reboot autopilot, 2: Shutdown autopilot, 3: Reboot autopilot and keep it in the bootloader until upgraded. | 0: Do nothing for onboard computer, 1: Reboot onboard computer, 2: Shutdown onboard computer, 3: Reboot onboard computer and keep it in the bootloader until upgraded. | 0: Do nothing for component, 1: Reboot component, 2: Shutdown component, 3: Reboot component and keep it in the bootloader until upgraded | MAVLink Component ID targeted in param3 (0 for all components). | Reserved (set to 0) | Reserved (set to 0) | WIP: ID (e.g. camera ID -1 for all IDs)
-    MAV_CMD_DO_UPGRADE = 247,  // Request a target system to start an upgrade of one (or all) of its components. For example, the command might be sent to a companion computer to cause it to upgrade a connected flight controller. The system doing the upgrade will report progress using the normal command protocol sequence for a long running operation. Command protocol information: https://mavlink.io/en/services/command.html. | Component id of the component to be upgraded. If set to 0, all components should be upgraded. | 0: Do not reboot component after the action is executed, 1: Reboot component after the action is executed. | Reserved | Reserved | Reserved | Reserved | WIP: upgrade progress report rate (can be used for more granular control).
     MAV_CMD_OVERRIDE_GOTO = 252,  // Override current mission with command to pause mission, pause mission and move to position, continue/resume mission. When param 1 indicates that the mission is paused (MAV_GOTO_DO_HOLD), param 2 defines whether it holds in place or moves to another position. | MAV_GOTO_DO_HOLD: pause mission and either hold or move to specified position (depending on param2), MAV_GOTO_DO_CONTINUE: resume mission. | MAV_GOTO_HOLD_AT_CURRENT_POSITION: hold at current position, MAV_GOTO_HOLD_AT_SPECIFIED_POSITION: hold at specified position. | Coordinate frame of hold point. | Desired yaw angle. | Latitude/X position. | Longitude/Y position. | Altitude/Z position.
     MAV_CMD_OBLIQUE_SURVEY = 260,  // Mission command to set a Camera Auto Mount Pivoting Oblique Survey (Replaces CAM_TRIGG_DIST for this purpose). The camera is triggered each time this distance is exceeded, then the mount moves to the next position. Params 4~6 set-up the angle limits and number of positions for oblique survey, where mount-enabled vehicles automatically roll the camera between shots to emulate an oblique camera setup (providing an increased HFOV). This command can also be used to set the shutter integration time for the camera. | Camera trigger distance. 0 to stop triggering. | Camera shutter integration time. 0 to ignore | The minimum interval in which the camera is capable of taking subsequent pictures repeatedly. 0 to ignore. | Total number of roll positions at which the camera will capture photos (images captures spread evenly across the limits defined by param5). | Angle limits that the camera can be rolled to left and right of center. | Fixed pitch angle that the camera will hold in oblique mode if the mount is actuated in the pitch axis. | Empty
     MAV_CMD_MISSION_START = 300,  // start running a mission | first_item: the first mission item to run | last_item:  the last mission item to run (after this item is run, the mission ends) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
+    MAV_CMD_ACTUATOR_TEST = 310,  // Actuator testing command. This is similar to MAV_CMD_DO_MOTOR_TEST but operates on the level of output functions, i.e. it is possible to test Motor1 independent from which output it is configured on. Autopilots typically refuse this command while armed. | Output value: 1 means maximum positive output, 0 to center servos or minimum motor thrust (expected to spin), -1 for maximum negative (if not supported by the motors, i.e. motor is not reversible, smaller than 0 maps to NaN). And NaN maps to disarmed (stop the motors). | Timeout after which the test command expires and the output is restored to the previous value. A timeout has to be set for safety reasons. A timeout of 0 means to restore the previous value immediately. | Reserved (default:0) | Reserved (default:0) | Actuator Output function | Reserved (default:0) | Reserved (default:0)
+    MAV_CMD_CONFIGURE_ACTUATOR = 311,  // Actuator configuration command. | Actuator configuration action | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Actuator Output function | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_COMPONENT_ARM_DISARM = 400,  // Arms / Disarms a component | 0: disarm, 1: arm | 0: arm-disarm unless prevented by safety checks (i.e. when landed), 21196: force arming/disarming (e.g. allow arming to override preflight checks and disarming in flight) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_RUN_PREARM_CHECKS = 401,  // Instructs system to run pre-arm checks. This command should return MAV_RESULT_TEMPORARILY_REJECTED in the case the system is armed, otherwise MAV_RESULT_ACCEPTED. Note that the return value from executing this command does not indicate whether the vehicle is armable or not, just whether the system has successfully run/is currently running the checks.  The result of the checks is reflected in the SYS_STATUS message. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_ILLUMINATOR_ON_OFF = 405,  // Turns illuminators ON/OFF. An illuminator is a light source that is used for lighting up dark areas external to the sytstem: e.g. a torch or searchlight (as opposed to a light source for illuminating the system itself, e.g. an indicator light). | 0: Illuminators OFF, 1: Illuminators ON | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
@@ -693,7 +750,7 @@ typedef enum MAV_DATA_STREAM {
     MAV_DATA_STREAM_EXTENDED_STATUS = 2,  // Enable GPS_STATUS, CONTROL_STATUS, AUX_STATUS 
     MAV_DATA_STREAM_RC_CHANNELS = 3,  // Enable RC_CHANNELS_SCALED, RC_CHANNELS_RAW, SERVO_OUTPUT_RAW 
     MAV_DATA_STREAM_RAW_CONTROLLER = 4,  // Enable ATTITUDE_CONTROLLER_OUTPUT, POSITION_CONTROLLER_OUTPUT, NAV_CONTROLLER_OUTPUT. 
-    MAV_DATA_STREAM_POSITION = 6,  // Enable LOCAL_POSITION, GLOBAL_POSITION/GLOBAL_POSITION_INT messages. 
+    MAV_DATA_STREAM_POSITION = 6,  // Enable LOCAL_POSITION, GLOBAL_POSITION_INT messages. 
     MAV_DATA_STREAM_EXTRA1 = 10,  // Dependent on the autopilot 
     MAV_DATA_STREAM_EXTRA2 = 11,  // Dependent on the autopilot 
     MAV_DATA_STREAM_EXTRA3 = 12,  // Dependent on the autopilot 
@@ -1561,6 +1618,31 @@ typedef enum CELLULAR_STATUS_FLAG {
 #endif
 
 
+#ifndef FASTMAVLINK_HAS_ENUM_CELLULAR_NETWORK_FAILED_REASON
+#define FASTMAVLINK_HAS_ENUM_CELLULAR_NETWORK_FAILED_REASON
+typedef enum CELLULAR_NETWORK_FAILED_REASON {
+    CELLULAR_NETWORK_FAILED_REASON_NONE = 0,  // No error 
+    CELLULAR_NETWORK_FAILED_REASON_UNKNOWN = 1,  // Error state is unknown 
+    CELLULAR_NETWORK_FAILED_REASON_SIM_MISSING = 2,  // SIM is required for the modem but missing 
+    CELLULAR_NETWORK_FAILED_REASON_SIM_ERROR = 3,  // SIM is available, but not usuable for connection 
+    CELLULAR_NETWORK_FAILED_REASON_ENUM_END = 4,  // end marker
+} CELLULAR_NETWORK_FAILED_REASON;
+#endif
+
+
+#ifndef FASTMAVLINK_HAS_ENUM_CELLULAR_NETWORK_RADIO_TYPE
+#define FASTMAVLINK_HAS_ENUM_CELLULAR_NETWORK_RADIO_TYPE
+typedef enum CELLULAR_NETWORK_RADIO_TYPE {
+    CELLULAR_NETWORK_RADIO_TYPE_NONE = 0,  //  
+    CELLULAR_NETWORK_RADIO_TYPE_GSM = 1,  //  
+    CELLULAR_NETWORK_RADIO_TYPE_CDMA = 2,  //  
+    CELLULAR_NETWORK_RADIO_TYPE_WCDMA = 3,  //  
+    CELLULAR_NETWORK_RADIO_TYPE_LTE = 4,  //  
+    CELLULAR_NETWORK_RADIO_TYPE_ENUM_END = 5,  // end marker
+} CELLULAR_NETWORK_RADIO_TYPE;
+#endif
+
+
 #ifndef FASTMAVLINK_HAS_ENUM_PRECISION_LAND_MODE
 #define FASTMAVLINK_HAS_ENUM_PRECISION_LAND_MODE
 typedef enum PRECISION_LAND_MODE {
@@ -2083,6 +2165,52 @@ typedef enum MAV_EVENT_CURRENT_SEQUENCE_FLAGS {
 } MAV_EVENT_CURRENT_SEQUENCE_FLAGS;
 #endif
 
+
+#ifndef FASTMAVLINK_HAS_ENUM_HIL_SENSOR_UPDATED_FLAGS
+#define FASTMAVLINK_HAS_ENUM_HIL_SENSOR_UPDATED_FLAGS
+typedef enum HIL_SENSOR_UPDATED_FLAGS {
+    HIL_SENSOR_UPDATED_NONE = 0,  // None of the fields in HIL_SENSOR have been updated 
+    HIL_SENSOR_UPDATED_XACC = 1,  // The value in the xacc field has been updated 
+    HIL_SENSOR_UPDATED_YACC = 2,  // The value in the yacc field has been updated 
+    HIL_SENSOR_UPDATED_ZACC = 4,  // The value in the zacc field has been updated 
+    HIL_SENSOR_UPDATED_XGYRO = 8,  // The value in the xgyro field has been updated 
+    HIL_SENSOR_UPDATED_YGYRO = 16,  // The value in the ygyro field has been updated 
+    HIL_SENSOR_UPDATED_ZGYRO = 32,  // The value in the zgyro field has been updated 
+    HIL_SENSOR_UPDATED_XMAG = 64,  // The value in the xmag field has been updated 
+    HIL_SENSOR_UPDATED_YMAG = 128,  // The value in the ymag field has been updated 
+    HIL_SENSOR_UPDATED_ZMAG = 256,  // The value in the zmag field has been updated 
+    HIL_SENSOR_UPDATED_ABS_PRESSURE = 512,  // The value in the abs_pressure field has been updated 
+    HIL_SENSOR_UPDATED_DIFF_PRESSURE = 1024,  // The value in the diff_pressure field has been updated 
+    HIL_SENSOR_UPDATED_PRESSURE_ALT = 2048,  // The value in the pressure_alt field has been updated 
+    HIL_SENSOR_UPDATED_TEMPERATURE = 4096,  // The value in the temperature field has been updated 
+    HIL_SENSOR_UPDATED_RESET = 2147483648,  // Full reset of attitude/position/velocities/etc was performed in sim (Bit 31). 
+    HIL_SENSOR_UPDATED_FLAGS_ENUM_END = 2147483649,  // end marker
+} HIL_SENSOR_UPDATED_FLAGS;
+#endif
+
+
+#ifndef FASTMAVLINK_HAS_ENUM_HIGHRES_IMU_UPDATED_FLAGS
+#define FASTMAVLINK_HAS_ENUM_HIGHRES_IMU_UPDATED_FLAGS
+typedef enum HIGHRES_IMU_UPDATED_FLAGS {
+    HIGHRES_IMU_UPDATED_NONE = 0,  // None of the fields in HIGHRES_IMU have been updated 
+    HIGHRES_IMU_UPDATED_XACC = 1,  // The value in the xacc field has been updated 
+    HIGHRES_IMU_UPDATED_YACC = 2,  // The value in the yacc field has been updated 
+    HIGHRES_IMU_UPDATED_ZACC = 4,  // The value in the zacc field has been updated since 
+    HIGHRES_IMU_UPDATED_XGYRO = 8,  // The value in the xgyro field has been updated 
+    HIGHRES_IMU_UPDATED_YGYRO = 16,  // The value in the ygyro field has been updated 
+    HIGHRES_IMU_UPDATED_ZGYRO = 32,  // The value in the zgyro field has been updated 
+    HIGHRES_IMU_UPDATED_XMAG = 64,  // The value in the xmag field has been updated 
+    HIGHRES_IMU_UPDATED_YMAG = 128,  // The value in the ymag field has been updated 
+    HIGHRES_IMU_UPDATED_ZMAG = 256,  // The value in the zmag field has been updated 
+    HIGHRES_IMU_UPDATED_ABS_PRESSURE = 512,  // The value in the abs_pressure field has been updated 
+    HIGHRES_IMU_UPDATED_DIFF_PRESSURE = 1024,  // The value in the diff_pressure field has been updated 
+    HIGHRES_IMU_UPDATED_PRESSURE_ALT = 2048,  // The value in the pressure_alt field has been updated 
+    HIGHRES_IMU_UPDATED_TEMPERATURE = 4096,  // The value in the temperature field has been updated 
+    HIGHRES_IMU_UPDATED_ALL = 65535,  // All fields in HIGHRES_IMU have been updated. 
+    HIGHRES_IMU_UPDATED_FLAGS_ENUM_END = 65536,  // end marker
+} HIGHRES_IMU_UPDATED_FLAGS;
+#endif
+
 #endif // FASTMAVLINK_DO_NOT_INCLUDE_ENUMS
 
 
@@ -2281,8 +2409,6 @@ typedef enum MAV_EVENT_CURRENT_SEQUENCE_FLAGS {
 #include "./mavlink_msg_trajectory_representation_waypoints.h"
 #include "./mavlink_msg_trajectory_representation_bezier.h"
 #include "./mavlink_msg_cellular_status.h"
-#include "./mavlink_msg_group_start.h"
-#include "./mavlink_msg_group_end.h"
 #include "./mavlink_msg_isbd_link_status.h"
 #include "./mavlink_msg_cellular_config.h"
 #include "./mavlink_msg_raw_rpm.h"

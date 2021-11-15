@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Sat Oct 09 2021"
+#define FASTMAVLINK_BUILD_DATE  "Mon Nov 15 2021"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -108,34 +108,10 @@ typedef enum MAV_CMD {
 #endif
 
 
-#ifndef FASTMAVLINK_HAS_ENUM_CELLULAR_NETWORK_RADIO_TYPE
-#define FASTMAVLINK_HAS_ENUM_CELLULAR_NETWORK_RADIO_TYPE
-typedef enum CELLULAR_NETWORK_RADIO_TYPE {
-    CELLULAR_NETWORK_RADIO_TYPE_NONE = 0,  //  
-    CELLULAR_NETWORK_RADIO_TYPE_GSM = 1,  //  
-    CELLULAR_NETWORK_RADIO_TYPE_CDMA = 2,  //  
-    CELLULAR_NETWORK_RADIO_TYPE_WCDMA = 3,  //  
-    CELLULAR_NETWORK_RADIO_TYPE_LTE = 4,  //  
-    CELLULAR_NETWORK_RADIO_TYPE_ENUM_END = 5,  // end marker
-} CELLULAR_NETWORK_RADIO_TYPE;
-#endif
-
-
-#ifndef FASTMAVLINK_HAS_ENUM_CELLULAR_NETWORK_FAILED_REASON
-#define FASTMAVLINK_HAS_ENUM_CELLULAR_NETWORK_FAILED_REASON
-typedef enum CELLULAR_NETWORK_FAILED_REASON {
-    CELLULAR_NETWORK_FAILED_REASON_NONE = 0,  // No error 
-    CELLULAR_NETWORK_FAILED_REASON_UNKNOWN = 1,  // Error state is unknown 
-    CELLULAR_NETWORK_FAILED_REASON_SIM_MISSING = 2,  // SIM is required for the modem but missing 
-    CELLULAR_NETWORK_FAILED_REASON_SIM_ERROR = 3,  // SIM is available, but not usuable for connection 
-    CELLULAR_NETWORK_FAILED_REASON_ENUM_END = 4,  // end marker
-} CELLULAR_NETWORK_FAILED_REASON;
-#endif
-
-
 #ifndef FASTMAVLINK_HAS_ENUM_MAV_CMD
 #define FASTMAVLINK_HAS_ENUM_MAV_CMD
 typedef enum MAV_CMD {
+    MAV_CMD_DO_UPGRADE = 247,  // Request a target system to start an upgrade of one (or all) of its components.          For example, the command might be sent to a companion computer to cause it to upgrade a connected flight controller.          The system doing the upgrade will report progress using the normal command protocol sequence for a long running operation.          Command protocol information: https://mavlink.io/en/services/command.html. | Component id of the component to be upgraded. If set to 0, all components should be upgraded. | 0: Do not reboot component after the action is executed, 1: Reboot component after the action is executed. | Reserved | Reserved | Reserved | Reserved | WIP: upgrade progress report rate (can be used for more granular control).
     MAV_CMD_GROUP_START = 301,  // Define start of a group of mission items. When control reaches this command a GROUP_START message is emitted.          The end of a group is marked using MAV_CMD_GROUP_END with the same group id.          Group ids are expected, but not required, to iterate sequentially.          Groups can be nested. | Mission-unique group id.          Group id is limited because only 24 bit integer can be stored in 32 bit float. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_GROUP_END = 302,  // Define end of a group of mission items. When control reaches this command a GROUP_END message is emitted.          The start of the group is marked is marked using MAV_CMD_GROUP_START with the same group id.          Group ids are expected, but not required, to iterate sequentially.          Groups can be nested. | Mission-unique group id.          Group id is limited because only 24 bit integer can be stored in 32 bit float. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_ENUM_END = 303,  // end marker
@@ -161,6 +137,8 @@ typedef enum MAV_CMD {
 #include "./mavlink_msg_mission_checksum.h"
 #include "./mavlink_msg_airspeed.h"
 #include "./mavlink_msg_wifi_network_info.h"
+#include "./mavlink_msg_group_start.h"
+#include "./mavlink_msg_group_end.h"
 
 #ifdef FASTMAVLINK_IGNORE_WADDRESSOFPACKEDMEMBER
   #if defined __GNUC__ && __GNUC__ >= 9
