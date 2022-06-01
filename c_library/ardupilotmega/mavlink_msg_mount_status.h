@@ -20,19 +20,20 @@ typedef struct _fmav_mount_status_t {
     int32_t pointing_c;
     uint8_t target_system;
     uint8_t target_component;
+    uint8_t mount_mode;
 }) fmav_mount_status_t;
 
 
 #define FASTMAVLINK_MSG_ID_MOUNT_STATUS  158
 
-#define FASTMAVLINK_MSG_MOUNT_STATUS_PAYLOAD_LEN_MAX  14
+#define FASTMAVLINK_MSG_MOUNT_STATUS_PAYLOAD_LEN_MAX  15
 #define FASTMAVLINK_MSG_MOUNT_STATUS_CRCEXTRA  134
 
 #define FASTMAVLINK_MSG_MOUNT_STATUS_FLAGS  3
 #define FASTMAVLINK_MSG_MOUNT_STATUS_TARGET_SYSTEM_OFS  12
 #define FASTMAVLINK_MSG_MOUNT_STATUS_TARGET_COMPONENT_OFS  13
 
-#define FASTMAVLINK_MSG_MOUNT_STATUS_FRAME_LEN_MAX  39
+#define FASTMAVLINK_MSG_MOUNT_STATUS_FRAME_LEN_MAX  40
 
 
 
@@ -41,6 +42,7 @@ typedef struct _fmav_mount_status_t {
 #define FASTMAVLINK_MSG_MOUNT_STATUS_FIELD_POINTING_C_OFS  8
 #define FASTMAVLINK_MSG_MOUNT_STATUS_FIELD_TARGET_SYSTEM_OFS  12
 #define FASTMAVLINK_MSG_MOUNT_STATUS_FIELD_TARGET_COMPONENT_OFS  13
+#define FASTMAVLINK_MSG_MOUNT_STATUS_FIELD_MOUNT_MODE_OFS  14
 
 
 //----------------------------------------
@@ -51,7 +53,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_status_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t target_system, uint8_t target_component, int32_t pointing_a, int32_t pointing_b, int32_t pointing_c,
+    uint8_t target_system, uint8_t target_component, int32_t pointing_a, int32_t pointing_b, int32_t pointing_c, uint8_t mount_mode,
     fmav_status_t* _status)
 {
     fmav_mount_status_t* _payload = (fmav_mount_status_t*)_msg->payload;
@@ -61,6 +63,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_status_pack(
     _payload->pointing_c = pointing_c;
     _payload->target_system = target_system;
     _payload->target_component = target_component;
+    _payload->mount_mode = mount_mode;
 
 
     _msg->sysid = sysid;
@@ -84,7 +87,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_status_encode(
 {
     return fmav_msg_mount_status_pack(
         _msg, sysid, compid,
-        _payload->target_system, _payload->target_component, _payload->pointing_a, _payload->pointing_b, _payload->pointing_c,
+        _payload->target_system, _payload->target_component, _payload->pointing_a, _payload->pointing_b, _payload->pointing_c, _payload->mount_mode,
         _status);
 }
 
@@ -93,7 +96,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_status_pack_to_frame_buf(
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t target_system, uint8_t target_component, int32_t pointing_a, int32_t pointing_b, int32_t pointing_c,
+    uint8_t target_system, uint8_t target_component, int32_t pointing_a, int32_t pointing_b, int32_t pointing_c, uint8_t mount_mode,
     fmav_status_t* _status)
 {
     fmav_mount_status_t* _payload = (fmav_mount_status_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -103,6 +106,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_status_pack_to_frame_buf(
     _payload->pointing_c = pointing_c;
     _payload->target_system = target_system;
     _payload->target_component = target_component;
+    _payload->mount_mode = mount_mode;
 
 
     _buf[5] = sysid;
@@ -128,7 +132,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_status_encode_to_frame_bu
 {
     return fmav_msg_mount_status_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->target_system, _payload->target_component, _payload->pointing_a, _payload->pointing_b, _payload->pointing_c,
+        _payload->target_system, _payload->target_component, _payload->pointing_a, _payload->pointing_b, _payload->pointing_c, _payload->mount_mode,
         _status);
 }
 
@@ -138,7 +142,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_status_encode_to_frame_bu
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_status_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint8_t target_system, uint8_t target_component, int32_t pointing_a, int32_t pointing_b, int32_t pointing_c,
+    uint8_t target_system, uint8_t target_component, int32_t pointing_a, int32_t pointing_b, int32_t pointing_c, uint8_t mount_mode,
     fmav_status_t* _status)
 {
     fmav_mount_status_t _payload;
@@ -148,6 +152,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mount_status_pack_to_serial(
     _payload.pointing_c = pointing_c;
     _payload.target_system = target_system;
     _payload.target_component = target_component;
+    _payload.mount_mode = mount_mode;
 
 
     return fmav_finalize_serial(
@@ -243,6 +248,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mount_status_get_field_target_co
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mount_status_get_field_mount_mode(const fmav_message_t* msg)
+{
+    uint8_t r;
+    memcpy(&r, &(msg->payload[14]), sizeof(uint8_t));
+    return r;
+}
+
+
 
 
 
@@ -255,9 +268,9 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mount_status_get_field_target_co
 
 #define mavlink_mount_status_t  fmav_mount_status_t
 
-#define MAVLINK_MSG_ID_MOUNT_STATUS_LEN  14
+#define MAVLINK_MSG_ID_MOUNT_STATUS_LEN  15
 #define MAVLINK_MSG_ID_MOUNT_STATUS_MIN_LEN  14
-#define MAVLINK_MSG_ID_158_LEN  14
+#define MAVLINK_MSG_ID_158_LEN  15
 #define MAVLINK_MSG_ID_158_MIN_LEN  14
 
 #define MAVLINK_MSG_ID_MOUNT_STATUS_CRC  134
@@ -272,12 +285,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_mount_status_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint8_t target_system, uint8_t target_component, int32_t pointing_a, int32_t pointing_b, int32_t pointing_c)
+    uint8_t target_system, uint8_t target_component, int32_t pointing_a, int32_t pointing_b, int32_t pointing_c, uint8_t mount_mode)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_mount_status_pack(
         _msg, sysid, compid,
-        target_system, target_component, pointing_a, pointing_b, pointing_c,
+        target_system, target_component, pointing_a, pointing_b, pointing_c, mount_mode,
         _status);
 }
 
@@ -289,13 +302,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_mount_status_pack_txbuf(
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t target_system, uint8_t target_component, int32_t pointing_a, int32_t pointing_b, int32_t pointing_c)
+    uint8_t target_system, uint8_t target_component, int32_t pointing_a, int32_t pointing_b, int32_t pointing_c, uint8_t mount_mode)
 {
     return fmav_msg_mount_status_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        target_system, target_component, pointing_a, pointing_b, pointing_c,
+        target_system, target_component, pointing_a, pointing_b, pointing_c, mount_mode,
         _status);
 }
 

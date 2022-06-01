@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Mon Nov 15 2021"
+#define FASTMAVLINK_BUILD_DATE  "Wed Jun 01 2022"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -101,11 +101,11 @@ typedef enum MAV_TYPE {
     MAV_TYPE_FLAPPING_WING = 16,  // Flapping wing 
     MAV_TYPE_KITE = 17,  // Kite 
     MAV_TYPE_ONBOARD_CONTROLLER = 18,  // Onboard companion controller 
-    MAV_TYPE_VTOL_DUOROTOR = 19,  // Two-rotor VTOL using control surfaces in vertical operation in addition. Tailsitter. 
-    MAV_TYPE_VTOL_QUADROTOR = 20,  // Quad-rotor VTOL using a V-shaped quad config in vertical operation. Tailsitter. 
-    MAV_TYPE_VTOL_TILTROTOR = 21,  // Tiltrotor VTOL 
-    MAV_TYPE_VTOL_RESERVED2 = 22,  // VTOL reserved 2 
-    MAV_TYPE_VTOL_RESERVED3 = 23,  // VTOL reserved 3 
+    MAV_TYPE_VTOL_TAILSITTER_DUOROTOR = 19,  // Two-rotor Tailsitter VTOL that additionally uses control surfaces in vertical operation. Note, value previously named MAV_TYPE_VTOL_DUOROTOR. 
+    MAV_TYPE_VTOL_TAILSITTER_QUADROTOR = 20,  // Quad-rotor Tailsitter VTOL using a V-shaped quad config in vertical operation. Note: value previously named MAV_TYPE_VTOL_QUADROTOR. 
+    MAV_TYPE_VTOL_TILTROTOR = 21,  // Tiltrotor VTOL. Fuselage and wings stay (nominally) horizontal in all flight phases. It able to tilt (some) rotors to provide thrust in cruise flight. 
+    MAV_TYPE_VTOL_FIXEDROTOR = 22,  // VTOL with separate fixed rotors for hover and cruise flight. Fuselage and wings stay (nominally) horizontal in all flight phases. 
+    MAV_TYPE_VTOL_TAILSITTER = 23,  // Tailsitter VTOL. Fuselage and wings orientation changes depending on flight phase: vertical for hover, horizontal for cruise. Use more specific VTOL MAV_TYPE_VTOL_DUOROTOR or MAV_TYPE_VTOL_QUADROTOR if appropriate. 
     MAV_TYPE_VTOL_RESERVED4 = 24,  // VTOL reserved 4 
     MAV_TYPE_VTOL_RESERVED5 = 25,  // VTOL reserved 5 
     MAV_TYPE_GIMBAL = 26,  // Gimbal 
@@ -120,7 +120,12 @@ typedef enum MAV_TYPE {
     MAV_TYPE_DECAROTOR = 35,  // Decarotor 
     MAV_TYPE_BATTERY = 36,  // Battery 
     MAV_TYPE_PARACHUTE = 37,  // Parachute 
-    MAV_TYPE_ENUM_END = 38,  // end marker
+    MAV_TYPE_LOG = 38,  // Log 
+    MAV_TYPE_OSD = 39,  // OSD 
+    MAV_TYPE_IMU = 40,  // IMU 
+    MAV_TYPE_GPS = 41,  // GPS 
+    MAV_TYPE_WINCH = 42,  // Winch 
+    MAV_TYPE_ENUM_END = 43,  // end marker
 } MAV_TYPE;
 #endif
 
@@ -289,6 +294,7 @@ typedef enum MAV_COMPONENT {
     MAV_COMP_ID_GIMBAL6 = 175,  // Gimbal #6. 
     MAV_COMP_ID_BATTERY = 180,  // Battery #1. 
     MAV_COMP_ID_BATTERY2 = 181,  // Battery #2. 
+    MAV_COMP_ID_MAVCAN = 189,  // CAN over MAVLink client. 
     MAV_COMP_ID_MISSIONPLANNER = 190,  // Component that can generate/supply a mission flight plan (e.g. GCS or developer API). 
     MAV_COMP_ID_ONBOARD_COMPUTER = 191,  // Component that lives on the onboard computer (companion computer) and has some generic functionalities, such as settings system parameters and monitoring the status of some processes that don't directly speak mavlink and so on. 
     MAV_COMP_ID_ONBOARD_COMPUTER2 = 192,  // Component that lives on the onboard computer (companion computer) and has some generic functionalities, such as settings system parameters and monitoring the status of some processes that don't directly speak mavlink and so on. 

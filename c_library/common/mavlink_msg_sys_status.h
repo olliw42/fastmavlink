@@ -28,19 +28,22 @@ typedef struct _fmav_sys_status_t {
     uint16_t errors_count3;
     uint16_t errors_count4;
     int8_t battery_remaining;
+    uint32_t onboard_control_sensors_present_extended;
+    uint32_t onboard_control_sensors_enabled_extended;
+    uint32_t onboard_control_sensors_health_extended;
 }) fmav_sys_status_t;
 
 
 #define FASTMAVLINK_MSG_ID_SYS_STATUS  1
 
-#define FASTMAVLINK_MSG_SYS_STATUS_PAYLOAD_LEN_MAX  31
+#define FASTMAVLINK_MSG_SYS_STATUS_PAYLOAD_LEN_MAX  43
 #define FASTMAVLINK_MSG_SYS_STATUS_CRCEXTRA  124
 
 #define FASTMAVLINK_MSG_SYS_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_SYS_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_SYS_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_SYS_STATUS_FRAME_LEN_MAX  56
+#define FASTMAVLINK_MSG_SYS_STATUS_FRAME_LEN_MAX  68
 
 
 
@@ -57,6 +60,9 @@ typedef struct _fmav_sys_status_t {
 #define FASTMAVLINK_MSG_SYS_STATUS_FIELD_ERRORS_COUNT3_OFS  26
 #define FASTMAVLINK_MSG_SYS_STATUS_FIELD_ERRORS_COUNT4_OFS  28
 #define FASTMAVLINK_MSG_SYS_STATUS_FIELD_BATTERY_REMAINING_OFS  30
+#define FASTMAVLINK_MSG_SYS_STATUS_FIELD_ONBOARD_CONTROL_SENSORS_PRESENT_EXTENDED_OFS  31
+#define FASTMAVLINK_MSG_SYS_STATUS_FIELD_ONBOARD_CONTROL_SENSORS_ENABLED_EXTENDED_OFS  35
+#define FASTMAVLINK_MSG_SYS_STATUS_FIELD_ONBOARD_CONTROL_SENSORS_HEALTH_EXTENDED_OFS  39
 
 
 //----------------------------------------
@@ -67,7 +73,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sys_status_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t onboard_control_sensors_present, uint32_t onboard_control_sensors_enabled, uint32_t onboard_control_sensors_health, uint16_t load, uint16_t voltage_battery, int16_t current_battery, int8_t battery_remaining, uint16_t drop_rate_comm, uint16_t errors_comm, uint16_t errors_count1, uint16_t errors_count2, uint16_t errors_count3, uint16_t errors_count4,
+    uint32_t onboard_control_sensors_present, uint32_t onboard_control_sensors_enabled, uint32_t onboard_control_sensors_health, uint16_t load, uint16_t voltage_battery, int16_t current_battery, int8_t battery_remaining, uint16_t drop_rate_comm, uint16_t errors_comm, uint16_t errors_count1, uint16_t errors_count2, uint16_t errors_count3, uint16_t errors_count4, uint32_t onboard_control_sensors_present_extended, uint32_t onboard_control_sensors_enabled_extended, uint32_t onboard_control_sensors_health_extended,
     fmav_status_t* _status)
 {
     fmav_sys_status_t* _payload = (fmav_sys_status_t*)_msg->payload;
@@ -85,6 +91,9 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sys_status_pack(
     _payload->errors_count3 = errors_count3;
     _payload->errors_count4 = errors_count4;
     _payload->battery_remaining = battery_remaining;
+    _payload->onboard_control_sensors_present_extended = onboard_control_sensors_present_extended;
+    _payload->onboard_control_sensors_enabled_extended = onboard_control_sensors_enabled_extended;
+    _payload->onboard_control_sensors_health_extended = onboard_control_sensors_health_extended;
 
 
     _msg->sysid = sysid;
@@ -108,7 +117,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sys_status_encode(
 {
     return fmav_msg_sys_status_pack(
         _msg, sysid, compid,
-        _payload->onboard_control_sensors_present, _payload->onboard_control_sensors_enabled, _payload->onboard_control_sensors_health, _payload->load, _payload->voltage_battery, _payload->current_battery, _payload->battery_remaining, _payload->drop_rate_comm, _payload->errors_comm, _payload->errors_count1, _payload->errors_count2, _payload->errors_count3, _payload->errors_count4,
+        _payload->onboard_control_sensors_present, _payload->onboard_control_sensors_enabled, _payload->onboard_control_sensors_health, _payload->load, _payload->voltage_battery, _payload->current_battery, _payload->battery_remaining, _payload->drop_rate_comm, _payload->errors_comm, _payload->errors_count1, _payload->errors_count2, _payload->errors_count3, _payload->errors_count4, _payload->onboard_control_sensors_present_extended, _payload->onboard_control_sensors_enabled_extended, _payload->onboard_control_sensors_health_extended,
         _status);
 }
 
@@ -117,7 +126,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sys_status_pack_to_frame_buf(
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t onboard_control_sensors_present, uint32_t onboard_control_sensors_enabled, uint32_t onboard_control_sensors_health, uint16_t load, uint16_t voltage_battery, int16_t current_battery, int8_t battery_remaining, uint16_t drop_rate_comm, uint16_t errors_comm, uint16_t errors_count1, uint16_t errors_count2, uint16_t errors_count3, uint16_t errors_count4,
+    uint32_t onboard_control_sensors_present, uint32_t onboard_control_sensors_enabled, uint32_t onboard_control_sensors_health, uint16_t load, uint16_t voltage_battery, int16_t current_battery, int8_t battery_remaining, uint16_t drop_rate_comm, uint16_t errors_comm, uint16_t errors_count1, uint16_t errors_count2, uint16_t errors_count3, uint16_t errors_count4, uint32_t onboard_control_sensors_present_extended, uint32_t onboard_control_sensors_enabled_extended, uint32_t onboard_control_sensors_health_extended,
     fmav_status_t* _status)
 {
     fmav_sys_status_t* _payload = (fmav_sys_status_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -135,6 +144,9 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sys_status_pack_to_frame_buf(
     _payload->errors_count3 = errors_count3;
     _payload->errors_count4 = errors_count4;
     _payload->battery_remaining = battery_remaining;
+    _payload->onboard_control_sensors_present_extended = onboard_control_sensors_present_extended;
+    _payload->onboard_control_sensors_enabled_extended = onboard_control_sensors_enabled_extended;
+    _payload->onboard_control_sensors_health_extended = onboard_control_sensors_health_extended;
 
 
     _buf[5] = sysid;
@@ -160,7 +172,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sys_status_encode_to_frame_buf(
 {
     return fmav_msg_sys_status_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->onboard_control_sensors_present, _payload->onboard_control_sensors_enabled, _payload->onboard_control_sensors_health, _payload->load, _payload->voltage_battery, _payload->current_battery, _payload->battery_remaining, _payload->drop_rate_comm, _payload->errors_comm, _payload->errors_count1, _payload->errors_count2, _payload->errors_count3, _payload->errors_count4,
+        _payload->onboard_control_sensors_present, _payload->onboard_control_sensors_enabled, _payload->onboard_control_sensors_health, _payload->load, _payload->voltage_battery, _payload->current_battery, _payload->battery_remaining, _payload->drop_rate_comm, _payload->errors_comm, _payload->errors_count1, _payload->errors_count2, _payload->errors_count3, _payload->errors_count4, _payload->onboard_control_sensors_present_extended, _payload->onboard_control_sensors_enabled_extended, _payload->onboard_control_sensors_health_extended,
         _status);
 }
 
@@ -170,7 +182,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sys_status_encode_to_frame_buf(
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sys_status_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint32_t onboard_control_sensors_present, uint32_t onboard_control_sensors_enabled, uint32_t onboard_control_sensors_health, uint16_t load, uint16_t voltage_battery, int16_t current_battery, int8_t battery_remaining, uint16_t drop_rate_comm, uint16_t errors_comm, uint16_t errors_count1, uint16_t errors_count2, uint16_t errors_count3, uint16_t errors_count4,
+    uint32_t onboard_control_sensors_present, uint32_t onboard_control_sensors_enabled, uint32_t onboard_control_sensors_health, uint16_t load, uint16_t voltage_battery, int16_t current_battery, int8_t battery_remaining, uint16_t drop_rate_comm, uint16_t errors_comm, uint16_t errors_count1, uint16_t errors_count2, uint16_t errors_count3, uint16_t errors_count4, uint32_t onboard_control_sensors_present_extended, uint32_t onboard_control_sensors_enabled_extended, uint32_t onboard_control_sensors_health_extended,
     fmav_status_t* _status)
 {
     fmav_sys_status_t _payload;
@@ -188,6 +200,9 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sys_status_pack_to_serial(
     _payload.errors_count3 = errors_count3;
     _payload.errors_count4 = errors_count4;
     _payload.battery_remaining = battery_remaining;
+    _payload.onboard_control_sensors_present_extended = onboard_control_sensors_present_extended;
+    _payload.onboard_control_sensors_enabled_extended = onboard_control_sensors_enabled_extended;
+    _payload.onboard_control_sensors_health_extended = onboard_control_sensors_health_extended;
 
 
     return fmav_finalize_serial(
@@ -347,6 +362,30 @@ FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_sys_status_get_field_battery_rema
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_sys_status_get_field_onboard_control_sensors_present_extended(const fmav_message_t* msg)
+{
+    uint32_t r;
+    memcpy(&r, &(msg->payload[31]), sizeof(uint32_t));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_sys_status_get_field_onboard_control_sensors_enabled_extended(const fmav_message_t* msg)
+{
+    uint32_t r;
+    memcpy(&r, &(msg->payload[35]), sizeof(uint32_t));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_sys_status_get_field_onboard_control_sensors_health_extended(const fmav_message_t* msg)
+{
+    uint32_t r;
+    memcpy(&r, &(msg->payload[39]), sizeof(uint32_t));
+    return r;
+}
+
+
 
 
 
@@ -359,9 +398,9 @@ FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_sys_status_get_field_battery_rema
 
 #define mavlink_sys_status_t  fmav_sys_status_t
 
-#define MAVLINK_MSG_ID_SYS_STATUS_LEN  31
+#define MAVLINK_MSG_ID_SYS_STATUS_LEN  43
 #define MAVLINK_MSG_ID_SYS_STATUS_MIN_LEN  31
-#define MAVLINK_MSG_ID_1_LEN  31
+#define MAVLINK_MSG_ID_1_LEN  43
 #define MAVLINK_MSG_ID_1_MIN_LEN  31
 
 #define MAVLINK_MSG_ID_SYS_STATUS_CRC  124
@@ -376,12 +415,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_sys_status_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint32_t onboard_control_sensors_present, uint32_t onboard_control_sensors_enabled, uint32_t onboard_control_sensors_health, uint16_t load, uint16_t voltage_battery, int16_t current_battery, int8_t battery_remaining, uint16_t drop_rate_comm, uint16_t errors_comm, uint16_t errors_count1, uint16_t errors_count2, uint16_t errors_count3, uint16_t errors_count4)
+    uint32_t onboard_control_sensors_present, uint32_t onboard_control_sensors_enabled, uint32_t onboard_control_sensors_health, uint16_t load, uint16_t voltage_battery, int16_t current_battery, int8_t battery_remaining, uint16_t drop_rate_comm, uint16_t errors_comm, uint16_t errors_count1, uint16_t errors_count2, uint16_t errors_count3, uint16_t errors_count4, uint32_t onboard_control_sensors_present_extended, uint32_t onboard_control_sensors_enabled_extended, uint32_t onboard_control_sensors_health_extended)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_sys_status_pack(
         _msg, sysid, compid,
-        onboard_control_sensors_present, onboard_control_sensors_enabled, onboard_control_sensors_health, load, voltage_battery, current_battery, battery_remaining, drop_rate_comm, errors_comm, errors_count1, errors_count2, errors_count3, errors_count4,
+        onboard_control_sensors_present, onboard_control_sensors_enabled, onboard_control_sensors_health, load, voltage_battery, current_battery, battery_remaining, drop_rate_comm, errors_comm, errors_count1, errors_count2, errors_count3, errors_count4, onboard_control_sensors_present_extended, onboard_control_sensors_enabled_extended, onboard_control_sensors_health_extended,
         _status);
 }
 
@@ -393,13 +432,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_sys_status_pack_txbuf(
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t onboard_control_sensors_present, uint32_t onboard_control_sensors_enabled, uint32_t onboard_control_sensors_health, uint16_t load, uint16_t voltage_battery, int16_t current_battery, int8_t battery_remaining, uint16_t drop_rate_comm, uint16_t errors_comm, uint16_t errors_count1, uint16_t errors_count2, uint16_t errors_count3, uint16_t errors_count4)
+    uint32_t onboard_control_sensors_present, uint32_t onboard_control_sensors_enabled, uint32_t onboard_control_sensors_health, uint16_t load, uint16_t voltage_battery, int16_t current_battery, int8_t battery_remaining, uint16_t drop_rate_comm, uint16_t errors_comm, uint16_t errors_count1, uint16_t errors_count2, uint16_t errors_count3, uint16_t errors_count4, uint32_t onboard_control_sensors_present_extended, uint32_t onboard_control_sensors_enabled_extended, uint32_t onboard_control_sensors_health_extended)
 {
     return fmav_msg_sys_status_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        onboard_control_sensors_present, onboard_control_sensors_enabled, onboard_control_sensors_health, load, voltage_battery, current_battery, battery_remaining, drop_rate_comm, errors_comm, errors_count1, errors_count2, errors_count3, errors_count4,
+        onboard_control_sensors_present, onboard_control_sensors_enabled, onboard_control_sensors_health, load, voltage_battery, current_battery, battery_remaining, drop_rate_comm, errors_comm, errors_count1, errors_count2, errors_count3, errors_count4, onboard_control_sensors_present_extended, onboard_control_sensors_enabled_extended, onboard_control_sensors_health_extended,
         _status);
 }
 

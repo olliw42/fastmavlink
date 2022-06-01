@@ -15,32 +15,32 @@
 // fields are ordered, as they appear on the wire
 FASTMAVLINK_PACK(
 typedef struct _fmav_avss_prs_sys_status_t {
-    uint32_t error_status;
     uint32_t time_boot_ms;
-    uint16_t battery_status;
+    uint32_t error_status;
+    uint32_t battery_status;
     uint8_t arm_status;
-    uint8_t change_status;
+    uint8_t charge_status;
 }) fmav_avss_prs_sys_status_t;
 
 
 #define FASTMAVLINK_MSG_ID_AVSS_PRS_SYS_STATUS  60050
 
-#define FASTMAVLINK_MSG_AVSS_PRS_SYS_STATUS_PAYLOAD_LEN_MAX  12
-#define FASTMAVLINK_MSG_AVSS_PRS_SYS_STATUS_CRCEXTRA  153
+#define FASTMAVLINK_MSG_AVSS_PRS_SYS_STATUS_PAYLOAD_LEN_MAX  14
+#define FASTMAVLINK_MSG_AVSS_PRS_SYS_STATUS_CRCEXTRA  220
 
 #define FASTMAVLINK_MSG_AVSS_PRS_SYS_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_AVSS_PRS_SYS_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_AVSS_PRS_SYS_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_AVSS_PRS_SYS_STATUS_FRAME_LEN_MAX  37
+#define FASTMAVLINK_MSG_AVSS_PRS_SYS_STATUS_FRAME_LEN_MAX  39
 
 
 
-#define FASTMAVLINK_MSG_AVSS_PRS_SYS_STATUS_FIELD_ERROR_STATUS_OFS  0
-#define FASTMAVLINK_MSG_AVSS_PRS_SYS_STATUS_FIELD_TIME_BOOT_MS_OFS  4
+#define FASTMAVLINK_MSG_AVSS_PRS_SYS_STATUS_FIELD_TIME_BOOT_MS_OFS  0
+#define FASTMAVLINK_MSG_AVSS_PRS_SYS_STATUS_FIELD_ERROR_STATUS_OFS  4
 #define FASTMAVLINK_MSG_AVSS_PRS_SYS_STATUS_FIELD_BATTERY_STATUS_OFS  8
-#define FASTMAVLINK_MSG_AVSS_PRS_SYS_STATUS_FIELD_ARM_STATUS_OFS  10
-#define FASTMAVLINK_MSG_AVSS_PRS_SYS_STATUS_FIELD_CHANGE_STATUS_OFS  11
+#define FASTMAVLINK_MSG_AVSS_PRS_SYS_STATUS_FIELD_ARM_STATUS_OFS  12
+#define FASTMAVLINK_MSG_AVSS_PRS_SYS_STATUS_FIELD_CHARGE_STATUS_OFS  13
 
 
 //----------------------------------------
@@ -51,16 +51,16 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_avss_prs_sys_status_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t arm_status, uint16_t battery_status, uint32_t error_status, uint8_t change_status, uint32_t time_boot_ms,
+    uint32_t time_boot_ms, uint32_t error_status, uint32_t battery_status, uint8_t arm_status, uint8_t charge_status,
     fmav_status_t* _status)
 {
     fmav_avss_prs_sys_status_t* _payload = (fmav_avss_prs_sys_status_t*)_msg->payload;
 
-    _payload->error_status = error_status;
     _payload->time_boot_ms = time_boot_ms;
+    _payload->error_status = error_status;
     _payload->battery_status = battery_status;
     _payload->arm_status = arm_status;
-    _payload->change_status = change_status;
+    _payload->charge_status = charge_status;
 
 
     _msg->sysid = sysid;
@@ -84,7 +84,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_avss_prs_sys_status_encode(
 {
     return fmav_msg_avss_prs_sys_status_pack(
         _msg, sysid, compid,
-        _payload->arm_status, _payload->battery_status, _payload->error_status, _payload->change_status, _payload->time_boot_ms,
+        _payload->time_boot_ms, _payload->error_status, _payload->battery_status, _payload->arm_status, _payload->charge_status,
         _status);
 }
 
@@ -93,16 +93,16 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_avss_prs_sys_status_pack_to_fra
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t arm_status, uint16_t battery_status, uint32_t error_status, uint8_t change_status, uint32_t time_boot_ms,
+    uint32_t time_boot_ms, uint32_t error_status, uint32_t battery_status, uint8_t arm_status, uint8_t charge_status,
     fmav_status_t* _status)
 {
     fmav_avss_prs_sys_status_t* _payload = (fmav_avss_prs_sys_status_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
-    _payload->error_status = error_status;
     _payload->time_boot_ms = time_boot_ms;
+    _payload->error_status = error_status;
     _payload->battery_status = battery_status;
     _payload->arm_status = arm_status;
-    _payload->change_status = change_status;
+    _payload->charge_status = charge_status;
 
 
     _buf[5] = sysid;
@@ -128,7 +128,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_avss_prs_sys_status_encode_to_f
 {
     return fmav_msg_avss_prs_sys_status_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->arm_status, _payload->battery_status, _payload->error_status, _payload->change_status, _payload->time_boot_ms,
+        _payload->time_boot_ms, _payload->error_status, _payload->battery_status, _payload->arm_status, _payload->charge_status,
         _status);
 }
 
@@ -138,16 +138,16 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_avss_prs_sys_status_encode_to_f
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_avss_prs_sys_status_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint8_t arm_status, uint16_t battery_status, uint32_t error_status, uint8_t change_status, uint32_t time_boot_ms,
+    uint32_t time_boot_ms, uint32_t error_status, uint32_t battery_status, uint8_t arm_status, uint8_t charge_status,
     fmav_status_t* _status)
 {
     fmav_avss_prs_sys_status_t _payload;
 
-    _payload.error_status = error_status;
     _payload.time_boot_ms = time_boot_ms;
+    _payload.error_status = error_status;
     _payload.battery_status = battery_status;
     _payload.arm_status = arm_status;
-    _payload.change_status = change_status;
+    _payload.charge_status = charge_status;
 
 
     return fmav_finalize_serial(
@@ -203,7 +203,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_avss_prs_sys_status_decode(fmav_avs
 }
 
 
-FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_avss_prs_sys_status_get_field_error_status(const fmav_message_t* msg)
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_avss_prs_sys_status_get_field_time_boot_ms(const fmav_message_t* msg)
 {
     uint32_t r;
     memcpy(&r, &(msg->payload[0]), sizeof(uint32_t));
@@ -211,7 +211,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_avss_prs_sys_status_get_field_e
 }
 
 
-FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_avss_prs_sys_status_get_field_time_boot_ms(const fmav_message_t* msg)
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_avss_prs_sys_status_get_field_error_status(const fmav_message_t* msg)
 {
     uint32_t r;
     memcpy(&r, &(msg->payload[4]), sizeof(uint32_t));
@@ -219,10 +219,10 @@ FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_avss_prs_sys_status_get_field_t
 }
 
 
-FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_avss_prs_sys_status_get_field_battery_status(const fmav_message_t* msg)
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_avss_prs_sys_status_get_field_battery_status(const fmav_message_t* msg)
 {
-    uint16_t r;
-    memcpy(&r, &(msg->payload[8]), sizeof(uint16_t));
+    uint32_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(uint32_t));
     return r;
 }
 
@@ -230,15 +230,15 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_avss_prs_sys_status_get_field_b
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_avss_prs_sys_status_get_field_arm_status(const fmav_message_t* msg)
 {
     uint8_t r;
-    memcpy(&r, &(msg->payload[10]), sizeof(uint8_t));
+    memcpy(&r, &(msg->payload[12]), sizeof(uint8_t));
     return r;
 }
 
 
-FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_avss_prs_sys_status_get_field_change_status(const fmav_message_t* msg)
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_avss_prs_sys_status_get_field_charge_status(const fmav_message_t* msg)
 {
     uint8_t r;
-    memcpy(&r, &(msg->payload[11]), sizeof(uint8_t));
+    memcpy(&r, &(msg->payload[13]), sizeof(uint8_t));
     return r;
 }
 
@@ -255,13 +255,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_avss_prs_sys_status_get_field_ch
 
 #define mavlink_avss_prs_sys_status_t  fmav_avss_prs_sys_status_t
 
-#define MAVLINK_MSG_ID_AVSS_PRS_SYS_STATUS_LEN  12
-#define MAVLINK_MSG_ID_AVSS_PRS_SYS_STATUS_MIN_LEN  12
-#define MAVLINK_MSG_ID_60050_LEN  12
-#define MAVLINK_MSG_ID_60050_MIN_LEN  12
+#define MAVLINK_MSG_ID_AVSS_PRS_SYS_STATUS_LEN  14
+#define MAVLINK_MSG_ID_AVSS_PRS_SYS_STATUS_MIN_LEN  14
+#define MAVLINK_MSG_ID_60050_LEN  14
+#define MAVLINK_MSG_ID_60050_MIN_LEN  14
 
-#define MAVLINK_MSG_ID_AVSS_PRS_SYS_STATUS_CRC  153
-#define MAVLINK_MSG_ID_60050_CRC  153
+#define MAVLINK_MSG_ID_AVSS_PRS_SYS_STATUS_CRC  220
+#define MAVLINK_MSG_ID_60050_CRC  220
 
 
 
@@ -272,12 +272,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_avss_prs_sys_status_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint8_t arm_status, uint16_t battery_status, uint32_t error_status, uint8_t change_status, uint32_t time_boot_ms)
+    uint32_t time_boot_ms, uint32_t error_status, uint32_t battery_status, uint8_t arm_status, uint8_t charge_status)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_avss_prs_sys_status_pack(
         _msg, sysid, compid,
-        arm_status, battery_status, error_status, change_status, time_boot_ms,
+        time_boot_ms, error_status, battery_status, arm_status, charge_status,
         _status);
 }
 
@@ -289,13 +289,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_avss_prs_sys_status_pack_txb
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t arm_status, uint16_t battery_status, uint32_t error_status, uint8_t change_status, uint32_t time_boot_ms)
+    uint32_t time_boot_ms, uint32_t error_status, uint32_t battery_status, uint8_t arm_status, uint8_t charge_status)
 {
     return fmav_msg_avss_prs_sys_status_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        arm_status, battery_status, error_status, change_status, time_boot_ms,
+        time_boot_ms, error_status, battery_status, arm_status, charge_status,
         _status);
 }
 

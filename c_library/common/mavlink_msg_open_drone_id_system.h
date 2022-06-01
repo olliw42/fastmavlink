@@ -20,6 +20,7 @@ typedef struct _fmav_open_drone_id_system_t {
     float area_ceiling;
     float area_floor;
     float operator_altitude_geo;
+    uint32_t timestamp;
     uint16_t area_count;
     uint16_t area_radius;
     uint8_t target_system;
@@ -34,14 +35,14 @@ typedef struct _fmav_open_drone_id_system_t {
 
 #define FASTMAVLINK_MSG_ID_OPEN_DRONE_ID_SYSTEM  12904
 
-#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_PAYLOAD_LEN_MAX  50
-#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_CRCEXTRA  150
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_PAYLOAD_LEN_MAX  54
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_CRCEXTRA  77
 
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FLAGS  3
-#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_TARGET_SYSTEM_OFS  24
-#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_TARGET_COMPONENT_OFS  25
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_TARGET_SYSTEM_OFS  28
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_TARGET_COMPONENT_OFS  29
 
-#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FRAME_LEN_MAX  75
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FRAME_LEN_MAX  79
 
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_ID_OR_MAC_NUM  20 // number of elements in array
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_ID_OR_MAC_LEN  20 // length of array = number of bytes
@@ -51,15 +52,16 @@ typedef struct _fmav_open_drone_id_system_t {
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_AREA_CEILING_OFS  8
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_AREA_FLOOR_OFS  12
 #define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_OPERATOR_ALTITUDE_GEO_OFS  16
-#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_AREA_COUNT_OFS  20
-#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_AREA_RADIUS_OFS  22
-#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_TARGET_SYSTEM_OFS  24
-#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_TARGET_COMPONENT_OFS  25
-#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_ID_OR_MAC_OFS  26
-#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_OPERATOR_LOCATION_TYPE_OFS  46
-#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_CLASSIFICATION_TYPE_OFS  47
-#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_CATEGORY_EU_OFS  48
-#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_CLASS_EU_OFS  49
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_TIMESTAMP_OFS  20
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_AREA_COUNT_OFS  24
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_AREA_RADIUS_OFS  26
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_TARGET_SYSTEM_OFS  28
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_TARGET_COMPONENT_OFS  29
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_ID_OR_MAC_OFS  30
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_OPERATOR_LOCATION_TYPE_OFS  50
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_CLASSIFICATION_TYPE_OFS  51
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_CATEGORY_EU_OFS  52
+#define FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_CLASS_EU_OFS  53
 
 
 //----------------------------------------
@@ -70,7 +72,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_system_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t operator_location_type, uint8_t classification_type, int32_t operator_latitude, int32_t operator_longitude, uint16_t area_count, uint16_t area_radius, float area_ceiling, float area_floor, uint8_t category_eu, uint8_t class_eu, float operator_altitude_geo,
+    uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t operator_location_type, uint8_t classification_type, int32_t operator_latitude, int32_t operator_longitude, uint16_t area_count, uint16_t area_radius, float area_ceiling, float area_floor, uint8_t category_eu, uint8_t class_eu, float operator_altitude_geo, uint32_t timestamp,
     fmav_status_t* _status)
 {
     fmav_open_drone_id_system_t* _payload = (fmav_open_drone_id_system_t*)_msg->payload;
@@ -80,6 +82,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_system_pack(
     _payload->area_ceiling = area_ceiling;
     _payload->area_floor = area_floor;
     _payload->operator_altitude_geo = operator_altitude_geo;
+    _payload->timestamp = timestamp;
     _payload->area_count = area_count;
     _payload->area_radius = area_radius;
     _payload->target_system = target_system;
@@ -111,7 +114,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_system_encode(
 {
     return fmav_msg_open_drone_id_system_pack(
         _msg, sysid, compid,
-        _payload->target_system, _payload->target_component, _payload->id_or_mac, _payload->operator_location_type, _payload->classification_type, _payload->operator_latitude, _payload->operator_longitude, _payload->area_count, _payload->area_radius, _payload->area_ceiling, _payload->area_floor, _payload->category_eu, _payload->class_eu, _payload->operator_altitude_geo,
+        _payload->target_system, _payload->target_component, _payload->id_or_mac, _payload->operator_location_type, _payload->classification_type, _payload->operator_latitude, _payload->operator_longitude, _payload->area_count, _payload->area_radius, _payload->area_ceiling, _payload->area_floor, _payload->category_eu, _payload->class_eu, _payload->operator_altitude_geo, _payload->timestamp,
         _status);
 }
 
@@ -120,7 +123,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_system_pack_to_fr
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t operator_location_type, uint8_t classification_type, int32_t operator_latitude, int32_t operator_longitude, uint16_t area_count, uint16_t area_radius, float area_ceiling, float area_floor, uint8_t category_eu, uint8_t class_eu, float operator_altitude_geo,
+    uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t operator_location_type, uint8_t classification_type, int32_t operator_latitude, int32_t operator_longitude, uint16_t area_count, uint16_t area_radius, float area_ceiling, float area_floor, uint8_t category_eu, uint8_t class_eu, float operator_altitude_geo, uint32_t timestamp,
     fmav_status_t* _status)
 {
     fmav_open_drone_id_system_t* _payload = (fmav_open_drone_id_system_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -130,6 +133,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_system_pack_to_fr
     _payload->area_ceiling = area_ceiling;
     _payload->area_floor = area_floor;
     _payload->operator_altitude_geo = operator_altitude_geo;
+    _payload->timestamp = timestamp;
     _payload->area_count = area_count;
     _payload->area_radius = area_radius;
     _payload->target_system = target_system;
@@ -163,7 +167,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_system_encode_to_
 {
     return fmav_msg_open_drone_id_system_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->target_system, _payload->target_component, _payload->id_or_mac, _payload->operator_location_type, _payload->classification_type, _payload->operator_latitude, _payload->operator_longitude, _payload->area_count, _payload->area_radius, _payload->area_ceiling, _payload->area_floor, _payload->category_eu, _payload->class_eu, _payload->operator_altitude_geo,
+        _payload->target_system, _payload->target_component, _payload->id_or_mac, _payload->operator_location_type, _payload->classification_type, _payload->operator_latitude, _payload->operator_longitude, _payload->area_count, _payload->area_radius, _payload->area_ceiling, _payload->area_floor, _payload->category_eu, _payload->class_eu, _payload->operator_altitude_geo, _payload->timestamp,
         _status);
 }
 
@@ -173,7 +177,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_system_encode_to_
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_system_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t operator_location_type, uint8_t classification_type, int32_t operator_latitude, int32_t operator_longitude, uint16_t area_count, uint16_t area_radius, float area_ceiling, float area_floor, uint8_t category_eu, uint8_t class_eu, float operator_altitude_geo,
+    uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t operator_location_type, uint8_t classification_type, int32_t operator_latitude, int32_t operator_longitude, uint16_t area_count, uint16_t area_radius, float area_ceiling, float area_floor, uint8_t category_eu, uint8_t class_eu, float operator_altitude_geo, uint32_t timestamp,
     fmav_status_t* _status)
 {
     fmav_open_drone_id_system_t _payload;
@@ -183,6 +187,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_system_pack_to_se
     _payload.area_ceiling = area_ceiling;
     _payload.area_floor = area_floor;
     _payload.operator_altitude_geo = operator_altitude_geo;
+    _payload.timestamp = timestamp;
     _payload.area_count = area_count;
     _payload.area_radius = area_radius;
     _payload.target_system = target_system;
@@ -286,10 +291,18 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_open_drone_id_system_get_field_ope
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_open_drone_id_system_get_field_timestamp(const fmav_message_t* msg)
+{
+    uint32_t r;
+    memcpy(&r, &(msg->payload[20]), sizeof(uint32_t));
+    return r;
+}
+
+
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_system_get_field_area_count(const fmav_message_t* msg)
 {
     uint16_t r;
-    memcpy(&r, &(msg->payload[20]), sizeof(uint16_t));
+    memcpy(&r, &(msg->payload[24]), sizeof(uint16_t));
     return r;
 }
 
@@ -297,7 +310,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_system_get_field_
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_system_get_field_area_radius(const fmav_message_t* msg)
 {
     uint16_t r;
-    memcpy(&r, &(msg->payload[22]), sizeof(uint16_t));
+    memcpy(&r, &(msg->payload[26]), sizeof(uint16_t));
     return r;
 }
 
@@ -305,7 +318,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_open_drone_id_system_get_field_
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_system_get_field_target_system(const fmav_message_t* msg)
 {
     uint8_t r;
-    memcpy(&r, &(msg->payload[24]), sizeof(uint8_t));
+    memcpy(&r, &(msg->payload[28]), sizeof(uint8_t));
     return r;
 }
 
@@ -313,7 +326,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_system_get_field_t
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_system_get_field_target_component(const fmav_message_t* msg)
 {
     uint8_t r;
-    memcpy(&r, &(msg->payload[25]), sizeof(uint8_t));
+    memcpy(&r, &(msg->payload[29]), sizeof(uint8_t));
     return r;
 }
 
@@ -321,7 +334,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_system_get_field_t
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_system_get_field_operator_location_type(const fmav_message_t* msg)
 {
     uint8_t r;
-    memcpy(&r, &(msg->payload[46]), sizeof(uint8_t));
+    memcpy(&r, &(msg->payload[50]), sizeof(uint8_t));
     return r;
 }
 
@@ -329,7 +342,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_system_get_field_o
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_system_get_field_classification_type(const fmav_message_t* msg)
 {
     uint8_t r;
-    memcpy(&r, &(msg->payload[47]), sizeof(uint8_t));
+    memcpy(&r, &(msg->payload[51]), sizeof(uint8_t));
     return r;
 }
 
@@ -337,7 +350,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_system_get_field_c
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_system_get_field_category_eu(const fmav_message_t* msg)
 {
     uint8_t r;
-    memcpy(&r, &(msg->payload[48]), sizeof(uint8_t));
+    memcpy(&r, &(msg->payload[52]), sizeof(uint8_t));
     return r;
 }
 
@@ -345,21 +358,21 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_system_get_field_c
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_system_get_field_class_eu(const fmav_message_t* msg)
 {
     uint8_t r;
-    memcpy(&r, &(msg->payload[49]), sizeof(uint8_t));
+    memcpy(&r, &(msg->payload[53]), sizeof(uint8_t));
     return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_open_drone_id_system_get_field_id_or_mac_ptr(const fmav_message_t* msg)
 {
-    return (uint8_t*)&(msg->payload[26]);
+    return (uint8_t*)&(msg->payload[30]);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_system_get_field_id_or_mac(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_ID_OR_MAC_NUM) return 0;
-    return ((uint8_t*)&(msg->payload[26]))[index];
+    return ((uint8_t*)&(msg->payload[30]))[index];
 }
 
 
@@ -372,13 +385,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_open_drone_id_system_get_field_i
 
 #define mavlink_open_drone_id_system_t  fmav_open_drone_id_system_t
 
-#define MAVLINK_MSG_ID_OPEN_DRONE_ID_SYSTEM_LEN  50
-#define MAVLINK_MSG_ID_OPEN_DRONE_ID_SYSTEM_MIN_LEN  50
-#define MAVLINK_MSG_ID_12904_LEN  50
-#define MAVLINK_MSG_ID_12904_MIN_LEN  50
+#define MAVLINK_MSG_ID_OPEN_DRONE_ID_SYSTEM_LEN  54
+#define MAVLINK_MSG_ID_OPEN_DRONE_ID_SYSTEM_MIN_LEN  54
+#define MAVLINK_MSG_ID_12904_LEN  54
+#define MAVLINK_MSG_ID_12904_MIN_LEN  54
 
-#define MAVLINK_MSG_ID_OPEN_DRONE_ID_SYSTEM_CRC  150
-#define MAVLINK_MSG_ID_12904_CRC  150
+#define MAVLINK_MSG_ID_OPEN_DRONE_ID_SYSTEM_CRC  77
+#define MAVLINK_MSG_ID_12904_CRC  77
 
 #define MAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_FIELD_ID_OR_MAC_LEN 20
 
@@ -389,12 +402,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_open_drone_id_system_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t operator_location_type, uint8_t classification_type, int32_t operator_latitude, int32_t operator_longitude, uint16_t area_count, uint16_t area_radius, float area_ceiling, float area_floor, uint8_t category_eu, uint8_t class_eu, float operator_altitude_geo)
+    uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t operator_location_type, uint8_t classification_type, int32_t operator_latitude, int32_t operator_longitude, uint16_t area_count, uint16_t area_radius, float area_ceiling, float area_floor, uint8_t category_eu, uint8_t class_eu, float operator_altitude_geo, uint32_t timestamp)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_open_drone_id_system_pack(
         _msg, sysid, compid,
-        target_system, target_component, id_or_mac, operator_location_type, classification_type, operator_latitude, operator_longitude, area_count, area_radius, area_ceiling, area_floor, category_eu, class_eu, operator_altitude_geo,
+        target_system, target_component, id_or_mac, operator_location_type, classification_type, operator_latitude, operator_longitude, area_count, area_radius, area_ceiling, area_floor, category_eu, class_eu, operator_altitude_geo, timestamp,
         _status);
 }
 
@@ -406,13 +419,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_open_drone_id_system_pack_tx
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t operator_location_type, uint8_t classification_type, int32_t operator_latitude, int32_t operator_longitude, uint16_t area_count, uint16_t area_radius, float area_ceiling, float area_floor, uint8_t category_eu, uint8_t class_eu, float operator_altitude_geo)
+    uint8_t target_system, uint8_t target_component, const uint8_t* id_or_mac, uint8_t operator_location_type, uint8_t classification_type, int32_t operator_latitude, int32_t operator_longitude, uint16_t area_count, uint16_t area_radius, float area_ceiling, float area_floor, uint8_t category_eu, uint8_t class_eu, float operator_altitude_geo, uint32_t timestamp)
 {
     return fmav_msg_open_drone_id_system_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        target_system, target_component, id_or_mac, operator_location_type, classification_type, operator_latitude, operator_longitude, area_count, area_radius, area_ceiling, area_floor, category_eu, class_eu, operator_altitude_geo,
+        target_system, target_component, id_or_mac, operator_location_type, classification_type, operator_latitude, operator_longitude, area_count, area_radius, area_ceiling, area_floor, category_eu, class_eu, operator_altitude_geo, timestamp,
         _status);
 }
 
