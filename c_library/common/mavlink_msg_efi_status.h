@@ -32,19 +32,20 @@ typedef struct _fmav_efi_status_t {
     float throttle_out;
     float pt_compensation;
     uint8_t health;
+    float ignition_voltage;
 }) fmav_efi_status_t;
 
 
 #define FASTMAVLINK_MSG_ID_EFI_STATUS  225
 
-#define FASTMAVLINK_MSG_EFI_STATUS_PAYLOAD_LEN_MAX  65
+#define FASTMAVLINK_MSG_EFI_STATUS_PAYLOAD_LEN_MAX  69
 #define FASTMAVLINK_MSG_EFI_STATUS_CRCEXTRA  208
 
 #define FASTMAVLINK_MSG_EFI_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_EFI_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_EFI_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_EFI_STATUS_FRAME_LEN_MAX  90
+#define FASTMAVLINK_MSG_EFI_STATUS_FRAME_LEN_MAX  94
 
 
 
@@ -65,6 +66,7 @@ typedef struct _fmav_efi_status_t {
 #define FASTMAVLINK_MSG_EFI_STATUS_FIELD_THROTTLE_OUT_OFS  56
 #define FASTMAVLINK_MSG_EFI_STATUS_FIELD_PT_COMPENSATION_OFS  60
 #define FASTMAVLINK_MSG_EFI_STATUS_FIELD_HEALTH_OFS  64
+#define FASTMAVLINK_MSG_EFI_STATUS_FIELD_IGNITION_VOLTAGE_OFS  65
 
 
 //----------------------------------------
@@ -75,7 +77,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_efi_status_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t health, float ecu_index, float rpm, float fuel_consumed, float fuel_flow, float engine_load, float throttle_position, float spark_dwell_time, float barometric_pressure, float intake_manifold_pressure, float intake_manifold_temperature, float cylinder_head_temperature, float ignition_timing, float injection_time, float exhaust_gas_temperature, float throttle_out, float pt_compensation,
+    uint8_t health, float ecu_index, float rpm, float fuel_consumed, float fuel_flow, float engine_load, float throttle_position, float spark_dwell_time, float barometric_pressure, float intake_manifold_pressure, float intake_manifold_temperature, float cylinder_head_temperature, float ignition_timing, float injection_time, float exhaust_gas_temperature, float throttle_out, float pt_compensation, float ignition_voltage,
     fmav_status_t* _status)
 {
     fmav_efi_status_t* _payload = (fmav_efi_status_t*)_msg->payload;
@@ -97,6 +99,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_efi_status_pack(
     _payload->throttle_out = throttle_out;
     _payload->pt_compensation = pt_compensation;
     _payload->health = health;
+    _payload->ignition_voltage = ignition_voltage;
 
 
     _msg->sysid = sysid;
@@ -120,7 +123,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_efi_status_encode(
 {
     return fmav_msg_efi_status_pack(
         _msg, sysid, compid,
-        _payload->health, _payload->ecu_index, _payload->rpm, _payload->fuel_consumed, _payload->fuel_flow, _payload->engine_load, _payload->throttle_position, _payload->spark_dwell_time, _payload->barometric_pressure, _payload->intake_manifold_pressure, _payload->intake_manifold_temperature, _payload->cylinder_head_temperature, _payload->ignition_timing, _payload->injection_time, _payload->exhaust_gas_temperature, _payload->throttle_out, _payload->pt_compensation,
+        _payload->health, _payload->ecu_index, _payload->rpm, _payload->fuel_consumed, _payload->fuel_flow, _payload->engine_load, _payload->throttle_position, _payload->spark_dwell_time, _payload->barometric_pressure, _payload->intake_manifold_pressure, _payload->intake_manifold_temperature, _payload->cylinder_head_temperature, _payload->ignition_timing, _payload->injection_time, _payload->exhaust_gas_temperature, _payload->throttle_out, _payload->pt_compensation, _payload->ignition_voltage,
         _status);
 }
 
@@ -129,7 +132,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_efi_status_pack_to_frame_buf(
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t health, float ecu_index, float rpm, float fuel_consumed, float fuel_flow, float engine_load, float throttle_position, float spark_dwell_time, float barometric_pressure, float intake_manifold_pressure, float intake_manifold_temperature, float cylinder_head_temperature, float ignition_timing, float injection_time, float exhaust_gas_temperature, float throttle_out, float pt_compensation,
+    uint8_t health, float ecu_index, float rpm, float fuel_consumed, float fuel_flow, float engine_load, float throttle_position, float spark_dwell_time, float barometric_pressure, float intake_manifold_pressure, float intake_manifold_temperature, float cylinder_head_temperature, float ignition_timing, float injection_time, float exhaust_gas_temperature, float throttle_out, float pt_compensation, float ignition_voltage,
     fmav_status_t* _status)
 {
     fmav_efi_status_t* _payload = (fmav_efi_status_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -151,6 +154,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_efi_status_pack_to_frame_buf(
     _payload->throttle_out = throttle_out;
     _payload->pt_compensation = pt_compensation;
     _payload->health = health;
+    _payload->ignition_voltage = ignition_voltage;
 
 
     _buf[5] = sysid;
@@ -176,7 +180,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_efi_status_encode_to_frame_buf(
 {
     return fmav_msg_efi_status_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->health, _payload->ecu_index, _payload->rpm, _payload->fuel_consumed, _payload->fuel_flow, _payload->engine_load, _payload->throttle_position, _payload->spark_dwell_time, _payload->barometric_pressure, _payload->intake_manifold_pressure, _payload->intake_manifold_temperature, _payload->cylinder_head_temperature, _payload->ignition_timing, _payload->injection_time, _payload->exhaust_gas_temperature, _payload->throttle_out, _payload->pt_compensation,
+        _payload->health, _payload->ecu_index, _payload->rpm, _payload->fuel_consumed, _payload->fuel_flow, _payload->engine_load, _payload->throttle_position, _payload->spark_dwell_time, _payload->barometric_pressure, _payload->intake_manifold_pressure, _payload->intake_manifold_temperature, _payload->cylinder_head_temperature, _payload->ignition_timing, _payload->injection_time, _payload->exhaust_gas_temperature, _payload->throttle_out, _payload->pt_compensation, _payload->ignition_voltage,
         _status);
 }
 
@@ -186,7 +190,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_efi_status_encode_to_frame_buf(
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_efi_status_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint8_t health, float ecu_index, float rpm, float fuel_consumed, float fuel_flow, float engine_load, float throttle_position, float spark_dwell_time, float barometric_pressure, float intake_manifold_pressure, float intake_manifold_temperature, float cylinder_head_temperature, float ignition_timing, float injection_time, float exhaust_gas_temperature, float throttle_out, float pt_compensation,
+    uint8_t health, float ecu_index, float rpm, float fuel_consumed, float fuel_flow, float engine_load, float throttle_position, float spark_dwell_time, float barometric_pressure, float intake_manifold_pressure, float intake_manifold_temperature, float cylinder_head_temperature, float ignition_timing, float injection_time, float exhaust_gas_temperature, float throttle_out, float pt_compensation, float ignition_voltage,
     fmav_status_t* _status)
 {
     fmav_efi_status_t _payload;
@@ -208,6 +212,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_efi_status_pack_to_serial(
     _payload.throttle_out = throttle_out;
     _payload.pt_compensation = pt_compensation;
     _payload.health = health;
+    _payload.ignition_voltage = ignition_voltage;
 
 
     return fmav_finalize_serial(
@@ -399,6 +404,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_efi_status_get_field_health(cons
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_efi_status_get_field_ignition_voltage(const fmav_message_t* msg)
+{
+    float r;
+    memcpy(&r, &(msg->payload[65]), sizeof(float));
+    return r;
+}
+
+
 
 
 
@@ -411,9 +424,9 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_efi_status_get_field_health(cons
 
 #define mavlink_efi_status_t  fmav_efi_status_t
 
-#define MAVLINK_MSG_ID_EFI_STATUS_LEN  65
+#define MAVLINK_MSG_ID_EFI_STATUS_LEN  69
 #define MAVLINK_MSG_ID_EFI_STATUS_MIN_LEN  65
-#define MAVLINK_MSG_ID_225_LEN  65
+#define MAVLINK_MSG_ID_225_LEN  69
 #define MAVLINK_MSG_ID_225_MIN_LEN  65
 
 #define MAVLINK_MSG_ID_EFI_STATUS_CRC  208
@@ -428,12 +441,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_efi_status_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint8_t health, float ecu_index, float rpm, float fuel_consumed, float fuel_flow, float engine_load, float throttle_position, float spark_dwell_time, float barometric_pressure, float intake_manifold_pressure, float intake_manifold_temperature, float cylinder_head_temperature, float ignition_timing, float injection_time, float exhaust_gas_temperature, float throttle_out, float pt_compensation)
+    uint8_t health, float ecu_index, float rpm, float fuel_consumed, float fuel_flow, float engine_load, float throttle_position, float spark_dwell_time, float barometric_pressure, float intake_manifold_pressure, float intake_manifold_temperature, float cylinder_head_temperature, float ignition_timing, float injection_time, float exhaust_gas_temperature, float throttle_out, float pt_compensation, float ignition_voltage)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_efi_status_pack(
         _msg, sysid, compid,
-        health, ecu_index, rpm, fuel_consumed, fuel_flow, engine_load, throttle_position, spark_dwell_time, barometric_pressure, intake_manifold_pressure, intake_manifold_temperature, cylinder_head_temperature, ignition_timing, injection_time, exhaust_gas_temperature, throttle_out, pt_compensation,
+        health, ecu_index, rpm, fuel_consumed, fuel_flow, engine_load, throttle_position, spark_dwell_time, barometric_pressure, intake_manifold_pressure, intake_manifold_temperature, cylinder_head_temperature, ignition_timing, injection_time, exhaust_gas_temperature, throttle_out, pt_compensation, ignition_voltage,
         _status);
 }
 
@@ -445,13 +458,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_efi_status_pack_txbuf(
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t health, float ecu_index, float rpm, float fuel_consumed, float fuel_flow, float engine_load, float throttle_position, float spark_dwell_time, float barometric_pressure, float intake_manifold_pressure, float intake_manifold_temperature, float cylinder_head_temperature, float ignition_timing, float injection_time, float exhaust_gas_temperature, float throttle_out, float pt_compensation)
+    uint8_t health, float ecu_index, float rpm, float fuel_consumed, float fuel_flow, float engine_load, float throttle_position, float spark_dwell_time, float barometric_pressure, float intake_manifold_pressure, float intake_manifold_temperature, float cylinder_head_temperature, float ignition_timing, float injection_time, float exhaust_gas_temperature, float throttle_out, float pt_compensation, float ignition_voltage)
 {
     return fmav_msg_efi_status_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        health, ecu_index, rpm, fuel_consumed, fuel_flow, engine_load, throttle_position, spark_dwell_time, barometric_pressure, intake_manifold_pressure, intake_manifold_temperature, cylinder_head_temperature, ignition_timing, injection_time, exhaust_gas_temperature, throttle_out, pt_compensation,
+        health, ecu_index, rpm, fuel_consumed, fuel_flow, engine_load, throttle_position, spark_dwell_time, barometric_pressure, intake_manifold_pressure, intake_manifold_temperature, cylinder_head_temperature, ignition_timing, injection_time, exhaust_gas_temperature, throttle_out, pt_compensation, ignition_voltage,
         _status);
 }
 

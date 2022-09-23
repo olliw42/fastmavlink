@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Wed Jun 01 2022"
+#define FASTMAVLINK_BUILD_DATE  "Sat Sep 24 2022"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -315,7 +315,7 @@ typedef enum MAV_COMPONENT {
     MAV_COMP_ID_UDP_BRIDGE = 240,  // Component to bridge MAVLink to UDP (i.e. from a UART). 
     MAV_COMP_ID_UART_BRIDGE = 241,  // Component to bridge to UART (i.e. from UDP). 
     MAV_COMP_ID_TUNNEL_NODE = 242,  // Component handling TUNNEL messages (e.g. vendor specific GUI of a component). 
-    MAV_COMP_ID_SYSTEM_CONTROL = 250,  // Component for handling system messages (e.g. to ARM, takeoff, etc.). 
+    MAV_COMP_ID_SYSTEM_CONTROL = 250,  // Deprecated, don't use. Component for handling system messages (e.g. to ARM, takeoff, etc.). 
     MAV_COMPONENT_ENUM_END = 251,  // end marker
 } MAV_COMPONENT;
 #endif

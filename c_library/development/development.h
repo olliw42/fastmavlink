@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Wed Jun 01 2022"
+#define FASTMAVLINK_BUILD_DATE  "Sat Sep 24 2022"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -153,7 +153,6 @@ typedef enum MAV_CMD {
 #endif
 
 #include "./mavlink_msg_param_ack_transaction.h"
-#include "./mavlink_msg_mission_changed.h"
 #include "./mavlink_msg_mission_checksum.h"
 #include "./mavlink_msg_airspeed.h"
 #include "./mavlink_msg_wifi_network_info.h"

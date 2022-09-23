@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Wed Jun 01 2022"
+#define FASTMAVLINK_BUILD_DATE  "Sat Sep 24 2022"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -55,9 +55,9 @@ extern "C" {
 typedef enum UALBERTA_AUTOPILOT_MODE {
     MODE_MANUAL_DIRECT = 1,  // Raw input pulse widts sent to output 
     MODE_MANUAL_SCALED = 2,  // Inputs are normalized using calibration, the converted back to raw pulse widths for output 
-    MODE_AUTO_PID_ATT = 3,  //  dfsdfs 
-    MODE_AUTO_PID_VEL = 4,  //  dfsfds 
-    MODE_AUTO_PID_POS = 5,  //  dfsdfsdfs 
+    MODE_AUTO_PID_ATT = 3,  //  
+    MODE_AUTO_PID_VEL = 4,  //  
+    MODE_AUTO_PID_POS = 5,  //  
     UALBERTA_AUTOPILOT_MODE_ENUM_END = 6,  // end marker
 } UALBERTA_AUTOPILOT_MODE;
 #endif
@@ -78,8 +78,8 @@ typedef enum UALBERTA_NAV_MODE {
 #ifndef FASTMAVLINK_HAS_ENUM_UALBERTA_PILOT_MODE
 #define FASTMAVLINK_HAS_ENUM_UALBERTA_PILOT_MODE
 typedef enum UALBERTA_PILOT_MODE {
-    PILOT_MANUAL = 1,  //  sdf 
-    PILOT_AUTO = 2,  //  dfs 
+    PILOT_MANUAL = 1,  //  
+    PILOT_AUTO = 2,  //  
     PILOT_ROTO = 3,  //  Rotomotion mode  
     UALBERTA_PILOT_MODE_ENUM_END = 4,  // end marker
 } UALBERTA_PILOT_MODE;

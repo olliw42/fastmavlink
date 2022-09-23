@@ -17,24 +17,28 @@ FASTMAVLINK_PACK(
 typedef struct _fmav_timesync_t {
     int64_t tc1;
     int64_t ts1;
+    uint8_t target_system;
+    uint8_t target_component;
 }) fmav_timesync_t;
 
 
 #define FASTMAVLINK_MSG_ID_TIMESYNC  111
 
-#define FASTMAVLINK_MSG_TIMESYNC_PAYLOAD_LEN_MAX  16
+#define FASTMAVLINK_MSG_TIMESYNC_PAYLOAD_LEN_MAX  18
 #define FASTMAVLINK_MSG_TIMESYNC_CRCEXTRA  34
 
-#define FASTMAVLINK_MSG_TIMESYNC_FLAGS  0
-#define FASTMAVLINK_MSG_TIMESYNC_TARGET_SYSTEM_OFS  0
-#define FASTMAVLINK_MSG_TIMESYNC_TARGET_COMPONENT_OFS  0
+#define FASTMAVLINK_MSG_TIMESYNC_FLAGS  3
+#define FASTMAVLINK_MSG_TIMESYNC_TARGET_SYSTEM_OFS  16
+#define FASTMAVLINK_MSG_TIMESYNC_TARGET_COMPONENT_OFS  17
 
-#define FASTMAVLINK_MSG_TIMESYNC_FRAME_LEN_MAX  41
+#define FASTMAVLINK_MSG_TIMESYNC_FRAME_LEN_MAX  43
 
 
 
 #define FASTMAVLINK_MSG_TIMESYNC_FIELD_TC1_OFS  0
 #define FASTMAVLINK_MSG_TIMESYNC_FIELD_TS1_OFS  8
+#define FASTMAVLINK_MSG_TIMESYNC_FIELD_TARGET_SYSTEM_OFS  16
+#define FASTMAVLINK_MSG_TIMESYNC_FIELD_TARGET_COMPONENT_OFS  17
 
 
 //----------------------------------------
@@ -45,20 +49,22 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_timesync_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    int64_t tc1, int64_t ts1,
+    int64_t tc1, int64_t ts1, uint8_t target_system, uint8_t target_component,
     fmav_status_t* _status)
 {
     fmav_timesync_t* _payload = (fmav_timesync_t*)_msg->payload;
 
     _payload->tc1 = tc1;
     _payload->ts1 = ts1;
+    _payload->target_system = target_system;
+    _payload->target_component = target_component;
 
 
     _msg->sysid = sysid;
     _msg->compid = compid;
     _msg->msgid = FASTMAVLINK_MSG_ID_TIMESYNC;
-    _msg->target_sysid = 0;
-    _msg->target_compid = 0;
+    _msg->target_sysid = target_system;
+    _msg->target_compid = target_component;
     _msg->crc_extra = FASTMAVLINK_MSG_TIMESYNC_CRCEXTRA;
     _msg->payload_max_len = FASTMAVLINK_MSG_TIMESYNC_PAYLOAD_LEN_MAX;
 
@@ -75,7 +81,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_timesync_encode(
 {
     return fmav_msg_timesync_pack(
         _msg, sysid, compid,
-        _payload->tc1, _payload->ts1,
+        _payload->tc1, _payload->ts1, _payload->target_system, _payload->target_component,
         _status);
 }
 
@@ -84,13 +90,15 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_timesync_pack_to_frame_buf(
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    int64_t tc1, int64_t ts1,
+    int64_t tc1, int64_t ts1, uint8_t target_system, uint8_t target_component,
     fmav_status_t* _status)
 {
     fmav_timesync_t* _payload = (fmav_timesync_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->tc1 = tc1;
     _payload->ts1 = ts1;
+    _payload->target_system = target_system;
+    _payload->target_component = target_component;
 
 
     _buf[5] = sysid;
@@ -116,7 +124,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_timesync_encode_to_frame_buf(
 {
     return fmav_msg_timesync_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->tc1, _payload->ts1,
+        _payload->tc1, _payload->ts1, _payload->target_system, _payload->target_component,
         _status);
 }
 
@@ -126,13 +134,15 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_timesync_encode_to_frame_buf(
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_timesync_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    int64_t tc1, int64_t ts1,
+    int64_t tc1, int64_t ts1, uint8_t target_system, uint8_t target_component,
     fmav_status_t* _status)
 {
     fmav_timesync_t _payload;
 
     _payload.tc1 = tc1;
     _payload.ts1 = ts1;
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
 
 
     return fmav_finalize_serial(
@@ -204,6 +214,22 @@ FASTMAVLINK_FUNCTION_DECORATOR int64_t fmav_msg_timesync_get_field_ts1(const fma
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_timesync_get_field_target_system(const fmav_message_t* msg)
+{
+    uint8_t r;
+    memcpy(&r, &(msg->payload[16]), sizeof(uint8_t));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_timesync_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r;
+    memcpy(&r, &(msg->payload[17]), sizeof(uint8_t));
+    return r;
+}
+
+
 
 
 
@@ -216,9 +242,9 @@ FASTMAVLINK_FUNCTION_DECORATOR int64_t fmav_msg_timesync_get_field_ts1(const fma
 
 #define mavlink_timesync_t  fmav_timesync_t
 
-#define MAVLINK_MSG_ID_TIMESYNC_LEN  16
+#define MAVLINK_MSG_ID_TIMESYNC_LEN  18
 #define MAVLINK_MSG_ID_TIMESYNC_MIN_LEN  16
-#define MAVLINK_MSG_ID_111_LEN  16
+#define MAVLINK_MSG_ID_111_LEN  18
 #define MAVLINK_MSG_ID_111_MIN_LEN  16
 
 #define MAVLINK_MSG_ID_TIMESYNC_CRC  34
@@ -233,12 +259,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_timesync_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    int64_t tc1, int64_t ts1)
+    int64_t tc1, int64_t ts1, uint8_t target_system, uint8_t target_component)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_timesync_pack(
         _msg, sysid, compid,
-        tc1, ts1,
+        tc1, ts1, target_system, target_component,
         _status);
 }
 
@@ -250,13 +276,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_timesync_pack_txbuf(
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    int64_t tc1, int64_t ts1)
+    int64_t tc1, int64_t ts1, uint8_t target_system, uint8_t target_component)
 {
     return fmav_msg_timesync_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        tc1, ts1,
+        tc1, ts1, target_system, target_component,
         _status);
 }
 

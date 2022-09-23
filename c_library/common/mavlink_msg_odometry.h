@@ -32,19 +32,20 @@ typedef struct _fmav_odometry_t {
     uint8_t child_frame_id;
     uint8_t reset_counter;
     uint8_t estimator_type;
+    int8_t quality;
 }) fmav_odometry_t;
 
 
 #define FASTMAVLINK_MSG_ID_ODOMETRY  331
 
-#define FASTMAVLINK_MSG_ODOMETRY_PAYLOAD_LEN_MAX  232
+#define FASTMAVLINK_MSG_ODOMETRY_PAYLOAD_LEN_MAX  233
 #define FASTMAVLINK_MSG_ODOMETRY_CRCEXTRA  91
 
 #define FASTMAVLINK_MSG_ODOMETRY_FLAGS  0
 #define FASTMAVLINK_MSG_ODOMETRY_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ODOMETRY_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_ODOMETRY_FRAME_LEN_MAX  257
+#define FASTMAVLINK_MSG_ODOMETRY_FRAME_LEN_MAX  258
 
 #define FASTMAVLINK_MSG_ODOMETRY_FIELD_Q_NUM  4 // number of elements in array
 #define FASTMAVLINK_MSG_ODOMETRY_FIELD_Q_LEN  16 // length of array = number of bytes
@@ -70,6 +71,7 @@ typedef struct _fmav_odometry_t {
 #define FASTMAVLINK_MSG_ODOMETRY_FIELD_CHILD_FRAME_ID_OFS  229
 #define FASTMAVLINK_MSG_ODOMETRY_FIELD_RESET_COUNTER_OFS  230
 #define FASTMAVLINK_MSG_ODOMETRY_FIELD_ESTIMATOR_TYPE_OFS  231
+#define FASTMAVLINK_MSG_ODOMETRY_FIELD_QUALITY_OFS  232
 
 
 //----------------------------------------
@@ -80,7 +82,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_odometry_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint64_t time_usec, uint8_t frame_id, uint8_t child_frame_id, float x, float y, float z, const float* q, float vx, float vy, float vz, float rollspeed, float pitchspeed, float yawspeed, const float* pose_covariance, const float* velocity_covariance, uint8_t reset_counter, uint8_t estimator_type,
+    uint64_t time_usec, uint8_t frame_id, uint8_t child_frame_id, float x, float y, float z, const float* q, float vx, float vy, float vz, float rollspeed, float pitchspeed, float yawspeed, const float* pose_covariance, const float* velocity_covariance, uint8_t reset_counter, uint8_t estimator_type, int8_t quality,
     fmav_status_t* _status)
 {
     fmav_odometry_t* _payload = (fmav_odometry_t*)_msg->payload;
@@ -99,6 +101,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_odometry_pack(
     _payload->child_frame_id = child_frame_id;
     _payload->reset_counter = reset_counter;
     _payload->estimator_type = estimator_type;
+    _payload->quality = quality;
     memcpy(&(_payload->q), q, sizeof(float)*4);
     memcpy(&(_payload->pose_covariance), pose_covariance, sizeof(float)*21);
     memcpy(&(_payload->velocity_covariance), velocity_covariance, sizeof(float)*21);
@@ -124,7 +127,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_odometry_encode(
 {
     return fmav_msg_odometry_pack(
         _msg, sysid, compid,
-        _payload->time_usec, _payload->frame_id, _payload->child_frame_id, _payload->x, _payload->y, _payload->z, _payload->q, _payload->vx, _payload->vy, _payload->vz, _payload->rollspeed, _payload->pitchspeed, _payload->yawspeed, _payload->pose_covariance, _payload->velocity_covariance, _payload->reset_counter, _payload->estimator_type,
+        _payload->time_usec, _payload->frame_id, _payload->child_frame_id, _payload->x, _payload->y, _payload->z, _payload->q, _payload->vx, _payload->vy, _payload->vz, _payload->rollspeed, _payload->pitchspeed, _payload->yawspeed, _payload->pose_covariance, _payload->velocity_covariance, _payload->reset_counter, _payload->estimator_type, _payload->quality,
         _status);
 }
 
@@ -133,7 +136,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_odometry_pack_to_frame_buf(
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint64_t time_usec, uint8_t frame_id, uint8_t child_frame_id, float x, float y, float z, const float* q, float vx, float vy, float vz, float rollspeed, float pitchspeed, float yawspeed, const float* pose_covariance, const float* velocity_covariance, uint8_t reset_counter, uint8_t estimator_type,
+    uint64_t time_usec, uint8_t frame_id, uint8_t child_frame_id, float x, float y, float z, const float* q, float vx, float vy, float vz, float rollspeed, float pitchspeed, float yawspeed, const float* pose_covariance, const float* velocity_covariance, uint8_t reset_counter, uint8_t estimator_type, int8_t quality,
     fmav_status_t* _status)
 {
     fmav_odometry_t* _payload = (fmav_odometry_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -152,6 +155,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_odometry_pack_to_frame_buf(
     _payload->child_frame_id = child_frame_id;
     _payload->reset_counter = reset_counter;
     _payload->estimator_type = estimator_type;
+    _payload->quality = quality;
     memcpy(&(_payload->q), q, sizeof(float)*4);
     memcpy(&(_payload->pose_covariance), pose_covariance, sizeof(float)*21);
     memcpy(&(_payload->velocity_covariance), velocity_covariance, sizeof(float)*21);
@@ -179,7 +183,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_odometry_encode_to_frame_buf(
 {
     return fmav_msg_odometry_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->time_usec, _payload->frame_id, _payload->child_frame_id, _payload->x, _payload->y, _payload->z, _payload->q, _payload->vx, _payload->vy, _payload->vz, _payload->rollspeed, _payload->pitchspeed, _payload->yawspeed, _payload->pose_covariance, _payload->velocity_covariance, _payload->reset_counter, _payload->estimator_type,
+        _payload->time_usec, _payload->frame_id, _payload->child_frame_id, _payload->x, _payload->y, _payload->z, _payload->q, _payload->vx, _payload->vy, _payload->vz, _payload->rollspeed, _payload->pitchspeed, _payload->yawspeed, _payload->pose_covariance, _payload->velocity_covariance, _payload->reset_counter, _payload->estimator_type, _payload->quality,
         _status);
 }
 
@@ -189,7 +193,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_odometry_encode_to_frame_buf(
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_odometry_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint64_t time_usec, uint8_t frame_id, uint8_t child_frame_id, float x, float y, float z, const float* q, float vx, float vy, float vz, float rollspeed, float pitchspeed, float yawspeed, const float* pose_covariance, const float* velocity_covariance, uint8_t reset_counter, uint8_t estimator_type,
+    uint64_t time_usec, uint8_t frame_id, uint8_t child_frame_id, float x, float y, float z, const float* q, float vx, float vy, float vz, float rollspeed, float pitchspeed, float yawspeed, const float* pose_covariance, const float* velocity_covariance, uint8_t reset_counter, uint8_t estimator_type, int8_t quality,
     fmav_status_t* _status)
 {
     fmav_odometry_t _payload;
@@ -208,6 +212,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_odometry_pack_to_serial(
     _payload.child_frame_id = child_frame_id;
     _payload.reset_counter = reset_counter;
     _payload.estimator_type = estimator_type;
+    _payload.quality = quality;
     memcpy(&(_payload.q), q, sizeof(float)*4);
     memcpy(&(_payload.pose_covariance), pose_covariance, sizeof(float)*21);
     memcpy(&(_payload.velocity_covariance), velocity_covariance, sizeof(float)*21);
@@ -377,6 +382,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_odometry_get_field_estimator_typ
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_odometry_get_field_quality(const fmav_message_t* msg)
+{
+    int8_t r;
+    memcpy(&r, &(msg->payload[232]), sizeof(int8_t));
+    return r;
+}
+
+
 FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_odometry_get_field_q_ptr(const fmav_message_t* msg)
 {
     return (float*)&(msg->payload[20]);
@@ -425,9 +438,9 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_odometry_get_field_velocity_covari
 
 #define mavlink_odometry_t  fmav_odometry_t
 
-#define MAVLINK_MSG_ID_ODOMETRY_LEN  232
+#define MAVLINK_MSG_ID_ODOMETRY_LEN  233
 #define MAVLINK_MSG_ID_ODOMETRY_MIN_LEN  230
-#define MAVLINK_MSG_ID_331_LEN  232
+#define MAVLINK_MSG_ID_331_LEN  233
 #define MAVLINK_MSG_ID_331_MIN_LEN  230
 
 #define MAVLINK_MSG_ID_ODOMETRY_CRC  91
@@ -444,12 +457,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_odometry_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint64_t time_usec, uint8_t frame_id, uint8_t child_frame_id, float x, float y, float z, const float* q, float vx, float vy, float vz, float rollspeed, float pitchspeed, float yawspeed, const float* pose_covariance, const float* velocity_covariance, uint8_t reset_counter, uint8_t estimator_type)
+    uint64_t time_usec, uint8_t frame_id, uint8_t child_frame_id, float x, float y, float z, const float* q, float vx, float vy, float vz, float rollspeed, float pitchspeed, float yawspeed, const float* pose_covariance, const float* velocity_covariance, uint8_t reset_counter, uint8_t estimator_type, int8_t quality)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_odometry_pack(
         _msg, sysid, compid,
-        time_usec, frame_id, child_frame_id, x, y, z, q, vx, vy, vz, rollspeed, pitchspeed, yawspeed, pose_covariance, velocity_covariance, reset_counter, estimator_type,
+        time_usec, frame_id, child_frame_id, x, y, z, q, vx, vy, vz, rollspeed, pitchspeed, yawspeed, pose_covariance, velocity_covariance, reset_counter, estimator_type, quality,
         _status);
 }
 
@@ -461,13 +474,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_odometry_pack_txbuf(
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint64_t time_usec, uint8_t frame_id, uint8_t child_frame_id, float x, float y, float z, const float* q, float vx, float vy, float vz, float rollspeed, float pitchspeed, float yawspeed, const float* pose_covariance, const float* velocity_covariance, uint8_t reset_counter, uint8_t estimator_type)
+    uint64_t time_usec, uint8_t frame_id, uint8_t child_frame_id, float x, float y, float z, const float* q, float vx, float vy, float vz, float rollspeed, float pitchspeed, float yawspeed, const float* pose_covariance, const float* velocity_covariance, uint8_t reset_counter, uint8_t estimator_type, int8_t quality)
 {
     return fmav_msg_odometry_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        time_usec, frame_id, child_frame_id, x, y, z, q, vx, vy, vz, rollspeed, pitchspeed, yawspeed, pose_covariance, velocity_covariance, reset_counter, estimator_type,
+        time_usec, frame_id, child_frame_id, x, y, z, q, vx, vy, vz, rollspeed, pitchspeed, yawspeed, pose_covariance, velocity_covariance, reset_counter, estimator_type, quality,
         _status);
 }
 
