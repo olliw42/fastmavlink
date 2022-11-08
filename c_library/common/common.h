@@ -111,7 +111,7 @@ typedef enum MAV_MODE {
     MAV_MODE_AUTO_ARMED = 220,  // System is allowed to be active, under autonomous control and navigation (the trajectory is decided onboard and not pre-programmed by waypoints) 
     MAV_MODE_TEST_DISARMED = 66,  // UNDEFINED mode. This solely depends on the autopilot - use with caution, intended for developers only. 
     MAV_MODE_TEST_ARMED = 194,  // UNDEFINED mode. This solely depends on the autopilot - use with caution, intended for developers only. 
-    MAV_MODE_ENUM_END = 195,  // end marker
+    MAV_MODE_ENUM_END = 221,  // end marker
 } MAV_MODE;
 #endif
 
@@ -791,7 +791,7 @@ typedef enum MAV_CMD {
     MAV_CMD_USER_4 = 31013,  // User defined command. Ground Station will not show the Vehicle as flying through this item. Example: MAV_CMD_DO_SET_PARAMETER item. | User defined | User defined | User defined | User defined | User defined | User defined | User defined
     MAV_CMD_USER_5 = 31014,  // User defined command. Ground Station will not show the Vehicle as flying through this item. Example: MAV_CMD_DO_SET_PARAMETER item. | User defined | User defined | User defined | User defined | User defined | User defined | User defined
     MAV_CMD_CAN_FORWARD = 32000,  // Request forwarding of CAN packets from the given CAN bus to this component. CAN Frames are sent using CAN_FRAME and CANFD_FRAME messages | Bus number (0 to disable forwarding, 1 for first bus, 2 for 2nd bus, 3 for 3rd bus). | Empty. | Empty. | Empty. | Empty. | Empty. | Empty.
-    MAV_CMD_ENUM_END = 32001,  // end marker
+    MAV_CMD_ENUM_END = 42601,  // end marker
 } MAV_CMD;
 #endif
 

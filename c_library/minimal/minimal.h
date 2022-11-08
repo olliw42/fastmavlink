@@ -141,7 +141,7 @@ typedef enum MAV_MODE_FLAG {
     MAV_MODE_FLAG_AUTO_ENABLED = 4,  // 0b00000100 autonomous mode enabled, system finds its own goal positions. Guided flag can be set or not, depends on the actual implementation. 
     MAV_MODE_FLAG_TEST_ENABLED = 2,  // 0b00000010 system has a test mode enabled. This flag is intended for temporary system tests and should not be used for stable implementations. 
     MAV_MODE_FLAG_CUSTOM_MODE_ENABLED = 1,  // 0b00000001 Reserved for future use. 
-    MAV_MODE_FLAG_ENUM_END = 2,  // end marker
+    MAV_MODE_FLAG_ENUM_END = 129,  // end marker
 } MAV_MODE_FLAG;
 #endif
 
@@ -157,7 +157,7 @@ typedef enum MAV_MODE_FLAG_DECODE_POSITION {
     MAV_MODE_FLAG_DECODE_POSITION_AUTO = 4,  // Sixth bit:   00000100 
     MAV_MODE_FLAG_DECODE_POSITION_TEST = 2,  // Seventh bit: 00000010 
     MAV_MODE_FLAG_DECODE_POSITION_CUSTOM_MODE = 1,  // Eighth bit: 00000001 
-    MAV_MODE_FLAG_DECODE_POSITION_ENUM_END = 2,  // end marker
+    MAV_MODE_FLAG_DECODE_POSITION_ENUM_END = 129,  // end marker
 } MAV_MODE_FLAG_DECODE_POSITION;
 #endif
 

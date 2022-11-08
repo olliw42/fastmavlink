@@ -321,7 +321,7 @@ typedef enum MAV_CMD {
     MAV_CMD_GROUP_START = 301,  // Define start of a group of mission items. When control reaches this command a GROUP_START message is emitted.          The end of a group is marked using MAV_CMD_GROUP_END with the same group id.          Group ids are expected, but not required, to iterate sequentially.          Groups can be nested. | Mission-unique group id.          Group id is limited because only 24 bit integer can be stored in 32 bit float. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_GROUP_END = 302,  // Define end of a group of mission items. When control reaches this command a GROUP_END message is emitted.          The start of the group is marked is marked using MAV_CMD_GROUP_START with the same group id.          Group ids are expected, but not required, to iterate sequentially.          Groups can be nested. | Mission-unique group id.          Group id is limited because only 24 bit integer can be stored in 32 bit float. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_DO_SET_STANDARD_MODE = 262,  // Enable the specified standard MAVLink mode.          If the mode is not supported the vehicle should ACK with MAV_RESULT_FAILED.         | The mode to set. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:NaN)
-    MAV_CMD_ENUM_END = 263,  // end marker
+    MAV_CMD_ENUM_END = 303,  // end marker
 } MAV_CMD;
 #endif
 
