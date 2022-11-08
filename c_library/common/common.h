@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Sat Sep 24 2022"
+#define FASTMAVLINK_BUILD_DATE  "Tue Nov 08 2022"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -180,7 +180,7 @@ typedef enum MAV_FRAME {
     MAV_FRAME_BODY_OFFSET_NED = 9,  // This is the same as MAV_FRAME_BODY_FRD. 
     MAV_FRAME_GLOBAL_TERRAIN_ALT = 10,  // Global (WGS84) coordinate frame with AGL altitude (at the waypoint coordinate). First value / x: latitude in degrees, second value / y: longitude in degrees, third value / z: positive altitude in meters with 0 being at ground level in terrain model. 
     MAV_FRAME_GLOBAL_TERRAIN_ALT_INT = 11,  // Global (WGS84) coordinate frame (scaled) with AGL altitude (at the waypoint coordinate). First value / x: latitude in degrees*1E7, second value / y: longitude in degrees*1E7, third value / z: positive altitude in meters with 0 being at ground level in terrain model. 
-    MAV_FRAME_BODY_FRD = 12,  // FRD local tangent frame (x: Forward, y: Right, z: Down) with origin that travels with vehicle. The forward axis is aligned to the front of the vehicle in the horizontal plane. 
+    MAV_FRAME_BODY_FRD = 12,  // FRD local frame aligned to the vehicle's attitude (x: Forward, y: Right, z: Down) with an origin that travels with vehicle. 
     MAV_FRAME_RESERVED_13 = 13,  // MAV_FRAME_BODY_FLU - Body fixed frame of reference, Z-up (x: Forward, y: Left, z: Up). 
     MAV_FRAME_RESERVED_14 = 14,  // MAV_FRAME_MOCAP_NED - Odometry local coordinate frame of data given by a motion capture system, Z-down (x: North, y: East, z: Down). 
     MAV_FRAME_RESERVED_15 = 15,  // MAV_FRAME_MOCAP_ENU - Odometry local coordinate frame of data given by a motion capture system, Z-up (x: East, y: North, z: Up). 
@@ -370,7 +370,8 @@ typedef enum WINCH_ACTIONS {
     WINCH_RETRACT = 6,  // Return the reel to the fully retracted position. Only action and instance command parameters are used, others are ignored. 
     WINCH_LOAD_LINE = 7,  // Load the reel with line. The winch will calculate the total loaded length and stop when the tension exceeds a threshold. Only action and instance command parameters are used, others are ignored. 
     WINCH_ABANDON_LINE = 8,  // Spool out the entire length of the line. Only action and instance command parameters are used, others are ignored. 
-    WINCH_ACTIONS_ENUM_END = 9,  // end marker
+    WINCH_LOAD_PAYLOAD = 9,  // Spools out just enough to present the hook to the user to load the payload. Only action and instance command parameters are used, others are ignored 
+    WINCH_ACTIONS_ENUM_END = 10,  // end marker
 } WINCH_ACTIONS;
 #endif
 
@@ -662,7 +663,7 @@ typedef enum MAV_CMD {
     MAV_CMD_CONDITION_LAST = 159,  // NOP - This command is only used to mark the upper limit of the CONDITION commands in the enumeration | Empty | Empty | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_DO_SET_MODE = 176,  // Set system mode. | Mode | Custom mode - this is system specific, please refer to the individual autopilot specifications for details. | Custom sub mode - this is system specific, please refer to the individual autopilot specifications for details. | Empty | Empty | Empty | Empty
     MAV_CMD_DO_JUMP = 177,  // Jump to the desired command in the mission list.  Repeat this action only the specified number of times | Sequence number | Repeat count | Empty | Empty | Empty | Empty | Empty
-    MAV_CMD_DO_CHANGE_SPEED = 178,  // Change speed and/or throttle set points. The value persists until it is overridden or there is a mode change. | Speed type (0=Airspeed, 1=Ground Speed, 2=Climb Speed, 3=Descent Speed) | Speed (-1 indicates no change) | Throttle (-1 indicates no change) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
+    MAV_CMD_DO_CHANGE_SPEED = 178,  // Change speed and/or throttle set points. The value persists until it is overridden or there is a mode change. | Speed type (0=Airspeed, 1=Ground Speed, 2=Climb Speed, 3=Descent Speed) | Speed (-1 indicates no change, -2 indicates return to default vehicle speed) | Throttle (-1 indicates no change, -2 indicates return to default vehicle throttle value) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_DO_SET_HOME = 179,  //           Sets the home position to either to the current position or a specified position.          The home position is the default position that the system will return to and land on.          The position is set automatically by the system during the takeoff (and may also be set using this command).          Note: the current home position may be emitted in a HOME_POSITION message on request (using MAV_CMD_REQUEST_MESSAGE with param1=242).         | Use current (1=use current location, 0=use specified location) | Empty | Empty | Yaw angle. NaN to use default heading | Latitude | Longitude | Altitude
     MAV_CMD_DO_SET_PARAMETER = 180,  // Set a system parameter.  Caution!  Use of this command requires knowledge of the numeric enumeration value of the parameter. | Parameter number | Parameter value | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_DO_SET_RELAY = 181,  // Set a relay to a condition. | Relay instance number. | Setting. (1=on, 0=off, others possible depending on system hardware) | Empty | Empty | Empty | Empty | Empty
@@ -720,7 +721,7 @@ typedef enum MAV_CMD {
     MAV_CMD_INJECT_FAILURE = 420,  // Inject artificial failure for testing purposes. Note that autopilots should implement an additional protection before accepting this command such as a specific param setting. | The unit which is affected by the failure. | The type how the failure manifests itself. | Instance affected by failure (0 to signal all). | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_START_RX_PAIR = 500,  // Starts receiver pairing. | 0:Spektrum. | RC type. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_GET_MESSAGE_INTERVAL = 510,  //           Request the interval between messages for a particular MAVLink message ID.          The receiver should ACK the command and then emit its response in a MESSAGE_INTERVAL message.         | The MAVLink message ID | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
-    MAV_CMD_SET_MESSAGE_INTERVAL = 511,  // Set the interval between messages for a particular MAVLink message ID. This interface replaces REQUEST_DATA_STREAM. | The MAVLink message ID | The interval between two messages. Set to -1 to disable and 0 to request default rate. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Target address of message stream (if message has target address fields). 0: Flight-stack default (recommended), 1: address of requestor, 2: broadcast.
+    MAV_CMD_SET_MESSAGE_INTERVAL = 511,  // Set the interval between messages for a particular MAVLink message ID. This interface replaces REQUEST_DATA_STREAM. | The MAVLink message ID | The interval between two messages. -1: disable. 0: request default rate (which may be zero). | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Target address of message stream (if message has target address fields). 0: Flight-stack default (recommended), 1: address of requestor, 2: broadcast.
     MAV_CMD_REQUEST_MESSAGE = 512,  // Request the target system(s) emit a single instance of a specified message (i.e. a "one-shot" version of MAV_CMD_SET_MESSAGE_INTERVAL). | The MAVLink message ID of the requested message. | Use for index ID, if required. Otherwise, the use of this parameter (if any) must be defined in the requested message. By default assumed not used (0). | The use of this parameter (if any), must be defined in the requested message. By default assumed not used (0). | The use of this parameter (if any), must be defined in the requested message. By default assumed not used (0). | The use of this parameter (if any), must be defined in the requested message. By default assumed not used (0). | The use of this parameter (if any), must be defined in the requested message. By default assumed not used (0). | Target address for requested message (if message has target address fields). 0: Flight-stack default, 1: address of requestor, 2: broadcast.
     MAV_CMD_REQUEST_PROTOCOL_VERSION = 519,  // Request MAVLink protocol version compatibility. All receivers should ACK the command and then emit their capabilities in an PROTOCOL_VERSION message | 1: Request supported protocol versions by all nodes on the network | Reserved (all remaining params) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES = 520,  // Request autopilot capabilities. The receiver should ACK the command and then emit its capabilities in an AUTOPILOT_VERSION message | 1: Request autopilot version | Reserved (all remaining params) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
@@ -1054,7 +1055,7 @@ typedef enum MAV_PROTOCOL_CAPABILITY {
     MAV_PROTOCOL_CAPABILITY_PARAM_FLOAT = 2,  // Autopilot supports the new param float message type. 
     MAV_PROTOCOL_CAPABILITY_MISSION_INT = 4,  // Autopilot supports MISSION_ITEM_INT scaled integer message type.          Note that this flag must always be set if missions are supported, because missions must always use MISSION_ITEM_INT (rather than MISSION_ITEM, which is deprecated).         
     MAV_PROTOCOL_CAPABILITY_COMMAND_INT = 8,  // Autopilot supports COMMAND_INT scaled integer message type. 
-    MAV_PROTOCOL_CAPABILITY_PARAM_ENCODE_BYTEWISE = 16,  // Parameter protocol uses byte-wise encoding of parameter values into param_value (float) fields: https://mavlink.io/en/services/parameter.html#parameter-encoding.          Note that either this flag or MAV_PROTOCOL_CAPABILITY_PARAM_ENCODE_BYTEWISE should be set if the parameter protocol is supported.         
+    MAV_PROTOCOL_CAPABILITY_PARAM_ENCODE_BYTEWISE = 16,  // Parameter protocol uses byte-wise encoding of parameter values into param_value (float) fields: https://mavlink.io/en/services/parameter.html#parameter-encoding.          Note that either this flag or MAV_PROTOCOL_CAPABILITY_PARAM_ENCODE_C_CAST should be set if the parameter protocol is supported.         
     MAV_PROTOCOL_CAPABILITY_FTP = 32,  // Autopilot supports the File Transfer Protocol v1: https://mavlink.io/en/services/ftp.html. 
     MAV_PROTOCOL_CAPABILITY_SET_ATTITUDE_TARGET = 64,  // Autopilot supports commanding attitude offboard. 
     MAV_PROTOCOL_CAPABILITY_SET_POSITION_TARGET_LOCAL_NED = 128,  // Autopilot supports commanding position and velocity targets in local NED frame. 
@@ -2194,7 +2195,10 @@ typedef enum MAV_WINCH_STATUS_FLAG {
     MAV_WINCH_STATUS_RETRACTING = 256,  // Winch is returning to the fully retracted position. 
     MAV_WINCH_STATUS_REDELIVER = 512,  // Winch is redelivering the payload. This is a failover state if the line tension goes above a threshold during RETRACTING. 
     MAV_WINCH_STATUS_ABANDON_LINE = 1024,  // Winch is abandoning the line and possibly payload. Winch unspools the entire calculated line length. This is a failover state from REDELIVER if the number of attempts exceeds a threshold. 
-    MAV_WINCH_STATUS_FLAG_ENUM_END = 1025,  // end marker
+    MAV_WINCH_STATUS_LOCKING = 2048,  // Winch is engaging the locking mechanism. 
+    MAV_WINCH_STATUS_LOAD_LINE = 4096,  // Winch is spooling on line. 
+    MAV_WINCH_STATUS_LOAD_PAYLOAD = 8192,  // Winch is loading a payload. 
+    MAV_WINCH_STATUS_FLAG_ENUM_END = 8193,  // end marker
 } MAV_WINCH_STATUS_FLAG;
 #endif
 
@@ -2593,7 +2597,7 @@ typedef enum MISSION_STATE {
 //-- Dialect includes
 //------------------------------
 
-#include "../minimal/minimal.h"
+#include "../standard/standard.h"
 
 
 #ifdef __cplusplus

@@ -4,8 +4,8 @@
 //------------------------------
 
 #pragma once
-#ifndef FASTMAVLINK_STANDARD_H
-#define FASTMAVLINK_STANDARD_H
+#ifndef FASTMAVLINK_CUBEPILOT_H
+#define FASTMAVLINK_CUBEPILOT_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -26,7 +26,7 @@ extern "C" {
 //-- msgid, extra crc, max length, flag, target sysid offset, target compid offset
 //------------------------------
 
-#include "standard_msg_entries.h"
+#include "cubepilot_msg_entries.h"
 
 #ifndef FASTMAVLINK_MESSAGE_CRCS
 #define FASTMAVLINK_MESSAGE_CRCS  FASTMAVLINK_MSG_ENTRIES
@@ -66,7 +66,11 @@ extern "C" {
   #endif
 #endif
 
-
+#include "./mavlink_msg_cubepilot_raw_rc.h"
+#include "./mavlink_msg_herelink_video_stream_information.h"
+#include "./mavlink_msg_herelink_telem.h"
+#include "./mavlink_msg_cubepilot_firmware_update_start.h"
+#include "./mavlink_msg_cubepilot_firmware_update_resp.h"
 
 #ifdef FASTMAVLINK_IGNORE_WADDRESSOFPACKEDMEMBER
   #if defined __GNUC__ && __GNUC__ >= 9
@@ -79,11 +83,11 @@ extern "C" {
 //-- Dialect includes
 //------------------------------
 
-#include "../minimal/minimal.h"
+#include "../common/common.h"
 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // FASTMAVLINK_STANDARD_H
+#endif // FASTMAVLINK_CUBEPILOT_H

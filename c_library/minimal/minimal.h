@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Sat Sep 24 2022"
+#define FASTMAVLINK_BUILD_DATE  "Tue Nov 08 2022"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -287,6 +287,7 @@ typedef enum MAV_COMPONENT {
     MAV_COMP_ID_QX1_GIMBAL = 159,  // Gimbal ID for QX1. 
     MAV_COMP_ID_FLARM = 160,  // FLARM collision alert component. 
     MAV_COMP_ID_PARACHUTE = 161,  // Parachute component. 
+    MAV_COMP_ID_WINCH = 169,  // Winch component. 
     MAV_COMP_ID_GIMBAL2 = 171,  // Gimbal #2. 
     MAV_COMP_ID_GIMBAL3 = 172,  // Gimbal #3. 
     MAV_COMP_ID_GIMBAL4 = 173,  // Gimbal #4 
