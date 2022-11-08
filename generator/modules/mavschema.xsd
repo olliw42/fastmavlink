@@ -10,6 +10,12 @@
 
 <!-- definition of attributes -->
 <xs:attribute name="name"> <!-- used in enum,entry,message,field elements -->
+  <xs:simpleType>
+    <xs:restriction base="xs:string">
+        <xs:pattern value="[\w_]+"/> <!-- Force only word characters in names (a-zA-Z0-9_ and many unicode). No whitespace -->
+    </xs:restriction>
+  </xs:simpleType>
+
 </xs:attribute>
 <xs:attribute name="id" type="mavlinkMsgId"/> <!-- used in message elements -->
 <xs:attribute name="print_format" type="xs:string"/> <!-- used in field elements -->
@@ -80,6 +86,7 @@
     <xs:enumeration value="cs"/>       <!-- centiseconds -->
     <xs:enumeration value="ms"/>       <!-- milliseconds -->
     <xs:enumeration value="us"/>       <!-- microseconds -->
+    <xs:enumeration value="ns"/>       <!-- nanoseconds -->
     <xs:enumeration value="Hz"/>       <!-- Herz -->
     <xs:enumeration value="MHz"/>      <!-- Mega-Herz -->
     <!-- distance -->
@@ -121,6 +128,7 @@
     <xs:enumeration value="cA"/>       <!-- centi-Ampere -->
     <xs:enumeration value="mA"/>       <!-- milli-Ampere -->
     <xs:enumeration value="mAh"/>      <!-- milli-Ampere hour -->
+    <xs:enumeration value="Ah"/>       <!-- Ampere hour -->
     <!-- magnetism -->
     <xs:enumeration value="mT"/>       <!-- milli-Tesla -->
     <xs:enumeration value="gauss"/>    <!-- Gauss -->
@@ -160,6 +168,7 @@
     <xs:enumeration value="cm^3/min"/> <!-- cubic centimetres/minute -->
     <!-- volume -->
     <xs:enumeration value="cm^3"/>     <!-- cubic centimetres -->
+    <xs:enumeration value="l"/>        <!-- litres -->
   </xs:restriction>
 </xs:simpleType>
 
@@ -208,6 +217,7 @@
         <xs:sequence>
             <xs:element ref="description" minOccurs="0"/>
         </xs:sequence>
+        <xs:attribute ref="since" />
     </xs:complexType>
 </xs:element>
 
@@ -254,7 +264,10 @@
 <xs:element name="enum">
     <xs:complexType>
         <xs:sequence>
-            <xs:element ref="deprecated" minOccurs="0" maxOccurs="1"/>
+            <xs:choice minOccurs="0" maxOccurs="1">
+                <xs:element ref="deprecated"/>
+                <xs:element ref="wip"/>
+            </xs:choice>
             <xs:element ref="description" minOccurs="0"/>
             <xs:element ref="entry" maxOccurs="unbounded"/>
         </xs:sequence>
@@ -272,7 +285,7 @@
                     <xs:element ref="wip"/>
                 </xs:choice>
                 <xs:element ref="description" minOccurs="1" maxOccurs="1"/>
-                <xs:element ref="field" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="field" minOccurs="1" maxOccurs="unbounded"/>
             </xs:sequence>
             <!-- MavLink 2.0 extensions are optional hence minOccurs="0" -->
             <xs:sequence minOccurs="0" maxOccurs="1">
