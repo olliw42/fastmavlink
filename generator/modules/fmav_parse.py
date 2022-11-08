@@ -538,8 +538,12 @@ def fmavFinalizeAllEnums(xml_list):
     for xml in xml_list:
         for enum in xml.enums_merged:
             # add a ENUM_END
+            entry_value_max = 0
+            for entry in enum.entry:
+                if entry.value > entry_value_max: entry_value_max = entry.value
             enum.entry.append(
-                MAVEnumEntry(enum.name + "_ENUM_END", enum.entry[-1].value + 1, end_marker=True, description='end marker')
+                #MAVEnumEntry(enum.name + "_ENUM_END", enum.entry[-1].value + 1, end_marker=True, description='end marker')
+                MAVEnumEntry(enum.name + "_ENUM_END", entry_value_max + 1, end_marker=True, description='end marker')
             )
 
 
