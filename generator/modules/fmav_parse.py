@@ -38,6 +38,14 @@ class MAVParseError(Exception):
         return self.message
 
 
+warnings = 0
+
+def MAVParseWarning(message):
+    print('WARNING', message)
+    global warnings
+    warnings = warnings + 1
+
+
 class MAVEnumEntry(object):
     '''Holds a MAVLink enum entry field.
     mavlink.enums.enum.entry'''
@@ -182,16 +190,16 @@ class MAVMessageField(object):
             if self.array_length == 0:
                 if self.invalid.find('[') >= 0 or self.invalid.find(']') >= 0 or \
                    self.invalid.find(',') >= 0 or self.invalid.find(':') >= 0:
-                    raise MAVParseError("MAVField init(): field '%s' is not an array type but invalid attribute '%s' is" % 
+                    raise MAVParseError("MAVField init(): field '%s' is not an array type but invalid attribute '%s' is" %
                                         (self.name, self.invalid))
             else:
                 if self.invalid.find('[') < 0 or self.invalid.find(']') < 0:
-                    raise MAVParseError("MAVField init(): field '%s' is an array type but invalid attribute '%s' is not" % 
+                    raise MAVParseError("MAVField init(): field '%s' is an array type but invalid attribute '%s' is not" %
                                         (self.name, self.invalid))
                 if self.invalid.find('[') != 0 or self.invalid.count('[') != 1 or \
                    self.invalid.find(']') != len(self.invalid)-1 or self.invalid.count(']') != 1 or \
                    (self.invalid.find(':') >= 0 and (self.invalid.find(':') != len(self.invalid)-2 or self.invalid.count(':') != 1)):
-                    raise MAVParseError("MAVField init(): field '%s', format error in invalid attribute, '%s' is not allowed" % 
+                    raise MAVParseError("MAVField init(): field '%s', format error in invalid attribute, '%s' is not allowed" %
                                         (self.name, self.invalid))
 
 
@@ -314,7 +322,7 @@ class MAVMessage(object):
 
         self.fields_number = len(self.field_names)
         if self.fields_number > 64:
-            raise MAVParseError("MAVMessage finalize: fields_number=%u : Maximum number of field names allowed is" % (
+            raise MAVParseError("MAVMessage finalize(): fields_number=%u : Maximum number of field names allowed is" % (
                                 self.fields_number, 64))
 
         self.crc_extra = self.calculate_checksum()
@@ -414,7 +422,7 @@ class MAVParseXml(object):
                     value = eval(attrs['value'])
                 else:
                     if self.parse_flags & mavflags.PARSE_FLAGS_WARNING_ENUM_VALUE_MISSING:
-                        print('WARNING MAVParseXml(): enum value for %s missing at %s:%u' % (
+                        MAVParseWarning('MAVParseXml(): enum value for %s missing at %s:%u' % (
                                 attrs['name'], os.path.basename(filename), p.CurrentLineNumber))
                         if self.enums[-1].start_value is None: #this indicates that it is fresh
                             value = 0
@@ -611,8 +619,8 @@ def generateXmlList(filename, validate_func=None, parse_flags=mavflags.PARSE_FLA
         if validate_func is not None:
             print("Validating %s" % os.path.basename(fname))
             if not validate_func(fname):
-                 print("ERROR Validation of %s failed" % os.path.basename(fname))
-                 exit(1)
+                 print("ERROR: Validation of %s failed" % os.path.basename(fname))
+                 sys.exit(1)
         else:
             print("Validation skipped for %s." % os.path.basename(fname))
         # parse and add it
@@ -643,7 +651,7 @@ def generateXmlList(filename, validate_func=None, parse_flags=mavflags.PARSE_FLA
 
         for n in range(MAXIMUM_INCLUDE_FILE_NESTING+1):
             if n >= MAXIMUM_INCLUDE_FILE_NESTING:
-                print("ERROR include tree is too deeply nested!")
+                print("ERROR: include tree is too deeply nested!")
                 sys.exit(1)
             if not expand_oneiteration():
                 break
@@ -660,7 +668,7 @@ def generateXmlList(filename, validate_func=None, parse_flags=mavflags.PARSE_FLA
             if len(xml.includes) == 0:
                 done.append(xml)
         if len(done) == 0: # there must be at least one XML file with no include
-            print("\nERROR in includes tree, no base found!")
+            print("\nERROR: in includes tree, no base found!")
             sys.exit(1)
 
         # step 2: update all 'not done' files in manner respectiing the include order
@@ -694,7 +702,7 @@ def generateXmlList(filename, validate_func=None, parse_flags=mavflags.PARSE_FLA
             if len(done) == len(xml_list):  # all XML files are done, finished
                 return False
             if len(done) == initial_done_length: # no process was made in this iteration
-                print("ERROR include tree cannot be resolved!")
+                print("ERROR: include tree cannot be resolved!")
                 sys.exit(1)
             return True
 
@@ -742,4 +750,8 @@ def mkdir_p(dir):
     except OSError as exc:
         if exc.errno != errno.EEXIST:
             raise
+
+
+def numberOfWarning():
+    return warnings
 

@@ -161,6 +161,8 @@ def generate(outputdir, filenames, validate_func=None, parse_flags=mavflags.PARS
         #    print(xml.basename)
         print("Found %u messages and %u enums in %u XML files" %
               (mavparse.totalNumberOfMessages(xml_list), mavparse.totalNumberOfEnums(xml_list), len(xml_list)))
+        if mavparse.numberOfWarning() > 0:
+            print("Warnings: %u" %mavparse.numberOfWarning())
         for xml in xml_list:
             generateForOneXml(outputdir, xml)
     

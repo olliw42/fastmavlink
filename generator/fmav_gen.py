@@ -97,7 +97,8 @@ def fmavgen(opts, args):
         except etree.XMLSchemaError:
             return False
         except etree.DocumentInvalid as err:
-            sys.exit('ERROR fmavgen(): %s' % str(err.error_log))
+            print('ERROR fmavgen(): %s' % str(err.error_log))
+            sys.exit(1)
         return True
 
     print("----------")
