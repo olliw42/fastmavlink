@@ -36,19 +36,21 @@ typedef struct _fmav_sim_state_t {
     float vn;
     float ve;
     float vd;
+    int32_t lat_int;
+    int32_t lon_int;
 }) fmav_sim_state_t;
 
 
 #define FASTMAVLINK_MSG_ID_SIM_STATE  108
 
-#define FASTMAVLINK_MSG_SIM_STATE_PAYLOAD_LEN_MAX  84
+#define FASTMAVLINK_MSG_SIM_STATE_PAYLOAD_LEN_MAX  92
 #define FASTMAVLINK_MSG_SIM_STATE_CRCEXTRA  32
 
 #define FASTMAVLINK_MSG_SIM_STATE_FLAGS  0
 #define FASTMAVLINK_MSG_SIM_STATE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_SIM_STATE_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_SIM_STATE_FRAME_LEN_MAX  109
+#define FASTMAVLINK_MSG_SIM_STATE_FRAME_LEN_MAX  117
 
 
 
@@ -73,6 +75,8 @@ typedef struct _fmav_sim_state_t {
 #define FASTMAVLINK_MSG_SIM_STATE_FIELD_VN_OFS  72
 #define FASTMAVLINK_MSG_SIM_STATE_FIELD_VE_OFS  76
 #define FASTMAVLINK_MSG_SIM_STATE_FIELD_VD_OFS  80
+#define FASTMAVLINK_MSG_SIM_STATE_FIELD_LAT_INT_OFS  84
+#define FASTMAVLINK_MSG_SIM_STATE_FIELD_LON_INT_OFS  88
 
 
 //----------------------------------------
@@ -83,7 +87,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sim_state_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    float q1, float q2, float q3, float q4, float roll, float pitch, float yaw, float xacc, float yacc, float zacc, float xgyro, float ygyro, float zgyro, float lat, float lon, float alt, float std_dev_horz, float std_dev_vert, float vn, float ve, float vd,
+    float q1, float q2, float q3, float q4, float roll, float pitch, float yaw, float xacc, float yacc, float zacc, float xgyro, float ygyro, float zgyro, float lat, float lon, float alt, float std_dev_horz, float std_dev_vert, float vn, float ve, float vd, int32_t lat_int, int32_t lon_int,
     fmav_status_t* _status)
 {
     fmav_sim_state_t* _payload = (fmav_sim_state_t*)_msg->payload;
@@ -109,6 +113,8 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sim_state_pack(
     _payload->vn = vn;
     _payload->ve = ve;
     _payload->vd = vd;
+    _payload->lat_int = lat_int;
+    _payload->lon_int = lon_int;
 
 
     _msg->sysid = sysid;
@@ -132,7 +138,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sim_state_encode(
 {
     return fmav_msg_sim_state_pack(
         _msg, sysid, compid,
-        _payload->q1, _payload->q2, _payload->q3, _payload->q4, _payload->roll, _payload->pitch, _payload->yaw, _payload->xacc, _payload->yacc, _payload->zacc, _payload->xgyro, _payload->ygyro, _payload->zgyro, _payload->lat, _payload->lon, _payload->alt, _payload->std_dev_horz, _payload->std_dev_vert, _payload->vn, _payload->ve, _payload->vd,
+        _payload->q1, _payload->q2, _payload->q3, _payload->q4, _payload->roll, _payload->pitch, _payload->yaw, _payload->xacc, _payload->yacc, _payload->zacc, _payload->xgyro, _payload->ygyro, _payload->zgyro, _payload->lat, _payload->lon, _payload->alt, _payload->std_dev_horz, _payload->std_dev_vert, _payload->vn, _payload->ve, _payload->vd, _payload->lat_int, _payload->lon_int,
         _status);
 }
 
@@ -141,7 +147,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sim_state_pack_to_frame_buf(
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    float q1, float q2, float q3, float q4, float roll, float pitch, float yaw, float xacc, float yacc, float zacc, float xgyro, float ygyro, float zgyro, float lat, float lon, float alt, float std_dev_horz, float std_dev_vert, float vn, float ve, float vd,
+    float q1, float q2, float q3, float q4, float roll, float pitch, float yaw, float xacc, float yacc, float zacc, float xgyro, float ygyro, float zgyro, float lat, float lon, float alt, float std_dev_horz, float std_dev_vert, float vn, float ve, float vd, int32_t lat_int, int32_t lon_int,
     fmav_status_t* _status)
 {
     fmav_sim_state_t* _payload = (fmav_sim_state_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -167,6 +173,8 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sim_state_pack_to_frame_buf(
     _payload->vn = vn;
     _payload->ve = ve;
     _payload->vd = vd;
+    _payload->lat_int = lat_int;
+    _payload->lon_int = lon_int;
 
 
     _buf[5] = sysid;
@@ -192,7 +200,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sim_state_encode_to_frame_buf(
 {
     return fmav_msg_sim_state_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->q1, _payload->q2, _payload->q3, _payload->q4, _payload->roll, _payload->pitch, _payload->yaw, _payload->xacc, _payload->yacc, _payload->zacc, _payload->xgyro, _payload->ygyro, _payload->zgyro, _payload->lat, _payload->lon, _payload->alt, _payload->std_dev_horz, _payload->std_dev_vert, _payload->vn, _payload->ve, _payload->vd,
+        _payload->q1, _payload->q2, _payload->q3, _payload->q4, _payload->roll, _payload->pitch, _payload->yaw, _payload->xacc, _payload->yacc, _payload->zacc, _payload->xgyro, _payload->ygyro, _payload->zgyro, _payload->lat, _payload->lon, _payload->alt, _payload->std_dev_horz, _payload->std_dev_vert, _payload->vn, _payload->ve, _payload->vd, _payload->lat_int, _payload->lon_int,
         _status);
 }
 
@@ -202,7 +210,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sim_state_encode_to_frame_buf(
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sim_state_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    float q1, float q2, float q3, float q4, float roll, float pitch, float yaw, float xacc, float yacc, float zacc, float xgyro, float ygyro, float zgyro, float lat, float lon, float alt, float std_dev_horz, float std_dev_vert, float vn, float ve, float vd,
+    float q1, float q2, float q3, float q4, float roll, float pitch, float yaw, float xacc, float yacc, float zacc, float xgyro, float ygyro, float zgyro, float lat, float lon, float alt, float std_dev_horz, float std_dev_vert, float vn, float ve, float vd, int32_t lat_int, int32_t lon_int,
     fmav_status_t* _status)
 {
     fmav_sim_state_t _payload;
@@ -228,6 +236,8 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_sim_state_pack_to_serial(
     _payload.vn = vn;
     _payload.ve = ve;
     _payload.vd = vd;
+    _payload.lat_int = lat_int;
+    _payload.lon_int = lon_int;
 
 
     return fmav_finalize_serial(
@@ -451,6 +461,22 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sim_state_get_field_vd(const fmav_
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_sim_state_get_field_lat_int(const fmav_message_t* msg)
+{
+    int32_t r;
+    memcpy(&r, &(msg->payload[84]), sizeof(int32_t));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_sim_state_get_field_lon_int(const fmav_message_t* msg)
+{
+    int32_t r;
+    memcpy(&r, &(msg->payload[88]), sizeof(int32_t));
+    return r;
+}
+
+
 
 
 
@@ -463,9 +489,9 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_sim_state_get_field_vd(const fmav_
 
 #define mavlink_sim_state_t  fmav_sim_state_t
 
-#define MAVLINK_MSG_ID_SIM_STATE_LEN  84
+#define MAVLINK_MSG_ID_SIM_STATE_LEN  92
 #define MAVLINK_MSG_ID_SIM_STATE_MIN_LEN  84
-#define MAVLINK_MSG_ID_108_LEN  84
+#define MAVLINK_MSG_ID_108_LEN  92
 #define MAVLINK_MSG_ID_108_MIN_LEN  84
 
 #define MAVLINK_MSG_ID_SIM_STATE_CRC  32
@@ -480,12 +506,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_sim_state_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    float q1, float q2, float q3, float q4, float roll, float pitch, float yaw, float xacc, float yacc, float zacc, float xgyro, float ygyro, float zgyro, float lat, float lon, float alt, float std_dev_horz, float std_dev_vert, float vn, float ve, float vd)
+    float q1, float q2, float q3, float q4, float roll, float pitch, float yaw, float xacc, float yacc, float zacc, float xgyro, float ygyro, float zgyro, float lat, float lon, float alt, float std_dev_horz, float std_dev_vert, float vn, float ve, float vd, int32_t lat_int, int32_t lon_int)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_sim_state_pack(
         _msg, sysid, compid,
-        q1, q2, q3, q4, roll, pitch, yaw, xacc, yacc, zacc, xgyro, ygyro, zgyro, lat, lon, alt, std_dev_horz, std_dev_vert, vn, ve, vd,
+        q1, q2, q3, q4, roll, pitch, yaw, xacc, yacc, zacc, xgyro, ygyro, zgyro, lat, lon, alt, std_dev_horz, std_dev_vert, vn, ve, vd, lat_int, lon_int,
         _status);
 }
 
@@ -497,13 +523,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_sim_state_pack_txbuf(
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    float q1, float q2, float q3, float q4, float roll, float pitch, float yaw, float xacc, float yacc, float zacc, float xgyro, float ygyro, float zgyro, float lat, float lon, float alt, float std_dev_horz, float std_dev_vert, float vn, float ve, float vd)
+    float q1, float q2, float q3, float q4, float roll, float pitch, float yaw, float xacc, float yacc, float zacc, float xgyro, float ygyro, float zgyro, float lat, float lon, float alt, float std_dev_horz, float std_dev_vert, float vn, float ve, float vd, int32_t lat_int, int32_t lon_int)
 {
     return fmav_msg_sim_state_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        q1, q2, q3, q4, roll, pitch, yaw, xacc, yacc, zacc, xgyro, ygyro, zgyro, lat, lon, alt, std_dev_horz, std_dev_vert, vn, ve, vd,
+        q1, q2, q3, q4, roll, pitch, yaw, xacc, yacc, zacc, xgyro, ygyro, zgyro, lat, lon, alt, std_dev_horz, std_dev_vert, vn, ve, vd, lat_int, lon_int,
         _status);
 }
 

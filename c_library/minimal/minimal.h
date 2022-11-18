@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Tue Nov 08 2022"
+#define FASTMAVLINK_BUILD_DATE  "Fri Nov 18 2022"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -133,14 +133,14 @@ typedef enum MAV_TYPE {
 #ifndef FASTMAVLINK_HAS_ENUM_MAV_MODE_FLAG
 #define FASTMAVLINK_HAS_ENUM_MAV_MODE_FLAG
 typedef enum MAV_MODE_FLAG {
-    MAV_MODE_FLAG_SAFETY_ARMED = 128,  // 0b10000000 MAV safety set to armed. Motors are enabled / running / can start. Ready to fly. Additional note: this flag is to be ignore when sent in the command MAV_CMD_DO_SET_MODE and MAV_CMD_COMPONENT_ARM_DISARM shall be used instead. The flag can still be used to report the armed state. 
-    MAV_MODE_FLAG_MANUAL_INPUT_ENABLED = 64,  // 0b01000000 remote control input is enabled. 
-    MAV_MODE_FLAG_HIL_ENABLED = 32,  // 0b00100000 hardware in the loop simulation. All motors / actuators are blocked, but internal software is full operational. 
-    MAV_MODE_FLAG_STABILIZE_ENABLED = 16,  // 0b00010000 system stabilizes electronically its attitude (and optionally position). It needs however further control inputs to move around. 
-    MAV_MODE_FLAG_GUIDED_ENABLED = 8,  // 0b00001000 guided mode enabled, system flies waypoints / mission items. 
-    MAV_MODE_FLAG_AUTO_ENABLED = 4,  // 0b00000100 autonomous mode enabled, system finds its own goal positions. Guided flag can be set or not, depends on the actual implementation. 
-    MAV_MODE_FLAG_TEST_ENABLED = 2,  // 0b00000010 system has a test mode enabled. This flag is intended for temporary system tests and should not be used for stable implementations. 
     MAV_MODE_FLAG_CUSTOM_MODE_ENABLED = 1,  // 0b00000001 Reserved for future use. 
+    MAV_MODE_FLAG_TEST_ENABLED = 2,  // 0b00000010 system has a test mode enabled. This flag is intended for temporary system tests and should not be used for stable implementations. 
+    MAV_MODE_FLAG_AUTO_ENABLED = 4,  // 0b00000100 autonomous mode enabled, system finds its own goal positions. Guided flag can be set or not, depends on the actual implementation. 
+    MAV_MODE_FLAG_GUIDED_ENABLED = 8,  // 0b00001000 guided mode enabled, system flies waypoints / mission items. 
+    MAV_MODE_FLAG_STABILIZE_ENABLED = 16,  // 0b00010000 system stabilizes electronically its attitude (and optionally position). It needs however further control inputs to move around. 
+    MAV_MODE_FLAG_HIL_ENABLED = 32,  // 0b00100000 hardware in the loop simulation. All motors / actuators are blocked, but internal software is full operational. 
+    MAV_MODE_FLAG_MANUAL_INPUT_ENABLED = 64,  // 0b01000000 remote control input is enabled. 
+    MAV_MODE_FLAG_SAFETY_ARMED = 128,  // 0b10000000 MAV safety set to armed. Motors are enabled / running / can start. Ready to fly. Additional note: this flag is to be ignore when sent in the command MAV_CMD_DO_SET_MODE and MAV_CMD_COMPONENT_ARM_DISARM shall be used instead. The flag can still be used to report the armed state. 
     MAV_MODE_FLAG_ENUM_END = 129,  // end marker
 } MAV_MODE_FLAG;
 #endif
@@ -149,14 +149,14 @@ typedef enum MAV_MODE_FLAG {
 #ifndef FASTMAVLINK_HAS_ENUM_MAV_MODE_FLAG_DECODE_POSITION
 #define FASTMAVLINK_HAS_ENUM_MAV_MODE_FLAG_DECODE_POSITION
 typedef enum MAV_MODE_FLAG_DECODE_POSITION {
-    MAV_MODE_FLAG_DECODE_POSITION_SAFETY = 128,  // First bit:  10000000 
-    MAV_MODE_FLAG_DECODE_POSITION_MANUAL = 64,  // Second bit: 01000000 
-    MAV_MODE_FLAG_DECODE_POSITION_HIL = 32,  // Third bit:  00100000 
-    MAV_MODE_FLAG_DECODE_POSITION_STABILIZE = 16,  // Fourth bit: 00010000 
-    MAV_MODE_FLAG_DECODE_POSITION_GUIDED = 8,  // Fifth bit:  00001000 
-    MAV_MODE_FLAG_DECODE_POSITION_AUTO = 4,  // Sixth bit:   00000100 
-    MAV_MODE_FLAG_DECODE_POSITION_TEST = 2,  // Seventh bit: 00000010 
     MAV_MODE_FLAG_DECODE_POSITION_CUSTOM_MODE = 1,  // Eighth bit: 00000001 
+    MAV_MODE_FLAG_DECODE_POSITION_TEST = 2,  // Seventh bit: 00000010 
+    MAV_MODE_FLAG_DECODE_POSITION_AUTO = 4,  // Sixth bit:   00000100 
+    MAV_MODE_FLAG_DECODE_POSITION_GUIDED = 8,  // Fifth bit:  00001000 
+    MAV_MODE_FLAG_DECODE_POSITION_STABILIZE = 16,  // Fourth bit: 00010000 
+    MAV_MODE_FLAG_DECODE_POSITION_HIL = 32,  // Third bit:  00100000 
+    MAV_MODE_FLAG_DECODE_POSITION_MANUAL = 64,  // Second bit: 01000000 
+    MAV_MODE_FLAG_DECODE_POSITION_SAFETY = 128,  // First bit:  10000000 
     MAV_MODE_FLAG_DECODE_POSITION_ENUM_END = 129,  // end marker
 } MAV_MODE_FLAG_DECODE_POSITION;
 #endif

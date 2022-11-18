@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Tue Nov 08 2022"
+#define FASTMAVLINK_BUILD_DATE  "Fri Nov 18 2022"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -101,16 +101,16 @@ typedef enum MAV_GOTO {
 #define FASTMAVLINK_HAS_ENUM_MAV_MODE
 typedef enum MAV_MODE {
     MAV_MODE_PREFLIGHT = 0,  // System is not ready to fly, booting, calibrating, etc. No flag is set. 
-    MAV_MODE_STABILIZE_DISARMED = 80,  // System is allowed to be active, under assisted RC control. 
-    MAV_MODE_STABILIZE_ARMED = 208,  // System is allowed to be active, under assisted RC control. 
     MAV_MODE_MANUAL_DISARMED = 64,  // System is allowed to be active, under manual (RC) control, no stabilization 
-    MAV_MODE_MANUAL_ARMED = 192,  // System is allowed to be active, under manual (RC) control, no stabilization 
-    MAV_MODE_GUIDED_DISARMED = 88,  // System is allowed to be active, under autonomous control, manual setpoint 
-    MAV_MODE_GUIDED_ARMED = 216,  // System is allowed to be active, under autonomous control, manual setpoint 
-    MAV_MODE_AUTO_DISARMED = 92,  // System is allowed to be active, under autonomous control and navigation (the trajectory is decided onboard and not pre-programmed by waypoints) 
-    MAV_MODE_AUTO_ARMED = 220,  // System is allowed to be active, under autonomous control and navigation (the trajectory is decided onboard and not pre-programmed by waypoints) 
     MAV_MODE_TEST_DISARMED = 66,  // UNDEFINED mode. This solely depends on the autopilot - use with caution, intended for developers only. 
+    MAV_MODE_STABILIZE_DISARMED = 80,  // System is allowed to be active, under assisted RC control. 
+    MAV_MODE_GUIDED_DISARMED = 88,  // System is allowed to be active, under autonomous control, manual setpoint 
+    MAV_MODE_AUTO_DISARMED = 92,  // System is allowed to be active, under autonomous control and navigation (the trajectory is decided onboard and not pre-programmed by waypoints) 
+    MAV_MODE_MANUAL_ARMED = 192,  // System is allowed to be active, under manual (RC) control, no stabilization 
     MAV_MODE_TEST_ARMED = 194,  // UNDEFINED mode. This solely depends on the autopilot - use with caution, intended for developers only. 
+    MAV_MODE_STABILIZE_ARMED = 208,  // System is allowed to be active, under assisted RC control. 
+    MAV_MODE_GUIDED_ARMED = 216,  // System is allowed to be active, under autonomous control, manual setpoint 
+    MAV_MODE_AUTO_ARMED = 220,  // System is allowed to be active, under autonomous control and navigation (the trajectory is decided onboard and not pre-programmed by waypoints) 
     MAV_MODE_ENUM_END = 221,  // end marker
 } MAV_MODE;
 #endif
@@ -266,17 +266,17 @@ typedef enum MAV_MOUNT_MODE {
 #ifndef FASTMAVLINK_HAS_ENUM_GIMBAL_DEVICE_CAP_FLAGS
 #define FASTMAVLINK_HAS_ENUM_GIMBAL_DEVICE_CAP_FLAGS
 typedef enum GIMBAL_DEVICE_CAP_FLAGS {
-    GIMBAL_DEVICE_CAP_FLAGS_HAS_RETRACT = 1,  // Gimbal device supports a retracted position 
-    GIMBAL_DEVICE_CAP_FLAGS_HAS_NEUTRAL = 2,  // Gimbal device supports a horizontal, forward looking position, stabilized 
+    GIMBAL_DEVICE_CAP_FLAGS_HAS_RETRACT = 1,  // Gimbal device supports a retracted position. 
+    GIMBAL_DEVICE_CAP_FLAGS_HAS_NEUTRAL = 2,  // Gimbal device supports a horizontal, forward looking position, stabilized. 
     GIMBAL_DEVICE_CAP_FLAGS_HAS_ROLL_AXIS = 4,  // Gimbal device supports rotating around roll axis. 
-    GIMBAL_DEVICE_CAP_FLAGS_HAS_ROLL_FOLLOW = 8,  // Gimbal device supports to follow a roll angle relative to the vehicle 
-    GIMBAL_DEVICE_CAP_FLAGS_HAS_ROLL_LOCK = 16,  // Gimbal device supports locking to an roll angle (generally that's the default with roll stabilized) 
+    GIMBAL_DEVICE_CAP_FLAGS_HAS_ROLL_FOLLOW = 8,  // Gimbal device supports to follow a roll angle relative to the vehicle. 
+    GIMBAL_DEVICE_CAP_FLAGS_HAS_ROLL_LOCK = 16,  // Gimbal device supports locking to a roll angle (generally that's the default with roll stabilized). 
     GIMBAL_DEVICE_CAP_FLAGS_HAS_PITCH_AXIS = 32,  // Gimbal device supports rotating around pitch axis. 
-    GIMBAL_DEVICE_CAP_FLAGS_HAS_PITCH_FOLLOW = 64,  // Gimbal device supports to follow a pitch angle relative to the vehicle 
-    GIMBAL_DEVICE_CAP_FLAGS_HAS_PITCH_LOCK = 128,  // Gimbal device supports locking to an pitch angle (generally that's the default with pitch stabilized) 
+    GIMBAL_DEVICE_CAP_FLAGS_HAS_PITCH_FOLLOW = 64,  // Gimbal device supports to follow a pitch angle relative to the vehicle. 
+    GIMBAL_DEVICE_CAP_FLAGS_HAS_PITCH_LOCK = 128,  // Gimbal device supports locking to a pitch angle (generally that's the default with pitch stabilized). 
     GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_AXIS = 256,  // Gimbal device supports rotating around yaw axis. 
-    GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_FOLLOW = 512,  // Gimbal device supports to follow a yaw angle relative to the vehicle (generally that's the default) 
-    GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_LOCK = 1024,  // Gimbal device supports locking to an absolute heading (often this is an option available) 
+    GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_FOLLOW = 512,  // Gimbal device supports to follow a yaw angle relative to the vehicle (generally that's the default). 
+    GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_LOCK = 1024,  // Gimbal device supports locking to an absolute heading, i.e., yaw angle relative to North (earth frame, often this is an option available). 
     GIMBAL_DEVICE_CAP_FLAGS_SUPPORTS_INFINITE_YAW = 2048,  // Gimbal device supports yawing/panning infinetely (e.g. using slip disk). 
     GIMBAL_DEVICE_CAP_FLAGS_ENUM_END = 2049,  // end marker
 } GIMBAL_DEVICE_CAP_FLAGS;
@@ -309,10 +309,10 @@ typedef enum GIMBAL_MANAGER_CAP_FLAGS {
 #define FASTMAVLINK_HAS_ENUM_GIMBAL_DEVICE_FLAGS
 typedef enum GIMBAL_DEVICE_FLAGS {
     GIMBAL_DEVICE_FLAGS_RETRACT = 1,  // Set to retracted safe position (no stabilization), takes presedence over all other flags. 
-    GIMBAL_DEVICE_FLAGS_NEUTRAL = 2,  // Set to neutral/default position, taking precedence over all other flags except RETRACT. Neutral is commonly forward-facing and horizontal (pitch=yaw=0) but may be any orientation. 
-    GIMBAL_DEVICE_FLAGS_ROLL_LOCK = 4,  // Lock roll angle to absolute angle relative to horizon (not relative to drone). This is generally the default with a stabilizing gimbal. 
-    GIMBAL_DEVICE_FLAGS_PITCH_LOCK = 8,  // Lock pitch angle to absolute angle relative to horizon (not relative to drone). This is generally the default. 
-    GIMBAL_DEVICE_FLAGS_YAW_LOCK = 16,  // Lock yaw angle to absolute angle relative to North (not relative to drone). If this flag is set, the quaternion is in the Earth frame with the x-axis pointing North (yaw absolute). If this flag is not set, the quaternion frame is in the Earth frame rotated so that the x-axis is pointing forward (yaw relative to vehicle). 
+    GIMBAL_DEVICE_FLAGS_NEUTRAL = 2,  // Set to neutral/default position, taking precedence over all other flags except RETRACT. Neutral is commonly forward-facing and horizontal (roll=pitch=yaw=0) but may be any orientation. 
+    GIMBAL_DEVICE_FLAGS_ROLL_LOCK = 4,  // Lock roll angle to absolute angle relative to horizon (not relative to vehicle). This is generally the default with a stabilizing gimbal. 
+    GIMBAL_DEVICE_FLAGS_PITCH_LOCK = 8,  // Lock pitch angle to absolute angle relative to horizon (not relative to vehicle). This is generally the default with a stabilizing gimbal. 
+    GIMBAL_DEVICE_FLAGS_YAW_LOCK = 16,  // Lock yaw angle to absolute angle relative to North (not relative to vehicle). If this flag is set, the yaw angle and z component of angular velocity are relative to North (earth frame, x-axis pointing North), else they are relative to the vehicle heading (vehicle frame, earth frame rotated so that the x-axis is pointing forward). 
     GIMBAL_DEVICE_FLAGS_ENUM_END = 17,  // end marker
 } GIMBAL_DEVICE_FLAGS;
 #endif
@@ -673,7 +673,7 @@ typedef enum MAV_CMD {
     MAV_CMD_DO_FLIGHTTERMINATION = 185,  // Terminate flight immediately.          Flight termination immediately and irreversably terminates the current flight, returning the vehicle to ground.          The vehicle will ignore RC or other input until it has been power-cycled.          Termination may trigger safety measures, including: disabling motors and deployment of parachute on multicopters, and setting flight surfaces to initiate a landing pattern on fixed-wing).          On multicopters without a parachute it may trigger a crash landing.          Support for this command can be tested using the protocol bit: MAV_PROTOCOL_CAPABILITY_FLIGHT_TERMINATION.          Support for this command can also be tested by sending the command with param1=0 (< 0.5); the ACK should be either MAV_RESULT_FAILED or MAV_RESULT_UNSUPPORTED.         | Flight termination activated if > 0.5. Otherwise not activated and ACK with MAV_RESULT_FAILED. | Empty | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_DO_CHANGE_ALTITUDE = 186,  // Change altitude set point. | Altitude. | Frame of new altitude. | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_DO_SET_ACTUATOR = 187,  // Sets actuators (e.g. servos) to a desired value. The actuator numbers are mapped to specific outputs (e.g. on any MAIN or AUX PWM or UAVCAN) using a flight-stack specific mechanism (i.e. a parameter). | Actuator 1 value, scaled from [-1 to 1]. NaN to ignore. | Actuator 2 value, scaled from [-1 to 1]. NaN to ignore. | Actuator 3 value, scaled from [-1 to 1]. NaN to ignore. | Actuator 4 value, scaled from [-1 to 1]. NaN to ignore. | Actuator 5 value, scaled from [-1 to 1]. NaN to ignore. | Actuator 6 value, scaled from [-1 to 1]. NaN to ignore. | Index of actuator set (i.e if set to 1, Actuator 1 becomes Actuator 7)
-    MAV_CMD_DO_LAND_START = 189,  // Mission command to perform a landing. This is used as a marker in a mission to tell the autopilot where a sequence of mission items that represents a landing starts. It may also be sent via a COMMAND_LONG to trigger a landing, in which case the nearest (geographically) landing sequence in the mission will be used. The Latitude/Longitude is optional, and may be set to 0 if not needed. If specified then it will be used to help find the closest landing sequence. | Empty | Empty | Empty | Empty | Latitude | Longitude | Empty
+    MAV_CMD_DO_LAND_START = 189,  // Mission command to perform a landing. This is used as a marker in a mission to tell the autopilot where a sequence of mission items that represents a landing starts.	  It may also be sent via a COMMAND_LONG to trigger a landing, in which case the nearest (geographically) landing sequence in the mission will be used.	  The Latitude/Longitude/Altitude is optional, and may be set to 0 if not needed. If specified then it will be used to help find the closest landing sequence.	 | Empty | Empty | Empty | Empty | Latitude | Longitude | Altitude
     MAV_CMD_DO_RALLY_LAND = 190,  // Mission command to perform a landing from a rally point. | Break altitude | Landing speed | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_DO_GO_AROUND = 191,  // Mission command to safely abort an autonomous landing. | Altitude | Empty | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_DO_REPOSITION = 192,  // Reposition the vehicle to a specific WGS84 global position. | Ground speed, less than 0 (-1) for default | Bitmask of option flags. | Loiter radius for planes. Positive values only, direction is controlled by Yaw value. A value of zero or NaN is ignored.  | Yaw heading. NaN to use the current system yaw heading mode (e.g. yaw towards next waypoint, yaw to home, etc.). For planes indicates loiter direction (0: clockwise, 1: counter clockwise) | Latitude | Longitude | Altitude
@@ -773,8 +773,6 @@ typedef enum MAV_CMD {
     MAV_CMD_DO_ADSB_OUT_IDENT = 10001,  // Trigger the start of an ADSB-out IDENT. This should only be used when requested to do so by an Air Traffic Controller in controlled airspace. This starts the IDENT which is then typically held for 18 seconds by the hardware per the Mode A, C, and S transponder spec. | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0)
     MAV_CMD_PAYLOAD_PREPARE_DEPLOY = 30001,  // Deploy payload on a Lat / Lon / Alt position. This includes the navigation to reach the required release position and velocity. | Operation mode. 0: prepare single payload deploy (overwriting previous requests), but do not execute it. 1: execute payload deploy immediately (rejecting further deploy commands during execution, but allowing abort). 2: add payload deploy to existing deployment list. | Desired approach vector in compass heading. A negative value indicates the system can define the approach vector at will. | Desired ground speed at release time. This can be overridden by the airframe in case it needs to meet minimum airspeed. A negative value indicates the system can define the ground speed at will. | Minimum altitude clearance to the release position. A negative value indicates the system can define the clearance at will. | Latitude. Note, if used in MISSION_ITEM (deprecated) the units are degrees (unscaled) | Longitude. Note, if used in MISSION_ITEM (deprecated) the units are degrees (unscaled) | Altitude (MSL)
     MAV_CMD_PAYLOAD_CONTROL_DEPLOY = 30002,  // Control the payload deployment. | Operation mode. 0: Abort deployment, continue normal mission. 1: switch to payload deployment mode. 100: delete first payload deployment request. 101: delete all payload deployment requests. | Reserved | Reserved | Reserved | Reserved | Reserved | Reserved
-    MAV_CMD_FIXED_MAG_CAL_YAW = 42006,  // Magnetometer calibration based on provided known yaw. This allows for fast calibration using WMM field tables in the vehicle, given only the known yaw of the vehicle. If Latitude and longitude are both zero then use the current vehicle location. | Yaw of vehicle in earth frame. | CompassMask, 0 for all. | Latitude. | Longitude. | Empty. | Empty. | Empty.
-    MAV_CMD_DO_WINCH = 42600,  // Command to operate winch. | Winch instance number. | Action to perform. | Length of line to release (negative to wind). | Release rate (negative to wind). | Empty. | Empty. | Empty.
     MAV_CMD_WAYPOINT_USER_1 = 31000,  // User defined waypoint item. Ground Station will show the Vehicle as flying through this item. | User defined | User defined | User defined | User defined | Latitude unscaled | Longitude unscaled | Altitude (MSL)
     MAV_CMD_WAYPOINT_USER_2 = 31001,  // User defined waypoint item. Ground Station will show the Vehicle as flying through this item. | User defined | User defined | User defined | User defined | Latitude unscaled | Longitude unscaled | Altitude (MSL)
     MAV_CMD_WAYPOINT_USER_3 = 31002,  // User defined waypoint item. Ground Station will show the Vehicle as flying through this item. | User defined | User defined | User defined | User defined | Latitude unscaled | Longitude unscaled | Altitude (MSL)
@@ -791,6 +789,8 @@ typedef enum MAV_CMD {
     MAV_CMD_USER_4 = 31013,  // User defined command. Ground Station will not show the Vehicle as flying through this item. Example: MAV_CMD_DO_SET_PARAMETER item. | User defined | User defined | User defined | User defined | User defined | User defined | User defined
     MAV_CMD_USER_5 = 31014,  // User defined command. Ground Station will not show the Vehicle as flying through this item. Example: MAV_CMD_DO_SET_PARAMETER item. | User defined | User defined | User defined | User defined | User defined | User defined | User defined
     MAV_CMD_CAN_FORWARD = 32000,  // Request forwarding of CAN packets from the given CAN bus to this component. CAN Frames are sent using CAN_FRAME and CANFD_FRAME messages | Bus number (0 to disable forwarding, 1 for first bus, 2 for 2nd bus, 3 for 3rd bus). | Empty. | Empty. | Empty. | Empty. | Empty. | Empty.
+    MAV_CMD_FIXED_MAG_CAL_YAW = 42006,  // Magnetometer calibration based on provided known yaw. This allows for fast calibration using WMM field tables in the vehicle, given only the known yaw of the vehicle. If Latitude and longitude are both zero then use the current vehicle location. | Yaw of vehicle in earth frame. | CompassMask, 0 for all. | Latitude. | Longitude. | Empty. | Empty. | Empty.
+    MAV_CMD_DO_WINCH = 42600,  // Command to operate winch. | Winch instance number. | Action to perform. | Length of line to release (negative to wind). | Release rate (negative to wind). | Empty. | Empty. | Empty.
     MAV_CMD_ENUM_END = 42601,  // end marker
 } MAV_CMD;
 #endif
@@ -829,15 +829,15 @@ typedef enum MAV_ROI {
 #ifndef FASTMAVLINK_HAS_ENUM_MAV_CMD_ACK
 #define FASTMAVLINK_HAS_ENUM_MAV_CMD_ACK
 typedef enum MAV_CMD_ACK {
-    MAV_CMD_ACK_OK = 0,  // Command / mission item is ok. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
-    MAV_CMD_ACK_ERR_FAIL = 1,  // Generic error message if none of the other reasons fails or if no detailed error reporting is implemented. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
-    MAV_CMD_ACK_ERR_ACCESS_DENIED = 2,  // The system is refusing to accept this command from this source / communication partner. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
-    MAV_CMD_ACK_ERR_NOT_SUPPORTED = 3,  // Command or mission item is not supported, other commands would be accepted. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
-    MAV_CMD_ACK_ERR_COORDINATE_FRAME_NOT_SUPPORTED = 4,  // The coordinate frame of this command / mission item is not supported. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
-    MAV_CMD_ACK_ERR_COORDINATES_OUT_OF_RANGE = 5,  // The coordinate frame of this command is ok, but he coordinate values exceed the safety limits of this system. This is a generic error, please use the more specific error messages below if possible. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
-    MAV_CMD_ACK_ERR_X_LAT_OUT_OF_RANGE = 6,  // The X or latitude value is out of range. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
-    MAV_CMD_ACK_ERR_Y_LON_OUT_OF_RANGE = 7,  // The Y or longitude value is out of range. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
-    MAV_CMD_ACK_ERR_Z_ALT_OUT_OF_RANGE = 8,  // The Z or altitude value is out of range. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
+    MAV_CMD_ACK_OK = 0,  // Command / mission item is ok. 
+    MAV_CMD_ACK_ERR_FAIL = 1,  // Generic error message if none of the other reasons fails or if no detailed error reporting is implemented. 
+    MAV_CMD_ACK_ERR_ACCESS_DENIED = 2,  // The system is refusing to accept this command from this source / communication partner. 
+    MAV_CMD_ACK_ERR_NOT_SUPPORTED = 3,  // Command or mission item is not supported, other commands would be accepted. 
+    MAV_CMD_ACK_ERR_COORDINATE_FRAME_NOT_SUPPORTED = 4,  // The coordinate frame of this command / mission item is not supported. 
+    MAV_CMD_ACK_ERR_COORDINATES_OUT_OF_RANGE = 5,  // The coordinate frame of this command is ok, but he coordinate values exceed the safety limits of this system. This is a generic error, please use the more specific error messages below if possible. 
+    MAV_CMD_ACK_ERR_X_LAT_OUT_OF_RANGE = 6,  // The X or latitude value is out of range. 
+    MAV_CMD_ACK_ERR_Y_LON_OUT_OF_RANGE = 7,  // The Y or longitude value is out of range. 
+    MAV_CMD_ACK_ERR_Z_ALT_OUT_OF_RANGE = 8,  // The Z or altitude value is out of range. 
     MAV_CMD_ACK_ENUM_END = 9,  // end marker
 } MAV_CMD_ACK;
 #endif
