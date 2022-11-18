@@ -401,19 +401,29 @@ class MAVParseXml(object):
 
             elif in_element == "mavlink.enums.enum":
                 check_attrs(attrs, ['name'], 'enum')
-                # special handling for MAV_CMD enum
-                if 'MAV_CMD' in attrs['name']:
-                    self.enums.append(
+                # check if we had this enum name already before
+                # if so, we move it to the end
+                e = None
+                for enum in self.enums:
+                    if attrs['name'] == enum.name: e = enum
+                if e:
+                    # ups
+                    MAVParseWarning("MAVParseXml(): enum %s did occur before" %e.name)
+                    self.enums.append(self.enums.pop(self.enums.index(e)))
+                else:
+                    # special handling for MAV_CMD enum
+                    if attrs['name'] == 'MAV_CMD':
+                        self.enums.append(
                         MAVCmdEnum(
-                            attrs['name'], 
-                            attrs.get('hasLocation', False), 
-                            attrs.get('isDestination', False), 
+                            attrs['name'],
+                            attrs.get('hasLocation', False),
+                            attrs.get('isDestination', False),
                             p.CurrentLineNumber)
-                    )
-                else:                
-                    self.enums.append(
-                        MAVEnum(attrs['name'], attrs.get('bitmask', False), p.CurrentLineNumber)
-                    )
+                        )
+                    else:
+                        self.enums.append(
+                            MAVEnum(attrs['name'], attrs.get('bitmask', False), p.CurrentLineNumber)
+                        )
 
             elif in_element == "mavlink.enums.enum.entry":
                 check_attrs(attrs, ['name'], 'enum entry')
