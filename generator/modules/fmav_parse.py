@@ -13,6 +13,7 @@ import operator
 import os
 import sys
 import time
+import copy
 import xml.parsers.expat
 
 
@@ -98,9 +99,17 @@ class MAVCmdEnum(object):
         self.isDestination = isDestination
         self.description = description.strip().replace("\n","")
 
-        self.entry = []
+        self.entries = []
         self.start_value = None
         self.highest_value = None
+
+    def copy(self):
+        new = MAVCmdEnum(self.name,self.hasLocation,self.isDestination,self.line_number,self.description)
+        new.bitmask = self.bitmask
+        new.entries = copy.copy(self.entries)
+        new.start_value = self.start_value
+        new.highest_value = self.highest_value
+        return new
 
 
 class MAVEnum(object):
@@ -114,7 +123,7 @@ class MAVEnum(object):
         self.isDestination = None
         self.description = description.strip().replace("\n","")
 
-        self.entry = []
+        self.entries = []
         self.start_value = None
         self.highest_value = None
 
@@ -451,13 +460,13 @@ class MAVParseXml(object):
                 if self.enums[-1].highest_value is None or value > self.enums[-1].highest_value:
                     self.enums[-1].highest_value = value
                 # append the new entry
-                self.enums[-1].entry.append(
+                self.enums[-1].entries.append(
                     MAVEnumEntry(attrs['name'], value, p.CurrentLineNumber, origin_file=self.filename)
                 )
 
             elif in_element == "mavlink.enums.enum.entry.param":
                 check_attrs(attrs, ['index'], 'enum param')
-                self.enums[-1].entry[-1].params.append(
+                self.enums[-1].entries[-1].params.append(
                     MAVEnumEntryParam(
                         attrs['index'],
                         label=attrs.get('label', ''), units=attrs.get('units', ''),
@@ -479,9 +488,9 @@ class MAVParseXml(object):
             elif in_element == "mavlink.enums.enum.description":
                 self.enums[-1].description += data.replace("\n","")
             elif in_element == "mavlink.enums.enum.entry.description":
-                self.enums[-1].entry[-1].description += data.replace("\n","")
+                self.enums[-1].entries[-1].description += data.replace("\n","")
             elif in_element == "mavlink.enums.enum.entry.param":
-                self.enums[-1].entry[-1].params[-1].description += data.replace("\n","")
+                self.enums[-1].entries[-1].params[-1].description += data.replace("\n","")
             elif in_element == "mavlink.version":
                 self.version = int(data)
             elif in_element == "mavlink.include":
@@ -497,10 +506,10 @@ class MAVParseXml(object):
 
         for enum in self.enums:
             self.enums_by_name[enum.name] = enum
-            self.enums_merged.append(enum)
+            self.enums_merged.append(enum) # add enum, enums_merged is later expanded with the enums from included libs
             # special handling for MAV_CMD enum, process to add description for reserved params
-            if 'MAV_CMD' in enum.name:
-                for entry in enum.entry:
+            if enum.name == 'MAV_CMD':
+                for entry in enum.entries:
                     if len(entry.params) == 7: # there is a description for the param
                         continue
                     params_dict = {}
@@ -528,39 +537,46 @@ There should be no reason to call them from the outside.
 '''
 
 def fmavMergeEnum(enum, ienum):
-    entry_names = []
-    entry_values = []
     entry_ss = []
-    for entry in enum.entry:
-        entry_names.append(entry.name)
-        entry_values.append(entry.value)
+    for entry in enum.entries:
         ss = "%s.%s" % (entry.name, entry.value)
         entry_ss.append(ss)
-    for ientry in ienum.entry:
-        if ientry.name in entry_names:
-            print("ERROR: Duplicate enum names:\n  %s = %s @ %s:%u" % (
-                        entry.name, entry.value, entry.origin_file, entry.line_number))
-            sys.exit(1)
-        if ientry.value in entry_values:
-            print("ERROR: Duplicate enum values:\n  %s = %s @ %s:%u" % (
-                        entry.name, entry.value, entry.origin_file, entry.line_number))
-            sys.exit(1)
+    for ientry in ienum.entries:
+        for entry in enum.entries:
+            if ientry == entry: # carried over from lower include file, so ok
+                continue    
+            if ientry.name == entry.name:
+                print("ERROR: Duplicate enum names:\n  %s = %s @ %s:%u" % (
+                            entry.name, entry.value, entry.origin_file, entry.line_number))
+                sys.exit(1)
+            if ientry.value == entry.value:
+                print("ERROR: Duplicate enum values:\n  %s = %s @ %s:%u" % (
+                            entry.name, entry.value, entry.origin_file, entry.line_number))
+                sys.exit(1)
         iss = "%s.%s" % (ientry.name, ientry.value)
         if not iss in entry_ss: # not yet in enum
-            enum.entry.append(ientry)
+            enum.entries.append(ientry)
     # sort by value
-    enum.entry = sorted(enum.entry, key=operator.attrgetter('value'), reverse=False)
+    #enum.entries = sorted(enum.entries, key=operator.attrgetter('value'), reverse=False)
+
+
+def fmavCopyEnum(enums, ienum):
+    # copy ienum into enums list, it's important to copy properly, copy.copy(ienum) doesn't work
+    # TODO: will fail if not MAV_CMD, since copy not yet defined for MAVEnum
+    enums.append(ienum.copy())
 
 
 def fmavFinalizeAllEnums(xml_list):
     for xml in xml_list:
         for enum in xml.enums_merged:
-            # add a ENUM_END
+            # sort entries list by value
+            enum.entries = sorted(enum.entries, key=operator.attrgetter('value'), reverse=False)
+            # add a ENUM_END to each enum
             entry_value_max = 0
-            for entry in enum.entry:
+            for entry in enum.entries:
                 if entry.value > entry_value_max: entry_value_max = entry.value
-            enum.entry.append(
-                #MAVEnumEntry(enum.name + "_ENUM_END", enum.entry[-1].value + 1, end_marker=True, description='end marker')
+            enum.entries.append(
+                #MAVEnumEntry(enum.name + "_ENUM_END", enum.entries[-1].value + 1, end_marker=True, description='end marker')
                 MAVEnumEntry(enum.name + "_ENUM_END", entry_value_max + 1, end_marker=True, description='end marker')
             )
 
@@ -592,16 +608,25 @@ def fmavAddXml(xml, ixml):
     ''' Merges ixml into xml. This is a most important function. It has
     to merge messages, crcs, and enums. It also must check for duplicity
     and consistency.'''
-    print("Mergingd XML %s.xml into %s.xml" %(ixml.basename, xml.basename))
+    print("Merging XML %s.xml into %s.xml" %(ixml.basename, xml.basename))
     # merge enums
+    # enums which exist in both ixml and xml need to be combined and carried over to xml.
+    # Also all enums which had to be merged at a lower level need to be carrid over,
+    # even if they do not exist also in xml. Currently this occurs only for MAV_CMD, so we
+    # handle this case by hand.
+    # TODO: find general algorithm to carry over
     enum_dict = {}
     for enum in xml.enums_merged:
         if not enum.name in enum_dict.keys():
-            enum_dict[enum.name] = enum
+            enum_dict[enum.name] = enum # dict of all enums in xml, addressable by name
     for ienum in ixml.enums_merged:
         if ienum.name in enum_dict.keys():
+            print("  libraries share enum %s, merge enum %s" %(ienum.name, ienum.name))
             fmavMergeEnum(enum_dict[ienum.name], ienum) # merge ienum into enum
-            print("Merged enum %s" % ienum.name)
+    for ienum in ixml.enums_merged:
+        if ienum.name == 'MAV_CMD' and not 'MAV_CMD' in enum_dict.keys():
+            print("  lower library has enum %s but higher not, carry over enum %s" %(ienum.name, ienum.name))
+            fmavCopyEnum(xml.enums_merged, ienum) # carry over ienum
     # check messages
     fmavCheckMessages(xml, ixml)
     xml.messages_all_by_id.update(ixml.messages_all_by_id)

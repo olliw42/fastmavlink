@@ -53,7 +53,7 @@ extern "C" {
 ${{enums_merged:#ifndef FASTMAVLINK_HAS_ENUM_${name}
 #define FASTMAVLINK_HAS_ENUM_${name}
 typedef enum ${name} {
-${{entry:    ${name} = ${value},  // ${description} ${{params:| ${description} }}
+${{entries:    ${name} = ${value},  // ${description} ${{params:| ${description} }}
 }}
 } ${name};
 #endif
