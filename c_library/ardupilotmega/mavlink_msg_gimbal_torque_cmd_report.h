@@ -191,10 +191,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_torque_cmd_report_encode
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gimbal_torque_cmd_report_decode(fmav_gimbal_torque_cmd_report_t* payload, const fmav_message_t* msg)
 {
 #if FASTMAVLINK_ALWAYS_ZEROFILL
-    memcpy(payload, msg->payload, msg->len);
-    // ensure that returned payload is zero filled
     if (msg->len < FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MAX) {
+        memcpy(payload, msg->payload, msg->len);
+        // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MAX - msg->len);
+    } else {
+		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        memcpy(payload, msg->payload, FASTMAVLINK_MSG_GIMBAL_TORQUE_CMD_REPORT_PAYLOAD_LEN_MAX);
     }
 #else
     // this requires that msg payload had been zero filled before

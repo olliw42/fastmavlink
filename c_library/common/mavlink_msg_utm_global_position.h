@@ -254,10 +254,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_utm_global_position_encode_to_s
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_utm_global_position_decode(fmav_utm_global_position_t* payload, const fmav_message_t* msg)
 {
 #if FASTMAVLINK_ALWAYS_ZEROFILL
-    memcpy(payload, msg->payload, msg->len);
-    // ensure that returned payload is zero filled
     if (msg->len < FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_PAYLOAD_LEN_MAX) {
+        memcpy(payload, msg->payload, msg->len);
+        // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_PAYLOAD_LEN_MAX - msg->len);
+    } else {
+		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        memcpy(payload, msg->payload, FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_PAYLOAD_LEN_MAX);
     }
 #else
     // this requires that msg payload had been zero filled before

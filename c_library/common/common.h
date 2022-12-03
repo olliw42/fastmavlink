@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Fri Nov 18 2022"
+#define FASTMAVLINK_BUILD_DATE  "Sat Dec 03 2022"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -278,7 +278,9 @@ typedef enum GIMBAL_DEVICE_CAP_FLAGS {
     GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_FOLLOW = 512,  // Gimbal device supports to follow a yaw angle relative to the vehicle (generally that's the default). 
     GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_LOCK = 1024,  // Gimbal device supports locking to an absolute heading, i.e., yaw angle relative to North (earth frame, often this is an option available). 
     GIMBAL_DEVICE_CAP_FLAGS_SUPPORTS_INFINITE_YAW = 2048,  // Gimbal device supports yawing/panning infinetely (e.g. using slip disk). 
-    GIMBAL_DEVICE_CAP_FLAGS_ENUM_END = 2049,  // end marker
+    GIMBAL_DEVICE_CAP_FLAGS_SUPPORTS_YAW_IN_EARTH_FRAME = 4096,  // Gimbal device supports yaw angles and angular velocities relative to North (earth frame). This usually requires support by an autopilot via AUTOPILOT_STATE_FOR_GIMBAL_DEVICE. Support can go on and off during runtime, which is reported by the flag GIMBAL_DEVICE_FLAGS_CAN_ACCEPT_YAW_IN_EARTH_FRAME. 
+    GIMBAL_DEVICE_CAP_FLAGS_HAS_RC_INPUTS = 8192,  // Gimbal device supports radio control inputs as an alternative input for controlling the gimbal orientation. 
+    GIMBAL_DEVICE_CAP_FLAGS_ENUM_END = 8193,  // end marker
 } GIMBAL_DEVICE_CAP_FLAGS;
 #endif
 
@@ -313,7 +315,12 @@ typedef enum GIMBAL_DEVICE_FLAGS {
     GIMBAL_DEVICE_FLAGS_ROLL_LOCK = 4,  // Lock roll angle to absolute angle relative to horizon (not relative to vehicle). This is generally the default with a stabilizing gimbal. 
     GIMBAL_DEVICE_FLAGS_PITCH_LOCK = 8,  // Lock pitch angle to absolute angle relative to horizon (not relative to vehicle). This is generally the default with a stabilizing gimbal. 
     GIMBAL_DEVICE_FLAGS_YAW_LOCK = 16,  // Lock yaw angle to absolute angle relative to North (not relative to vehicle). If this flag is set, the yaw angle and z component of angular velocity are relative to North (earth frame, x-axis pointing North), else they are relative to the vehicle heading (vehicle frame, earth frame rotated so that the x-axis is pointing forward). 
-    GIMBAL_DEVICE_FLAGS_ENUM_END = 17,  // end marker
+    GIMBAL_DEVICE_FLAGS_YAW_IN_VEHICLE_FRAME = 32,  // Yaw angle and z component of angular velocity are relative to the vehicle heading (vehicle frame, earth frame rotated such that the x-axis is pointing forward). 
+    GIMBAL_DEVICE_FLAGS_YAW_IN_EARTH_FRAME = 64,  // Yaw angle and z component of angular velocity are relative to North (earth frame, x-axis is pointing North). 
+    GIMBAL_DEVICE_FLAGS_ACCEPTS_YAW_IN_EARTH_FRAME = 128,  // Gimbal device can accept yaw angle inputs relative to North (earth frame). This flag is only for reporting (attempts to set this flag are ignored). 
+    GIMBAL_DEVICE_FLAGS_RC_EXCLUSIVE = 256,  // The gimbal orientation is set exclusively by the RC signals feed to the gimbal's radio control inputs. MAVLink messages for setting the gimbal orientation (GIMBAL_DEVICE_SET_ATTITUDE) are ignored. 
+    GIMBAL_DEVICE_FLAGS_RC_MIXED = 512,  // The gimbal orientation is determined by combining/mixing the RC signals feed to the gimbal's radio control inputs and the MAVLink messages for setting the gimbal orientation (GIMBAL_DEVICE_SET_ATTITUDE). How these two controls are combined or mixed is not defined by the protocol but is up to the implementation. 
+    GIMBAL_DEVICE_FLAGS_ENUM_END = 513,  // end marker
 } GIMBAL_DEVICE_FLAGS;
 #endif
 
@@ -339,11 +346,12 @@ typedef enum GIMBAL_DEVICE_ERROR_FLAGS {
     GIMBAL_DEVICE_ERROR_FLAGS_AT_YAW_LIMIT = 4,  // Gimbal device is limited by hardware yaw limit. 
     GIMBAL_DEVICE_ERROR_FLAGS_ENCODER_ERROR = 8,  // There is an error with the gimbal encoders. 
     GIMBAL_DEVICE_ERROR_FLAGS_POWER_ERROR = 16,  // There is an error with the gimbal power source. 
-    GIMBAL_DEVICE_ERROR_FLAGS_MOTOR_ERROR = 32,  // There is an error with the gimbal motor's. 
+    GIMBAL_DEVICE_ERROR_FLAGS_MOTOR_ERROR = 32,  // There is an error with the gimbal motors. 
     GIMBAL_DEVICE_ERROR_FLAGS_SOFTWARE_ERROR = 64,  // There is an error with the gimbal's software. 
     GIMBAL_DEVICE_ERROR_FLAGS_COMMS_ERROR = 128,  // There is an error with the gimbal's communication. 
-    GIMBAL_DEVICE_ERROR_FLAGS_CALIBRATION_RUNNING = 256,  // Gimbal is currently calibrating. 
-    GIMBAL_DEVICE_ERROR_FLAGS_ENUM_END = 257,  // end marker
+    GIMBAL_DEVICE_ERROR_FLAGS_CALIBRATION_RUNNING = 256,  // Gimbal device is currently calibrating. 
+    GIMBAL_DEVICE_ERROR_FLAGS_NO_MANAGER = 512,  // Gimbal device is not assigned to a gimbal manager. 
+    GIMBAL_DEVICE_ERROR_FLAGS_ENUM_END = 513,  // end marker
 } GIMBAL_DEVICE_ERROR_FLAGS;
 #endif
 
@@ -1523,7 +1531,7 @@ typedef enum CAMERA_TRACKING_TARGET_DATA {
 typedef enum CAMERA_ZOOM_TYPE {
     ZOOM_TYPE_STEP = 0,  // Zoom one step increment (-1 for wide, 1 for tele) 
     ZOOM_TYPE_CONTINUOUS = 1,  // Continuous zoom up/down until stopped (-1 for wide, 1 for tele, 0 to stop zooming) 
-    ZOOM_TYPE_RANGE = 2,  // Zoom value as proportion of full camera range (a value between 0.0 and 100.0) 
+    ZOOM_TYPE_RANGE = 2,  // Zoom value as proportion of full camera range (a percentage value between 0.0 and 100.0) 
     ZOOM_TYPE_FOCAL_LENGTH = 3,  // Zoom value/variable focal length in millimetres. Note that there is no message to get the valid zoom range of the camera, so this can type can only be used for cameras where the zoom range is known (implying that this cannot reliably be used in a GCS for an arbitrary camera) 
     CAMERA_ZOOM_TYPE_ENUM_END = 4,  // end marker
 } CAMERA_ZOOM_TYPE;

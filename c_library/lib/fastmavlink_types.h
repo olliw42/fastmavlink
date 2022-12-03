@@ -22,7 +22,7 @@ typedef enum {
 typedef struct _fmav_message_entry {
 #ifdef FASTMAVLINK_MESSAGE_ENTRY_MSGID24BIT
     uint32_t msgid:24; // works and reduces RAM, but is it good?
-#else    
+#else
     uint32_t msgid; // :24; works and reduces RAM, but is it good?
 #endif
     uint8_t crc_extra;
@@ -38,7 +38,7 @@ typedef enum {
     FASTMAVLINK_PARSE_RESULT_HAS_HEADER,
     FASTMAVLINK_PARSE_RESULT_OK,
     FASTMAVLINK_PARSE_RESULT_MSGID_UNKNOWN,
-    FASTMAVLINK_PARSE_RESULT_LENGTH_ERROR,
+    FASTMAVLINK_PARSE_RESULT_LENGTH_ERROR, // cannot actually happen, length can be less or larger than PAYLOAD_LEN_MAX in v2
     FASTMAVLINK_PARSE_RESULT_CRC_ERROR,
     FASTMAVLINK_PARSE_RESULT_SIGNATURE_ERROR,
 } fmav_parse_result_e;

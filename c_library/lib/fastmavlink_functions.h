@@ -242,10 +242,11 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_check_msg(fmav_message_t* msg, fmav_
     }
 
     // check length
-    if (msg->len > msg_entry->payload_max_len) {
-        msg->res = FASTMAVLINK_PARSE_RESULT_LENGTH_ERROR;
-        return FASTMAVLINK_PARSE_RESULT_LENGTH_ERROR;
-    }
+// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+//    if (msg->len > msg_entry->payload_max_len) {
+//        msg->res = FASTMAVLINK_PARSE_RESULT_LENGTH_ERROR;
+//        return FASTMAVLINK_PARSE_RESULT_LENGTH_ERROR;
+//    }
 
     // check crc
     fmav_crc_accumulate(&(status->rx_crc), msg_entry->crc_extra);
@@ -386,10 +387,11 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_check_frame_buf(fmav_result_t* resul
     }
 
     // check length
-    if (buf[1] > msg_entry->payload_max_len) {
-        result->res = FASTMAVLINK_PARSE_RESULT_LENGTH_ERROR;
-        return FASTMAVLINK_PARSE_RESULT_LENGTH_ERROR;
-    }
+// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+//    if (buf[1] > msg_entry->payload_max_len) {
+//        result->res = FASTMAVLINK_PARSE_RESULT_LENGTH_ERROR;
+//        return FASTMAVLINK_PARSE_RESULT_LENGTH_ERROR;
+//    }
 
     // we are going to need this twice
     uint16_t payload_pos = (buf[0] == FASTMAVLINK_MAGIC_V2) ? FASTMAVLINK_HEADER_V2_LEN : FASTMAVLINK_HEADER_V1_LEN;
@@ -652,7 +654,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_msg(fmav_message_t* msg, fm
         }
         status->rx_cnt = 0;
         status->rx_state = FASTMAVLINK_PARSE_STATE_IDLE;
-        fmav_check_msg(msg, status); // also zero fills mag payload
+        fmav_check_msg(msg, status); // also zero fills msg payload
         return msg->res;
 
     case FASTMAVLINK_PARSE_STATE_SIGNATURE:
@@ -663,7 +665,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_msg(fmav_message_t* msg, fm
         }
         status->rx_cnt = 0;
         status->rx_state = FASTMAVLINK_PARSE_STATE_IDLE;
-        fmav_check_msg(msg, status); // also zero fills mag payload
+        fmav_check_msg(msg, status); // also zero fills msg payload
         return msg->res;
     }
 
