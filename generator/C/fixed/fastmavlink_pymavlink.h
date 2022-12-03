@@ -186,7 +186,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void mavlink_reset_status(mavlink_status_t* statu
 }
 
 
-//return FRAMING_INCOMPLETE, FRAMING_BAD_CRC, FRAMING_BAD_SIGNATURE, or FRAMING_OK
+// return FRAMING_INCOMPLETE, FRAMING_BAD_CRC, FRAMING_BAD_SIGNATURE, or FRAMING_OK
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t mavlink_parse_nextchar(mavlink_message_t* msg, mavlink_status_t* status, uint8_t c)
 {
     // returns NONE, HAS_HEADER, MSGID_UNKNOWN, LENGTH_ERROR, CRC_ERROR, SIGNATURE_ERROR, or OK

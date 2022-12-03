@@ -654,7 +654,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_msg(fmav_message_t* msg, fm
         }
         status->rx_cnt = 0;
         status->rx_state = FASTMAVLINK_PARSE_STATE_IDLE;
-        fmav_check_msg(msg, status); // also zero fills mag payload
+        fmav_check_msg(msg, status); // also zero fills msg payload
         return msg->res;
 
     case FASTMAVLINK_PARSE_STATE_SIGNATURE:
@@ -665,7 +665,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_msg(fmav_message_t* msg, fm
         }
         status->rx_cnt = 0;
         status->rx_state = FASTMAVLINK_PARSE_STATE_IDLE;
-        fmav_check_msg(msg, status); // also zero fills mag payload
+        fmav_check_msg(msg, status); // also zero fills msg payload
         return msg->res;
     }
 

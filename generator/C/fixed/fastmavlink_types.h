@@ -22,7 +22,7 @@ typedef enum {
 typedef struct _fmav_message_entry {
 #ifdef FASTMAVLINK_MESSAGE_ENTRY_MSGID24BIT
     uint32_t msgid:24; // works and reduces RAM, but is it good?
-#else    
+#else
     uint32_t msgid; // :24; works and reduces RAM, but is it good?
 #endif
     uint8_t crc_extra;
