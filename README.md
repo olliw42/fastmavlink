@@ -19,7 +19,7 @@ Lastly, fastMavlink provides a comprehensive test suite.
 
 You don't believe all this can be true, you think it must be exaggerated? Well, please check it out and judge :)
 
-The fastMavlink library is used in two projects of mine, the [STorM32 gimbal controller](http://www.olliw.eu/2013/storm32bgc/) and the [MAVLink for OpenTx](http://www.olliw.eu/2020/olliwtelem/) projects. So, it can claim some maturity. Yet, obviously, the software is offered as is with no explicit or implied warranty, and there is plenty of room to further improve, extend and advance it. Suggestions are welcome.
+The fastMavlink library is used in three projects of mine, the [STorM32 gimbal controller](http://www.olliw.eu/2013/storm32bgc/), the [mLRS](https://github.com/olliw42/mLRS), and the [MAVLink for OpenTx](http://www.olliw.eu/2020/olliwtelem/) projects. So, it can claim some maturity. Yet, obviously, the software is offered as is with no explicit or implied warranty, and there is plenty of room to further improve, extend and advance it. Suggestions are welcome.
 
 
 ## Licence ##
