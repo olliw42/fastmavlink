@@ -186,7 +186,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_${name_lower}_decode(fmav_${name_lo
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_${name}_PAYLOAD_LEN_MAX);
     }
 #else
