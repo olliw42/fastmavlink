@@ -259,6 +259,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_${name_lower}_pack(
         _status);
 }
 
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_${name_lower}_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_${name_lower}_t* _payload)
+{
+    return mavlink_msg_${name_lower}_pack(
+        sysid,
+        compid,
+        _msg,
+        ${{arg_fields:_payload->${name}, }});
+}
+
 #endif
 
 
