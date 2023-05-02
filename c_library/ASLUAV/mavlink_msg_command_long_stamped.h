@@ -236,7 +236,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_command_long_stamped_decode(fmav_co
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_COMMAND_LONG_STAMPED_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_COMMAND_LONG_STAMPED_PAYLOAD_LEN_MAX);
     }
 #else
@@ -386,6 +386,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_command_long_stamped_pack(
         _msg, sysid, compid,
         utc_time, vehicle_timestamp, target_system, target_component, command, confirmation, param1, param2, param3, param4, param5, param6, param7,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_command_long_stamped_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_command_long_stamped_t* _payload)
+{
+    return mavlink_msg_command_long_stamped_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->utc_time, _payload->vehicle_timestamp, _payload->target_system, _payload->target_component, _payload->command, _payload->confirmation, _payload->param1, _payload->param2, _payload->param3, _payload->param4, _payload->param5, _payload->param6, _payload->param7);
 }
 
 #endif

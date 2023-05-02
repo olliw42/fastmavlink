@@ -186,7 +186,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_aoa_ssa_decode(fmav_aoa_ssa_t* payl
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_AOA_SSA_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_AOA_SSA_PAYLOAD_LEN_MAX);
     }
 #else
@@ -256,6 +256,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_aoa_ssa_pack(
         _msg, sysid, compid,
         time_usec, AOA, SSA,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_aoa_ssa_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_aoa_ssa_t* _payload)
+{
+    return mavlink_msg_aoa_ssa_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time_usec, _payload->AOA, _payload->SSA);
 }
 
 #endif

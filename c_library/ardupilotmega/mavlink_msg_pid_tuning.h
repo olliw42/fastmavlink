@@ -216,7 +216,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_pid_tuning_decode(fmav_pid_tuning_t
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_PID_TUNING_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_PID_TUNING_PAYLOAD_LEN_MAX);
     }
 #else
@@ -334,6 +334,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_pid_tuning_pack(
         _msg, sysid, compid,
         axis, desired, achieved, FF, P, I, D, SRate, PDmod,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_pid_tuning_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_pid_tuning_t* _payload)
+{
+    return mavlink_msg_pid_tuning_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->axis, _payload->desired, _payload->achieved, _payload->FF, _payload->P, _payload->I, _payload->D, _payload->SRate, _payload->PDmod);
 }
 
 #endif

@@ -261,7 +261,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_servo_output_raw_decode(fmav_servo_
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_SERVO_OUTPUT_RAW_PAYLOAD_LEN_MAX);
     }
 #else
@@ -451,6 +451,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_servo_output_raw_pack(
         _msg, sysid, compid,
         time_usec, port, servo1_raw, servo2_raw, servo3_raw, servo4_raw, servo5_raw, servo6_raw, servo7_raw, servo8_raw, servo9_raw, servo10_raw, servo11_raw, servo12_raw, servo13_raw, servo14_raw, servo15_raw, servo16_raw,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_servo_output_raw_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_servo_output_raw_t* _payload)
+{
+    return mavlink_msg_servo_output_raw_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time_usec, _payload->port, _payload->servo1_raw, _payload->servo2_raw, _payload->servo3_raw, _payload->servo4_raw, _payload->servo5_raw, _payload->servo6_raw, _payload->servo7_raw, _payload->servo8_raw, _payload->servo9_raw, _payload->servo10_raw, _payload->servo11_raw, _payload->servo12_raw, _payload->servo13_raw, _payload->servo14_raw, _payload->servo15_raw, _payload->servo16_raw);
 }
 
 #endif

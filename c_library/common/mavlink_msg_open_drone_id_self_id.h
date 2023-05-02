@@ -196,7 +196,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_open_drone_id_self_id_decode(fmav_o
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_OPEN_DRONE_ID_SELF_ID_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_OPEN_DRONE_ID_SELF_ID_PAYLOAD_LEN_MAX);
     }
 #else
@@ -290,6 +290,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_open_drone_id_self_id_pack(
         _msg, sysid, compid,
         target_system, target_component, id_or_mac, description_type, description,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_open_drone_id_self_id_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_open_drone_id_self_id_t* _payload)
+{
+    return mavlink_msg_open_drone_id_self_id_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->target_system, _payload->target_component, _payload->id_or_mac, _payload->description_type, _payload->description);
 }
 
 #endif

@@ -211,7 +211,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_asl_obctrl_decode(fmav_asl_obctrl_t
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_ASL_OBCTRL_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_ASL_OBCTRL_PAYLOAD_LEN_MAX);
     }
 #else
@@ -321,6 +321,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_asl_obctrl_pack(
         _msg, sysid, compid,
         timestamp, uElev, uThrot, uThrot2, uAilL, uAilR, uRud, obctrl_status,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_asl_obctrl_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_asl_obctrl_t* _payload)
+{
+    return mavlink_msg_asl_obctrl_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->timestamp, _payload->uElev, _payload->uThrot, _payload->uThrot2, _payload->uAilL, _payload->uAilR, _payload->uRud, _payload->obctrl_status);
 }
 
 #endif

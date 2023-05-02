@@ -212,7 +212,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_esc_telemetry_9_to_12_decode(fmav_e
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_ESC_TELEMETRY_9_TO_12_PAYLOAD_LEN_MAX);
     }
 #else
@@ -341,6 +341,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_esc_telemetry_9_to_12_pack(
         _msg, sysid, compid,
         temperature, voltage, current, totalcurrent, rpm, count,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_esc_telemetry_9_to_12_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_esc_telemetry_9_to_12_t* _payload)
+{
+    return mavlink_msg_esc_telemetry_9_to_12_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->temperature, _payload->voltage, _payload->current, _payload->totalcurrent, _payload->rpm, _payload->count);
 }
 
 #endif

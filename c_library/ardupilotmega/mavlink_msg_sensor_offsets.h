@@ -231,7 +231,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_sensor_offsets_decode(fmav_sensor_o
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_SENSOR_OFFSETS_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_SENSOR_OFFSETS_PAYLOAD_LEN_MAX);
     }
 #else
@@ -373,6 +373,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_sensor_offsets_pack(
         _msg, sysid, compid,
         mag_ofs_x, mag_ofs_y, mag_ofs_z, mag_declination, raw_press, raw_temp, gyro_cal_x, gyro_cal_y, gyro_cal_z, accel_cal_x, accel_cal_y, accel_cal_z,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_sensor_offsets_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_sensor_offsets_t* _payload)
+{
+    return mavlink_msg_sensor_offsets_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->mag_ofs_x, _payload->mag_ofs_y, _payload->mag_ofs_z, _payload->mag_declination, _payload->raw_press, _payload->raw_temp, _payload->gyro_cal_x, _payload->gyro_cal_y, _payload->gyro_cal_z, _payload->accel_cal_x, _payload->accel_cal_y, _payload->accel_cal_z);
 }
 
 #endif

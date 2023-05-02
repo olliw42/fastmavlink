@@ -194,7 +194,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_set_actuator_control_target_decode(
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_SET_ACTUATOR_CONTROL_TARGET_PAYLOAD_LEN_MAX);
     }
 #else
@@ -282,6 +282,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_set_actuator_control_target_
         _msg, sysid, compid,
         time_usec, group_mlx, target_system, target_component, controls,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_set_actuator_control_target_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_set_actuator_control_target_t* _payload)
+{
+    return mavlink_msg_set_actuator_control_target_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time_usec, _payload->group_mlx, _payload->target_system, _payload->target_component, _payload->controls);
 }
 
 #endif

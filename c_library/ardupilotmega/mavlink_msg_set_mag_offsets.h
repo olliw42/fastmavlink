@@ -196,7 +196,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_set_mag_offsets_decode(fmav_set_mag
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_SET_MAG_OFFSETS_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_SET_MAG_OFFSETS_PAYLOAD_LEN_MAX);
     }
 #else
@@ -282,6 +282,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_set_mag_offsets_pack(
         _msg, sysid, compid,
         target_system, target_component, mag_ofs_x, mag_ofs_y, mag_ofs_z,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_set_mag_offsets_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_set_mag_offsets_t* _payload)
+{
+    return mavlink_msg_set_mag_offsets_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->target_system, _payload->target_component, _payload->mag_ofs_x, _payload->mag_ofs_y, _payload->mag_ofs_z);
 }
 
 #endif

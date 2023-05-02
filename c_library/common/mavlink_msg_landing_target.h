@@ -239,7 +239,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_landing_target_decode(fmav_landing_
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_LANDING_TARGET_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_LANDING_TARGET_PAYLOAD_LEN_MAX);
     }
 #else
@@ -399,6 +399,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_landing_target_pack(
         _msg, sysid, compid,
         time_usec, target_num, frame, angle_x, angle_y, distance, size_x, size_y, x, y, z, q, type, position_valid,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_landing_target_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_landing_target_t* _payload)
+{
+    return mavlink_msg_landing_target_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time_usec, _payload->target_num, _payload->frame, _payload->angle_x, _payload->angle_y, _payload->distance, _payload->size_x, _payload->size_y, _payload->x, _payload->y, _payload->z, _payload->q, _payload->type, _payload->position_valid);
 }
 
 #endif

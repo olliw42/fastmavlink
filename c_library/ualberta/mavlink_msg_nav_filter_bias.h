@@ -206,7 +206,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_nav_filter_bias_decode(fmav_nav_fil
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_NAV_FILTER_BIAS_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_NAV_FILTER_BIAS_PAYLOAD_LEN_MAX);
     }
 #else
@@ -308,6 +308,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_nav_filter_bias_pack(
         _msg, sysid, compid,
         usec, accel_0, accel_1, accel_2, gyro_0, gyro_1, gyro_2,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_nav_filter_bias_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_nav_filter_bias_t* _payload)
+{
+    return mavlink_msg_nav_filter_bias_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->usec, _payload->accel_0, _payload->accel_1, _payload->accel_2, _payload->gyro_0, _payload->gyro_1, _payload->gyro_2);
 }
 
 #endif

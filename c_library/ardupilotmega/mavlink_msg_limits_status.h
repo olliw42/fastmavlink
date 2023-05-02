@@ -216,7 +216,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_limits_status_decode(fmav_limits_st
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_LIMITS_STATUS_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_LIMITS_STATUS_PAYLOAD_LEN_MAX);
     }
 #else
@@ -334,6 +334,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_limits_status_pack(
         _msg, sysid, compid,
         limits_state, last_trigger, last_action, last_recovery, last_clear, breach_count, mods_enabled, mods_required, mods_triggered,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_limits_status_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_limits_status_t* _payload)
+{
+    return mavlink_msg_limits_status_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->limits_state, _payload->last_trigger, _payload->last_action, _payload->last_recovery, _payload->last_clear, _payload->breach_count, _payload->mods_enabled, _payload->mods_required, _payload->mods_triggered);
 }
 
 #endif

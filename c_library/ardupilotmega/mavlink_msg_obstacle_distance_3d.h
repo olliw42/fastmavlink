@@ -216,7 +216,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_obstacle_distance_3d_decode(fmav_ob
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_OBSTACLE_DISTANCE_3D_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_OBSTACLE_DISTANCE_3D_PAYLOAD_LEN_MAX);
     }
 #else
@@ -334,6 +334,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_obstacle_distance_3d_pack(
         _msg, sysid, compid,
         time_boot_ms, sensor_type, frame, obstacle_id, x, y, z, min_distance, max_distance,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_obstacle_distance_3d_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_obstacle_distance_3d_t* _payload)
+{
+    return mavlink_msg_obstacle_distance_3d_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time_boot_ms, _payload->sensor_type, _payload->frame, _payload->obstacle_id, _payload->x, _payload->y, _payload->z, _payload->min_distance, _payload->max_distance);
 }
 
 #endif

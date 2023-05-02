@@ -258,7 +258,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_control_system_state_decode(fmav_co
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_CONTROL_SYSTEM_STATE_PAYLOAD_LEN_MAX);
     }
 #else
@@ -454,6 +454,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_control_system_state_pack(
         _msg, sysid, compid,
         time_usec, x_acc, y_acc, z_acc, x_vel, y_vel, z_vel, x_pos, y_pos, z_pos, airspeed, vel_variance, pos_variance, q, roll_rate, pitch_rate, yaw_rate,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_control_system_state_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_control_system_state_t* _payload)
+{
+    return mavlink_msg_control_system_state_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time_usec, _payload->x_acc, _payload->y_acc, _payload->z_acc, _payload->x_vel, _payload->y_vel, _payload->z_vel, _payload->x_pos, _payload->y_pos, _payload->z_pos, _payload->airspeed, _payload->vel_variance, _payload->pos_variance, _payload->q, _payload->roll_rate, _payload->pitch_rate, _payload->yaw_rate);
 }
 
 #endif

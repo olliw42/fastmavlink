@@ -226,7 +226,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_digicam_configure_decode(fmav_digic
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_DIGICAM_CONFIGURE_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_DIGICAM_CONFIGURE_PAYLOAD_LEN_MAX);
     }
 #else
@@ -360,6 +360,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_digicam_configure_pack(
         _msg, sysid, compid,
         target_system, target_component, mode, shutter_speed, aperture, iso, exposure_type, command_id, engine_cut_off, extra_param, extra_value,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_digicam_configure_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_digicam_configure_t* _payload)
+{
+    return mavlink_msg_digicam_configure_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->target_system, _payload->target_component, _payload->mode, _payload->shutter_speed, _payload->aperture, _payload->iso, _payload->exposure_type, _payload->command_id, _payload->engine_cut_off, _payload->extra_param, _payload->extra_value);
 }
 
 #endif

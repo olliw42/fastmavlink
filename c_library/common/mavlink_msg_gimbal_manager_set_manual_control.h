@@ -211,7 +211,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gimbal_manager_set_manual_control_d
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_MANUAL_CONTROL_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_GIMBAL_MANAGER_SET_MANUAL_CONTROL_PAYLOAD_LEN_MAX);
     }
 #else
@@ -321,6 +321,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_gimbal_manager_set_manual_co
         _msg, sysid, compid,
         target_system, target_component, flags, gimbal_device_id, pitch, yaw, pitch_rate, yaw_rate,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_gimbal_manager_set_manual_control_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_gimbal_manager_set_manual_control_t* _payload)
+{
+    return mavlink_msg_gimbal_manager_set_manual_control_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->target_system, _payload->target_component, _payload->flags, _payload->gimbal_device_id, _payload->pitch, _payload->yaw, _payload->pitch_rate, _payload->yaw_rate);
 }
 
 #endif

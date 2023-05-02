@@ -216,7 +216,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_storm32_gimbal_manager_information_
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_INFORMATION_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_STORM32_GIMBAL_MANAGER_INFORMATION_PAYLOAD_LEN_MAX);
     }
 #else
@@ -334,6 +334,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_storm32_gimbal_manager_infor
         _msg, sysid, compid,
         gimbal_id, device_cap_flags, manager_cap_flags, roll_min, roll_max, pitch_min, pitch_max, yaw_min, yaw_max,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_storm32_gimbal_manager_information_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_storm32_gimbal_manager_information_t* _payload)
+{
+    return mavlink_msg_storm32_gimbal_manager_information_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->gimbal_id, _payload->device_cap_flags, _payload->manager_cap_flags, _payload->roll_min, _payload->roll_max, _payload->pitch_min, _payload->pitch_max, _payload->yaw_min, _payload->yaw_max);
 }
 
 #endif

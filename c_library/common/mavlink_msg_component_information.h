@@ -196,7 +196,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_component_information_decode(fmav_c
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_COMPONENT_INFORMATION_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_COMPONENT_INFORMATION_PAYLOAD_LEN_MAX);
     }
 #else
@@ -290,6 +290,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_component_information_pack(
         _msg, sysid, compid,
         time_boot_ms, general_metadata_file_crc, general_metadata_uri, peripherals_metadata_file_crc, peripherals_metadata_uri,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_component_information_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_component_information_t* _payload)
+{
+    return mavlink_msg_component_information_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time_boot_ms, _payload->general_metadata_file_crc, _payload->general_metadata_uri, _payload->peripherals_metadata_file_crc, _payload->peripherals_metadata_uri);
 }
 
 #endif

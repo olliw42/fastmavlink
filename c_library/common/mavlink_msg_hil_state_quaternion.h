@@ -249,7 +249,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_hil_state_quaternion_decode(fmav_hi
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_HIL_STATE_QUATERNION_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_HIL_STATE_QUATERNION_PAYLOAD_LEN_MAX);
     }
 #else
@@ -425,6 +425,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_hil_state_quaternion_pack(
         _msg, sysid, compid,
         time_usec, attitude_quaternion, rollspeed, pitchspeed, yawspeed, lat, lon, alt, vx, vy, vz, ind_airspeed, true_airspeed, xacc, yacc, zacc,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_hil_state_quaternion_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_hil_state_quaternion_t* _payload)
+{
+    return mavlink_msg_hil_state_quaternion_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time_usec, _payload->attitude_quaternion, _payload->rollspeed, _payload->pitchspeed, _payload->yawspeed, _payload->lat, _payload->lon, _payload->alt, _payload->vx, _payload->vy, _payload->vz, _payload->ind_airspeed, _payload->true_airspeed, _payload->xacc, _payload->yacc, _payload->zacc);
 }
 
 #endif

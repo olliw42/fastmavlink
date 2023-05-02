@@ -263,7 +263,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_odometry_decode(fmav_odometry_t* pa
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_ODOMETRY_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_ODOMETRY_PAYLOAD_LEN_MAX);
     }
 #else
@@ -467,6 +467,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_odometry_pack(
         _msg, sysid, compid,
         time_usec, frame_id, child_frame_id, x, y, z, q, vx, vy, vz, rollspeed, pitchspeed, yawspeed, pose_covariance, velocity_covariance, reset_counter, estimator_type, quality,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_odometry_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_odometry_t* _payload)
+{
+    return mavlink_msg_odometry_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time_usec, _payload->frame_id, _payload->child_frame_id, _payload->x, _payload->y, _payload->z, _payload->q, _payload->vx, _payload->vy, _payload->vz, _payload->rollspeed, _payload->pitchspeed, _payload->yawspeed, _payload->pose_covariance, _payload->velocity_covariance, _payload->reset_counter, _payload->estimator_type, _payload->quality);
 }
 
 #endif

@@ -16,35 +16,31 @@
 FASTMAVLINK_PACK(
 typedef struct _fmav_airspeed_t {
     float airspeed;
-    float press_diff;
-    float press_static;
-    float error;
+    float raw_press;
     int16_t temperature;
     uint8_t id;
-    uint8_t type;
+    uint8_t flags;
 }) fmav_airspeed_t;
 
 
 #define FASTMAVLINK_MSG_ID_AIRSPEED  295
 
-#define FASTMAVLINK_MSG_AIRSPEED_PAYLOAD_LEN_MAX  20
-#define FASTMAVLINK_MSG_AIRSPEED_CRCEXTRA  41
+#define FASTMAVLINK_MSG_AIRSPEED_PAYLOAD_LEN_MAX  12
+#define FASTMAVLINK_MSG_AIRSPEED_CRCEXTRA  234
 
 #define FASTMAVLINK_MSG_AIRSPEED_FLAGS  0
 #define FASTMAVLINK_MSG_AIRSPEED_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_AIRSPEED_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_AIRSPEED_FRAME_LEN_MAX  45
+#define FASTMAVLINK_MSG_AIRSPEED_FRAME_LEN_MAX  37
 
 
 
 #define FASTMAVLINK_MSG_AIRSPEED_FIELD_AIRSPEED_OFS  0
-#define FASTMAVLINK_MSG_AIRSPEED_FIELD_PRESS_DIFF_OFS  4
-#define FASTMAVLINK_MSG_AIRSPEED_FIELD_PRESS_STATIC_OFS  8
-#define FASTMAVLINK_MSG_AIRSPEED_FIELD_ERROR_OFS  12
-#define FASTMAVLINK_MSG_AIRSPEED_FIELD_TEMPERATURE_OFS  16
-#define FASTMAVLINK_MSG_AIRSPEED_FIELD_ID_OFS  18
-#define FASTMAVLINK_MSG_AIRSPEED_FIELD_TYPE_OFS  19
+#define FASTMAVLINK_MSG_AIRSPEED_FIELD_RAW_PRESS_OFS  4
+#define FASTMAVLINK_MSG_AIRSPEED_FIELD_TEMPERATURE_OFS  8
+#define FASTMAVLINK_MSG_AIRSPEED_FIELD_ID_OFS  10
+#define FASTMAVLINK_MSG_AIRSPEED_FIELD_FLAGS_OFS  11
 
 
 //----------------------------------------
@@ -55,18 +51,16 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_airspeed_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t id, float airspeed, int16_t temperature, float press_diff, float press_static, float error, uint8_t type,
+    uint8_t id, float airspeed, int16_t temperature, float raw_press, uint8_t flags,
     fmav_status_t* _status)
 {
     fmav_airspeed_t* _payload = (fmav_airspeed_t*)_msg->payload;
 
     _payload->airspeed = airspeed;
-    _payload->press_diff = press_diff;
-    _payload->press_static = press_static;
-    _payload->error = error;
+    _payload->raw_press = raw_press;
     _payload->temperature = temperature;
     _payload->id = id;
-    _payload->type = type;
+    _payload->flags = flags;
 
 
     _msg->sysid = sysid;
@@ -90,7 +84,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_airspeed_encode(
 {
     return fmav_msg_airspeed_pack(
         _msg, sysid, compid,
-        _payload->id, _payload->airspeed, _payload->temperature, _payload->press_diff, _payload->press_static, _payload->error, _payload->type,
+        _payload->id, _payload->airspeed, _payload->temperature, _payload->raw_press, _payload->flags,
         _status);
 }
 
@@ -99,18 +93,16 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_airspeed_pack_to_frame_buf(
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t id, float airspeed, int16_t temperature, float press_diff, float press_static, float error, uint8_t type,
+    uint8_t id, float airspeed, int16_t temperature, float raw_press, uint8_t flags,
     fmav_status_t* _status)
 {
     fmav_airspeed_t* _payload = (fmav_airspeed_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->airspeed = airspeed;
-    _payload->press_diff = press_diff;
-    _payload->press_static = press_static;
-    _payload->error = error;
+    _payload->raw_press = raw_press;
     _payload->temperature = temperature;
     _payload->id = id;
-    _payload->type = type;
+    _payload->flags = flags;
 
 
     _buf[5] = sysid;
@@ -136,7 +128,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_airspeed_encode_to_frame_buf(
 {
     return fmav_msg_airspeed_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->id, _payload->airspeed, _payload->temperature, _payload->press_diff, _payload->press_static, _payload->error, _payload->type,
+        _payload->id, _payload->airspeed, _payload->temperature, _payload->raw_press, _payload->flags,
         _status);
 }
 
@@ -146,18 +138,16 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_airspeed_encode_to_frame_buf(
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_airspeed_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint8_t id, float airspeed, int16_t temperature, float press_diff, float press_static, float error, uint8_t type,
+    uint8_t id, float airspeed, int16_t temperature, float raw_press, uint8_t flags,
     fmav_status_t* _status)
 {
     fmav_airspeed_t _payload;
 
     _payload.airspeed = airspeed;
-    _payload.press_diff = press_diff;
-    _payload.press_static = press_static;
-    _payload.error = error;
+    _payload.raw_press = raw_press;
     _payload.temperature = temperature;
     _payload.id = id;
-    _payload.type = type;
+    _payload.flags = flags;
 
 
     return fmav_finalize_serial(
@@ -206,7 +196,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_airspeed_decode(fmav_airspeed_t* pa
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_AIRSPEED_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_AIRSPEED_PAYLOAD_LEN_MAX);
     }
 #else
@@ -224,7 +214,7 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_airspeed_get_field_airspeed(const 
 }
 
 
-FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_airspeed_get_field_press_diff(const fmav_message_t* msg)
+FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_airspeed_get_field_raw_press(const fmav_message_t* msg)
 {
     float r;
     memcpy(&r, &(msg->payload[4]), sizeof(float));
@@ -232,26 +222,10 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_airspeed_get_field_press_diff(cons
 }
 
 
-FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_airspeed_get_field_press_static(const fmav_message_t* msg)
-{
-    float r;
-    memcpy(&r, &(msg->payload[8]), sizeof(float));
-    return r;
-}
-
-
-FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_airspeed_get_field_error(const fmav_message_t* msg)
-{
-    float r;
-    memcpy(&r, &(msg->payload[12]), sizeof(float));
-    return r;
-}
-
-
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_airspeed_get_field_temperature(const fmav_message_t* msg)
 {
     int16_t r;
-    memcpy(&r, &(msg->payload[16]), sizeof(int16_t));
+    memcpy(&r, &(msg->payload[8]), sizeof(int16_t));
     return r;
 }
 
@@ -259,15 +233,15 @@ FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_airspeed_get_field_temperature(c
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_airspeed_get_field_id(const fmav_message_t* msg)
 {
     uint8_t r;
-    memcpy(&r, &(msg->payload[18]), sizeof(uint8_t));
+    memcpy(&r, &(msg->payload[10]), sizeof(uint8_t));
     return r;
 }
 
 
-FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_airspeed_get_field_type(const fmav_message_t* msg)
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_airspeed_get_field_flags(const fmav_message_t* msg)
 {
     uint8_t r;
-    memcpy(&r, &(msg->payload[19]), sizeof(uint8_t));
+    memcpy(&r, &(msg->payload[11]), sizeof(uint8_t));
     return r;
 }
 
@@ -284,13 +258,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_airspeed_get_field_type(const fm
 
 #define mavlink_airspeed_t  fmav_airspeed_t
 
-#define MAVLINK_MSG_ID_AIRSPEED_LEN  20
-#define MAVLINK_MSG_ID_AIRSPEED_MIN_LEN  20
-#define MAVLINK_MSG_ID_295_LEN  20
-#define MAVLINK_MSG_ID_295_MIN_LEN  20
+#define MAVLINK_MSG_ID_AIRSPEED_LEN  12
+#define MAVLINK_MSG_ID_AIRSPEED_MIN_LEN  12
+#define MAVLINK_MSG_ID_295_LEN  12
+#define MAVLINK_MSG_ID_295_MIN_LEN  12
 
-#define MAVLINK_MSG_ID_AIRSPEED_CRC  41
-#define MAVLINK_MSG_ID_295_CRC  41
+#define MAVLINK_MSG_ID_AIRSPEED_CRC  234
+#define MAVLINK_MSG_ID_295_CRC  234
 
 
 
@@ -301,13 +275,27 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_airspeed_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint8_t id, float airspeed, int16_t temperature, float press_diff, float press_static, float error, uint8_t type)
+    uint8_t id, float airspeed, int16_t temperature, float raw_press, uint8_t flags)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_airspeed_pack(
         _msg, sysid, compid,
-        id, airspeed, temperature, press_diff, press_static, error, type,
+        id, airspeed, temperature, raw_press, flags,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_airspeed_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_airspeed_t* _payload)
+{
+    return mavlink_msg_airspeed_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->id, _payload->airspeed, _payload->temperature, _payload->raw_press, _payload->flags);
 }
 
 #endif
@@ -318,13 +306,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_airspeed_pack_txbuf(
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t id, float airspeed, int16_t temperature, float press_diff, float press_static, float error, uint8_t type)
+    uint8_t id, float airspeed, int16_t temperature, float raw_press, uint8_t flags)
 {
     return fmav_msg_airspeed_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        id, airspeed, temperature, press_diff, press_static, error, type,
+        id, airspeed, temperature, raw_press, flags,
         _status);
 }
 

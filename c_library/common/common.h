@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Sat Dec 03 2022"
+#define FASTMAVLINK_BUILD_DATE  "Tue May 02 2023"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -300,6 +300,8 @@ typedef enum GIMBAL_MANAGER_CAP_FLAGS {
     GIMBAL_MANAGER_CAP_FLAGS_HAS_YAW_FOLLOW = 512,  // Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_FOLLOW. 
     GIMBAL_MANAGER_CAP_FLAGS_HAS_YAW_LOCK = 1024,  // Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_LOCK. 
     GIMBAL_MANAGER_CAP_FLAGS_SUPPORTS_INFINITE_YAW = 2048,  // Based on GIMBAL_DEVICE_CAP_FLAGS_SUPPORTS_INFINITE_YAW. 
+    GIMBAL_MANAGER_CAP_FLAGS_SUPPORTS_YAW_IN_EARTH_FRAME = 4096,  // Based on GIMBAL_DEVICE_CAP_FLAGS_SUPPORTS_YAW_IN_EARTH_FRAME. 
+    GIMBAL_MANAGER_CAP_FLAGS_HAS_RC_INPUTS = 8192,  // Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_RC_INPUTS. 
     GIMBAL_MANAGER_CAP_FLAGS_CAN_POINT_LOCATION_LOCAL = 65536,  // Gimbal manager supports to point to a local position. 
     GIMBAL_MANAGER_CAP_FLAGS_CAN_POINT_LOCATION_GLOBAL = 131072,  // Gimbal manager supports to point to a global latitude, longitude, altitude position. 
     GIMBAL_MANAGER_CAP_FLAGS_ENUM_END = 131073,  // end marker
@@ -328,12 +330,17 @@ typedef enum GIMBAL_DEVICE_FLAGS {
 #ifndef FASTMAVLINK_HAS_ENUM_GIMBAL_MANAGER_FLAGS
 #define FASTMAVLINK_HAS_ENUM_GIMBAL_MANAGER_FLAGS
 typedef enum GIMBAL_MANAGER_FLAGS {
-    GIMBAL_MANAGER_FLAGS_RETRACT = 1,  // Based on GIMBAL_DEVICE_FLAGS_RETRACT 
-    GIMBAL_MANAGER_FLAGS_NEUTRAL = 2,  // Based on GIMBAL_DEVICE_FLAGS_NEUTRAL 
-    GIMBAL_MANAGER_FLAGS_ROLL_LOCK = 4,  // Based on GIMBAL_DEVICE_FLAGS_ROLL_LOCK 
-    GIMBAL_MANAGER_FLAGS_PITCH_LOCK = 8,  // Based on GIMBAL_DEVICE_FLAGS_PITCH_LOCK 
-    GIMBAL_MANAGER_FLAGS_YAW_LOCK = 16,  // Based on GIMBAL_DEVICE_FLAGS_YAW_LOCK 
-    GIMBAL_MANAGER_FLAGS_ENUM_END = 17,  // end marker
+    GIMBAL_MANAGER_FLAGS_RETRACT = 1,  // Based on GIMBAL_DEVICE_FLAGS_RETRACT. 
+    GIMBAL_MANAGER_FLAGS_NEUTRAL = 2,  // Based on GIMBAL_DEVICE_FLAGS_NEUTRAL. 
+    GIMBAL_MANAGER_FLAGS_ROLL_LOCK = 4,  // Based on GIMBAL_DEVICE_FLAGS_ROLL_LOCK. 
+    GIMBAL_MANAGER_FLAGS_PITCH_LOCK = 8,  // Based on GIMBAL_DEVICE_FLAGS_PITCH_LOCK. 
+    GIMBAL_MANAGER_FLAGS_YAW_LOCK = 16,  // Based on GIMBAL_DEVICE_FLAGS_YAW_LOCK. 
+    GIMBAL_MANAGER_FLAGS_YAW_IN_VEHICLE_FRAME = 32,  // Based on GIMBAL_DEVICE_FLAGS_YAW_IN_VEHICLE_FRAME. 
+    GIMBAL_MANAGER_FLAGS_YAW_IN_EARTH_FRAME = 64,  // Based on GIMBAL_DEVICE_FLAGS_YAW_IN_EARTH_FRAME. 
+    GIMBAL_MANAGER_FLAGS_ACCEPTS_YAW_IN_EARTH_FRAME = 128,  // Based on GIMBAL_DEVICE_FLAGS_ACCEPTS_YAW_IN_EARTH_FRAME. 
+    GIMBAL_MANAGER_FLAGS_RC_EXCLUSIVE = 256,  // Based on GIMBAL_DEVICE_FLAGS_RC_EXCLUSIVE. 
+    GIMBAL_MANAGER_FLAGS_RC_MIXED = 512,  // Based on GIMBAL_DEVICE_FLAGS_RC_MIXED. 
+    GIMBAL_MANAGER_FLAGS_ENUM_END = 513,  // end marker
 } GIMBAL_MANAGER_FLAGS;
 #endif
 
@@ -767,7 +774,7 @@ typedef enum MAV_CMD {
     MAV_CMD_CONTROL_HIGH_LATENCY = 2600,  // Request to start/stop transmitting over the high latency telemetry | Control transmission over high latency telemetry (0: stop, 1: start) | Empty | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_PANORAMA_CREATE = 2800,  // Create a panorama at the current position | Viewing angle horizontal of the panorama (+- 0.5 the total angle) | Viewing angle vertical of panorama. | Speed of the horizontal rotation. | Speed of the vertical rotation. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_DO_VTOL_TRANSITION = 3000,  // Request VTOL transition | The target VTOL state. For normal transitions, only MAV_VTOL_STATE_MC and MAV_VTOL_STATE_FW can be used. | Force immediate transition to the specified MAV_VTOL_STATE. 1: Force immediate, 0: normal transition. Can be used, for example, to trigger an emergency "Quadchute". Caution: Can be dangerous/damage vehicle, depending on autopilot implementation of this command. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
-    MAV_CMD_ARM_AUTHORIZATION_REQUEST = 3001,  // Request authorization to arm the vehicle to a external entity, the arm authorizer is responsible to request all data that is needs from the vehicle before authorize or deny the request. If approved the progress of command_ack message should be set with period of time that this authorization is valid in seconds or in case it was denied it should be set with one of the reasons in ARM_AUTH_DENIED_REASON.         | Vehicle system id, this way ground station can request arm authorization on behalf of any vehicle | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
+    MAV_CMD_ARM_AUTHORIZATION_REQUEST = 3001,  // Request authorization to arm the vehicle to a external entity, the arm authorizer is responsible to request all data that is needs from the vehicle before authorize or deny the request.		If approved the COMMAND_ACK message progress field should be set with period of time that this authorization is valid in seconds.		If the authorization is denied COMMAND_ACK.result_param2 should be set with one of the reasons in ARM_AUTH_DENIED_REASON.         | Vehicle system id, this way ground station can request arm authorization on behalf of any vehicle | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_SET_GUIDED_SUBMODE_STANDARD = 4000,  // This command sets the submode to standard guided when vehicle is in guided mode. The vehicle holds position and altitude and the user can input the desired velocities along all three axes.                   | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_SET_GUIDED_SUBMODE_CIRCLE = 4001,  // This command sets submode circle when vehicle is in guided mode. Vehicle flies along a circle facing the center of the circle. The user can input the velocity along the circle and change the radius. If no input is given the vehicle will hold position.                   | Radius of desired circle in CIRCLE_MODE | User defined | User defined | User defined | Target latitude of center of circle in CIRCLE_MODE | Target longitude of center of circle in CIRCLE_MODE | Reserved (default:0)
     MAV_CMD_CONDITION_GATE = 4501,  // Delay mission state machine until gate has been reached. | Geometry: 0: orthogonal to path between previous and next waypoint. | Altitude: 0: ignore altitude | Empty | Empty | Latitude | Longitude | Altitude
@@ -831,23 +838,6 @@ typedef enum MAV_ROI {
     MAV_ROI_TARGET = 4,  // Point toward of given id. 
     MAV_ROI_ENUM_END = 5,  // end marker
 } MAV_ROI;
-#endif
-
-
-#ifndef FASTMAVLINK_HAS_ENUM_MAV_CMD_ACK
-#define FASTMAVLINK_HAS_ENUM_MAV_CMD_ACK
-typedef enum MAV_CMD_ACK {
-    MAV_CMD_ACK_OK = 0,  // Command / mission item is ok. 
-    MAV_CMD_ACK_ERR_FAIL = 1,  // Generic error message if none of the other reasons fails or if no detailed error reporting is implemented. 
-    MAV_CMD_ACK_ERR_ACCESS_DENIED = 2,  // The system is refusing to accept this command from this source / communication partner. 
-    MAV_CMD_ACK_ERR_NOT_SUPPORTED = 3,  // Command or mission item is not supported, other commands would be accepted. 
-    MAV_CMD_ACK_ERR_COORDINATE_FRAME_NOT_SUPPORTED = 4,  // The coordinate frame of this command / mission item is not supported. 
-    MAV_CMD_ACK_ERR_COORDINATES_OUT_OF_RANGE = 5,  // The coordinate frame of this command is ok, but he coordinate values exceed the safety limits of this system. This is a generic error, please use the more specific error messages below if possible. 
-    MAV_CMD_ACK_ERR_X_LAT_OUT_OF_RANGE = 6,  // The X or latitude value is out of range. 
-    MAV_CMD_ACK_ERR_Y_LON_OUT_OF_RANGE = 7,  // The Y or longitude value is out of range. 
-    MAV_CMD_ACK_ERR_Z_ALT_OUT_OF_RANGE = 8,  // The Z or altitude value is out of range. 
-    MAV_CMD_ACK_ENUM_END = 9,  // end marker
-} MAV_CMD_ACK;
 #endif
 
 
@@ -1131,7 +1121,7 @@ typedef enum MAV_BATTERY_FUNCTION {
     MAV_BATTERY_FUNCTION_ALL = 1,  // Battery supports all flight systems 
     MAV_BATTERY_FUNCTION_PROPULSION = 2,  // Battery for the propulsion system 
     MAV_BATTERY_FUNCTION_AVIONICS = 3,  // Avionics battery 
-    MAV_BATTERY_TYPE_PAYLOAD = 4,  // Payload battery 
+    MAV_BATTERY_FUNCTION_PAYLOAD = 4,  // Payload battery 
     MAV_BATTERY_FUNCTION_ENUM_END = 5,  // end marker
 } MAV_BATTERY_FUNCTION;
 #endif
@@ -2052,12 +2042,12 @@ typedef enum AIS_TYPE {
     AIS_TYPE_PASSENGER = 60,  //  
     AIS_TYPE_PASSENGER_HAZARDOUS_A = 61,  //  
     AIS_TYPE_PASSENGER_HAZARDOUS_B = 62,  //  
-    AIS_TYPE_AIS_TYPE_PASSENGER_HAZARDOUS_C = 63,  //  
+    AIS_TYPE_PASSENGER_HAZARDOUS_C = 63,  //  
     AIS_TYPE_PASSENGER_HAZARDOUS_D = 64,  //  
     AIS_TYPE_PASSENGER_RESERVED_1 = 65,  //  
     AIS_TYPE_PASSENGER_RESERVED_2 = 66,  //  
     AIS_TYPE_PASSENGER_RESERVED_3 = 67,  //  
-    AIS_TYPE_AIS_TYPE_PASSENGER_RESERVED_4 = 68,  //  
+    AIS_TYPE_PASSENGER_RESERVED_4 = 68,  //  
     AIS_TYPE_PASSENGER_UNKNOWN = 69,  //  
     AIS_TYPE_CARGO = 70,  //  
     AIS_TYPE_CARGO_HAZARDOUS_A = 71,  //  

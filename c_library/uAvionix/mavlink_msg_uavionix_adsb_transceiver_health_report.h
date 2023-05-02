@@ -176,7 +176,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_uavionix_adsb_transceiver_health_re
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT_PAYLOAD_LEN_MAX);
     }
 #else
@@ -230,6 +230,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_uavionix_adsb_transceiver_he
         _msg, sysid, compid,
         rfHealth,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_uavionix_adsb_transceiver_health_report_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_uavionix_adsb_transceiver_health_report_t* _payload)
+{
+    return mavlink_msg_uavionix_adsb_transceiver_health_report_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->rfHealth);
 }
 
 #endif

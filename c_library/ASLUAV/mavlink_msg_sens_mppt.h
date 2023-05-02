@@ -236,7 +236,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_sens_mppt_decode(fmav_sens_mppt_t* 
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_SENS_MPPT_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_SENS_MPPT_PAYLOAD_LEN_MAX);
     }
 #else
@@ -386,6 +386,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_sens_mppt_pack(
         _msg, sysid, compid,
         mppt_timestamp, mppt1_volt, mppt1_amp, mppt1_pwm, mppt1_status, mppt2_volt, mppt2_amp, mppt2_pwm, mppt2_status, mppt3_volt, mppt3_amp, mppt3_pwm, mppt3_status,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_sens_mppt_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_sens_mppt_t* _payload)
+{
+    return mavlink_msg_sens_mppt_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->mppt_timestamp, _payload->mppt1_volt, _payload->mppt1_amp, _payload->mppt1_pwm, _payload->mppt1_status, _payload->mppt2_volt, _payload->mppt2_amp, _payload->mppt2_pwm, _payload->mppt2_status, _payload->mppt3_volt, _payload->mppt3_amp, _payload->mppt3_pwm, _payload->mppt3_status);
 }
 
 #endif

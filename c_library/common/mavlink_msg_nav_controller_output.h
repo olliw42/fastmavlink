@@ -211,7 +211,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_nav_controller_output_decode(fmav_n
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_NAV_CONTROLLER_OUTPUT_PAYLOAD_LEN_MAX);
     }
 #else
@@ -321,6 +321,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_nav_controller_output_pack(
         _msg, sysid, compid,
         nav_roll, nav_pitch, nav_bearing, target_bearing, wp_dist, alt_error, aspd_error, xtrack_error,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_nav_controller_output_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_nav_controller_output_t* _payload)
+{
+    return mavlink_msg_nav_controller_output_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->nav_roll, _payload->nav_pitch, _payload->nav_bearing, _payload->target_bearing, _payload->wp_dist, _payload->alt_error, _payload->aspd_error, _payload->xtrack_error);
 }
 
 #endif

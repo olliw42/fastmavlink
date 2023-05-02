@@ -196,7 +196,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_fence_status_decode(fmav_fence_stat
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_FENCE_STATUS_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_FENCE_STATUS_PAYLOAD_LEN_MAX);
     }
 #else
@@ -282,6 +282,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_fence_status_pack(
         _msg, sysid, compid,
         breach_status, breach_count, breach_type, breach_time, breach_mitigation,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_fence_status_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_fence_status_t* _payload)
+{
+    return mavlink_msg_fence_status_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->breach_status, _payload->breach_count, _payload->breach_type, _payload->breach_time, _payload->breach_mitigation);
 }
 
 #endif

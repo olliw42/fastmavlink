@@ -246,7 +246,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_sens_batmon_decode(fmav_sens_batmon
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_SENS_BATMON_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_SENS_BATMON_PAYLOAD_LEN_MAX);
     }
 #else
@@ -412,6 +412,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_sens_batmon_pack(
         _msg, sysid, compid,
         batmon_timestamp, temperature, voltage, current, SoC, batterystatus, serialnumber, safetystatus, operationstatus, cellvoltage1, cellvoltage2, cellvoltage3, cellvoltage4, cellvoltage5, cellvoltage6,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_sens_batmon_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_sens_batmon_t* _payload)
+{
+    return mavlink_msg_sens_batmon_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->batmon_timestamp, _payload->temperature, _payload->voltage, _payload->current, _payload->SoC, _payload->batterystatus, _payload->serialnumber, _payload->safetystatus, _payload->operationstatus, _payload->cellvoltage1, _payload->cellvoltage2, _payload->cellvoltage3, _payload->cellvoltage4, _payload->cellvoltage5, _payload->cellvoltage6);
 }
 
 #endif

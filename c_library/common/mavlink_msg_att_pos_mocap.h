@@ -201,7 +201,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_att_pos_mocap_decode(fmav_att_pos_m
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_ATT_POS_MOCAP_PAYLOAD_LEN_MAX);
     }
 #else
@@ -303,6 +303,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_att_pos_mocap_pack(
         _msg, sysid, compid,
         time_usec, q, x, y, z, covariance,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_att_pos_mocap_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_att_pos_mocap_t* _payload)
+{
+    return mavlink_msg_att_pos_mocap_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time_usec, _payload->q, _payload->x, _payload->y, _payload->z, _payload->covariance);
 }
 
 #endif

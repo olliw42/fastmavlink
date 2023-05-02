@@ -234,7 +234,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_adsb_vehicle_decode(fmav_adsb_vehic
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_ADSB_VEHICLE_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_ADSB_VEHICLE_PAYLOAD_LEN_MAX);
     }
 #else
@@ -386,6 +386,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_adsb_vehicle_pack(
         _msg, sysid, compid,
         ICAO_address, lat, lon, altitude_type, altitude, heading, hor_velocity, ver_velocity, callsign, emitter_type, tslc, flags, squawk,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_adsb_vehicle_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_adsb_vehicle_t* _payload)
+{
+    return mavlink_msg_adsb_vehicle_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->ICAO_address, _payload->lat, _payload->lon, _payload->altitude_type, _payload->altitude, _payload->heading, _payload->hor_velocity, _payload->ver_velocity, _payload->callsign, _payload->emitter_type, _payload->tslc, _payload->flags, _payload->squawk);
 }
 
 #endif

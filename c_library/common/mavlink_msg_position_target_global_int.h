@@ -241,7 +241,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_position_target_global_int_decode(f
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_POSITION_TARGET_GLOBAL_INT_PAYLOAD_LEN_MAX);
     }
 #else
@@ -399,6 +399,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_position_target_global_int_p
         _msg, sysid, compid,
         time_boot_ms, coordinate_frame, type_mask, lat_int, lon_int, alt, vx, vy, vz, afx, afy, afz, yaw, yaw_rate,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_position_target_global_int_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_position_target_global_int_t* _payload)
+{
+    return mavlink_msg_position_target_global_int_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time_boot_ms, _payload->coordinate_frame, _payload->type_mask, _payload->lat_int, _payload->lon_int, _payload->alt, _payload->vx, _payload->vy, _payload->vz, _payload->afx, _payload->afy, _payload->afz, _payload->yaw, _payload->yaw_rate);
 }
 
 #endif

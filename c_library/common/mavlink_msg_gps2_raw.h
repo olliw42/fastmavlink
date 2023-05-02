@@ -261,7 +261,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gps2_raw_decode(fmav_gps2_raw_t* pa
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_GPS2_RAW_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_GPS2_RAW_PAYLOAD_LEN_MAX);
     }
 #else
@@ -451,6 +451,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_gps2_raw_pack(
         _msg, sysid, compid,
         time_usec, fix_type, lat, lon, alt, eph, epv, vel, cog, satellites_visible, dgps_numch, dgps_age, yaw, alt_ellipsoid, h_acc, v_acc, vel_acc, hdg_acc,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_gps2_raw_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_gps2_raw_t* _payload)
+{
+    return mavlink_msg_gps2_raw_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time_usec, _payload->fix_type, _payload->lat, _payload->lon, _payload->alt, _payload->eph, _payload->epv, _payload->vel, _payload->cog, _payload->satellites_visible, _payload->dgps_numch, _payload->dgps_age, _payload->yaw, _payload->alt_ellipsoid, _payload->h_acc, _payload->v_acc, _payload->vel_acc, _payload->hdg_acc);
 }
 
 #endif

@@ -226,7 +226,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_generator_status_decode(fmav_genera
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_GENERATOR_STATUS_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_GENERATOR_STATUS_PAYLOAD_LEN_MAX);
     }
 #else
@@ -360,6 +360,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_generator_status_pack(
         _msg, sysid, compid,
         status, generator_speed, battery_current, load_current, power_generated, bus_voltage, rectifier_temperature, bat_current_setpoint, generator_temperature, runtime, time_until_maintenance,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_generator_status_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_generator_status_t* _payload)
+{
+    return mavlink_msg_generator_status_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->status, _payload->generator_speed, _payload->battery_current, _payload->load_current, _payload->power_generated, _payload->bus_voltage, _payload->rectifier_temperature, _payload->bat_current_setpoint, _payload->generator_temperature, _payload->runtime, _payload->time_until_maintenance);
 }
 
 #endif

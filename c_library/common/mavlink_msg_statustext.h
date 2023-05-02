@@ -189,7 +189,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_statustext_decode(fmav_statustext_t
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_STATUSTEXT_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_STATUSTEXT_PAYLOAD_LEN_MAX);
     }
 #else
@@ -269,6 +269,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_statustext_pack(
         _msg, sysid, compid,
         severity, text, id, chunk_seq,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_statustext_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_statustext_t* _payload)
+{
+    return mavlink_msg_statustext_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->severity, _payload->text, _payload->id, _payload->chunk_seq);
 }
 
 #endif

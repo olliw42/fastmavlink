@@ -221,7 +221,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_optical_flow_decode(fmav_optical_fl
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_OPTICAL_FLOW_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_OPTICAL_FLOW_PAYLOAD_LEN_MAX);
     }
 #else
@@ -347,6 +347,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_optical_flow_pack(
         _msg, sysid, compid,
         time_usec, sensor_id, flow_x, flow_y, flow_comp_m_x, flow_comp_m_y, quality, ground_distance, flow_rate_x, flow_rate_y,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_optical_flow_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_optical_flow_t* _payload)
+{
+    return mavlink_msg_optical_flow_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time_usec, _payload->sensor_id, _payload->flow_x, _payload->flow_y, _payload->flow_comp_m_x, _payload->flow_comp_m_y, _payload->quality, _payload->ground_distance, _payload->flow_rate_x, _payload->flow_rate_y);
 }
 
 #endif

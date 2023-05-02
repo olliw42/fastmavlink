@@ -261,7 +261,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_mag_cal_report_decode(fmav_mag_cal_
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_MAG_CAL_REPORT_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_MAG_CAL_REPORT_PAYLOAD_LEN_MAX);
     }
 #else
@@ -451,6 +451,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_mag_cal_report_pack(
         _msg, sysid, compid,
         compass_id, cal_mask, cal_status, autosaved, fitness, ofs_x, ofs_y, ofs_z, diag_x, diag_y, diag_z, offdiag_x, offdiag_y, offdiag_z, orientation_confidence, old_orientation, new_orientation, scale_factor,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_mag_cal_report_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_mag_cal_report_t* _payload)
+{
+    return mavlink_msg_mag_cal_report_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->compass_id, _payload->cal_mask, _payload->cal_status, _payload->autosaved, _payload->fitness, _payload->ofs_x, _payload->ofs_y, _payload->ofs_z, _payload->diag_x, _payload->diag_y, _payload->diag_z, _payload->offdiag_x, _payload->offdiag_y, _payload->offdiag_z, _payload->orientation_confidence, _payload->old_orientation, _payload->new_orientation, _payload->scale_factor);
 }
 
 #endif

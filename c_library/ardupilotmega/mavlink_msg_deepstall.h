@@ -221,7 +221,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_deepstall_decode(fmav_deepstall_t* 
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_DEEPSTALL_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_DEEPSTALL_PAYLOAD_LEN_MAX);
     }
 #else
@@ -347,6 +347,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_deepstall_pack(
         _msg, sysid, compid,
         landing_lat, landing_lon, path_lat, path_lon, arc_entry_lat, arc_entry_lon, altitude, expected_travel_distance, cross_track_error, stage,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_deepstall_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_deepstall_t* _payload)
+{
+    return mavlink_msg_deepstall_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->landing_lat, _payload->landing_lon, _payload->path_lat, _payload->path_lon, _payload->arc_entry_lat, _payload->arc_entry_lon, _payload->altitude, _payload->expected_travel_distance, _payload->cross_track_error, _payload->stage);
 }
 
 #endif

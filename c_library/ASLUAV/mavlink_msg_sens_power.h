@@ -191,7 +191,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_sens_power_decode(fmav_sens_power_t
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_SENS_POWER_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_SENS_POWER_PAYLOAD_LEN_MAX);
     }
 #else
@@ -269,6 +269,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_sens_power_pack(
         _msg, sysid, compid,
         adc121_vspb_volt, adc121_cspb_amp, adc121_cs1_amp, adc121_cs2_amp,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_sens_power_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_sens_power_t* _payload)
+{
+    return mavlink_msg_sens_power_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->adc121_vspb_volt, _payload->adc121_cspb_amp, _payload->adc121_cs1_amp, _payload->adc121_cs2_amp);
 }
 
 #endif

@@ -8,7 +8,7 @@
 #define FASTMAVLINK_PROTOCOL_H
 
 
-#define FASTMAVLINK_MAVLINK_VERSION   3 // tis is the fixed mavlink version, as send in HEARTBEAT
+#define FASTMAVLINK_MAVLINK_VERSION   3 // this is the fixed mavlink version, as send in HEARTBEAT
 
 
 #define FASTMAVLINK_MAGIC_V1          0xFE

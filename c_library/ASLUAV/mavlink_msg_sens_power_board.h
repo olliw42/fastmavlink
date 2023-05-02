@@ -231,7 +231,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_sens_power_board_decode(fmav_sens_p
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_SENS_POWER_BOARD_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_SENS_POWER_BOARD_PAYLOAD_LEN_MAX);
     }
 #else
@@ -373,6 +373,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_sens_power_board_pack(
         _msg, sysid, compid,
         timestamp, pwr_brd_status, pwr_brd_led_status, pwr_brd_system_volt, pwr_brd_servo_volt, pwr_brd_digital_volt, pwr_brd_mot_l_amp, pwr_brd_mot_r_amp, pwr_brd_analog_amp, pwr_brd_digital_amp, pwr_brd_ext_amp, pwr_brd_aux_amp,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_sens_power_board_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_sens_power_board_t* _payload)
+{
+    return mavlink_msg_sens_power_board_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->timestamp, _payload->pwr_brd_status, _payload->pwr_brd_led_status, _payload->pwr_brd_system_volt, _payload->pwr_brd_servo_volt, _payload->pwr_brd_digital_volt, _payload->pwr_brd_mot_l_amp, _payload->pwr_brd_mot_r_amp, _payload->pwr_brd_analog_amp, _payload->pwr_brd_digital_amp, _payload->pwr_brd_ext_amp, _payload->pwr_brd_aux_amp);
 }
 
 #endif

@@ -259,7 +259,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_utm_global_position_decode(fmav_utm
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_UTM_GLOBAL_POSITION_PAYLOAD_LEN_MAX);
     }
 #else
@@ -451,6 +451,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_utm_global_position_pack(
         _msg, sysid, compid,
         time, uas_id, lat, lon, alt, relative_alt, vx, vy, vz, h_acc, v_acc, vel_acc, next_lat, next_lon, next_alt, update_rate, flight_state, flags,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_utm_global_position_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_utm_global_position_t* _payload)
+{
+    return mavlink_msg_utm_global_position_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time, _payload->uas_id, _payload->lat, _payload->lon, _payload->alt, _payload->relative_alt, _payload->vx, _payload->vy, _payload->vz, _payload->h_acc, _payload->v_acc, _payload->vel_acc, _payload->next_lat, _payload->next_lon, _payload->next_alt, _payload->update_rate, _payload->flight_state, _payload->flags);
 }
 
 #endif

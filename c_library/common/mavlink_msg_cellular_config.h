@@ -215,7 +215,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_cellular_config_decode(fmav_cellula
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_CELLULAR_CONFIG_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_CELLULAR_CONFIG_PAYLOAD_LEN_MAX);
     }
 #else
@@ -345,6 +345,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_cellular_config_pack(
         _msg, sysid, compid,
         enable_lte, enable_pin, pin, new_pin, apn, puk, roaming, response,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_cellular_config_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_cellular_config_t* _payload)
+{
+    return mavlink_msg_cellular_config_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->enable_lte, _payload->enable_pin, _payload->pin, _payload->new_pin, _payload->apn, _payload->puk, _payload->roaming, _payload->response);
 }
 
 #endif

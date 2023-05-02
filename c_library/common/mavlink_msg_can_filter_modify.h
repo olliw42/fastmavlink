@@ -199,7 +199,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_can_filter_modify_decode(fmav_can_f
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_CAN_FILTER_MODIFY_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_CAN_FILTER_MODIFY_PAYLOAD_LEN_MAX);
     }
 #else
@@ -295,6 +295,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_can_filter_modify_pack(
         _msg, sysid, compid,
         target_system, target_component, bus, operation, num_ids, ids,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_can_filter_modify_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_can_filter_modify_t* _payload)
+{
+    return mavlink_msg_can_filter_modify_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->target_system, _payload->target_component, _payload->bus, _payload->operation, _payload->num_ids, _payload->ids);
 }
 
 #endif

@@ -221,7 +221,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_estimator_status_decode(fmav_estima
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_ESTIMATOR_STATUS_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_ESTIMATOR_STATUS_PAYLOAD_LEN_MAX);
     }
 #else
@@ -347,6 +347,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_estimator_status_pack(
         _msg, sysid, compid,
         time_usec, flags, vel_ratio, pos_horiz_ratio, pos_vert_ratio, mag_ratio, hagl_ratio, tas_ratio, pos_horiz_accuracy, pos_vert_accuracy,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_estimator_status_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_estimator_status_t* _payload)
+{
+    return mavlink_msg_estimator_status_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time_usec, _payload->flags, _payload->vel_ratio, _payload->pos_horiz_ratio, _payload->pos_vert_ratio, _payload->mag_ratio, _payload->hagl_ratio, _payload->tas_ratio, _payload->pos_horiz_accuracy, _payload->pos_vert_accuracy);
 }
 
 #endif

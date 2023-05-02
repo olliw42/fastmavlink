@@ -291,7 +291,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_high_latency_decode(fmav_high_laten
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_HIGH_LATENCY_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_HIGH_LATENCY_PAYLOAD_LEN_MAX);
     }
 #else
@@ -529,6 +529,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_high_latency_pack(
         _msg, sysid, compid,
         base_mode, custom_mode, landed_state, roll, pitch, heading, throttle, heading_sp, latitude, longitude, altitude_amsl, altitude_sp, airspeed, airspeed_sp, groundspeed, climb_rate, gps_nsat, gps_fix_type, battery_remaining, temperature, temperature_air, failsafe, wp_num, wp_distance,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_high_latency_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_high_latency_t* _payload)
+{
+    return mavlink_msg_high_latency_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->base_mode, _payload->custom_mode, _payload->landed_state, _payload->roll, _payload->pitch, _payload->heading, _payload->throttle, _payload->heading_sp, _payload->latitude, _payload->longitude, _payload->altitude_amsl, _payload->altitude_sp, _payload->airspeed, _payload->airspeed_sp, _payload->groundspeed, _payload->climb_rate, _payload->gps_nsat, _payload->gps_fix_type, _payload->battery_remaining, _payload->temperature, _payload->temperature_air, _payload->failsafe, _payload->wp_num, _payload->wp_distance);
 }
 
 #endif

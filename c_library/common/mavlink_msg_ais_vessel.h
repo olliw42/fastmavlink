@@ -256,7 +256,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_ais_vessel_decode(fmav_ais_vessel_t
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_AIS_VESSEL_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_AIS_VESSEL_PAYLOAD_LEN_MAX);
     }
 #else
@@ -446,6 +446,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_ais_vessel_pack(
         _msg, sysid, compid,
         MMSI, lat, lon, COG, heading, velocity, turn_rate, navigational_status, type, dimension_bow, dimension_stern, dimension_port, dimension_starboard, callsign, name, tslc, flags,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_ais_vessel_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_ais_vessel_t* _payload)
+{
+    return mavlink_msg_ais_vessel_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->MMSI, _payload->lat, _payload->lon, _payload->COG, _payload->heading, _payload->velocity, _payload->turn_rate, _payload->navigational_status, _payload->type, _payload->dimension_bow, _payload->dimension_stern, _payload->dimension_port, _payload->dimension_starboard, _payload->callsign, _payload->name, _payload->tslc, _payload->flags);
 }
 
 #endif

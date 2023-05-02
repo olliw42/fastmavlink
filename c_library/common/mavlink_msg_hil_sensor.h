@@ -251,7 +251,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_hil_sensor_decode(fmav_hil_sensor_t
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_HIL_SENSOR_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_HIL_SENSOR_PAYLOAD_LEN_MAX);
     }
 #else
@@ -425,6 +425,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_hil_sensor_pack(
         _msg, sysid, compid,
         time_usec, xacc, yacc, zacc, xgyro, ygyro, zgyro, xmag, ymag, zmag, abs_pressure, diff_pressure, pressure_alt, temperature, fields_updated, id,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_hil_sensor_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_hil_sensor_t* _payload)
+{
+    return mavlink_msg_hil_sensor_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time_usec, _payload->xacc, _payload->yacc, _payload->zacc, _payload->xgyro, _payload->ygyro, _payload->zgyro, _payload->xmag, _payload->ymag, _payload->zmag, _payload->abs_pressure, _payload->diff_pressure, _payload->pressure_alt, _payload->temperature, _payload->fields_updated, _payload->id);
 }
 
 #endif

@@ -241,7 +241,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_battery_status_decode(fmav_battery_
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_BATTERY_STATUS_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_BATTERY_STATUS_PAYLOAD_LEN_MAX);
     }
 #else
@@ -407,6 +407,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_battery_status_pack(
         _msg, sysid, compid,
         id, battery_function, type, temperature, voltages, current_battery, current_consumed, energy_consumed, battery_remaining, time_remaining, charge_state, voltages_ext, mode, fault_bitmask,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_battery_status_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_battery_status_t* _payload)
+{
+    return mavlink_msg_battery_status_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->id, _payload->battery_function, _payload->type, _payload->temperature, _payload->voltages, _payload->current_battery, _payload->current_consumed, _payload->energy_consumed, _payload->battery_remaining, _payload->time_remaining, _payload->charge_state, _payload->voltages_ext, _payload->mode, _payload->fault_bitmask);
 }
 
 #endif

@@ -201,7 +201,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_open_drone_id_system_update_decode(
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_UPDATE_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_OPEN_DRONE_ID_SYSTEM_UPDATE_PAYLOAD_LEN_MAX);
     }
 #else
@@ -295,6 +295,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_open_drone_id_system_update_
         _msg, sysid, compid,
         target_system, target_component, operator_latitude, operator_longitude, operator_altitude_geo, timestamp,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_open_drone_id_system_update_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_open_drone_id_system_update_t* _payload)
+{
+    return mavlink_msg_open_drone_id_system_update_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->target_system, _payload->target_component, _payload->operator_latitude, _payload->operator_longitude, _payload->operator_altitude_geo, _payload->timestamp);
 }
 
 #endif

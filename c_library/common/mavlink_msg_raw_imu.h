@@ -231,7 +231,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_raw_imu_decode(fmav_raw_imu_t* payl
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_RAW_IMU_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_RAW_IMU_PAYLOAD_LEN_MAX);
     }
 #else
@@ -373,6 +373,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_raw_imu_pack(
         _msg, sysid, compid,
         time_usec, xacc, yacc, zacc, xgyro, ygyro, zgyro, xmag, ymag, zmag, id, temperature,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_raw_imu_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_raw_imu_t* _payload)
+{
+    return mavlink_msg_raw_imu_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time_usec, _payload->xacc, _payload->yacc, _payload->zacc, _payload->xgyro, _payload->ygyro, _payload->zgyro, _payload->xmag, _payload->ymag, _payload->zmag, _payload->id, _payload->temperature);
 }
 
 #endif

@@ -231,7 +231,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_optical_flow_rad_decode(fmav_optica
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_OPTICAL_FLOW_RAD_PAYLOAD_LEN_MAX);
     }
 #else
@@ -373,6 +373,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_optical_flow_rad_pack(
         _msg, sysid, compid,
         time_usec, sensor_id, integration_time_us, integrated_x, integrated_y, integrated_xgyro, integrated_ygyro, integrated_zgyro, temperature, quality, time_delta_distance_us, distance,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_optical_flow_rad_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_optical_flow_rad_t* _payload)
+{
+    return mavlink_msg_optical_flow_rad_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time_usec, _payload->sensor_id, _payload->integration_time_us, _payload->integrated_x, _payload->integrated_y, _payload->integrated_xgyro, _payload->integrated_ygyro, _payload->integrated_zgyro, _payload->temperature, _payload->quality, _payload->time_delta_distance_us, _payload->distance);
 }
 
 #endif

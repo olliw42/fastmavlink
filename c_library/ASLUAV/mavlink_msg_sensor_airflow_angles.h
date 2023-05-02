@@ -196,7 +196,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_sensor_airflow_angles_decode(fmav_s
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_SENSOR_AIRFLOW_ANGLES_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_SENSOR_AIRFLOW_ANGLES_PAYLOAD_LEN_MAX);
     }
 #else
@@ -282,6 +282,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_sensor_airflow_angles_pack(
         _msg, sysid, compid,
         timestamp, angleofattack, angleofattack_valid, sideslip, sideslip_valid,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_sensor_airflow_angles_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_sensor_airflow_angles_t* _payload)
+{
+    return mavlink_msg_sensor_airflow_angles_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->timestamp, _payload->angleofattack, _payload->angleofattack_valid, _payload->sideslip, _payload->sideslip_valid);
 }
 
 #endif

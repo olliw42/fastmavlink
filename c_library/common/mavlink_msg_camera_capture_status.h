@@ -206,7 +206,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_camera_capture_status_decode(fmav_c
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_PAYLOAD_LEN_MAX);
     }
 #else
@@ -308,6 +308,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_capture_status_pack(
         _msg, sysid, compid,
         time_boot_ms, image_status, video_status, image_interval, recording_time_ms, available_capacity, image_count,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_capture_status_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_camera_capture_status_t* _payload)
+{
+    return mavlink_msg_camera_capture_status_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time_boot_ms, _payload->image_status, _payload->video_status, _payload->image_interval, _payload->recording_time_ms, _payload->available_capacity, _payload->image_count);
 }
 
 #endif

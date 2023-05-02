@@ -226,7 +226,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_aslctrl_debug_decode(fmav_aslctrl_d
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_ASLCTRL_DEBUG_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_ASLCTRL_DEBUG_PAYLOAD_LEN_MAX);
     }
 #else
@@ -360,6 +360,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_aslctrl_debug_pack(
         _msg, sysid, compid,
         i32_1, i8_1, i8_2, f_1, f_2, f_3, f_4, f_5, f_6, f_7, f_8,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_aslctrl_debug_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_aslctrl_debug_t* _payload)
+{
+    return mavlink_msg_aslctrl_debug_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->i32_1, _payload->i8_1, _payload->i8_2, _payload->f_1, _payload->f_2, _payload->f_3, _payload->f_4, _payload->f_5, _payload->f_6, _payload->f_7, _payload->f_8);
 }
 
 #endif

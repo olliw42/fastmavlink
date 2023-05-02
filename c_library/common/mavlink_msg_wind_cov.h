@@ -216,7 +216,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_wind_cov_decode(fmav_wind_cov_t* pa
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_WIND_COV_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_WIND_COV_PAYLOAD_LEN_MAX);
     }
 #else
@@ -334,6 +334,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_wind_cov_pack(
         _msg, sysid, compid,
         time_usec, wind_x, wind_y, wind_z, var_horiz, var_vert, wind_alt, horiz_accuracy, vert_accuracy,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_wind_cov_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_wind_cov_t* _payload)
+{
+    return mavlink_msg_wind_cov_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time_usec, _payload->wind_x, _payload->wind_y, _payload->wind_z, _payload->var_horiz, _payload->var_vert, _payload->wind_alt, _payload->horiz_accuracy, _payload->vert_accuracy);
 }
 
 #endif

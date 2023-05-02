@@ -261,7 +261,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_trajectory_representation_waypoints
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_TRAJECTORY_REPRESENTATION_WAYPOINTS_PAYLOAD_LEN_MAX);
     }
 #else
@@ -487,6 +487,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_trajectory_representation_wa
         _msg, sysid, compid,
         time_usec, valid_points, pos_x, pos_y, pos_z, vel_x, vel_y, vel_z, acc_x, acc_y, acc_z, pos_yaw, vel_yaw, command,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_trajectory_representation_waypoints_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_trajectory_representation_waypoints_t* _payload)
+{
+    return mavlink_msg_trajectory_representation_waypoints_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time_usec, _payload->valid_points, _payload->pos_x, _payload->pos_y, _payload->pos_z, _payload->vel_x, _payload->vel_y, _payload->vel_z, _payload->acc_x, _payload->acc_y, _payload->acc_z, _payload->pos_yaw, _payload->vel_yaw, _payload->command);
 }
 
 #endif

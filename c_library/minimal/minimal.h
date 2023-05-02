@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Sat Dec 03 2022"
+#define FASTMAVLINK_BUILD_DATE  "Tue May 02 2023"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -106,7 +106,7 @@ typedef enum MAV_TYPE {
     MAV_TYPE_VTOL_TILTROTOR = 21,  // Tiltrotor VTOL. Fuselage and wings stay (nominally) horizontal in all flight phases. It able to tilt (some) rotors to provide thrust in cruise flight. 
     MAV_TYPE_VTOL_FIXEDROTOR = 22,  // VTOL with separate fixed rotors for hover and cruise flight. Fuselage and wings stay (nominally) horizontal in all flight phases. 
     MAV_TYPE_VTOL_TAILSITTER = 23,  // Tailsitter VTOL. Fuselage and wings orientation changes depending on flight phase: vertical for hover, horizontal for cruise. Use more specific VTOL MAV_TYPE_VTOL_DUOROTOR or MAV_TYPE_VTOL_QUADROTOR if appropriate. 
-    MAV_TYPE_VTOL_RESERVED4 = 24,  // VTOL reserved 4 
+    MAV_TYPE_VTOL_TILTWING = 24,  // Tiltwing VTOL. Fuselage stays horizontal in all flight phases. The whole wing, along with any attached engine, can tilt between vertical and horizontal mode. 
     MAV_TYPE_VTOL_RESERVED5 = 25,  // VTOL reserved 5 
     MAV_TYPE_GIMBAL = 26,  // Gimbal 
     MAV_TYPE_ADSB = 27,  // ADSB system 

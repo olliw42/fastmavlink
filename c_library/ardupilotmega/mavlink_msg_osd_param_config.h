@@ -219,7 +219,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_osd_param_config_decode(fmav_osd_pa
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_OSD_PARAM_CONFIG_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_OSD_PARAM_CONFIG_PAYLOAD_LEN_MAX);
     }
 #else
@@ -347,6 +347,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_osd_param_config_pack(
         _msg, sysid, compid,
         target_system, target_component, request_id, osd_screen, osd_index, param_id, config_type, min_value, max_value, increment,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_osd_param_config_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_osd_param_config_t* _payload)
+{
+    return mavlink_msg_osd_param_config_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->target_system, _payload->target_component, _payload->request_id, _payload->osd_screen, _payload->osd_index, _payload->param_id, _payload->config_type, _payload->min_value, _payload->max_value, _payload->increment);
 }
 
 #endif

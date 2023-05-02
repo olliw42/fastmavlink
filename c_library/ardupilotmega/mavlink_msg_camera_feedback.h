@@ -241,7 +241,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_camera_feedback_decode(fmav_camera_
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_CAMERA_FEEDBACK_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_CAMERA_FEEDBACK_PAYLOAD_LEN_MAX);
     }
 #else
@@ -399,6 +399,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_feedback_pack(
         _msg, sysid, compid,
         time_usec, target_system, cam_idx, img_idx, lat, lng, alt_msl, alt_rel, roll, pitch, yaw, foc_len, flags, completed_captures,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_feedback_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_camera_feedback_t* _payload)
+{
+    return mavlink_msg_camera_feedback_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time_usec, _payload->target_system, _payload->cam_idx, _payload->img_idx, _payload->lat, _payload->lng, _payload->alt_msl, _payload->alt_rel, _payload->roll, _payload->pitch, _payload->yaw, _payload->foc_len, _payload->flags, _payload->completed_captures);
 }
 
 #endif

@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Sat Dec 03 2022"
+#define FASTMAVLINK_BUILD_DATE  "Tue May 02 2023"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -64,16 +64,13 @@ typedef enum WIFI_NETWORK_SECURITY {
 #endif
 
 
-#ifndef FASTMAVLINK_HAS_ENUM_AIRSPEED_SENSOR_TYPE
-#define FASTMAVLINK_HAS_ENUM_AIRSPEED_SENSOR_TYPE
-typedef enum AIRSPEED_SENSOR_TYPE {
-    AIRSPEED_SENSOR_TYPE_UNKNOWN = 0,  // Airspeed sensor type unknown/not supplied. 
-    AIRSPEED_SENSOR_TYPE_DIFFERENTIAL = 1,  // Differential airspeed sensor 
-    AIRSPEED_SENSOR_TYPE_MASS_FLOW = 2,  // Mass-flow airspeed sensor. 
-    AIRSPEED_SENSOR_TYPE_WINDVANE = 3,  // Windvane airspeed sensor. 
-    AIRSPEED_SENSOR_TYPE_SYNTHETIC = 4,  // Synthetic/calculated airspeed. 
-    AIRSPEED_SENSOR_TYPE_ENUM_END = 5,  // end marker
-} AIRSPEED_SENSOR_TYPE;
+#ifndef FASTMAVLINK_HAS_ENUM_AIRSPEED_SENSOR_FLAGS
+#define FASTMAVLINK_HAS_ENUM_AIRSPEED_SENSOR_FLAGS
+typedef enum AIRSPEED_SENSOR_FLAGS {
+    AIRSPEED_SENSOR_UNHEALTHY = 0,  // Airspeed sensor is unhealthy 
+    AIRSPEED_SENSOR_USING = 1,  // True if the data from this sensor is being actively used by the flight controller for guidance, navigation or control. 
+    AIRSPEED_SENSOR_FLAGS_ENUM_END = 2,  // end marker
+} AIRSPEED_SENSOR_FLAGS;
 #endif
 
 
@@ -256,6 +253,7 @@ typedef enum MAV_CMD {
     MAV_CMD_SET_CAMERA_ZOOM = 531,  // Set camera zoom. Camera must respond with a CAMERA_SETTINGS message (on success). | Zoom type | Zoom value. The range of valid values depend on the zoom type. | Reserved (default:NaN) | Reserved (default:NaN) | Reserved (default:0) | Reserved (default:0) | Reserved (default:NaN)
     MAV_CMD_SET_CAMERA_FOCUS = 532,  // Set camera focus. Camera must respond with a CAMERA_SETTINGS message (on success). | Focus type | Focus value | Reserved (default:NaN) | Reserved (default:NaN) | Reserved (default:0) | Reserved (default:0) | Reserved (default:NaN)
     MAV_CMD_SET_STORAGE_USAGE = 533,  // Set that a particular storage is the preferred location for saving photos, videos, and/or other media (e.g. to set that an SD card is used for storing videos).          There can only be one preferred save location for each particular media type: setting a media usage flag will clear/reset that same flag if set on any other storage.          If no flag is set the system should use its default storage.          A target system can choose to always use default storage, in which case it should ACK the command with MAV_RESULT_UNSUPPORTED.          A target system can choose to not allow a particular storage to be set as preferred storage, in which case it should ACK the command with MAV_RESULT_DENIED. | Storage ID (1 for first, 2 for second, etc.) | Usage flags | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
+    MAV_CMD_SET_AT_S_PARAM = 550,  // Allows setting an AT S command of an SiK radio.         | The radio instance, one-based, 0 for all. | The Sx index, e.g. 3 for S3 which is NETID. | The value to set it to, e.g. default 25 for NETID | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_JUMP_TAG = 600,  // Tagged jump target. Can be jumped to with MAV_CMD_DO_JUMP_TAG. | Tag. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_DO_JUMP_TAG = 601,  // Jump to the matching tag in the mission list. Repeat this action for the specified number of times. A mission should contain a single matching tag for each jump. If this is not the case then a jump to a missing tag should complete the mission, and a jump where there are multiple matching tags should always select the one with the lowest mission sequence number. | Target tag to jump to. | Repeat count. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_PARAM_TRANSACTION = 900,  // Request to start or end a parameter transaction. Multiple kinds of transport layers can be used to exchange parameters in the transaction (param, param_ext and mavftp). The command response can either be a success/failure or an in progress in case the receiving side takes some time to apply the parameters. | Action to be performed (start, commit, cancel, etc.) | Possible transport layers to set and get parameters via mavlink during a parameter transaction. | Identifier for a specific transaction. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
@@ -280,7 +278,7 @@ typedef enum MAV_CMD {
     MAV_CMD_CONTROL_HIGH_LATENCY = 2600,  // Request to start/stop transmitting over the high latency telemetry | Control transmission over high latency telemetry (0: stop, 1: start) | Empty | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_PANORAMA_CREATE = 2800,  // Create a panorama at the current position | Viewing angle horizontal of the panorama (+- 0.5 the total angle) | Viewing angle vertical of panorama. | Speed of the horizontal rotation. | Speed of the vertical rotation. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_DO_VTOL_TRANSITION = 3000,  // Request VTOL transition | The target VTOL state. For normal transitions, only MAV_VTOL_STATE_MC and MAV_VTOL_STATE_FW can be used. | Force immediate transition to the specified MAV_VTOL_STATE. 1: Force immediate, 0: normal transition. Can be used, for example, to trigger an emergency "Quadchute". Caution: Can be dangerous/damage vehicle, depending on autopilot implementation of this command. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
-    MAV_CMD_ARM_AUTHORIZATION_REQUEST = 3001,  // Request authorization to arm the vehicle to a external entity, the arm authorizer is responsible to request all data that is needs from the vehicle before authorize or deny the request. If approved the progress of command_ack message should be set with period of time that this authorization is valid in seconds or in case it was denied it should be set with one of the reasons in ARM_AUTH_DENIED_REASON.         | Vehicle system id, this way ground station can request arm authorization on behalf of any vehicle | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
+    MAV_CMD_ARM_AUTHORIZATION_REQUEST = 3001,  // Request authorization to arm the vehicle to a external entity, the arm authorizer is responsible to request all data that is needs from the vehicle before authorize or deny the request.		If approved the COMMAND_ACK message progress field should be set with period of time that this authorization is valid in seconds.		If the authorization is denied COMMAND_ACK.result_param2 should be set with one of the reasons in ARM_AUTH_DENIED_REASON.         | Vehicle system id, this way ground station can request arm authorization on behalf of any vehicle | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_SET_GUIDED_SUBMODE_STANDARD = 4000,  // This command sets the submode to standard guided when vehicle is in guided mode. The vehicle holds position and altitude and the user can input the desired velocities along all three axes.                   | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_SET_GUIDED_SUBMODE_CIRCLE = 4001,  // This command sets submode circle when vehicle is in guided mode. Vehicle flies along a circle facing the center of the circle. The user can input the velocity along the circle and change the radius. If no input is given the vehicle will hold position.                   | Radius of desired circle in CIRCLE_MODE | User defined | User defined | User defined | Target latitude of center of circle in CIRCLE_MODE | Target longitude of center of circle in CIRCLE_MODE | Reserved (default:0)
     MAV_CMD_CONDITION_GATE = 4501,  // Delay mission state machine until gate has been reached. | Geometry: 0: orthogonal to path between previous and next waypoint. | Altitude: 0: ignore altitude | Empty | Empty | Latitude | Longitude | Altitude
@@ -317,6 +315,31 @@ typedef enum MAV_CMD {
 } MAV_CMD;
 #endif
 
+
+#ifndef FASTMAVLINK_HAS_ENUM_TARGET_ABSOLUTE_SENSOR_CAPABILITY_FLAGS
+#define FASTMAVLINK_HAS_ENUM_TARGET_ABSOLUTE_SENSOR_CAPABILITY_FLAGS
+typedef enum TARGET_ABSOLUTE_SENSOR_CAPABILITY_FLAGS {
+    TARGET_ABSOLUTE_SENSOR_CAPABILITY_POSITION = 1,  //  
+    TARGET_ABSOLUTE_SENSOR_CAPABILITY_VELOCITY = 2,  //  
+    TARGET_ABSOLUTE_SENSOR_CAPABILITY_ACCELERATION = 4,  //  
+    TARGET_ABSOLUTE_SENSOR_CAPABILITY_ATTITUDE = 8,  //  
+    TARGET_ABSOLUTE_SENSOR_CAPABILITY_RATES = 16,  //  
+    TARGET_ABSOLUTE_SENSOR_CAPABILITY_FLAGS_ENUM_END = 17,  // end marker
+} TARGET_ABSOLUTE_SENSOR_CAPABILITY_FLAGS;
+#endif
+
+
+#ifndef FASTMAVLINK_HAS_ENUM_TARGET_OBS_FRAME
+#define FASTMAVLINK_HAS_ENUM_TARGET_OBS_FRAME
+typedef enum TARGET_OBS_FRAME {
+    TARGET_OBS_FRAME_LOCAL_NED = 0,  // NED local tangent frame (x: North, y: East, z: Down) with origin fixed relative to earth. 
+    TARGET_OBS_FRAME_BODY_FRD = 1,  // FRD local frame aligned to the vehicle's attitude (x: Forward, y: Right, z: Down) with an origin that travels with vehicle. 
+    TARGET_OBS_FRAME_LOCAL_OFFSET_NED = 2,  // NED local tangent frame (x: North, y: East, z: Down) with an origin that travels with vehicle. 
+    TARGET_OBS_FRAME_OTHER = 3,  // Other sensor frame for target observations neither in local NED nor in body FRD. 
+    TARGET_OBS_FRAME_ENUM_END = 4,  // end marker
+} TARGET_OBS_FRAME;
+#endif
+
 #endif // FASTMAVLINK_DO_NOT_INCLUDE_ENUMS
 
 
@@ -342,6 +365,8 @@ typedef enum MAV_CMD {
 #include "./mavlink_msg_group_end.h"
 #include "./mavlink_msg_available_modes.h"
 #include "./mavlink_msg_current_mode.h"
+#include "./mavlink_msg_target_absolute.h"
+#include "./mavlink_msg_target_relative.h"
 
 #ifdef FASTMAVLINK_IGNORE_WADDRESSOFPACKEDMEMBER
   #if defined __GNUC__ && __GNUC__ >= 9

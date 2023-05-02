@@ -194,7 +194,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_wifi_network_info_decode(fmav_wifi_
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_WIFI_NETWORK_INFO_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_WIFI_NETWORK_INFO_PAYLOAD_LEN_MAX);
     }
 #else
@@ -282,6 +282,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_wifi_network_info_pack(
         _msg, sysid, compid,
         ssid, channel_id, signal_quality, data_rate, security,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_wifi_network_info_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_wifi_network_info_t* _payload)
+{
+    return mavlink_msg_wifi_network_info_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->ssid, _payload->channel_id, _payload->signal_quality, _payload->data_rate, _payload->security);
 }
 
 #endif

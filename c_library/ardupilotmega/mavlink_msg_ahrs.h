@@ -206,7 +206,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_ahrs_decode(fmav_ahrs_t* payload, c
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_AHRS_PAYLOAD_LEN_MAX);
     }
 #else
@@ -308,6 +308,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_ahrs_pack(
         _msg, sysid, compid,
         omegaIx, omegaIy, omegaIz, accel_weight, renorm_val, error_rp, error_yaw,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_ahrs_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_ahrs_t* _payload)
+{
+    return mavlink_msg_ahrs_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->omegaIx, _payload->omegaIy, _payload->omegaIz, _payload->accel_weight, _payload->renorm_val, _payload->error_rp, _payload->error_yaw);
 }
 
 #endif

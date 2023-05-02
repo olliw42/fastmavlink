@@ -196,7 +196,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_log_entry_decode(fmav_log_entry_t* 
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_LOG_ENTRY_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_LOG_ENTRY_PAYLOAD_LEN_MAX);
     }
 #else
@@ -282,6 +282,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_log_entry_pack(
         _msg, sysid, compid,
         id, num_logs, last_log_num, time_utc, size,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_log_entry_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_log_entry_t* _payload)
+{
+    return mavlink_msg_log_entry_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->id, _payload->num_logs, _payload->last_log_num, _payload->time_utc, _payload->size);
 }
 
 #endif

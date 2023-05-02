@@ -211,7 +211,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_satcom_link_status_decode(fmav_satc
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_SATCOM_LINK_STATUS_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_SATCOM_LINK_STATUS_PAYLOAD_LEN_MAX);
     }
 #else
@@ -321,6 +321,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_satcom_link_status_pack(
         _msg, sysid, compid,
         timestamp, last_heartbeat, failed_sessions, successful_sessions, signal_quality, ring_pending, tx_session_pending, rx_session_pending,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_satcom_link_status_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_satcom_link_status_t* _payload)
+{
+    return mavlink_msg_satcom_link_status_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->timestamp, _payload->last_heartbeat, _payload->failed_sessions, _payload->successful_sessions, _payload->signal_quality, _payload->ring_pending, _payload->tx_session_pending, _payload->rx_session_pending);
 }
 
 #endif

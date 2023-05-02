@@ -206,7 +206,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_manual_setpoint_decode(fmav_manual_
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_MANUAL_SETPOINT_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_MANUAL_SETPOINT_PAYLOAD_LEN_MAX);
     }
 #else
@@ -308,6 +308,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_manual_setpoint_pack(
         _msg, sysid, compid,
         time_boot_ms, roll, pitch, yaw, thrust, mode_switch, manual_override_switch,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_manual_setpoint_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_manual_setpoint_t* _payload)
+{
+    return mavlink_msg_manual_setpoint_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time_boot_ms, _payload->roll, _payload->pitch, _payload->yaw, _payload->thrust, _payload->mode_switch, _payload->manual_override_switch);
 }
 
 #endif

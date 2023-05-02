@@ -248,7 +248,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_gimbal_device_information_decode(fm
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_PAYLOAD_LEN_MAX);
     }
 #else
@@ -428,6 +428,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_gimbal_device_information_pa
         _msg, sysid, compid,
         time_boot_ms, vendor_name, model_name, custom_name, firmware_version, hardware_version, uid, cap_flags, custom_cap_flags, roll_min, roll_max, pitch_min, pitch_max, yaw_min, yaw_max,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_gimbal_device_information_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_gimbal_device_information_t* _payload)
+{
+    return mavlink_msg_gimbal_device_information_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->time_boot_ms, _payload->vendor_name, _payload->model_name, _payload->custom_name, _payload->firmware_version, _payload->hardware_version, _payload->uid, _payload->cap_flags, _payload->custom_cap_flags, _payload->roll_min, _payload->roll_max, _payload->pitch_min, _payload->pitch_max, _payload->yaw_min, _payload->yaw_max);
 }
 
 #endif

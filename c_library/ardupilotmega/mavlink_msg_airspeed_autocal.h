@@ -231,7 +231,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_airspeed_autocal_decode(fmav_airspe
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_AIRSPEED_AUTOCAL_PAYLOAD_LEN_MAX);
     }
 #else
@@ -373,6 +373,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_airspeed_autocal_pack(
         _msg, sysid, compid,
         vx, vy, vz, diff_pressure, EAS2TAS, ratio, state_x, state_y, state_z, Pax, Pby, Pcz,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_airspeed_autocal_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_airspeed_autocal_t* _payload)
+{
+    return mavlink_msg_airspeed_autocal_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->vx, _payload->vy, _payload->vz, _payload->diff_pressure, _payload->EAS2TAS, _payload->ratio, _payload->state_x, _payload->state_y, _payload->state_z, _payload->Pax, _payload->Pby, _payload->Pcz);
 }
 
 #endif

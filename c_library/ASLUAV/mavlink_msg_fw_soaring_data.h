@@ -296,7 +296,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_fw_soaring_data_decode(fmav_fw_soar
         // ensure that returned payload is zero filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_FW_SOARING_DATA_PAYLOAD_LEN_MAX - msg->len);
     } else {
-		// note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
+        // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_FW_SOARING_DATA_PAYLOAD_LEN_MAX);
     }
 #else
@@ -542,6 +542,20 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_fw_soaring_data_pack(
         _msg, sysid, compid,
         timestamp, timestampModeChanged, xW, xR, xLat, xLon, VarW, VarR, VarLat, VarLon, LoiterRadius, LoiterDirection, DistToSoarPoint, vSinkExp, z1_LocalUpdraftSpeed, z2_DeltaRoll, z1_exp, z2_exp, ThermalGSNorth, ThermalGSEast, TSE_dot, DebugVar1, DebugVar2, ControlMode, valid,
         _status);
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_fw_soaring_data_encode(
+    uint8_t sysid,
+    uint8_t compid,
+    mavlink_message_t* _msg,
+    const mavlink_fw_soaring_data_t* _payload)
+{
+    return mavlink_msg_fw_soaring_data_pack(
+        sysid,
+        compid,
+        _msg,
+        _payload->timestamp, _payload->timestampModeChanged, _payload->xW, _payload->xR, _payload->xLat, _payload->xLon, _payload->VarW, _payload->VarR, _payload->VarLat, _payload->VarLon, _payload->LoiterRadius, _payload->LoiterDirection, _payload->DistToSoarPoint, _payload->vSinkExp, _payload->z1_LocalUpdraftSpeed, _payload->z2_DeltaRoll, _payload->z1_exp, _payload->z2_exp, _payload->ThermalGSNorth, _payload->ThermalGSEast, _payload->TSE_dot, _payload->DebugVar1, _payload->DebugVar2, _payload->ControlMode, _payload->valid);
 }
 
 #endif
