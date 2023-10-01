@@ -132,15 +132,22 @@
 */
 
 
-// Allows to exclude the enum definitions. You should usually not need this. Can be usefull
+// Allows to exclude the enum definitions. You should usually not need this. Can be useful
 // e.g. when fastMavlink is used together with pymavlink-mavgen, such as in tests.
 /*
 #define FASTMAVLINK_EXCLUDE_ENUMS
 */
 
+
 // Allows to ignore compiler warning "-Waddress-of-packed-member"
 /*
 #define FASTMAVLINK_IGNORE_WADDRESSOFPACKEDMEMBER
+*/
+
+
+// Allows to use a faster lookup table based crc calculation.
+/*
+#define FASTMAVLINK_CRC_LOOKUP_TABLE
 */
 
 
