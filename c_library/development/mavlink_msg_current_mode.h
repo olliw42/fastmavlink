@@ -16,27 +16,27 @@
 FASTMAVLINK_PACK(
 typedef struct _fmav_current_mode_t {
     uint32_t custom_mode;
+    uint32_t intended_custom_mode;
     uint8_t standard_mode;
-    uint8_t base_mode;
 }) fmav_current_mode_t;
 
 
 #define FASTMAVLINK_MSG_ID_CURRENT_MODE  436
 
-#define FASTMAVLINK_MSG_CURRENT_MODE_PAYLOAD_LEN_MAX  6
-#define FASTMAVLINK_MSG_CURRENT_MODE_CRCEXTRA  151
+#define FASTMAVLINK_MSG_CURRENT_MODE_PAYLOAD_LEN_MAX  9
+#define FASTMAVLINK_MSG_CURRENT_MODE_CRCEXTRA  193
 
 #define FASTMAVLINK_MSG_CURRENT_MODE_FLAGS  0
 #define FASTMAVLINK_MSG_CURRENT_MODE_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_CURRENT_MODE_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_CURRENT_MODE_FRAME_LEN_MAX  31
+#define FASTMAVLINK_MSG_CURRENT_MODE_FRAME_LEN_MAX  34
 
 
 
 #define FASTMAVLINK_MSG_CURRENT_MODE_FIELD_CUSTOM_MODE_OFS  0
-#define FASTMAVLINK_MSG_CURRENT_MODE_FIELD_STANDARD_MODE_OFS  4
-#define FASTMAVLINK_MSG_CURRENT_MODE_FIELD_BASE_MODE_OFS  5
+#define FASTMAVLINK_MSG_CURRENT_MODE_FIELD_INTENDED_CUSTOM_MODE_OFS  4
+#define FASTMAVLINK_MSG_CURRENT_MODE_FIELD_STANDARD_MODE_OFS  8
 
 
 //----------------------------------------
@@ -47,14 +47,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_current_mode_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t standard_mode, uint8_t base_mode, uint32_t custom_mode,
+    uint8_t standard_mode, uint32_t custom_mode, uint32_t intended_custom_mode,
     fmav_status_t* _status)
 {
     fmav_current_mode_t* _payload = (fmav_current_mode_t*)_msg->payload;
 
     _payload->custom_mode = custom_mode;
+    _payload->intended_custom_mode = intended_custom_mode;
     _payload->standard_mode = standard_mode;
-    _payload->base_mode = base_mode;
 
 
     _msg->sysid = sysid;
@@ -78,7 +78,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_current_mode_encode(
 {
     return fmav_msg_current_mode_pack(
         _msg, sysid, compid,
-        _payload->standard_mode, _payload->base_mode, _payload->custom_mode,
+        _payload->standard_mode, _payload->custom_mode, _payload->intended_custom_mode,
         _status);
 }
 
@@ -87,14 +87,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_current_mode_pack_to_frame_buf(
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t standard_mode, uint8_t base_mode, uint32_t custom_mode,
+    uint8_t standard_mode, uint32_t custom_mode, uint32_t intended_custom_mode,
     fmav_status_t* _status)
 {
     fmav_current_mode_t* _payload = (fmav_current_mode_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->custom_mode = custom_mode;
+    _payload->intended_custom_mode = intended_custom_mode;
     _payload->standard_mode = standard_mode;
-    _payload->base_mode = base_mode;
 
 
     _buf[5] = sysid;
@@ -120,7 +120,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_current_mode_encode_to_frame_bu
 {
     return fmav_msg_current_mode_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->standard_mode, _payload->base_mode, _payload->custom_mode,
+        _payload->standard_mode, _payload->custom_mode, _payload->intended_custom_mode,
         _status);
 }
 
@@ -130,14 +130,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_current_mode_encode_to_frame_bu
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_current_mode_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint8_t standard_mode, uint8_t base_mode, uint32_t custom_mode,
+    uint8_t standard_mode, uint32_t custom_mode, uint32_t intended_custom_mode,
     fmav_status_t* _status)
 {
     fmav_current_mode_t _payload;
 
     _payload.custom_mode = custom_mode;
+    _payload.intended_custom_mode = intended_custom_mode;
     _payload.standard_mode = standard_mode;
-    _payload.base_mode = base_mode;
 
 
     return fmav_finalize_serial(
@@ -204,18 +204,18 @@ FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_current_mode_get_field_custom_m
 }
 
 
-FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_current_mode_get_field_standard_mode(const fmav_message_t* msg)
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_current_mode_get_field_intended_custom_mode(const fmav_message_t* msg)
 {
-    uint8_t r;
-    memcpy(&r, &(msg->payload[4]), sizeof(uint8_t));
+    uint32_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(uint32_t));
     return r;
 }
 
 
-FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_current_mode_get_field_base_mode(const fmav_message_t* msg)
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_current_mode_get_field_standard_mode(const fmav_message_t* msg)
 {
     uint8_t r;
-    memcpy(&r, &(msg->payload[5]), sizeof(uint8_t));
+    memcpy(&r, &(msg->payload[8]), sizeof(uint8_t));
     return r;
 }
 
@@ -232,13 +232,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_current_mode_get_field_base_mode
 
 #define mavlink_current_mode_t  fmav_current_mode_t
 
-#define MAVLINK_MSG_ID_CURRENT_MODE_LEN  6
-#define MAVLINK_MSG_ID_CURRENT_MODE_MIN_LEN  6
-#define MAVLINK_MSG_ID_436_LEN  6
-#define MAVLINK_MSG_ID_436_MIN_LEN  6
+#define MAVLINK_MSG_ID_CURRENT_MODE_LEN  9
+#define MAVLINK_MSG_ID_CURRENT_MODE_MIN_LEN  9
+#define MAVLINK_MSG_ID_436_LEN  9
+#define MAVLINK_MSG_ID_436_MIN_LEN  9
 
-#define MAVLINK_MSG_ID_CURRENT_MODE_CRC  151
-#define MAVLINK_MSG_ID_436_CRC  151
+#define MAVLINK_MSG_ID_CURRENT_MODE_CRC  193
+#define MAVLINK_MSG_ID_436_CRC  193
 
 
 
@@ -249,12 +249,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_current_mode_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint8_t standard_mode, uint8_t base_mode, uint32_t custom_mode)
+    uint8_t standard_mode, uint32_t custom_mode, uint32_t intended_custom_mode)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_current_mode_pack(
         _msg, sysid, compid,
-        standard_mode, base_mode, custom_mode,
+        standard_mode, custom_mode, intended_custom_mode,
         _status);
 }
 
@@ -269,7 +269,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_current_mode_encode(
         sysid,
         compid,
         _msg,
-        _payload->standard_mode, _payload->base_mode, _payload->custom_mode);
+        _payload->standard_mode, _payload->custom_mode, _payload->intended_custom_mode);
 }
 
 #endif
@@ -280,13 +280,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_current_mode_pack_txbuf(
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t standard_mode, uint8_t base_mode, uint32_t custom_mode)
+    uint8_t standard_mode, uint32_t custom_mode, uint32_t intended_custom_mode)
 {
     return fmav_msg_current_mode_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        standard_mode, base_mode, custom_mode,
+        standard_mode, custom_mode, intended_custom_mode,
         _status);
 }
 

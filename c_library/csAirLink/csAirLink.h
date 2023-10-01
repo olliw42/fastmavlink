@@ -4,8 +4,8 @@
 //------------------------------
 
 #pragma once
-#ifndef FASTMAVLINK_STANDARD_H
-#define FASTMAVLINK_STANDARD_H
+#ifndef FASTMAVLINK_CSAIRLINK_H
+#define FASTMAVLINK_CSAIRLINK_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -16,7 +16,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
-#define FASTMAVLINK_DIALECT_VERSION  0  // this is the version specified in the dialect xml file
+#define FASTMAVLINK_DIALECT_VERSION  3  // this is the version specified in the dialect xml file
 #endif
 
 
@@ -26,7 +26,7 @@ extern "C" {
 //-- msgid, extra crc, max length, flag, target sysid offset, target compid offset
 //------------------------------
 
-#include "standard_msg_entries.h"
+#include "csAirLink_msg_entries.h"
 
 #ifndef FASTMAVLINK_MESSAGE_CRCS
 #define FASTMAVLINK_MESSAGE_CRCS  FASTMAVLINK_MSG_ENTRIES
@@ -50,7 +50,14 @@ extern "C" {
 
 #ifndef FASTMAVLINK_TEST_EXCLUDE_ENUMS
 
-
+#ifndef FASTMAVLINK_HAS_ENUM_AIRLINK_AUTH_RESPONSE_TYPE
+#define FASTMAVLINK_HAS_ENUM_AIRLINK_AUTH_RESPONSE_TYPE
+typedef enum AIRLINK_AUTH_RESPONSE_TYPE {
+    AIRLINK_ERROR_LOGIN_OR_PASS = 0,  // Login or password error 
+    AIRLINK_AUTH_OK = 1,  // Auth successful 
+    AIRLINK_AUTH_RESPONSE_TYPE_ENUM_END = 2,  // end marker
+} AIRLINK_AUTH_RESPONSE_TYPE;
+#endif
 
 #endif // FASTMAVLINK_DO_NOT_INCLUDE_ENUMS
 
@@ -66,7 +73,8 @@ extern "C" {
   #endif
 #endif
 
-
+#include "./mavlink_msg_airlink_auth.h"
+#include "./mavlink_msg_airlink_auth_response.h"
 
 #ifdef FASTMAVLINK_IGNORE_WADDRESSOFPACKEDMEMBER
   #if defined __GNUC__ && __GNUC__ >= 9
@@ -79,11 +87,11 @@ extern "C" {
 //-- Dialect includes
 //------------------------------
 
-#include "../minimal/minimal.h"
+
 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // FASTMAVLINK_STANDARD_H
+#endif // FASTMAVLINK_CSAIRLINK_H

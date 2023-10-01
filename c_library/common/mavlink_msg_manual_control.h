@@ -25,19 +25,25 @@ typedef struct _fmav_manual_control_t {
     uint8_t enabled_extensions;
     int16_t s;
     int16_t t;
+    int16_t aux1;
+    int16_t aux2;
+    int16_t aux3;
+    int16_t aux4;
+    int16_t aux5;
+    int16_t aux6;
 }) fmav_manual_control_t;
 
 
 #define FASTMAVLINK_MSG_ID_MANUAL_CONTROL  69
 
-#define FASTMAVLINK_MSG_MANUAL_CONTROL_PAYLOAD_LEN_MAX  18
+#define FASTMAVLINK_MSG_MANUAL_CONTROL_PAYLOAD_LEN_MAX  30
 #define FASTMAVLINK_MSG_MANUAL_CONTROL_CRCEXTRA  243
 
 #define FASTMAVLINK_MSG_MANUAL_CONTROL_FLAGS  1
 #define FASTMAVLINK_MSG_MANUAL_CONTROL_TARGET_SYSTEM_OFS  10
 #define FASTMAVLINK_MSG_MANUAL_CONTROL_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_MANUAL_CONTROL_FRAME_LEN_MAX  43
+#define FASTMAVLINK_MSG_MANUAL_CONTROL_FRAME_LEN_MAX  55
 
 
 
@@ -51,6 +57,12 @@ typedef struct _fmav_manual_control_t {
 #define FASTMAVLINK_MSG_MANUAL_CONTROL_FIELD_ENABLED_EXTENSIONS_OFS  13
 #define FASTMAVLINK_MSG_MANUAL_CONTROL_FIELD_S_OFS  14
 #define FASTMAVLINK_MSG_MANUAL_CONTROL_FIELD_T_OFS  16
+#define FASTMAVLINK_MSG_MANUAL_CONTROL_FIELD_AUX1_OFS  18
+#define FASTMAVLINK_MSG_MANUAL_CONTROL_FIELD_AUX2_OFS  20
+#define FASTMAVLINK_MSG_MANUAL_CONTROL_FIELD_AUX3_OFS  22
+#define FASTMAVLINK_MSG_MANUAL_CONTROL_FIELD_AUX4_OFS  24
+#define FASTMAVLINK_MSG_MANUAL_CONTROL_FIELD_AUX5_OFS  26
+#define FASTMAVLINK_MSG_MANUAL_CONTROL_FIELD_AUX6_OFS  28
 
 
 //----------------------------------------
@@ -61,7 +73,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_control_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t target, int16_t x, int16_t y, int16_t z, int16_t r, uint16_t buttons, uint16_t buttons2, uint8_t enabled_extensions, int16_t s, int16_t t,
+    uint8_t target, int16_t x, int16_t y, int16_t z, int16_t r, uint16_t buttons, uint16_t buttons2, uint8_t enabled_extensions, int16_t s, int16_t t, int16_t aux1, int16_t aux2, int16_t aux3, int16_t aux4, int16_t aux5, int16_t aux6,
     fmav_status_t* _status)
 {
     fmav_manual_control_t* _payload = (fmav_manual_control_t*)_msg->payload;
@@ -76,6 +88,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_control_pack(
     _payload->enabled_extensions = enabled_extensions;
     _payload->s = s;
     _payload->t = t;
+    _payload->aux1 = aux1;
+    _payload->aux2 = aux2;
+    _payload->aux3 = aux3;
+    _payload->aux4 = aux4;
+    _payload->aux5 = aux5;
+    _payload->aux6 = aux6;
 
 
     _msg->sysid = sysid;
@@ -99,7 +117,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_control_encode(
 {
     return fmav_msg_manual_control_pack(
         _msg, sysid, compid,
-        _payload->target, _payload->x, _payload->y, _payload->z, _payload->r, _payload->buttons, _payload->buttons2, _payload->enabled_extensions, _payload->s, _payload->t,
+        _payload->target, _payload->x, _payload->y, _payload->z, _payload->r, _payload->buttons, _payload->buttons2, _payload->enabled_extensions, _payload->s, _payload->t, _payload->aux1, _payload->aux2, _payload->aux3, _payload->aux4, _payload->aux5, _payload->aux6,
         _status);
 }
 
@@ -108,7 +126,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_control_pack_to_frame_bu
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t target, int16_t x, int16_t y, int16_t z, int16_t r, uint16_t buttons, uint16_t buttons2, uint8_t enabled_extensions, int16_t s, int16_t t,
+    uint8_t target, int16_t x, int16_t y, int16_t z, int16_t r, uint16_t buttons, uint16_t buttons2, uint8_t enabled_extensions, int16_t s, int16_t t, int16_t aux1, int16_t aux2, int16_t aux3, int16_t aux4, int16_t aux5, int16_t aux6,
     fmav_status_t* _status)
 {
     fmav_manual_control_t* _payload = (fmav_manual_control_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -123,6 +141,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_control_pack_to_frame_bu
     _payload->enabled_extensions = enabled_extensions;
     _payload->s = s;
     _payload->t = t;
+    _payload->aux1 = aux1;
+    _payload->aux2 = aux2;
+    _payload->aux3 = aux3;
+    _payload->aux4 = aux4;
+    _payload->aux5 = aux5;
+    _payload->aux6 = aux6;
 
 
     _buf[5] = sysid;
@@ -148,7 +172,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_control_encode_to_frame_
 {
     return fmav_msg_manual_control_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->target, _payload->x, _payload->y, _payload->z, _payload->r, _payload->buttons, _payload->buttons2, _payload->enabled_extensions, _payload->s, _payload->t,
+        _payload->target, _payload->x, _payload->y, _payload->z, _payload->r, _payload->buttons, _payload->buttons2, _payload->enabled_extensions, _payload->s, _payload->t, _payload->aux1, _payload->aux2, _payload->aux3, _payload->aux4, _payload->aux5, _payload->aux6,
         _status);
 }
 
@@ -158,7 +182,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_control_encode_to_frame_
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_control_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint8_t target, int16_t x, int16_t y, int16_t z, int16_t r, uint16_t buttons, uint16_t buttons2, uint8_t enabled_extensions, int16_t s, int16_t t,
+    uint8_t target, int16_t x, int16_t y, int16_t z, int16_t r, uint16_t buttons, uint16_t buttons2, uint8_t enabled_extensions, int16_t s, int16_t t, int16_t aux1, int16_t aux2, int16_t aux3, int16_t aux4, int16_t aux5, int16_t aux6,
     fmav_status_t* _status)
 {
     fmav_manual_control_t _payload;
@@ -173,6 +197,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_manual_control_pack_to_serial(
     _payload.enabled_extensions = enabled_extensions;
     _payload.s = s;
     _payload.t = t;
+    _payload.aux1 = aux1;
+    _payload.aux2 = aux2;
+    _payload.aux3 = aux3;
+    _payload.aux4 = aux4;
+    _payload.aux5 = aux5;
+    _payload.aux6 = aux6;
 
 
     return fmav_finalize_serial(
@@ -311,6 +341,54 @@ FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_manual_control_get_field_t(const
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_manual_control_get_field_aux1(const fmav_message_t* msg)
+{
+    int16_t r;
+    memcpy(&r, &(msg->payload[18]), sizeof(int16_t));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_manual_control_get_field_aux2(const fmav_message_t* msg)
+{
+    int16_t r;
+    memcpy(&r, &(msg->payload[20]), sizeof(int16_t));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_manual_control_get_field_aux3(const fmav_message_t* msg)
+{
+    int16_t r;
+    memcpy(&r, &(msg->payload[22]), sizeof(int16_t));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_manual_control_get_field_aux4(const fmav_message_t* msg)
+{
+    int16_t r;
+    memcpy(&r, &(msg->payload[24]), sizeof(int16_t));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_manual_control_get_field_aux5(const fmav_message_t* msg)
+{
+    int16_t r;
+    memcpy(&r, &(msg->payload[26]), sizeof(int16_t));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_manual_control_get_field_aux6(const fmav_message_t* msg)
+{
+    int16_t r;
+    memcpy(&r, &(msg->payload[28]), sizeof(int16_t));
+    return r;
+}
+
+
 
 
 
@@ -323,9 +401,9 @@ FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_manual_control_get_field_t(const
 
 #define mavlink_manual_control_t  fmav_manual_control_t
 
-#define MAVLINK_MSG_ID_MANUAL_CONTROL_LEN  18
+#define MAVLINK_MSG_ID_MANUAL_CONTROL_LEN  30
 #define MAVLINK_MSG_ID_MANUAL_CONTROL_MIN_LEN  11
-#define MAVLINK_MSG_ID_69_LEN  18
+#define MAVLINK_MSG_ID_69_LEN  30
 #define MAVLINK_MSG_ID_69_MIN_LEN  11
 
 #define MAVLINK_MSG_ID_MANUAL_CONTROL_CRC  243
@@ -340,12 +418,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_manual_control_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint8_t target, int16_t x, int16_t y, int16_t z, int16_t r, uint16_t buttons, uint16_t buttons2, uint8_t enabled_extensions, int16_t s, int16_t t)
+    uint8_t target, int16_t x, int16_t y, int16_t z, int16_t r, uint16_t buttons, uint16_t buttons2, uint8_t enabled_extensions, int16_t s, int16_t t, int16_t aux1, int16_t aux2, int16_t aux3, int16_t aux4, int16_t aux5, int16_t aux6)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_manual_control_pack(
         _msg, sysid, compid,
-        target, x, y, z, r, buttons, buttons2, enabled_extensions, s, t,
+        target, x, y, z, r, buttons, buttons2, enabled_extensions, s, t, aux1, aux2, aux3, aux4, aux5, aux6,
         _status);
 }
 
@@ -360,7 +438,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_manual_control_encode(
         sysid,
         compid,
         _msg,
-        _payload->target, _payload->x, _payload->y, _payload->z, _payload->r, _payload->buttons, _payload->buttons2, _payload->enabled_extensions, _payload->s, _payload->t);
+        _payload->target, _payload->x, _payload->y, _payload->z, _payload->r, _payload->buttons, _payload->buttons2, _payload->enabled_extensions, _payload->s, _payload->t, _payload->aux1, _payload->aux2, _payload->aux3, _payload->aux4, _payload->aux5, _payload->aux6);
 }
 
 #endif
@@ -371,13 +449,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_manual_control_pack_txbuf(
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t target, int16_t x, int16_t y, int16_t z, int16_t r, uint16_t buttons, uint16_t buttons2, uint8_t enabled_extensions, int16_t s, int16_t t)
+    uint8_t target, int16_t x, int16_t y, int16_t z, int16_t r, uint16_t buttons, uint16_t buttons2, uint8_t enabled_extensions, int16_t s, int16_t t, int16_t aux1, int16_t aux2, int16_t aux3, int16_t aux4, int16_t aux5, int16_t aux6)
 {
     return fmav_msg_manual_control_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        target, x, y, z, r, buttons, buttons2, enabled_extensions, s, t,
+        target, x, y, z, r, buttons, buttons2, enabled_extensions, s, t, aux1, aux2, aux3, aux4, aux5, aux6,
         _status);
 }
 

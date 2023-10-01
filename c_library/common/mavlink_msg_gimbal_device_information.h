@@ -30,19 +30,20 @@ typedef struct _fmav_gimbal_device_information_t {
     char vendor_name[32];
     char model_name[32];
     char custom_name[32];
+    uint8_t gimbal_device_id;
 }) fmav_gimbal_device_information_t;
 
 
 #define FASTMAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION  283
 
-#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_PAYLOAD_LEN_MAX  144
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_PAYLOAD_LEN_MAX  145
 #define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_CRCEXTRA  74
 
 #define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FLAGS  0
 #define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FRAME_LEN_MAX  169
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FRAME_LEN_MAX  170
 
 #define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_VENDOR_NAME_NUM  32 // number of elements in array
 #define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_VENDOR_NAME_LEN  32 // length of array = number of bytes
@@ -66,6 +67,7 @@ typedef struct _fmav_gimbal_device_information_t {
 #define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_VENDOR_NAME_OFS  48
 #define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_MODEL_NAME_OFS  80
 #define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_CUSTOM_NAME_OFS  112
+#define FASTMAVLINK_MSG_GIMBAL_DEVICE_INFORMATION_FIELD_GIMBAL_DEVICE_ID_OFS  144
 
 
 //----------------------------------------
@@ -76,7 +78,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_device_information_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, const char* vendor_name, const char* model_name, const char* custom_name, uint32_t firmware_version, uint32_t hardware_version, uint64_t uid, uint16_t cap_flags, uint16_t custom_cap_flags, float roll_min, float roll_max, float pitch_min, float pitch_max, float yaw_min, float yaw_max,
+    uint32_t time_boot_ms, const char* vendor_name, const char* model_name, const char* custom_name, uint32_t firmware_version, uint32_t hardware_version, uint64_t uid, uint16_t cap_flags, uint16_t custom_cap_flags, float roll_min, float roll_max, float pitch_min, float pitch_max, float yaw_min, float yaw_max, uint8_t gimbal_device_id,
     fmav_status_t* _status)
 {
     fmav_gimbal_device_information_t* _payload = (fmav_gimbal_device_information_t*)_msg->payload;
@@ -93,6 +95,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_device_information_pack(
     _payload->yaw_max = yaw_max;
     _payload->cap_flags = cap_flags;
     _payload->custom_cap_flags = custom_cap_flags;
+    _payload->gimbal_device_id = gimbal_device_id;
     memcpy(&(_payload->vendor_name), vendor_name, sizeof(char)*32);
     memcpy(&(_payload->model_name), model_name, sizeof(char)*32);
     memcpy(&(_payload->custom_name), custom_name, sizeof(char)*32);
@@ -118,7 +121,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_device_information_encod
 {
     return fmav_msg_gimbal_device_information_pack(
         _msg, sysid, compid,
-        _payload->time_boot_ms, _payload->vendor_name, _payload->model_name, _payload->custom_name, _payload->firmware_version, _payload->hardware_version, _payload->uid, _payload->cap_flags, _payload->custom_cap_flags, _payload->roll_min, _payload->roll_max, _payload->pitch_min, _payload->pitch_max, _payload->yaw_min, _payload->yaw_max,
+        _payload->time_boot_ms, _payload->vendor_name, _payload->model_name, _payload->custom_name, _payload->firmware_version, _payload->hardware_version, _payload->uid, _payload->cap_flags, _payload->custom_cap_flags, _payload->roll_min, _payload->roll_max, _payload->pitch_min, _payload->pitch_max, _payload->yaw_min, _payload->yaw_max, _payload->gimbal_device_id,
         _status);
 }
 
@@ -127,7 +130,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_device_information_pack_
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, const char* vendor_name, const char* model_name, const char* custom_name, uint32_t firmware_version, uint32_t hardware_version, uint64_t uid, uint16_t cap_flags, uint16_t custom_cap_flags, float roll_min, float roll_max, float pitch_min, float pitch_max, float yaw_min, float yaw_max,
+    uint32_t time_boot_ms, const char* vendor_name, const char* model_name, const char* custom_name, uint32_t firmware_version, uint32_t hardware_version, uint64_t uid, uint16_t cap_flags, uint16_t custom_cap_flags, float roll_min, float roll_max, float pitch_min, float pitch_max, float yaw_min, float yaw_max, uint8_t gimbal_device_id,
     fmav_status_t* _status)
 {
     fmav_gimbal_device_information_t* _payload = (fmav_gimbal_device_information_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -144,6 +147,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_device_information_pack_
     _payload->yaw_max = yaw_max;
     _payload->cap_flags = cap_flags;
     _payload->custom_cap_flags = custom_cap_flags;
+    _payload->gimbal_device_id = gimbal_device_id;
     memcpy(&(_payload->vendor_name), vendor_name, sizeof(char)*32);
     memcpy(&(_payload->model_name), model_name, sizeof(char)*32);
     memcpy(&(_payload->custom_name), custom_name, sizeof(char)*32);
@@ -171,7 +175,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_device_information_encod
 {
     return fmav_msg_gimbal_device_information_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->time_boot_ms, _payload->vendor_name, _payload->model_name, _payload->custom_name, _payload->firmware_version, _payload->hardware_version, _payload->uid, _payload->cap_flags, _payload->custom_cap_flags, _payload->roll_min, _payload->roll_max, _payload->pitch_min, _payload->pitch_max, _payload->yaw_min, _payload->yaw_max,
+        _payload->time_boot_ms, _payload->vendor_name, _payload->model_name, _payload->custom_name, _payload->firmware_version, _payload->hardware_version, _payload->uid, _payload->cap_flags, _payload->custom_cap_flags, _payload->roll_min, _payload->roll_max, _payload->pitch_min, _payload->pitch_max, _payload->yaw_min, _payload->yaw_max, _payload->gimbal_device_id,
         _status);
 }
 
@@ -181,7 +185,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_device_information_encod
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_device_information_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, const char* vendor_name, const char* model_name, const char* custom_name, uint32_t firmware_version, uint32_t hardware_version, uint64_t uid, uint16_t cap_flags, uint16_t custom_cap_flags, float roll_min, float roll_max, float pitch_min, float pitch_max, float yaw_min, float yaw_max,
+    uint32_t time_boot_ms, const char* vendor_name, const char* model_name, const char* custom_name, uint32_t firmware_version, uint32_t hardware_version, uint64_t uid, uint16_t cap_flags, uint16_t custom_cap_flags, float roll_min, float roll_max, float pitch_min, float pitch_max, float yaw_min, float yaw_max, uint8_t gimbal_device_id,
     fmav_status_t* _status)
 {
     fmav_gimbal_device_information_t _payload;
@@ -198,6 +202,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_device_information_pack_
     _payload.yaw_max = yaw_max;
     _payload.cap_flags = cap_flags;
     _payload.custom_cap_flags = custom_cap_flags;
+    _payload.gimbal_device_id = gimbal_device_id;
     memcpy(&(_payload.vendor_name), vendor_name, sizeof(char)*32);
     memcpy(&(_payload.model_name), model_name, sizeof(char)*32);
     memcpy(&(_payload.custom_name), custom_name, sizeof(char)*32);
@@ -354,6 +359,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_gimbal_device_information_get_f
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_gimbal_device_information_get_field_gimbal_device_id(const fmav_message_t* msg)
+{
+    uint8_t r;
+    memcpy(&r, &(msg->payload[144]), sizeof(uint8_t));
+    return r;
+}
+
+
 FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_gimbal_device_information_get_field_vendor_name_ptr(const fmav_message_t* msg)
 {
     return (char*)&(msg->payload[48]);
@@ -402,9 +415,9 @@ FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_gimbal_device_information_get_field
 
 #define mavlink_gimbal_device_information_t  fmav_gimbal_device_information_t
 
-#define MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION_LEN  144
+#define MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION_LEN  145
 #define MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION_MIN_LEN  144
-#define MAVLINK_MSG_ID_283_LEN  144
+#define MAVLINK_MSG_ID_283_LEN  145
 #define MAVLINK_MSG_ID_283_MIN_LEN  144
 
 #define MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION_CRC  74
@@ -421,12 +434,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_gimbal_device_information_pa
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint32_t time_boot_ms, const char* vendor_name, const char* model_name, const char* custom_name, uint32_t firmware_version, uint32_t hardware_version, uint64_t uid, uint16_t cap_flags, uint16_t custom_cap_flags, float roll_min, float roll_max, float pitch_min, float pitch_max, float yaw_min, float yaw_max)
+    uint32_t time_boot_ms, const char* vendor_name, const char* model_name, const char* custom_name, uint32_t firmware_version, uint32_t hardware_version, uint64_t uid, uint16_t cap_flags, uint16_t custom_cap_flags, float roll_min, float roll_max, float pitch_min, float pitch_max, float yaw_min, float yaw_max, uint8_t gimbal_device_id)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_gimbal_device_information_pack(
         _msg, sysid, compid,
-        time_boot_ms, vendor_name, model_name, custom_name, firmware_version, hardware_version, uid, cap_flags, custom_cap_flags, roll_min, roll_max, pitch_min, pitch_max, yaw_min, yaw_max,
+        time_boot_ms, vendor_name, model_name, custom_name, firmware_version, hardware_version, uid, cap_flags, custom_cap_flags, roll_min, roll_max, pitch_min, pitch_max, yaw_min, yaw_max, gimbal_device_id,
         _status);
 }
 
@@ -441,7 +454,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_gimbal_device_information_en
         sysid,
         compid,
         _msg,
-        _payload->time_boot_ms, _payload->vendor_name, _payload->model_name, _payload->custom_name, _payload->firmware_version, _payload->hardware_version, _payload->uid, _payload->cap_flags, _payload->custom_cap_flags, _payload->roll_min, _payload->roll_max, _payload->pitch_min, _payload->pitch_max, _payload->yaw_min, _payload->yaw_max);
+        _payload->time_boot_ms, _payload->vendor_name, _payload->model_name, _payload->custom_name, _payload->firmware_version, _payload->hardware_version, _payload->uid, _payload->cap_flags, _payload->custom_cap_flags, _payload->roll_min, _payload->roll_max, _payload->pitch_min, _payload->pitch_max, _payload->yaw_min, _payload->yaw_max, _payload->gimbal_device_id);
 }
 
 #endif
@@ -452,13 +465,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_gimbal_device_information_pa
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, const char* vendor_name, const char* model_name, const char* custom_name, uint32_t firmware_version, uint32_t hardware_version, uint64_t uid, uint16_t cap_flags, uint16_t custom_cap_flags, float roll_min, float roll_max, float pitch_min, float pitch_max, float yaw_min, float yaw_max)
+    uint32_t time_boot_ms, const char* vendor_name, const char* model_name, const char* custom_name, uint32_t firmware_version, uint32_t hardware_version, uint64_t uid, uint16_t cap_flags, uint16_t custom_cap_flags, float roll_min, float roll_max, float pitch_min, float pitch_max, float yaw_min, float yaw_max, uint8_t gimbal_device_id)
 {
     return fmav_msg_gimbal_device_information_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        time_boot_ms, vendor_name, model_name, custom_name, firmware_version, hardware_version, uid, cap_flags, custom_cap_flags, roll_min, roll_max, pitch_min, pitch_max, yaw_min, yaw_max,
+        time_boot_ms, vendor_name, model_name, custom_name, firmware_version, hardware_version, uid, cap_flags, custom_cap_flags, roll_min, roll_max, pitch_min, pitch_max, yaw_min, yaw_max, gimbal_device_id,
         _status);
 }
 
