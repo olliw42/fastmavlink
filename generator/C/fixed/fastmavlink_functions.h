@@ -117,9 +117,9 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_payload_len_wo_trailing_zeros(const 
 
 
 // used in message generators to finalize the message fields
-// msg payload will not be zero filled
+// msg payload will not be zero-filled
 // we thus should use the generators only to send, not to digest
-// call helper fmav_msg_zerofill() afterwards to zerofill if really needed
+// call helper fmav_msg_zerofill() afterwards to zero-fill if really needed
 // or set the flag FASTMAVLINK_ALWAYS_ZEROFILL to 1
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_finalize_msg(fmav_message_t* msg, fmav_status_t* status)
 {
@@ -148,7 +148,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_finalize_msg(fmav_message_t* msg, f
     // msg->payload_max_len was set in generator
 
 #if FASTMAVLINK_ALWAYS_ZEROFILL
-    // ensure that payload is zero filled
+    // ensure that payload is zero-filled
     if (msg->len < msg->payload_max_len) {
         memset(&(msg->payload[msg->len]), 0, msg->payload_max_len - msg->len);
     }
@@ -227,7 +227,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_finalize_serial(
 
 // used in fmav_parse_to_msg() below
 // returns MSGID_UNKNOWN, LENGTH_ERROR, CRC_ERROR, SIGNATURE_ERROR, or OK
-// msg payload will be zero filled, so that fmav_parse_to_msg() returns proper msg
+// msg payload will be zero-filled, so that fmav_parse_to_msg() returns proper msg
 // the checks are only possible if msgid is known, and also the targets are only then
 // known, else we need to assume broadcast
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_check_msg(fmav_message_t* msg, fmav_status_t* status)
@@ -255,7 +255,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_check_msg(fmav_message_t* msg, fmav_
         return FASTMAVLINK_PARSE_RESULT_CRC_ERROR;
     }
 
-    // zero fill msg payload
+    // zero-fill msg payload
     // this among others also ensures that the target fields are set properly
     if (msg->len < msg_entry->payload_max_len) {
         memset(&(msg->payload[msg->len]), 0, msg_entry->payload_max_len - msg->len);
@@ -421,7 +421,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_check_frame_buf(fmav_result_t* resul
 
     // check crc
     uint16_t crc_pos = payload_pos + buf[1];
-    uint16_t crc_frame = fmav_crc_calculate(&(buf[1]), crc_pos - 1); //the magic byte is not crc'ed
+    uint16_t crc_frame = fmav_crc_calculate(&(buf[1]), crc_pos - 1); // the magic byte is not crc'ed
     fmav_crc_accumulate(&crc_frame, msg_entry->crc_extra);
     uint16_t crc_msg = buf[crc_pos] + ((uint16_t)buf[crc_pos+1] << 8);
     if (crc_frame != crc_msg) {
@@ -431,13 +431,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_check_frame_buf(fmav_result_t* resul
 
     // get further metadata
     if (msg_entry->flags & FASTMAVLINK_MESSAGE_ENTRY_FLAGS_HAS_TARGET_SYSTEM) {
-        // due to v2 zero triming this field may not be in frame buffer, so check
+        // due to v2 zero trimming this field may not be in frame buffer, so check
         if (buf[1] > msg_entry->target_system_ofs) {
             result->target_sysid = buf[payload_pos + msg_entry->target_system_ofs];
         }
     }
     if (msg_entry->flags & FASTMAVLINK_MESSAGE_ENTRY_FLAGS_HAS_TARGET_COMPONENT) {
-        // due to v2 zero triming this field may not be in frame buffer, so check
+        // due to v2 zero trimming this field may not be in frame buffer, so check
         if (buf[1] > msg_entry->target_component_ofs) {
             result->target_compid = buf[payload_pos + msg_entry->target_component_ofs];
         }
@@ -451,7 +451,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_check_frame_buf(fmav_result_t* resul
 
 
 // should be called only if parse result is OK
-// msg payload is zero filled
+// msg payload is zero-filled
 FASTMAVLINK_FUNCTION_DECORATOR void fmav_frame_buf_to_msg(fmav_message_t* msg, fmav_result_t* result, uint8_t* buf)
 {
     uint16_t pos = 0;
@@ -477,7 +477,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_frame_buf_to_msg(fmav_message_t* msg, f
     }
     memcpy(msg->payload, &(buf[pos]), msg->len);
     if (msg->len < result->payload_max_len) {
-        memset(&(msg->payload[msg->len]), 0, result->payload_max_len - msg->len); // zero fill
+        memset(&(msg->payload[msg->len]), 0, result->payload_max_len - msg->len); // zero-fill
     }
     pos += msg->len;
     msg->checksum = buf[pos] + ((uint16_t)buf[pos+1] << 8);
@@ -518,7 +518,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_and_check_to_frame_buf(fmav_re
 
 // convenience wrapper
 // returns 0, or 1
-// msg payload is zero filled
+// msg payload is zero-filled
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_msg_wbuf(fmav_message_t* msg, uint8_t* buf, fmav_status_t* status, uint8_t c)
 {
     uint8_t res;
@@ -541,7 +541,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_msg_wbuf(fmav_message_t* ms
 
 
 // returns NONE, HAS_HEADER, MSGID_UNKNOWN, LENGTH_ERROR, CRC_ERROR, SIGNATURE_ERROR, or OK
-// msg payload is zero filled
+// msg payload is zero-filled
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_msg(fmav_message_t* msg, fmav_status_t* status, uint8_t c)
 {
     if (status->rx_cnt >= FASTMAVLINK_FRAME_LEN_MAX) { // this should never happen, but play it safe
@@ -687,7 +687,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_msg(fmav_message_t* msg, fm
         }
         status->rx_cnt = 0;
         status->rx_state = FASTMAVLINK_PARSE_STATE_IDLE;
-        fmav_check_msg(msg, status); // also zero fills msg payload
+        fmav_check_msg(msg, status); // also zero-fills msg payload
         return msg->res;
 
     case FASTMAVLINK_PARSE_STATE_SIGNATURE:
@@ -698,7 +698,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_msg(fmav_message_t* msg, fm
         }
         status->rx_cnt = 0;
         status->rx_state = FASTMAVLINK_PARSE_STATE_IDLE;
-        fmav_check_msg(msg, status); // also zero fills msg payload
+        fmav_check_msg(msg, status); // also zero-fills msg payload
         return msg->res;
     }
 

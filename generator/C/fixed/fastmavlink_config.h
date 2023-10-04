@@ -43,21 +43,21 @@
 #endif
 
 
-// Allows to control zerofilling of payloads.
+// Allows to control zero-filling of payloads.
 //
-// The receive/parser functions always zerofill the payload, as this is required for
+// The receive/parser functions always zero-fill the payload, as this is required for
 // correct operation of the unpack/decode/get_field functions. The message generator
 // functions in contrast, i.e., the pack/encode functions, do not need to do this for
 // correct operation when used in the typical use case, which consists of generating
 // and then sending the message. However, when unpack/decode/get_field functions are called
-// on the generated messages, this can cause malfunction, as they require zerofilled payloads.
-// Zerrofilling is somewhat costly.
-// Hence this flag allows you to control if zerofilling should always be done or not.
+// on the generated messages, this can cause malfunction, as they require zero-filled payloads.
+// Zero-filling is somewhat costly.
+// Hence this flag allows you to control if zero-filling should always be done or not.
 // It is enabled (= 1) per default, to prevent unexpected results for the novice. This has
 // a performance cost, so disable for best performance and call fmav_msg_zerofill() when it
 // is needed.
 #ifndef FASTMAVLINK_ALWAYS_ZEROFILL
-  #define FASTMAVLINK_ALWAYS_ZEROFILL  1 // always zerofills payload
+  #define FASTMAVLINK_ALWAYS_ZEROFILL  1 // always zero-fills payload
 #endif
 
 
@@ -78,7 +78,7 @@
 //
 // If only relatively few MAVLink messages are used, efficiency can be much improved, both
 // memory and computational time wise, by limiting the message entries to those messages
-// which are explictely required.
+// which are explicitly required.
 //
 // This has two effects:
 // First, the flash space can be much reduced since not all message entries are stored but
