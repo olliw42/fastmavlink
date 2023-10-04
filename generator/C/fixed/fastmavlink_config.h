@@ -151,6 +151,17 @@
 */
 
 
+// Allows to reset the parser when a header error is detected.
+//
+// The MAVLink protocol provides no means to detect errors in the header, which can lead to the successful
+// parsing of invalid frames. The incompat and compat flags however can - currently - assume only specific
+// values which can be used as heuristics to reset the parser. This increases the chance for the parser to
+// synchronize with the data stream.
+/*
+#define FASTMAVLINK_RESET_PARSER_ON_FLAGS_ERROR
+*/
+
+
 #endif // FASTMAVLINK_CONFIG_H
 
 

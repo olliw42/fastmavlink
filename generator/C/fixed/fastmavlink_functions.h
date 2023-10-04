@@ -326,6 +326,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_frame_buf(fmav_result_t* re
         result->res = FASTMAVLINK_PARSE_RESULT_NONE;
         return FASTMAVLINK_PARSE_RESULT_NONE;
 
+#ifndef FASTMAVLINK_RESET_PARSER_ON_FLAGS_ERROR
     case FASTMAVLINK_PARSE_STATE_INCOMPAT_FLAGS:
         buf[status->rx_cnt++] = c;
         if (c & FASTMAVLINK_INCOMPAT_FLAGS_SIGNED) {
@@ -334,6 +335,28 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_frame_buf(fmav_result_t* re
         status->rx_state = FASTMAVLINK_FASTPARSE_STATE_FRAME;
         result->res = FASTMAVLINK_PARSE_RESULT_NONE;
         return FASTMAVLINK_PARSE_RESULT_NONE;
+#else
+    case FASTMAVLINK_PARSE_STATE_INCOMPAT_FLAGS:
+        buf[status->rx_cnt++] = c;
+        if (c & FASTMAVLINK_INCOMPAT_FLAGS_SIGNED) {
+            status->rx_frame_len += FASTMAVLINK_SIGNATURE_LEN;
+        }
+        status->rx_state = FASTMAVLINK_PARSE_STATE_COMPAT_FLAGS;
+        if (c != 0 && c != FASTMAVLINK_INCOMPAT_FLAGS_SIGNED) {
+            status->rx_state = FASTMAVLINK_PARSE_STATE_IDLE; // incorrect incompat flag, so reset
+        }
+        result->res = FASTMAVLINK_PARSE_RESULT_NONE;
+        return FASTMAVLINK_PARSE_RESULT_NONE;
+
+    case FASTMAVLINK_PARSE_STATE_COMPAT_FLAGS:
+        buf[status->rx_cnt++] = c;
+        status->rx_state = FASTMAVLINK_FASTPARSE_STATE_FRAME;
+        if (c != 0) {
+            status->rx_state = FASTMAVLINK_PARSE_STATE_IDLE; // incorrect compat flag, so reset
+        }
+        result->res = FASTMAVLINK_PARSE_RESULT_NONE;
+        return FASTMAVLINK_PARSE_RESULT_NONE;
+#endif
 
     case FASTMAVLINK_FASTPARSE_STATE_FRAME:
         buf[status->rx_cnt++] = c;
@@ -563,6 +586,11 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_msg(fmav_message_t* msg, fm
             status->rx_frame_len += FASTMAVLINK_SIGNATURE_LEN;
         }
         status->rx_state = FASTMAVLINK_PARSE_STATE_COMPAT_FLAGS;
+#ifdef FASTMAVLINK_RESET_PARSER_ON_FLAGS_ERROR
+        if (c != 0 && c != FASTMAVLINK_INCOMPAT_FLAGS_SIGNED) {
+            status->rx_state = FASTMAVLINK_PARSE_STATE_IDLE; // incorrect incompat flag, so reset
+        }
+#endif
         msg->res = FASTMAVLINK_PARSE_RESULT_NONE;
         return FASTMAVLINK_PARSE_RESULT_NONE;
 
@@ -571,6 +599,11 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_parse_to_msg(fmav_message_t* msg, fm
         status->rx_cnt++;
         fmav_crc_accumulate(&(status->rx_crc), c);
         status->rx_state = FASTMAVLINK_PARSE_STATE_SEQ;
+#ifdef FASTMAVLINK_RESET_PARSER_ON_FLAGS_ERROR
+        if (c != 0) {
+            status->rx_state = FASTMAVLINK_PARSE_STATE_IDLE; // incorrect incompat flag, so reset
+        }
+#endif
         msg->res = FASTMAVLINK_PARSE_RESULT_NONE;
         return FASTMAVLINK_PARSE_RESULT_NONE;
 
