@@ -217,9 +217,9 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_hil_optical_flow_encode_to_seri
 //----------------------------------------
 //-- Message HIL_OPTICAL_FLOW decode routines, for receiving
 //----------------------------------------
-// For these functions to work correctly, the msg payload must be zero filled.
+// For these functions to work correctly, the msg payload must be zero-filled.
 // Call the helper fmav_msg_zerofill() if needed, or set FASTMAVLINK_ALWAYS_ZEROFILL to 1
-// Note that the parse functions do zerofill the msg payload, but that message generator functions
+// Note that the parse functions do zero-fill the msg payload, but that message generator functions
 // do not. This means that for the msg obtained from parsing the below functions can safely be used,
 // but that this is not so for the msg obtained from pack/encode functions.
 
@@ -228,14 +228,14 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_hil_optical_flow_decode(fmav_hil_op
 #if FASTMAVLINK_ALWAYS_ZEROFILL
     if (msg->len < FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_PAYLOAD_LEN_MAX) {
         memcpy(payload, msg->payload, msg->len);
-        // ensure that returned payload is zero filled
+        // ensure that returned payload is zero-filled
         memset(&(((uint8_t*)payload)[msg->len]), 0, FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_PAYLOAD_LEN_MAX - msg->len);
     } else {
         // note: msg->len can be larger than PAYLOAD_LEN_MAX if the message has unknown extensions
         memcpy(payload, msg->payload, FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_PAYLOAD_LEN_MAX);
     }
 #else
-    // this requires that msg payload had been zero filled before
+    // this requires that msg payload had been zero-filled before
     memcpy(payload, msg->payload, FASTMAVLINK_MSG_HIL_OPTICAL_FLOW_PAYLOAD_LEN_MAX);
 #endif
 }
