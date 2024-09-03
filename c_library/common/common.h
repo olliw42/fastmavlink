@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Wed Oct 04 2023"
+#define FASTMAVLINK_BUILD_DATE  "Tue Sep 03 2024"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -74,7 +74,7 @@ typedef enum HL_FAILURE_FLAG {
     HL_FAILURE_FLAG_3D_MAG = 32,  // Magnetometer sensor failure. 
     HL_FAILURE_FLAG_TERRAIN = 64,  // Terrain subsystem failure. 
     HL_FAILURE_FLAG_BATTERY = 128,  // Battery failure/critical low battery. 
-    HL_FAILURE_FLAG_RC_RECEIVER = 256,  // RC receiver failure/no rc connection. 
+    HL_FAILURE_FLAG_RC_RECEIVER = 256,  // RC receiver failure/no RC connection. 
     HL_FAILURE_FLAG_OFFBOARD_LINK = 512,  // Offboard link failure. 
     HL_FAILURE_FLAG_ENGINE = 1024,  // Engine failure. 
     HL_FAILURE_FLAG_GEOFENCE = 2048,  // Geofence violation. 
@@ -135,7 +135,7 @@ typedef enum MAV_SYS_STATUS_SENSOR {
     MAV_SYS_STATUS_SENSOR_Z_ALTITUDE_CONTROL = 8192,  // 0x2000 z/altitude control 
     MAV_SYS_STATUS_SENSOR_XY_POSITION_CONTROL = 16384,  // 0x4000 x/y position control 
     MAV_SYS_STATUS_SENSOR_MOTOR_OUTPUTS = 32768,  // 0x8000 motor outputs / control 
-    MAV_SYS_STATUS_SENSOR_RC_RECEIVER = 65536,  // 0x10000 rc receiver 
+    MAV_SYS_STATUS_SENSOR_RC_RECEIVER = 65536,  // 0x10000 RC receiver 
     MAV_SYS_STATUS_SENSOR_3D_GYRO2 = 131072,  // 0x20000 2nd 3D gyro 
     MAV_SYS_STATUS_SENSOR_3D_ACCEL2 = 262144,  // 0x40000 2nd 3D accelerometer 
     MAV_SYS_STATUS_SENSOR_3D_MAG2 = 524288,  // 0x80000 2nd 3D magnetometer 
@@ -168,18 +168,18 @@ typedef enum MAV_SYS_STATUS_SENSOR_EXTENDED {
 #ifndef FASTMAVLINK_HAS_ENUM_MAV_FRAME
 #define FASTMAVLINK_HAS_ENUM_MAV_FRAME
 typedef enum MAV_FRAME {
-    MAV_FRAME_GLOBAL = 0,  // Global (WGS84) coordinate frame + MSL altitude. First value / x: latitude, second value / y: longitude, third value / z: positive altitude over mean sea level (MSL). 
+    MAV_FRAME_GLOBAL = 0,  // Global (WGS84) coordinate frame + altitude relative to mean sea level (MSL). 
     MAV_FRAME_LOCAL_NED = 1,  // NED local tangent frame (x: North, y: East, z: Down) with origin fixed relative to earth. 
     MAV_FRAME_MISSION = 2,  // NOT a coordinate frame, indicates a mission command. 
-    MAV_FRAME_GLOBAL_RELATIVE_ALT = 3,  //           Global (WGS84) coordinate frame + altitude relative to the home position.          First value / x: latitude, second value / y: longitude, third value / z: positive altitude with 0 being at the altitude of the home position.         
+    MAV_FRAME_GLOBAL_RELATIVE_ALT = 3,  //           Global (WGS84) coordinate frame + altitude relative to the home position.         
     MAV_FRAME_LOCAL_ENU = 4,  // ENU local tangent frame (x: East, y: North, z: Up) with origin fixed relative to earth. 
-    MAV_FRAME_GLOBAL_INT = 5,  // Global (WGS84) coordinate frame (scaled) + MSL altitude. First value / x: latitude in degrees*1E7, second value / y: longitude in degrees*1E7, third value / z: positive altitude over mean sea level (MSL). 
-    MAV_FRAME_GLOBAL_RELATIVE_ALT_INT = 6,  //           Global (WGS84) coordinate frame (scaled) + altitude relative to the home position.          First value / x: latitude in degrees*1E7, second value / y: longitude in degrees*1E7, third value / z: positive altitude with 0 being at the altitude of the home position.         
+    MAV_FRAME_GLOBAL_INT = 5,  // Global (WGS84) coordinate frame (scaled) + altitude relative to mean sea level (MSL). 
+    MAV_FRAME_GLOBAL_RELATIVE_ALT_INT = 6,  // Global (WGS84) coordinate frame (scaled) + altitude relative to the home position.  
     MAV_FRAME_LOCAL_OFFSET_NED = 7,  // NED local tangent frame (x: North, y: East, z: Down) with origin that travels with the vehicle. 
     MAV_FRAME_BODY_NED = 8,  // Same as MAV_FRAME_LOCAL_NED when used to represent position values. Same as MAV_FRAME_BODY_FRD when used with velocity/acceleration values. 
     MAV_FRAME_BODY_OFFSET_NED = 9,  // This is the same as MAV_FRAME_BODY_FRD. 
-    MAV_FRAME_GLOBAL_TERRAIN_ALT = 10,  // Global (WGS84) coordinate frame with AGL altitude (at the waypoint coordinate). First value / x: latitude in degrees, second value / y: longitude in degrees, third value / z: positive altitude in meters with 0 being at ground level in terrain model. 
-    MAV_FRAME_GLOBAL_TERRAIN_ALT_INT = 11,  // Global (WGS84) coordinate frame (scaled) with AGL altitude (at the waypoint coordinate). First value / x: latitude in degrees*1E7, second value / y: longitude in degrees*1E7, third value / z: positive altitude in meters with 0 being at ground level in terrain model. 
+    MAV_FRAME_GLOBAL_TERRAIN_ALT = 10,  // Global (WGS84) coordinate frame with AGL altitude (altitude at ground level). 
+    MAV_FRAME_GLOBAL_TERRAIN_ALT_INT = 11,  // Global (WGS84) coordinate frame (scaled) with AGL altitude (altitude at ground level). 
     MAV_FRAME_BODY_FRD = 12,  // FRD local frame aligned to the vehicle's attitude (x: Forward, y: Right, z: Down) with an origin that travels with vehicle. 
     MAV_FRAME_RESERVED_13 = 13,  // MAV_FRAME_BODY_FLU - Body fixed frame of reference, Z-up (x: Forward, y: Left, z: Up). 
     MAV_FRAME_RESERVED_14 = 14,  // MAV_FRAME_MOCAP_NED - Odometry local coordinate frame of data given by a motion capture system, Z-down (x: North, y: East, z: Down). 
@@ -248,10 +248,23 @@ typedef enum FENCE_MITIGATE {
 #endif
 
 
+#ifndef FASTMAVLINK_HAS_ENUM_FENCE_TYPE
+#define FASTMAVLINK_HAS_ENUM_FENCE_TYPE
+typedef enum FENCE_TYPE {
+    FENCE_TYPE_ALL = 0,  // All fence types 
+    FENCE_TYPE_ALT_MAX = 1,  // Maximum altitude fence 
+    FENCE_TYPE_CIRCLE = 2,  // Circle fence 
+    FENCE_TYPE_POLYGON = 4,  // Polygon fence 
+    FENCE_TYPE_ALT_MIN = 8,  // Minimum altitude fence 
+    FENCE_TYPE_ENUM_END = 9,  // end marker
+} FENCE_TYPE;
+#endif
+
+
 #ifndef FASTMAVLINK_HAS_ENUM_MAV_MOUNT_MODE
 #define FASTMAVLINK_HAS_ENUM_MAV_MOUNT_MODE
 typedef enum MAV_MOUNT_MODE {
-    MAV_MOUNT_MODE_RETRACT = 0,  // Load and keep safe position (Roll,Pitch,Yaw) from permant memory and stop stabilization 
+    MAV_MOUNT_MODE_RETRACT = 0,  // Load and keep safe position (Roll,Pitch,Yaw) from permanent memory and stop stabilization 
     MAV_MOUNT_MODE_NEUTRAL = 1,  // Load and keep neutral position (Roll,Pitch,Yaw) from permanent memory. 
     MAV_MOUNT_MODE_MAVLINK_TARGETING = 2,  // Load neutral position and start MAVLink Roll,Pitch,Yaw control with stabilization 
     MAV_MOUNT_MODE_RC_TARGETING = 3,  // Load neutral position and start RC Roll,Pitch,Yaw control with stabilization 
@@ -277,7 +290,7 @@ typedef enum GIMBAL_DEVICE_CAP_FLAGS {
     GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_AXIS = 256,  // Gimbal device supports rotating around yaw axis. 
     GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_FOLLOW = 512,  // Gimbal device supports to follow a yaw angle relative to the vehicle (generally that's the default). 
     GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_LOCK = 1024,  // Gimbal device supports locking to an absolute heading, i.e., yaw angle relative to North (earth frame, often this is an option available). 
-    GIMBAL_DEVICE_CAP_FLAGS_SUPPORTS_INFINITE_YAW = 2048,  // Gimbal device supports yawing/panning infinetely (e.g. using slip disk). 
+    GIMBAL_DEVICE_CAP_FLAGS_SUPPORTS_INFINITE_YAW = 2048,  // Gimbal device supports yawing/panning infinitely (e.g. using slip disk). 
     GIMBAL_DEVICE_CAP_FLAGS_SUPPORTS_YAW_IN_EARTH_FRAME = 4096,  // Gimbal device supports yaw angles and angular velocities relative to North (earth frame). This usually requires support by an autopilot via AUTOPILOT_STATE_FOR_GIMBAL_DEVICE. Support can go on and off during runtime, which is reported by the flag GIMBAL_DEVICE_FLAGS_CAN_ACCEPT_YAW_IN_EARTH_FRAME. 
     GIMBAL_DEVICE_CAP_FLAGS_HAS_RC_INPUTS = 8192,  // Gimbal device supports radio control inputs as an alternative input for controlling the gimbal orientation. 
     GIMBAL_DEVICE_CAP_FLAGS_ENUM_END = 8193,  // end marker
@@ -312,7 +325,7 @@ typedef enum GIMBAL_MANAGER_CAP_FLAGS {
 #ifndef FASTMAVLINK_HAS_ENUM_GIMBAL_DEVICE_FLAGS
 #define FASTMAVLINK_HAS_ENUM_GIMBAL_DEVICE_FLAGS
 typedef enum GIMBAL_DEVICE_FLAGS {
-    GIMBAL_DEVICE_FLAGS_RETRACT = 1,  // Set to retracted safe position (no stabilization), takes presedence over all other flags. 
+    GIMBAL_DEVICE_FLAGS_RETRACT = 1,  // Set to retracted safe position (no stabilization), takes precedence over all other flags. 
     GIMBAL_DEVICE_FLAGS_NEUTRAL = 2,  // Set to neutral/default position, taking precedence over all other flags except RETRACT. Neutral is commonly forward-facing and horizontal (roll=pitch=yaw=0) but may be any orientation. 
     GIMBAL_DEVICE_FLAGS_ROLL_LOCK = 4,  // Lock roll angle to absolute angle relative to horizon (not relative to vehicle). This is generally the default with a stabilizing gimbal. 
     GIMBAL_DEVICE_FLAGS_PITCH_LOCK = 8,  // Lock pitch angle to absolute angle relative to horizon (not relative to vehicle). This is generally the default with a stabilizing gimbal. 
@@ -495,7 +508,8 @@ typedef enum ORBIT_YAW_BEHAVIOUR {
     ORBIT_YAW_BEHAVIOUR_UNCONTROLLED = 2,  // Yaw uncontrolled. 
     ORBIT_YAW_BEHAVIOUR_HOLD_FRONT_TANGENT_TO_CIRCLE = 3,  // Vehicle front follows flight path (tangential to circle). 
     ORBIT_YAW_BEHAVIOUR_RC_CONTROLLED = 4,  // Yaw controlled by RC input. 
-    ORBIT_YAW_BEHAVIOUR_ENUM_END = 5,  // end marker
+    ORBIT_YAW_BEHAVIOUR_UNCHANGED = 5,  // Vehicle uses current yaw behaviour (unchanged). The vehicle-default yaw behaviour is used if this value is specified when orbit is first commanded. 
+    ORBIT_YAW_BEHAVIOUR_ENUM_END = 6,  // end marker
 } ORBIT_YAW_BEHAVIOUR;
 #endif
 
@@ -674,20 +688,21 @@ typedef enum MAV_CMD {
     MAV_CMD_CONDITION_DELAY = 112,  // Delay mission state machine. | Delay | Empty | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_CONDITION_CHANGE_ALT = 113,  // Ascend/descend to target altitude at specified rate. Delay mission state machine until desired altitude reached. | Descent / Ascend rate. | Empty | Empty | Empty | Empty | Empty | Target Altitude
     MAV_CMD_CONDITION_DISTANCE = 114,  // Delay mission state machine until within desired distance of next NAV point. | Distance. | Empty | Empty | Empty | Empty | Empty | Empty
-    MAV_CMD_CONDITION_YAW = 115,  // Reach a certain target angle. | target angle, 0 is north | angular speed | direction: -1: counter clockwise, 1: clockwise | 0: absolute angle, 1: relative offset | Empty | Empty | Empty
+    MAV_CMD_CONDITION_YAW = 115,  // Reach a certain target angle. | target angle [0-360]. Absolute angles: 0 is north. Relative angle: 0 is initial yaw. Direction set by param3. | angular speed | direction: -1: counter clockwise, 0: shortest direction, 1: clockwise | 0: absolute angle, 1: relative offset | Empty | Empty | Empty
     MAV_CMD_CONDITION_LAST = 159,  // NOP - This command is only used to mark the upper limit of the CONDITION commands in the enumeration | Empty | Empty | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_DO_SET_MODE = 176,  // Set system mode. | Mode | Custom mode - this is system specific, please refer to the individual autopilot specifications for details. | Custom sub mode - this is system specific, please refer to the individual autopilot specifications for details. | Empty | Empty | Empty | Empty
     MAV_CMD_DO_JUMP = 177,  // Jump to the desired command in the mission list.  Repeat this action only the specified number of times | Sequence number | Repeat count | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_DO_CHANGE_SPEED = 178,  // Change speed and/or throttle set points. The value persists until it is overridden or there is a mode change | Speed type of value set in param2 (such as airspeed, ground speed, and so on) | Speed (-1 indicates no change, -2 indicates return to default vehicle speed) | Throttle (-1 indicates no change, -2 indicates return to default vehicle throttle value) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
-    MAV_CMD_DO_SET_HOME = 179,  //           Sets the home position to either to the current position or a specified position.          The home position is the default position that the system will return to and land on.          The position is set automatically by the system during the takeoff (and may also be set using this command).          Note: the current home position may be emitted in a HOME_POSITION message on request (using MAV_CMD_REQUEST_MESSAGE with param1=242).         | Use current (1=use current location, 0=use specified location) | Empty | Empty | Yaw angle. NaN to use default heading | Latitude | Longitude | Altitude
+    MAV_CMD_DO_SET_HOME = 179,  //           Sets the home position to either to the current position or a specified position.          The home position is the default position that the system will return to and land on.          The position is set automatically by the system during the takeoff (and may also be set using this command).          Note: the current home position may be emitted in a HOME_POSITION message on request (using MAV_CMD_REQUEST_MESSAGE with param1=242).         | Use current (1=use current location, 0=use specified location) | Roll angle (of surface). Range: -180..180 degrees. NAN or 0 means value not set. 0.01 indicates zero roll. | Pitch angle (of surface). Range: -90..90 degrees. NAN or 0 means value not set. 0.01 means zero pitch. | Yaw angle. NaN to use default heading. Range: -180..180 degrees. | Latitude | Longitude | Altitude
     MAV_CMD_DO_SET_PARAMETER = 180,  // Set a system parameter.  Caution!  Use of this command requires knowledge of the numeric enumeration value of the parameter. | Parameter number | Parameter value | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_DO_SET_RELAY = 181,  // Set a relay to a condition. | Relay instance number. | Setting. (1=on, 0=off, others possible depending on system hardware) | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_DO_REPEAT_RELAY = 182,  // Cycle a relay on and off for a desired number of cycles with a desired period. | Relay instance number. | Cycle count. | Cycle time. | Empty | Empty | Empty | Empty
     MAV_CMD_DO_SET_SERVO = 183,  // Set a servo to a desired PWM value. | Servo instance number. | Pulse Width Modulation. | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_DO_REPEAT_SERVO = 184,  // Cycle a between its nominal setting and a desired PWM for a desired number of cycles with a desired period. | Servo instance number. | Pulse Width Modulation. | Cycle count. | Cycle time. | Empty | Empty | Empty
-    MAV_CMD_DO_FLIGHTTERMINATION = 185,  // Terminate flight immediately.          Flight termination immediately and irreversably terminates the current flight, returning the vehicle to ground.          The vehicle will ignore RC or other input until it has been power-cycled.          Termination may trigger safety measures, including: disabling motors and deployment of parachute on multicopters, and setting flight surfaces to initiate a landing pattern on fixed-wing).          On multicopters without a parachute it may trigger a crash landing.          Support for this command can be tested using the protocol bit: MAV_PROTOCOL_CAPABILITY_FLIGHT_TERMINATION.          Support for this command can also be tested by sending the command with param1=0 (< 0.5); the ACK should be either MAV_RESULT_FAILED or MAV_RESULT_UNSUPPORTED.         | Flight termination activated if > 0.5. Otherwise not activated and ACK with MAV_RESULT_FAILED. | Empty | Empty | Empty | Empty | Empty | Empty
+    MAV_CMD_DO_FLIGHTTERMINATION = 185,  // Terminate flight immediately.          Flight termination immediately and irreversibly terminates the current flight, returning the vehicle to ground.          The vehicle will ignore RC or other input until it has been power-cycled.          Termination may trigger safety measures, including: disabling motors and deployment of parachute on multicopters, and setting flight surfaces to initiate a landing pattern on fixed-wing).          On multicopters without a parachute it may trigger a crash landing.          Support for this command can be tested using the protocol bit: MAV_PROTOCOL_CAPABILITY_FLIGHT_TERMINATION.          Support for this command can also be tested by sending the command with param1=0 (< 0.5); the ACK should be either MAV_RESULT_FAILED or MAV_RESULT_UNSUPPORTED.         | Flight termination activated if > 0.5. Otherwise not activated and ACK with MAV_RESULT_FAILED. | Empty | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_DO_CHANGE_ALTITUDE = 186,  // Change altitude set point. | Altitude. | Frame of new altitude. | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_DO_SET_ACTUATOR = 187,  // Sets actuators (e.g. servos) to a desired value. The actuator numbers are mapped to specific outputs (e.g. on any MAIN or AUX PWM or UAVCAN) using a flight-stack specific mechanism (i.e. a parameter). | Actuator 1 value, scaled from [-1 to 1]. NaN to ignore. | Actuator 2 value, scaled from [-1 to 1]. NaN to ignore. | Actuator 3 value, scaled from [-1 to 1]. NaN to ignore. | Actuator 4 value, scaled from [-1 to 1]. NaN to ignore. | Actuator 5 value, scaled from [-1 to 1]. NaN to ignore. | Actuator 6 value, scaled from [-1 to 1]. NaN to ignore. | Index of actuator set (i.e if set to 1, Actuator 1 becomes Actuator 7)
+    MAV_CMD_DO_RETURN_PATH_START = 188,  // Mission item to specify the start of a failsafe/landing return-path segment (the end of the segment is the next MAV_CMD_DO_LAND_START item).          A vehicle that is using missions for landing (e.g. in a return mode) will join the mission on the closest path of the return-path segment (instead of MAV_CMD_DO_LAND_START or the nearest waypoint).          The main use case is to minimize the failsafe flight path in corridor missions, where the inbound/outbound paths are constrained (by geofences) to the same particular path.          The MAV_CMD_NAV_RETURN_PATH_START would be placed at the start of the return path.          If a failsafe occurs on the outbound path the vehicle will move to the nearest point on the return path (which is parallel for this kind of mission), effectively turning round and following the shortest path to landing.          If a failsafe occurs on the inbound path the vehicle is already on the return segment and will continue to landing.          The Latitude/Longitude/Altitude are optional, and may be set to 0 if not needed.          If specified, the item defines the waypoint at which the return segment starts.          If sent using as a command, the vehicle will perform a mission landing (using the land segment if defined) or reject the command if mission landings are not supported, or no mission landing is defined. When used as a command any position information in the command is ignored.         | Empty | Empty | Empty | Empty | Latitudee. 0: not used. | Longitudee. 0: not used. | Altitudee. 0: not used.
     MAV_CMD_DO_LAND_START = 189,  // Mission command to perform a landing. This is used as a marker in a mission to tell the autopilot where a sequence of mission items that represents a landing starts.	  It may also be sent via a COMMAND_LONG to trigger a landing, in which case the nearest (geographically) landing sequence in the mission will be used.	  The Latitude/Longitude/Altitude is optional, and may be set to 0 if not needed. If specified then it will be used to help find the closest landing sequence.	 | Empty | Empty | Empty | Empty | Latitude | Longitude | Altitude
     MAV_CMD_DO_RALLY_LAND = 190,  // Mission command to perform a landing from a rally point. | Break altitude | Landing speed | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_DO_GO_AROUND = 191,  // Mission command to safely abort an autonomous landing. | Altitude | Empty | Empty | Empty | Empty | Empty | Empty
@@ -705,7 +720,7 @@ typedef enum MAV_CMD {
     MAV_CMD_DO_MOUNT_CONFIGURE = 204,  // Mission command to configure a camera or antenna mount | Mount operation mode | stabilize roll? (1 = yes, 0 = no) | stabilize pitch? (1 = yes, 0 = no) | stabilize yaw? (1 = yes, 0 = no) | roll input (0 = angle body frame, 1 = angular rate, 2 = angle absolute frame) | pitch input (0 = angle body frame, 1 = angular rate, 2 = angle absolute frame) | yaw input (0 = angle body frame, 1 = angular rate, 2 = angle absolute frame)
     MAV_CMD_DO_MOUNT_CONTROL = 205,  // Mission command to control a camera or antenna mount | pitch depending on mount mode (degrees or degrees/second depending on pitch input). | roll depending on mount mode (degrees or degrees/second depending on roll input). | yaw depending on mount mode (degrees or degrees/second depending on yaw input). | altitude depending on mount mode. | latitude, set if appropriate mount mode. | longitude, set if appropriate mount mode. | Mount mode.
     MAV_CMD_DO_SET_CAM_TRIGG_DIST = 206,  // Mission command to set camera trigger distance for this flight. The camera is triggered each time this distance is exceeded. This command can also be used to set the shutter integration time for the camera. | Camera trigger distance. 0 to stop triggering. | Camera shutter integration time. -1 or 0 to ignore | Trigger camera once immediately. (0 = no trigger, 1 = trigger) | Empty | Empty | Empty | Empty
-    MAV_CMD_DO_FENCE_ENABLE = 207,  // Mission command to enable the geofence | enable? (0=disable, 1=enable, 2=disable_floor_only) | Empty | Empty | Empty | Empty | Empty | Empty
+    MAV_CMD_DO_FENCE_ENABLE = 207,  //           Enable the geofence.          This can be used in a mission or via the command protocol.          The persistence/lifetime of the setting is undefined.          Depending on flight stack implementation it may persist until superseded, or it may revert to a system default at the end of a mission.          Flight stacks typically reset the setting to system defaults on reboot.	 | enable? (0=disable, 1=enable, 2=disable_floor_only) | Fence types to enable or disable as a bitmask. A value of 0 indicates that all fences should be enabled or disabled. This parameter is ignored if param 1 has the value 2 | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_DO_PARACHUTE = 208,  // Mission item/command to release a parachute or enable/disable auto release. | Action | Empty | Empty | Empty | Empty | Empty | Empty
     MAV_CMD_DO_MOTOR_TEST = 209,  // Command to perform motor test. | Motor instance number (from 1 to max number of motors on the vehicle). | Throttle type (whether the Throttle Value in param3 is a percentage, PWM value, etc.) | Throttle value. | Timeout between tests that are run in sequence. | Motor count. Number of motors to test in sequence: 0/1=one motor, 2= two motors, etc. The Timeout (param4) is used between tests. | Motor test order. | Empty
     MAV_CMD_DO_INVERTED_FLIGHT = 210,  // Change to/from inverted flight. | Inverted flight. (0=normal, 1=inverted) | Empty | Empty | Empty | Empty | Empty | Empty
@@ -731,7 +746,8 @@ typedef enum MAV_CMD {
     MAV_CMD_CONFIGURE_ACTUATOR = 311,  // Actuator configuration command. | Actuator configuration action | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Actuator Output function | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_COMPONENT_ARM_DISARM = 400,  // Arms / Disarms a component | 0: disarm, 1: arm | 0: arm-disarm unless prevented by safety checks (i.e. when landed), 21196: force arming/disarming (e.g. allow arming to override preflight checks and disarming in flight) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_RUN_PREARM_CHECKS = 401,  // Instructs a target system to run pre-arm checks.          This allows preflight checks to be run on demand, which may be useful on systems that normally run them at low rate, or which do not trigger checks when the armable state might have changed.          This command should return MAV_RESULT_ACCEPTED if it will run the checks.          The results of the checks are usually then reported in SYS_STATUS messages (this is system-specific).          The command should return MAV_RESULT_TEMPORARILY_REJECTED if the system is already armed.         | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
-    MAV_CMD_ILLUMINATOR_ON_OFF = 405,  // Turns illuminators ON/OFF. An illuminator is a light source that is used for lighting up dark areas external to the sytstem: e.g. a torch or searchlight (as opposed to a light source for illuminating the system itself, e.g. an indicator light). | 0: Illuminators OFF, 1: Illuminators ON | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
+    MAV_CMD_ILLUMINATOR_ON_OFF = 405,  // Turns illuminators ON/OFF. An illuminator is a light source that is used for lighting up dark areas external to the system: e.g. a torch or searchlight (as opposed to a light source for illuminating the system itself, e.g. an indicator light). | 0: Illuminators OFF, 1: Illuminators ON | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
+    MAV_CMD_DO_ILLUMINATOR_CONFIGURE = 406,  // Configures illuminator settings. An illuminator is a light source that is used for lighting up dark areas external to the system: e.g. a torch or searchlight (as opposed to a light source for illuminating the system itself, e.g. an indicator light). | Mode | 0%: Off, 100%: Max Brightness | Strobe period in seconds where 0 means strobing is not used | Strobe duty cycle where 100% means it is on constantly and 0 means strobing is not used | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_GET_HOME_POSITION = 410,  // Request the home position from the vehicle.	  The vehicle will ACK the command and then emit the HOME_POSITION message. | Reserved | Reserved | Reserved | Reserved | Reserved | Reserved | Reserved
     MAV_CMD_INJECT_FAILURE = 420,  // Inject artificial failure for testing purposes. Note that autopilots should implement an additional protection before accepting this command such as a specific param setting. | The unit which is affected by the failure. | The type how the failure manifests itself. | Instance affected by failure (0 to signal all). | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_START_RX_PAIR = 500,  // Starts receiver pairing. | 0:Spektrum. | RC type. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
@@ -747,19 +763,20 @@ typedef enum MAV_CMD {
     MAV_CMD_REQUEST_CAMERA_CAPTURE_STATUS = 527,  // Request camera capture status (CAMERA_CAPTURE_STATUS) | 0: No Action 1: Request camera capture status | Reserved (all remaining params) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_REQUEST_FLIGHT_INFORMATION = 528,  // Request flight information (FLIGHT_INFORMATION) | 1: Request flight information | Reserved (all remaining params) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_RESET_CAMERA_SETTINGS = 529,  // Reset all camera settings to Factory Default | 0: No Action 1: Reset all settings | Reserved (all remaining params) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
-    MAV_CMD_SET_CAMERA_MODE = 530,  // Set camera running mode. Use NaN for reserved values. GCS will send a MAV_CMD_REQUEST_VIDEO_STREAM_STATUS command after a mode change if the camera supports video streaming. | Reserved (Set to 0) | Camera mode | Reserved (default:NaN) | Reserved (default:NaN) | Reserved (default:0) | Reserved (default:0) | Reserved (default:NaN)
+    MAV_CMD_SET_CAMERA_MODE = 530,  // Set camera running mode. Use NaN for reserved values. GCS will send a MAV_CMD_REQUEST_VIDEO_STREAM_STATUS command after a mode change if the camera supports video streaming. | Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras that don't have a distinct component id (such as autopilot-attached cameras). 0: all cameras. This is used to specifically target autopilot-connected cameras or individual sensors in a multi-sensor MAVLink camera. It is also used to target specific cameras when the MAV_CMD is used in a mission | Camera mode | Reserved (default:NaN) | Reserved (default:NaN) | Reserved (default:0) | Reserved (default:0) | Reserved (default:NaN)
     MAV_CMD_SET_CAMERA_ZOOM = 531,  // Set camera zoom. Camera must respond with a CAMERA_SETTINGS message (on success). | Zoom type | Zoom value. The range of valid values depend on the zoom type. | Reserved (default:NaN) | Reserved (default:NaN) | Reserved (default:0) | Reserved (default:0) | Reserved (default:NaN)
     MAV_CMD_SET_CAMERA_FOCUS = 532,  // Set camera focus. Camera must respond with a CAMERA_SETTINGS message (on success). | Focus type | Focus value | Reserved (default:NaN) | Reserved (default:NaN) | Reserved (default:0) | Reserved (default:0) | Reserved (default:NaN)
     MAV_CMD_SET_STORAGE_USAGE = 533,  // Set that a particular storage is the preferred location for saving photos, videos, and/or other media (e.g. to set that an SD card is used for storing videos).          There can only be one preferred save location for each particular media type: setting a media usage flag will clear/reset that same flag if set on any other storage.          If no flag is set the system should use its default storage.          A target system can choose to always use default storage, in which case it should ACK the command with MAV_RESULT_UNSUPPORTED.          A target system can choose to not allow a particular storage to be set as preferred storage, in which case it should ACK the command with MAV_RESULT_DENIED. | Storage ID (1 for first, 2 for second, etc.) | Usage flags | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
+    MAV_CMD_SET_CAMERA_SOURCE = 534,  // Set camera source. Changes the camera's active sources on cameras with multiple image sensors. | Component Id of camera to address or 1-6 for non-MAVLink cameras, 0 for all cameras. | Primary Source | Secondary Source. If non-zero the second source will be displayed as picture-in-picture. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_JUMP_TAG = 600,  // Tagged jump target. Can be jumped to with MAV_CMD_DO_JUMP_TAG. | Tag. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_DO_JUMP_TAG = 601,  // Jump to the matching tag in the mission list. Repeat this action for the specified number of times. A mission should contain a single matching tag for each jump. If this is not the case then a jump to a missing tag should complete the mission, and a jump where there are multiple matching tags should always select the one with the lowest mission sequence number. | Target tag to jump to. | Repeat count. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW = 1000,  // Set gimbal manager pitch/yaw setpoints (low rate command). It is possible to set combinations of the values below. E.g. an angle as well as a desired angular rate can be used to get to this angle at a certain angular rate, or an angular rate only will result in continuous turning. NaN is to be used to signal unset. Note: only the gimbal manager will react to this command - it will be ignored by a gimbal device. Use GIMBAL_MANAGER_SET_PITCHYAW if you need to stream pitch/yaw setpoints at higher rate.  | Pitch angle (positive to pitch up, relative to vehicle for FOLLOW mode, relative to world horizon for LOCK mode). | Yaw angle (positive to yaw to the right, relative to vehicle for FOLLOW mode, absolute to North for LOCK mode). | Pitch rate (positive to pitch up). | Yaw rate (positive to yaw to the right). | Gimbal manager flags to use. | Reserved (default:0) | Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal device components. Send command multiple times for more than one gimbal (but not all gimbals).
     MAV_CMD_DO_GIMBAL_MANAGER_CONFIGURE = 1001,  // Gimbal configuration to set which sysid/compid is in primary and secondary control. | Sysid for primary control (0: no one in control, -1: leave unchanged, -2: set itself in control (for missions where the own sysid is still unknown), -3: remove control if currently in control). | Compid for primary control (0: no one in control, -1: leave unchanged, -2: set itself in control (for missions where the own sysid is still unknown), -3: remove control if currently in control). | Sysid for secondary control (0: no one in control, -1: leave unchanged, -2: set itself in control (for missions where the own sysid is still unknown), -3: remove control if currently in control). | Compid for secondary control (0: no one in control, -1: leave unchanged, -2: set itself in control (for missions where the own sysid is still unknown), -3: remove control if currently in control). | Reserved (default:0) | Reserved (default:0) | Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal device components. Send command multiple times for more than one gimbal (but not all gimbals).
-    MAV_CMD_IMAGE_START_CAPTURE = 2000,  // Start image capture sequence. CAMERA_IMAGE_CAPTURED must be emitted after each capture.          Param1 (id) may be used to specify the target camera: 0: all cameras, 1 to 6: autopilot-connected cameras, 7-255: MAVLink camera component ID.          It is needed in order to target specific cameras connected to the autopilot, or specific sensors in a multi-sensor camera (neither of which have a distinct MAVLink component ID).          It is also needed to specify the target camera in missions.          When used in a mission, an autopilot should execute the MAV_CMD for a specified local camera (param1 = 1-6), or resend it as a command if it is intended for a MAVLink camera (param1 = 7 - 255), setting the command's target_component as the param1 value (and setting param1 in the command to zero).          If the param1 is 0 the autopilot should do both.                    When sent in a command the target MAVLink address is set using target_component.          If addressed specifically to an autopilot: param1 should be used in the same way as it is for missions (though command should NACK with MAV_RESULT_DENIED if a specified local camera does not exist).          If addressed to a MAVLink camera, param 1 can be used to address all cameras (0), or to separately address 1 to 7 individual sensors. Other values should be NACKed with MAV_RESULT_DENIED.          If the command is broadcast (target_component is 0) then param 1 should be set to 0 (any other value should be NACKED with MAV_RESULT_DENIED). An autopilot would trigger any local cameras and forward the command to all channels.         | Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras that don't have a distinct component id (such as autopilot-attached cameras). 0: all cameras. This is used to specifically target autopilot-connected cameras or individual sensors in a multi-sensor MAVLink camera. It is also used to target specific cameras when the MAV_CMD is used in a mission | Desired elapsed time between two consecutive pictures (in seconds). Minimum values depend on hardware (typically greater than 2 seconds). | Total number of images to capture. 0 to capture forever/until MAV_CMD_IMAGE_STOP_CAPTURE. | Capture sequence number starting from 1. This is only valid for single-capture (param3 == 1), otherwise set to 0. Increment the capture ID for each capture command to prevent double captures when a command is re-transmitted. | Reserved (default:0) | Reserved (default:0) | Reserved (default:NaN)
-    MAV_CMD_IMAGE_STOP_CAPTURE = 2001,  // Stop image capture sequence.                  Param1 (id) may be used to specify the target camera: 0: all cameras, 1 to 6: autopilot-connected cameras, 7-255: MAVLink camera component ID.          It is needed in order to target specific cameras connected to the autopilot, or specific sensors in a multi-sensor camera (neither of which have a distinct MAVLink component ID).          It is also needed to specify the target camera in missions.          When used in a mission, an autopilot should execute the MAV_CMD for a specified local camera (param1 = 1-6), or resend it as a command if it is intended for a MAVLink camera (param1 = 7 - 255), setting the command's target_component as the param1 value (and setting param1 in the command to zero).          If the param1 is 0 the autopilot should do both.          When sent in a command the target MAVLink address is set using target_component.          If addressed specifically to an autopilot: param1 should be used in the same way as it is for missions (though command should NACK with MAV_RESULT_DENIED if a specified local camera does not exist).          If addressed to a MAVLink camera, param1 can be used to address all cameras (0), or to separately address 1 to 7 individual sensors. Other values should be NACKed with MAV_RESULT_DENIED.          If the command is broadcast (target_component is 0) then param 1 should be set to 0 (any other value should be NACKED with MAV_RESULT_DENIED). An autopilot would trigger any local cameras and forward the command to all channels.         | Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras that don't have a distinct component id (such as autopilot-attached cameras). 0: all cameras. This is used to specifically target autopilot-connected cameras or individual sensors in a multi-sensor MAVLink camera. It is also used to target specific cameras when the MAV_CMD is used in a mission | Reserved (default:NaN) | Reserved (default:NaN) | Reserved (default:NaN) | Reserved (default:0) | Reserved (default:0) | Reserved (default:NaN)
+    MAV_CMD_IMAGE_START_CAPTURE = 2000,  // Start image capture sequence. CAMERA_IMAGE_CAPTURED must be emitted after each capture.          Param1 (id) may be used to specify the target camera: 0: all cameras, 1 to 6: autopilot-connected cameras, 7-255: MAVLink camera component ID.          It is needed in order to target specific cameras connected to the autopilot, or specific sensors in a multi-sensor camera (neither of which have a distinct MAVLink component ID).          It is also needed to specify the target camera in missions.          When used in a mission, an autopilot should execute the MAV_CMD for a specified local camera (param1 = 1-6), or resend it as a command if it is intended for a MAVLink camera (param1 = 7 - 255), setting the command's target_component as the param1 value (and setting param1 in the command to zero).          If the param1 is 0 the autopilot should do both.          When sent in a command the target MAVLink address is set using target_component.          If addressed specifically to an autopilot: param1 should be used in the same way as it is for missions (though command should NACK with MAV_RESULT_DENIED if a specified local camera does not exist).          If addressed to a MAVLink camera, param 1 can be used to address all cameras (0), or to separately address 1 to 7 individual sensors. Other values should be NACKed with MAV_RESULT_DENIED.          If the command is broadcast (target_component is 0) then param 1 should be set to 0 (any other value should be NACKED with MAV_RESULT_DENIED). An autopilot would trigger any local cameras and forward the command to all channels.         | Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras that don't have a distinct component id (such as autopilot-attached cameras). 0: all cameras. This is used to specifically target autopilot-connected cameras or individual sensors in a multi-sensor MAVLink camera. It is also used to target specific cameras when the MAV_CMD is used in a mission | Desired elapsed time between two consecutive pictures (in seconds). Minimum values depend on hardware (typically greater than 2 seconds). | Total number of images to capture. 0 to capture forever/until MAV_CMD_IMAGE_STOP_CAPTURE. | Capture sequence number starting from 1. This is only valid for single-capture (param3 == 1), otherwise set to 0. Increment the capture ID for each capture command to prevent double captures when a command is re-transmitted. | Reserved (default:0) | Reserved (default:0) | Reserved (default:NaN)
+    MAV_CMD_IMAGE_STOP_CAPTURE = 2001,  // Stop image capture sequence.          Param1 (id) may be used to specify the target camera: 0: all cameras, 1 to 6: autopilot-connected cameras, 7-255: MAVLink camera component ID.          It is needed in order to target specific cameras connected to the autopilot, or specific sensors in a multi-sensor camera (neither of which have a distinct MAVLink component ID).          It is also needed to specify the target camera in missions.          When used in a mission, an autopilot should execute the MAV_CMD for a specified local camera (param1 = 1-6), or resend it as a command if it is intended for a MAVLink camera (param1 = 7 - 255), setting the command's target_component as the param1 value (and setting param1 in the command to zero).          If the param1 is 0 the autopilot should do both.          When sent in a command the target MAVLink address is set using target_component.          If addressed specifically to an autopilot: param1 should be used in the same way as it is for missions (though command should NACK with MAV_RESULT_DENIED if a specified local camera does not exist).          If addressed to a MAVLink camera, param1 can be used to address all cameras (0), or to separately address 1 to 7 individual sensors. Other values should be NACKed with MAV_RESULT_DENIED.          If the command is broadcast (target_component is 0) then param 1 should be set to 0 (any other value should be NACKED with MAV_RESULT_DENIED). An autopilot would trigger any local cameras and forward the command to all channels.         | Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras that don't have a distinct component id (such as autopilot-attached cameras). 0: all cameras. This is used to specifically target autopilot-connected cameras or individual sensors in a multi-sensor MAVLink camera. It is also used to target specific cameras when the MAV_CMD is used in a mission | Reserved (default:NaN) | Reserved (default:NaN) | Reserved (default:NaN) | Reserved (default:0) | Reserved (default:0) | Reserved (default:NaN)
     MAV_CMD_REQUEST_CAMERA_IMAGE_CAPTURE = 2002,  // Re-request a CAMERA_IMAGE_CAPTURED message. | Sequence number for missing CAMERA_IMAGE_CAPTURED message | Reserved (default:NaN) | Reserved (default:NaN) | Reserved (default:NaN) | Reserved (default:0) | Reserved (default:0) | Reserved (default:NaN)
     MAV_CMD_DO_TRIGGER_CONTROL = 2003,  // Enable or disable on-board camera triggering system. | Trigger enable/disable (0 for disable, 1 for start), -1 to ignore | 1 to reset the trigger sequence, -1 or 0 to ignore | 1 to pause triggering, but without switching the camera off or retracting it. -1 to ignore | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
-    MAV_CMD_CAMERA_TRACK_POINT = 2004,  // If the camera supports point visual tracking (CAMERA_CAP_FLAGS_HAS_TRACKING_POINT is set), this command allows to initiate the tracking. | Point to track x value (normalized 0..1, 0 is left, 1 is right). | Point to track y value (normalized 0..1, 0 is top, 1 is bottom). | Point radius (normalized 0..1, 0 is image left, 1 is image right). | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
+    MAV_CMD_CAMERA_TRACK_POINT = 2004,  // If the camera supports point visual tracking (CAMERA_CAP_FLAGS_HAS_TRACKING_POINT is set), this command allows to initiate the tracking. | Point to track x value (normalized 0..1, 0 is left, 1 is right). | Point to track y value (normalized 0..1, 0 is top, 1 is bottom). | Point radius (normalized 0..1, 0 is one pixel, 1 is full image width). | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_CAMERA_TRACK_RECTANGLE = 2005,  // If the camera supports rectangle visual tracking (CAMERA_CAP_FLAGS_HAS_TRACKING_RECTANGLE is set), this command allows to initiate the tracking. | Top left corner of rectangle x value (normalized 0..1, 0 is left, 1 is right). | Top left corner of rectangle y value (normalized 0..1, 0 is top, 1 is bottom). | Bottom right corner of rectangle x value (normalized 0..1, 0 is left, 1 is right). | Bottom right corner of rectangle y value (normalized 0..1, 0 is top, 1 is bottom). | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_CAMERA_STOP_TRACKING = 2010,  // Stops ongoing tracking. | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0) | Reserved (default:0)
     MAV_CMD_VIDEO_START_CAPTURE = 2500,  // Starts video capture (recording). | Video Stream ID (0 for all streams) | Frequency CAMERA_CAPTURE_STATUS messages should be sent while recording (0 for no messages, otherwise frequency) | Reserved (default:NaN) | Reserved (default:NaN) | Reserved (default:0) | Reserved (default:0) | Reserved (default:NaN)
@@ -785,6 +802,7 @@ typedef enum MAV_CMD {
     MAV_CMD_NAV_FENCE_CIRCLE_EXCLUSION = 5004,  // Circular fence area. The vehicle must stay outside this area.         | Radius. | Reserved | Reserved | Reserved | Latitude | Longitude | Reserved
     MAV_CMD_NAV_RALLY_POINT = 5100,  // Rally point. You can have multiple rally points defined.         | Reserved | Reserved | Reserved | Reserved | Latitude | Longitude | Altitude
     MAV_CMD_UAVCAN_GET_NODE_INFO = 5200,  // Commands the vehicle to respond with a sequence of messages UAVCAN_NODE_INFO, one message per every UAVCAN node that is online. Note that some of the response messages can be lost, which the receiver can detect easily by checking whether every received UAVCAN_NODE_STATUS has a matching message UAVCAN_NODE_INFO received earlier; if not, this command should be sent again in order to request re-transmission of the node information messages. | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0)
+    MAV_CMD_DO_SET_SAFETY_SWITCH_STATE = 5300,  // Change state of safety switch. | New safety switch state. | Empty. | Empty. | Empty | Empty. | Empty. | Empty.
     MAV_CMD_DO_ADSB_OUT_IDENT = 10001,  // Trigger the start of an ADSB-out IDENT. This should only be used when requested to do so by an Air Traffic Controller in controlled airspace. This starts the IDENT which is then typically held for 18 seconds by the hardware per the Mode A, C, and S transponder spec. | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0) | Reserved (set to 0)
     MAV_CMD_PAYLOAD_PREPARE_DEPLOY = 30001,  // Deploy payload on a Lat / Lon / Alt position. This includes the navigation to reach the required release position and velocity. | Operation mode. 0: prepare single payload deploy (overwriting previous requests), but do not execute it. 1: execute payload deploy immediately (rejecting further deploy commands during execution, but allowing abort). 2: add payload deploy to existing deployment list. | Desired approach vector in compass heading. A negative value indicates the system can define the approach vector at will. | Desired ground speed at release time. This can be overridden by the airframe in case it needs to meet minimum airspeed. A negative value indicates the system can define the ground speed at will. | Minimum altitude clearance to the release position. A negative value indicates the system can define the clearance at will. | Latitude. | Longitude. | Altitude (MSL)
     MAV_CMD_PAYLOAD_CONTROL_DEPLOY = 30002,  // Control the payload deployment. | Operation mode. 0: Abort deployment, continue normal mission. 1: switch to payload deployment mode. 100: delete first payload deployment request. 101: delete all payload deployment requests. | Reserved | Reserved | Reserved | Reserved | Reserved | Reserved
@@ -806,7 +824,8 @@ typedef enum MAV_CMD {
     MAV_CMD_CAN_FORWARD = 32000,  // Request forwarding of CAN packets from the given CAN bus to this component. CAN Frames are sent using CAN_FRAME and CANFD_FRAME messages | Bus number (0 to disable forwarding, 1 for first bus, 2 for 2nd bus, 3 for 3rd bus). | Empty. | Empty. | Empty. | Empty. | Empty. | Empty.
     MAV_CMD_FIXED_MAG_CAL_YAW = 42006,  // Magnetometer calibration based on provided known yaw. This allows for fast calibration using WMM field tables in the vehicle, given only the known yaw of the vehicle. If Latitude and longitude are both zero then use the current vehicle location. | Yaw of vehicle in earth frame. | CompassMask, 0 for all. | Latitude. | Longitude. | Empty. | Empty. | Empty.
     MAV_CMD_DO_WINCH = 42600,  // Command to operate winch. | Winch instance number. | Action to perform. | Length of line to release (negative to wind). | Release rate (negative to wind). | Empty. | Empty. | Empty.
-    MAV_CMD_ENUM_END = 42601,  // end marker
+    MAV_CMD_EXTERNAL_POSITION_ESTIMATE = 43003,  // Provide an external position estimate for use when dead-reckoning. This is meant to be used for occasional position resets that may be provided by a external system such as a remote pilot using landmarks over a video link. | Timestamp that this message was sent as a time in the transmitters time domain. The sender should wrap this time back to zero based on required timing accuracy for the application and the limitations of a 32 bit float. For example, wrapping at 10 hours would give approximately 1ms accuracy. Recipient must handle time wrap in any timing jitter correction applied to this field. Wrap rollover time should not be at not more than 250 seconds, which would give approximately 10 microsecond accuracy. | The time spent in processing the sensor data that is the basis for this position. The recipient can use this to improve time alignment of the data. Set to zero if not known. | estimated one standard deviation accuracy of the measurement. Set to NaN if not known. | Empty | Latitude | Longitude | Altitude, not used. Should be sent as NaN. May be supported in a future version of this message.
+    MAV_CMD_ENUM_END = 43004,  // end marker
 } MAV_CMD;
 #endif
 
@@ -888,8 +907,8 @@ typedef enum MAV_RESULT {
     MAV_RESULT_FAILED = 4,  // Command is valid, but execution has failed. This is used to indicate any non-temporary or unexpected problem, i.e. any problem that must be fixed before the command can succeed/be retried. For example, attempting to write a file when out of memory, attempting to arm when sensors are not calibrated, etc. 
     MAV_RESULT_IN_PROGRESS = 5,  // Command is valid and is being executed. This will be followed by further progress updates, i.e. the component may send further COMMAND_ACK messages with result MAV_RESULT_IN_PROGRESS (at a rate decided by the implementation), and must terminate by sending a COMMAND_ACK message with final result of the operation. The COMMAND_ACK.progress field can be used to indicate the progress of the operation. 
     MAV_RESULT_CANCELLED = 6,  // Command has been cancelled (as a result of receiving a COMMAND_CANCEL message). 
-    MAV_RESULT_COMMAND_LONG_ONLY = 7,  // Command is valid, but it is only accepted when sent as a COMMAND_LONG (as it has float values for params 5 and 6). 
-    MAV_RESULT_COMMAND_INT_ONLY = 8,  // Command is valid, but it is only accepted when sent as a COMMAND_INT (as it encodes a location in params 5, 6 and 7, and hence requires a reference MAV_FRAME). 
+    MAV_RESULT_COMMAND_LONG_ONLY = 7,  // Command is only accepted when sent as a COMMAND_LONG. 
+    MAV_RESULT_COMMAND_INT_ONLY = 8,  // Command is only accepted when sent as a COMMAND_INT. 
     MAV_RESULT_COMMAND_UNSUPPORTED_MAV_FRAME = 9,  // Command is invalid because a frame is required and the specified frame is not supported. 
     MAV_RESULT_ENUM_END = 10,  // end marker
 } MAV_RESULT;
@@ -1491,9 +1510,20 @@ typedef enum VIDEO_STREAM_TYPE {
     VIDEO_STREAM_TYPE_RTSP = 0,  // Stream is RTSP 
     VIDEO_STREAM_TYPE_RTPUDP = 1,  // Stream is RTP UDP (URI gives the port number) 
     VIDEO_STREAM_TYPE_TCP_MPEG = 2,  // Stream is MPEG on TCP 
-    VIDEO_STREAM_TYPE_MPEG_TS_H264 = 3,  // Stream is h.264 on MPEG TS (URI gives the port number) 
+    VIDEO_STREAM_TYPE_MPEG_TS = 3,  // Stream is MPEG TS (URI gives the port number) 
     VIDEO_STREAM_TYPE_ENUM_END = 4,  // end marker
 } VIDEO_STREAM_TYPE;
+#endif
+
+
+#ifndef FASTMAVLINK_HAS_ENUM_VIDEO_STREAM_ENCODING
+#define FASTMAVLINK_HAS_ENUM_VIDEO_STREAM_ENCODING
+typedef enum VIDEO_STREAM_ENCODING {
+    VIDEO_STREAM_ENCODING_UNKNOWN = 0,  // Stream encoding is unknown 
+    VIDEO_STREAM_ENCODING_H264 = 1,  // Stream encoding is H.264 
+    VIDEO_STREAM_ENCODING_H265 = 2,  // Stream encoding is H.265 
+    VIDEO_STREAM_ENCODING_ENUM_END = 3,  // end marker
+} VIDEO_STREAM_ENCODING;
 #endif
 
 
@@ -1556,6 +1586,18 @@ typedef enum SET_FOCUS_TYPE {
     FOCUS_TYPE_AUTO_CONTINUOUS = 6,  // Continuous auto focus. Mainly used for dynamic scenes. Abbreviated as AF-C. 
     SET_FOCUS_TYPE_ENUM_END = 7,  // end marker
 } SET_FOCUS_TYPE;
+#endif
+
+
+#ifndef FASTMAVLINK_HAS_ENUM_CAMERA_SOURCE
+#define FASTMAVLINK_HAS_ENUM_CAMERA_SOURCE
+typedef enum CAMERA_SOURCE {
+    CAMERA_SOURCE_DEFAULT = 0,  // Default camera source. 
+    CAMERA_SOURCE_RGB = 1,  // RGB camera source. 
+    CAMERA_SOURCE_IR = 2,  // IR camera source. 
+    CAMERA_SOURCE_NDVI = 3,  // NDVI camera source. 
+    CAMERA_SOURCE_ENUM_END = 4,  // end marker
+} CAMERA_SOURCE;
 #endif
 
 
@@ -2366,6 +2408,38 @@ typedef enum MISSION_STATE {
 } MISSION_STATE;
 #endif
 
+
+#ifndef FASTMAVLINK_HAS_ENUM_SAFETY_SWITCH_STATE
+#define FASTMAVLINK_HAS_ENUM_SAFETY_SWITCH_STATE
+typedef enum SAFETY_SWITCH_STATE {
+    SAFETY_SWITCH_STATE_SAFE = 0,  // Safety switch is engaged and vehicle should be safe to approach. 
+    SAFETY_SWITCH_STATE_DANGEROUS = 1,  // Safety switch is NOT engaged and motors, propellers and other actuators should be considered active. 
+    SAFETY_SWITCH_STATE_ENUM_END = 2,  // end marker
+} SAFETY_SWITCH_STATE;
+#endif
+
+
+#ifndef FASTMAVLINK_HAS_ENUM_ILLUMINATOR_MODE
+#define FASTMAVLINK_HAS_ENUM_ILLUMINATOR_MODE
+typedef enum ILLUMINATOR_MODE {
+    ILLUMINATOR_MODE_UNKNOWN = 0,  // Illuminator mode is not specified/unknown 
+    ILLUMINATOR_MODE_INTERNAL_CONTROL = 1,  // Illuminator behavior is controlled by MAV_CMD_DO_ILLUMINATOR_CONFIGURE settings 
+    ILLUMINATOR_MODE_EXTERNAL_SYNC = 2,  // Illuminator behavior is controlled by external factors: e.g. an external hardware signal 
+    ILLUMINATOR_MODE_ENUM_END = 3,  // end marker
+} ILLUMINATOR_MODE;
+#endif
+
+
+#ifndef FASTMAVLINK_HAS_ENUM_ILLUMINATOR_ERROR_FLAGS
+#define FASTMAVLINK_HAS_ENUM_ILLUMINATOR_ERROR_FLAGS
+typedef enum ILLUMINATOR_ERROR_FLAGS {
+    ILLUMINATOR_ERROR_FLAGS_THERMAL_THROTTLING = 1,  // Illuminator thermal throttling error. 
+    ILLUMINATOR_ERROR_FLAGS_OVER_TEMPERATURE_SHUTDOWN = 2,  // Illuminator over temperature shutdown error. 
+    ILLUMINATOR_ERROR_FLAGS_THERMISTOR_FAILURE = 4,  // Illuminator thermistor failure. 
+    ILLUMINATOR_ERROR_FLAGS_ENUM_END = 5,  // end marker
+} ILLUMINATOR_ERROR_FLAGS;
+#endif
+
 #endif // FASTMAVLINK_DO_NOT_INCLUDE_ENUMS
 
 
@@ -2570,7 +2644,7 @@ typedef enum MISSION_STATE {
 #include "./mavlink_msg_utm_global_position.h"
 #include "./mavlink_msg_debug_float_array.h"
 #include "./mavlink_msg_orbit_execution_status.h"
-#include "./mavlink_msg_smart_battery_info.h"
+#include "./mavlink_msg_battery_info.h"
 #include "./mavlink_msg_generator_status.h"
 #include "./mavlink_msg_actuator_output_status.h"
 #include "./mavlink_msg_time_estimate_to_target.h"
@@ -2578,6 +2652,7 @@ typedef enum MISSION_STATE {
 #include "./mavlink_msg_can_frame.h"
 #include "./mavlink_msg_onboard_computer_status.h"
 #include "./mavlink_msg_component_information.h"
+#include "./mavlink_msg_component_information_basic.h"
 #include "./mavlink_msg_component_metadata.h"
 #include "./mavlink_msg_play_tune_v2.h"
 #include "./mavlink_msg_supported_tunes.h"
@@ -2585,6 +2660,7 @@ typedef enum MISSION_STATE {
 #include "./mavlink_msg_current_event_sequence.h"
 #include "./mavlink_msg_request_event.h"
 #include "./mavlink_msg_response_event_error.h"
+#include "./mavlink_msg_illuminator_status.h"
 #include "./mavlink_msg_canfd_frame.h"
 #include "./mavlink_msg_can_filter_modify.h"
 #include "./mavlink_msg_wheel_distance.h"

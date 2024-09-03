@@ -17,6 +17,7 @@ FASTMAVLINK_PACK(
 typedef struct _fmav_component_information_basic_t {
     uint64_t capabilities;
     uint32_t time_boot_ms;
+    uint32_t time_manufacture_s;
     char vendor_name[32];
     char model_name[32];
     char software_version[24];
@@ -27,14 +28,14 @@ typedef struct _fmav_component_information_basic_t {
 
 #define FASTMAVLINK_MSG_ID_COMPONENT_INFORMATION_BASIC  396
 
-#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_PAYLOAD_LEN_MAX  156
-#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_CRCEXTRA  129
+#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_PAYLOAD_LEN_MAX  160
+#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_CRCEXTRA  50
 
 #define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FLAGS  0
 #define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FRAME_LEN_MAX  181
+#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FRAME_LEN_MAX  185
 
 #define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FIELD_VENDOR_NAME_NUM  32 // number of elements in array
 #define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FIELD_VENDOR_NAME_LEN  32 // length of array = number of bytes
@@ -49,11 +50,12 @@ typedef struct _fmav_component_information_basic_t {
 
 #define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FIELD_CAPABILITIES_OFS  0
 #define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FIELD_TIME_BOOT_MS_OFS  8
-#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FIELD_VENDOR_NAME_OFS  12
-#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FIELD_MODEL_NAME_OFS  44
-#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FIELD_SOFTWARE_VERSION_OFS  76
-#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FIELD_HARDWARE_VERSION_OFS  100
-#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FIELD_SERIAL_NUMBER_OFS  124
+#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FIELD_TIME_MANUFACTURE_S_OFS  12
+#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FIELD_VENDOR_NAME_OFS  16
+#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FIELD_MODEL_NAME_OFS  48
+#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FIELD_SOFTWARE_VERSION_OFS  80
+#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FIELD_HARDWARE_VERSION_OFS  104
+#define FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FIELD_SERIAL_NUMBER_OFS  128
 
 
 //----------------------------------------
@@ -64,13 +66,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_component_information_basic_pac
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint64_t capabilities, const char* vendor_name, const char* model_name, const char* software_version, const char* hardware_version, const char* serial_number,
+    uint32_t time_boot_ms, uint64_t capabilities, uint32_t time_manufacture_s, const char* vendor_name, const char* model_name, const char* software_version, const char* hardware_version, const char* serial_number,
     fmav_status_t* _status)
 {
     fmav_component_information_basic_t* _payload = (fmav_component_information_basic_t*)_msg->payload;
 
     _payload->capabilities = capabilities;
     _payload->time_boot_ms = time_boot_ms;
+    _payload->time_manufacture_s = time_manufacture_s;
     memcpy(&(_payload->vendor_name), vendor_name, sizeof(char)*32);
     memcpy(&(_payload->model_name), model_name, sizeof(char)*32);
     memcpy(&(_payload->software_version), software_version, sizeof(char)*24);
@@ -98,7 +101,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_component_information_basic_enc
 {
     return fmav_msg_component_information_basic_pack(
         _msg, sysid, compid,
-        _payload->time_boot_ms, _payload->capabilities, _payload->vendor_name, _payload->model_name, _payload->software_version, _payload->hardware_version, _payload->serial_number,
+        _payload->time_boot_ms, _payload->capabilities, _payload->time_manufacture_s, _payload->vendor_name, _payload->model_name, _payload->software_version, _payload->hardware_version, _payload->serial_number,
         _status);
 }
 
@@ -107,13 +110,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_component_information_basic_pac
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint64_t capabilities, const char* vendor_name, const char* model_name, const char* software_version, const char* hardware_version, const char* serial_number,
+    uint32_t time_boot_ms, uint64_t capabilities, uint32_t time_manufacture_s, const char* vendor_name, const char* model_name, const char* software_version, const char* hardware_version, const char* serial_number,
     fmav_status_t* _status)
 {
     fmav_component_information_basic_t* _payload = (fmav_component_information_basic_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
     _payload->capabilities = capabilities;
     _payload->time_boot_ms = time_boot_ms;
+    _payload->time_manufacture_s = time_manufacture_s;
     memcpy(&(_payload->vendor_name), vendor_name, sizeof(char)*32);
     memcpy(&(_payload->model_name), model_name, sizeof(char)*32);
     memcpy(&(_payload->software_version), software_version, sizeof(char)*24);
@@ -143,7 +147,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_component_information_basic_enc
 {
     return fmav_msg_component_information_basic_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->time_boot_ms, _payload->capabilities, _payload->vendor_name, _payload->model_name, _payload->software_version, _payload->hardware_version, _payload->serial_number,
+        _payload->time_boot_ms, _payload->capabilities, _payload->time_manufacture_s, _payload->vendor_name, _payload->model_name, _payload->software_version, _payload->hardware_version, _payload->serial_number,
         _status);
 }
 
@@ -153,13 +157,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_component_information_basic_enc
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_component_information_basic_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint64_t capabilities, const char* vendor_name, const char* model_name, const char* software_version, const char* hardware_version, const char* serial_number,
+    uint32_t time_boot_ms, uint64_t capabilities, uint32_t time_manufacture_s, const char* vendor_name, const char* model_name, const char* software_version, const char* hardware_version, const char* serial_number,
     fmav_status_t* _status)
 {
     fmav_component_information_basic_t _payload;
 
     _payload.capabilities = capabilities;
     _payload.time_boot_ms = time_boot_ms;
+    _payload.time_manufacture_s = time_manufacture_s;
     memcpy(&(_payload.vendor_name), vendor_name, sizeof(char)*32);
     memcpy(&(_payload.model_name), model_name, sizeof(char)*32);
     memcpy(&(_payload.software_version), software_version, sizeof(char)*24);
@@ -238,68 +243,76 @@ FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_component_information_basic_get
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_component_information_basic_get_field_time_manufacture_s(const fmav_message_t* msg)
+{
+    uint32_t r;
+    memcpy(&r, &(msg->payload[12]), sizeof(uint32_t));
+    return r;
+}
+
+
 FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_component_information_basic_get_field_vendor_name_ptr(const fmav_message_t* msg)
 {
-    return (char*)&(msg->payload[12]);
+    return (char*)&(msg->payload[16]);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_component_information_basic_get_field_vendor_name(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FIELD_VENDOR_NAME_NUM) return 0;
-    return ((char*)&(msg->payload[12]))[index];
+    return ((char*)&(msg->payload[16]))[index];
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_component_information_basic_get_field_model_name_ptr(const fmav_message_t* msg)
 {
-    return (char*)&(msg->payload[44]);
+    return (char*)&(msg->payload[48]);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_component_information_basic_get_field_model_name(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FIELD_MODEL_NAME_NUM) return 0;
-    return ((char*)&(msg->payload[44]))[index];
+    return ((char*)&(msg->payload[48]))[index];
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_component_information_basic_get_field_software_version_ptr(const fmav_message_t* msg)
 {
-    return (char*)&(msg->payload[76]);
+    return (char*)&(msg->payload[80]);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_component_information_basic_get_field_software_version(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FIELD_SOFTWARE_VERSION_NUM) return 0;
-    return ((char*)&(msg->payload[76]))[index];
+    return ((char*)&(msg->payload[80]))[index];
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_component_information_basic_get_field_hardware_version_ptr(const fmav_message_t* msg)
 {
-    return (char*)&(msg->payload[100]);
+    return (char*)&(msg->payload[104]);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_component_information_basic_get_field_hardware_version(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FIELD_HARDWARE_VERSION_NUM) return 0;
-    return ((char*)&(msg->payload[100]))[index];
+    return ((char*)&(msg->payload[104]))[index];
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR char* fmav_msg_component_information_basic_get_field_serial_number_ptr(const fmav_message_t* msg)
 {
-    return (char*)&(msg->payload[124]);
+    return (char*)&(msg->payload[128]);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_component_information_basic_get_field_serial_number(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FIELD_SERIAL_NUMBER_NUM) return 0;
-    return ((char*)&(msg->payload[124]))[index];
+    return ((char*)&(msg->payload[128]))[index];
 }
 
 
@@ -312,13 +325,13 @@ FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_component_information_basic_get_fie
 
 #define mavlink_component_information_basic_t  fmav_component_information_basic_t
 
-#define MAVLINK_MSG_ID_COMPONENT_INFORMATION_BASIC_LEN  156
-#define MAVLINK_MSG_ID_COMPONENT_INFORMATION_BASIC_MIN_LEN  156
-#define MAVLINK_MSG_ID_396_LEN  156
-#define MAVLINK_MSG_ID_396_MIN_LEN  156
+#define MAVLINK_MSG_ID_COMPONENT_INFORMATION_BASIC_LEN  160
+#define MAVLINK_MSG_ID_COMPONENT_INFORMATION_BASIC_MIN_LEN  160
+#define MAVLINK_MSG_ID_396_LEN  160
+#define MAVLINK_MSG_ID_396_MIN_LEN  160
 
-#define MAVLINK_MSG_ID_COMPONENT_INFORMATION_BASIC_CRC  129
-#define MAVLINK_MSG_ID_396_CRC  129
+#define MAVLINK_MSG_ID_COMPONENT_INFORMATION_BASIC_CRC  50
+#define MAVLINK_MSG_ID_396_CRC  50
 
 #define MAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FIELD_VENDOR_NAME_LEN 32
 #define MAVLINK_MSG_COMPONENT_INFORMATION_BASIC_FIELD_MODEL_NAME_LEN 32
@@ -333,12 +346,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_component_information_basic_
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint32_t time_boot_ms, uint64_t capabilities, const char* vendor_name, const char* model_name, const char* software_version, const char* hardware_version, const char* serial_number)
+    uint32_t time_boot_ms, uint64_t capabilities, uint32_t time_manufacture_s, const char* vendor_name, const char* model_name, const char* software_version, const char* hardware_version, const char* serial_number)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_component_information_basic_pack(
         _msg, sysid, compid,
-        time_boot_ms, capabilities, vendor_name, model_name, software_version, hardware_version, serial_number,
+        time_boot_ms, capabilities, time_manufacture_s, vendor_name, model_name, software_version, hardware_version, serial_number,
         _status);
 }
 
@@ -353,7 +366,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_component_information_basic_
         sysid,
         compid,
         _msg,
-        _payload->time_boot_ms, _payload->capabilities, _payload->vendor_name, _payload->model_name, _payload->software_version, _payload->hardware_version, _payload->serial_number);
+        _payload->time_boot_ms, _payload->capabilities, _payload->time_manufacture_s, _payload->vendor_name, _payload->model_name, _payload->software_version, _payload->hardware_version, _payload->serial_number);
 }
 
 #endif
@@ -364,13 +377,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_component_information_basic_
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint64_t capabilities, const char* vendor_name, const char* model_name, const char* software_version, const char* hardware_version, const char* serial_number)
+    uint32_t time_boot_ms, uint64_t capabilities, uint32_t time_manufacture_s, const char* vendor_name, const char* model_name, const char* software_version, const char* hardware_version, const char* serial_number)
 {
     return fmav_msg_component_information_basic_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        time_boot_ms, capabilities, vendor_name, model_name, software_version, hardware_version, serial_number,
+        time_boot_ms, capabilities, time_manufacture_s, vendor_name, model_name, software_version, hardware_version, serial_number,
         _status);
 }
 

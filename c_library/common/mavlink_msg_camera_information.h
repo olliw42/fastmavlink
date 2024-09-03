@@ -29,19 +29,20 @@ typedef struct _fmav_camera_information_t {
     uint8_t lens_id;
     char cam_definition_uri[140];
     uint8_t gimbal_device_id;
+    uint8_t camera_device_id;
 }) fmav_camera_information_t;
 
 
 #define FASTMAVLINK_MSG_ID_CAMERA_INFORMATION  259
 
-#define FASTMAVLINK_MSG_CAMERA_INFORMATION_PAYLOAD_LEN_MAX  236
+#define FASTMAVLINK_MSG_CAMERA_INFORMATION_PAYLOAD_LEN_MAX  237
 #define FASTMAVLINK_MSG_CAMERA_INFORMATION_CRCEXTRA  92
 
 #define FASTMAVLINK_MSG_CAMERA_INFORMATION_FLAGS  0
 #define FASTMAVLINK_MSG_CAMERA_INFORMATION_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_CAMERA_INFORMATION_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_CAMERA_INFORMATION_FRAME_LEN_MAX  261
+#define FASTMAVLINK_MSG_CAMERA_INFORMATION_FRAME_LEN_MAX  262
 
 #define FASTMAVLINK_MSG_CAMERA_INFORMATION_FIELD_VENDOR_NAME_NUM  32 // number of elements in array
 #define FASTMAVLINK_MSG_CAMERA_INFORMATION_FIELD_VENDOR_NAME_LEN  32 // length of array = number of bytes
@@ -64,6 +65,7 @@ typedef struct _fmav_camera_information_t {
 #define FASTMAVLINK_MSG_CAMERA_INFORMATION_FIELD_LENS_ID_OFS  94
 #define FASTMAVLINK_MSG_CAMERA_INFORMATION_FIELD_CAM_DEFINITION_URI_OFS  95
 #define FASTMAVLINK_MSG_CAMERA_INFORMATION_FIELD_GIMBAL_DEVICE_ID_OFS  235
+#define FASTMAVLINK_MSG_CAMERA_INFORMATION_FIELD_CAMERA_DEVICE_ID_OFS  236
 
 
 //----------------------------------------
@@ -74,7 +76,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_information_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, const uint8_t* vendor_name, const uint8_t* model_name, uint32_t firmware_version, float focal_length, float sensor_size_h, float sensor_size_v, uint16_t resolution_h, uint16_t resolution_v, uint8_t lens_id, uint32_t flags, uint16_t cam_definition_version, const char* cam_definition_uri, uint8_t gimbal_device_id,
+    uint32_t time_boot_ms, const uint8_t* vendor_name, const uint8_t* model_name, uint32_t firmware_version, float focal_length, float sensor_size_h, float sensor_size_v, uint16_t resolution_h, uint16_t resolution_v, uint8_t lens_id, uint32_t flags, uint16_t cam_definition_version, const char* cam_definition_uri, uint8_t gimbal_device_id, uint8_t camera_device_id,
     fmav_status_t* _status)
 {
     fmav_camera_information_t* _payload = (fmav_camera_information_t*)_msg->payload;
@@ -90,6 +92,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_information_pack(
     _payload->cam_definition_version = cam_definition_version;
     _payload->lens_id = lens_id;
     _payload->gimbal_device_id = gimbal_device_id;
+    _payload->camera_device_id = camera_device_id;
     memcpy(&(_payload->vendor_name), vendor_name, sizeof(uint8_t)*32);
     memcpy(&(_payload->model_name), model_name, sizeof(uint8_t)*32);
     memcpy(&(_payload->cam_definition_uri), cam_definition_uri, sizeof(char)*140);
@@ -115,7 +118,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_information_encode(
 {
     return fmav_msg_camera_information_pack(
         _msg, sysid, compid,
-        _payload->time_boot_ms, _payload->vendor_name, _payload->model_name, _payload->firmware_version, _payload->focal_length, _payload->sensor_size_h, _payload->sensor_size_v, _payload->resolution_h, _payload->resolution_v, _payload->lens_id, _payload->flags, _payload->cam_definition_version, _payload->cam_definition_uri, _payload->gimbal_device_id,
+        _payload->time_boot_ms, _payload->vendor_name, _payload->model_name, _payload->firmware_version, _payload->focal_length, _payload->sensor_size_h, _payload->sensor_size_v, _payload->resolution_h, _payload->resolution_v, _payload->lens_id, _payload->flags, _payload->cam_definition_version, _payload->cam_definition_uri, _payload->gimbal_device_id, _payload->camera_device_id,
         _status);
 }
 
@@ -124,7 +127,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_information_pack_to_fram
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, const uint8_t* vendor_name, const uint8_t* model_name, uint32_t firmware_version, float focal_length, float sensor_size_h, float sensor_size_v, uint16_t resolution_h, uint16_t resolution_v, uint8_t lens_id, uint32_t flags, uint16_t cam_definition_version, const char* cam_definition_uri, uint8_t gimbal_device_id,
+    uint32_t time_boot_ms, const uint8_t* vendor_name, const uint8_t* model_name, uint32_t firmware_version, float focal_length, float sensor_size_h, float sensor_size_v, uint16_t resolution_h, uint16_t resolution_v, uint8_t lens_id, uint32_t flags, uint16_t cam_definition_version, const char* cam_definition_uri, uint8_t gimbal_device_id, uint8_t camera_device_id,
     fmav_status_t* _status)
 {
     fmav_camera_information_t* _payload = (fmav_camera_information_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -140,6 +143,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_information_pack_to_fram
     _payload->cam_definition_version = cam_definition_version;
     _payload->lens_id = lens_id;
     _payload->gimbal_device_id = gimbal_device_id;
+    _payload->camera_device_id = camera_device_id;
     memcpy(&(_payload->vendor_name), vendor_name, sizeof(uint8_t)*32);
     memcpy(&(_payload->model_name), model_name, sizeof(uint8_t)*32);
     memcpy(&(_payload->cam_definition_uri), cam_definition_uri, sizeof(char)*140);
@@ -167,7 +171,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_information_encode_to_fr
 {
     return fmav_msg_camera_information_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->time_boot_ms, _payload->vendor_name, _payload->model_name, _payload->firmware_version, _payload->focal_length, _payload->sensor_size_h, _payload->sensor_size_v, _payload->resolution_h, _payload->resolution_v, _payload->lens_id, _payload->flags, _payload->cam_definition_version, _payload->cam_definition_uri, _payload->gimbal_device_id,
+        _payload->time_boot_ms, _payload->vendor_name, _payload->model_name, _payload->firmware_version, _payload->focal_length, _payload->sensor_size_h, _payload->sensor_size_v, _payload->resolution_h, _payload->resolution_v, _payload->lens_id, _payload->flags, _payload->cam_definition_version, _payload->cam_definition_uri, _payload->gimbal_device_id, _payload->camera_device_id,
         _status);
 }
 
@@ -177,7 +181,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_information_encode_to_fr
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_information_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, const uint8_t* vendor_name, const uint8_t* model_name, uint32_t firmware_version, float focal_length, float sensor_size_h, float sensor_size_v, uint16_t resolution_h, uint16_t resolution_v, uint8_t lens_id, uint32_t flags, uint16_t cam_definition_version, const char* cam_definition_uri, uint8_t gimbal_device_id,
+    uint32_t time_boot_ms, const uint8_t* vendor_name, const uint8_t* model_name, uint32_t firmware_version, float focal_length, float sensor_size_h, float sensor_size_v, uint16_t resolution_h, uint16_t resolution_v, uint8_t lens_id, uint32_t flags, uint16_t cam_definition_version, const char* cam_definition_uri, uint8_t gimbal_device_id, uint8_t camera_device_id,
     fmav_status_t* _status)
 {
     fmav_camera_information_t _payload;
@@ -193,6 +197,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_information_pack_to_seri
     _payload.cam_definition_version = cam_definition_version;
     _payload.lens_id = lens_id;
     _payload.gimbal_device_id = gimbal_device_id;
+    _payload.camera_device_id = camera_device_id;
     memcpy(&(_payload.vendor_name), vendor_name, sizeof(uint8_t)*32);
     memcpy(&(_payload.model_name), model_name, sizeof(uint8_t)*32);
     memcpy(&(_payload.cam_definition_uri), cam_definition_uri, sizeof(char)*140);
@@ -341,6 +346,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_camera_information_get_field_gim
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_camera_information_get_field_camera_device_id(const fmav_message_t* msg)
+{
+    uint8_t r;
+    memcpy(&r, &(msg->payload[236]), sizeof(uint8_t));
+    return r;
+}
+
+
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t* fmav_msg_camera_information_get_field_vendor_name_ptr(const fmav_message_t* msg)
 {
     return (uint8_t*)&(msg->payload[30]);
@@ -389,9 +402,9 @@ FASTMAVLINK_FUNCTION_DECORATOR char fmav_msg_camera_information_get_field_cam_de
 
 #define mavlink_camera_information_t  fmav_camera_information_t
 
-#define MAVLINK_MSG_ID_CAMERA_INFORMATION_LEN  236
+#define MAVLINK_MSG_ID_CAMERA_INFORMATION_LEN  237
 #define MAVLINK_MSG_ID_CAMERA_INFORMATION_MIN_LEN  235
-#define MAVLINK_MSG_ID_259_LEN  236
+#define MAVLINK_MSG_ID_259_LEN  237
 #define MAVLINK_MSG_ID_259_MIN_LEN  235
 
 #define MAVLINK_MSG_ID_CAMERA_INFORMATION_CRC  92
@@ -408,12 +421,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_information_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint32_t time_boot_ms, const uint8_t* vendor_name, const uint8_t* model_name, uint32_t firmware_version, float focal_length, float sensor_size_h, float sensor_size_v, uint16_t resolution_h, uint16_t resolution_v, uint8_t lens_id, uint32_t flags, uint16_t cam_definition_version, const char* cam_definition_uri, uint8_t gimbal_device_id)
+    uint32_t time_boot_ms, const uint8_t* vendor_name, const uint8_t* model_name, uint32_t firmware_version, float focal_length, float sensor_size_h, float sensor_size_v, uint16_t resolution_h, uint16_t resolution_v, uint8_t lens_id, uint32_t flags, uint16_t cam_definition_version, const char* cam_definition_uri, uint8_t gimbal_device_id, uint8_t camera_device_id)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_camera_information_pack(
         _msg, sysid, compid,
-        time_boot_ms, vendor_name, model_name, firmware_version, focal_length, sensor_size_h, sensor_size_v, resolution_h, resolution_v, lens_id, flags, cam_definition_version, cam_definition_uri, gimbal_device_id,
+        time_boot_ms, vendor_name, model_name, firmware_version, focal_length, sensor_size_h, sensor_size_v, resolution_h, resolution_v, lens_id, flags, cam_definition_version, cam_definition_uri, gimbal_device_id, camera_device_id,
         _status);
 }
 
@@ -428,7 +441,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_information_encode(
         sysid,
         compid,
         _msg,
-        _payload->time_boot_ms, _payload->vendor_name, _payload->model_name, _payload->firmware_version, _payload->focal_length, _payload->sensor_size_h, _payload->sensor_size_v, _payload->resolution_h, _payload->resolution_v, _payload->lens_id, _payload->flags, _payload->cam_definition_version, _payload->cam_definition_uri, _payload->gimbal_device_id);
+        _payload->time_boot_ms, _payload->vendor_name, _payload->model_name, _payload->firmware_version, _payload->focal_length, _payload->sensor_size_h, _payload->sensor_size_v, _payload->resolution_h, _payload->resolution_v, _payload->lens_id, _payload->flags, _payload->cam_definition_version, _payload->cam_definition_uri, _payload->gimbal_device_id, _payload->camera_device_id);
 }
 
 #endif
@@ -439,13 +452,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_information_pack_txbu
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, const uint8_t* vendor_name, const uint8_t* model_name, uint32_t firmware_version, float focal_length, float sensor_size_h, float sensor_size_v, uint16_t resolution_h, uint16_t resolution_v, uint8_t lens_id, uint32_t flags, uint16_t cam_definition_version, const char* cam_definition_uri, uint8_t gimbal_device_id)
+    uint32_t time_boot_ms, const uint8_t* vendor_name, const uint8_t* model_name, uint32_t firmware_version, float focal_length, float sensor_size_h, float sensor_size_v, uint16_t resolution_h, uint16_t resolution_v, uint8_t lens_id, uint32_t flags, uint16_t cam_definition_version, const char* cam_definition_uri, uint8_t gimbal_device_id, uint8_t camera_device_id)
 {
     return fmav_msg_camera_information_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        time_boot_ms, vendor_name, model_name, firmware_version, focal_length, sensor_size_h, sensor_size_v, resolution_h, resolution_v, lens_id, flags, cam_definition_version, cam_definition_uri, gimbal_device_id,
+        time_boot_ms, vendor_name, model_name, firmware_version, focal_length, sensor_size_h, sensor_size_v, resolution_h, resolution_v, lens_id, flags, cam_definition_version, cam_definition_uri, gimbal_device_id, camera_device_id,
         _status);
 }
 

@@ -15,29 +15,35 @@
 // fields are ordered, as they appear on the wire
 FASTMAVLINK_PACK(
 typedef struct _fmav_radio_rc_channels_t {
+    uint32_t time_last_update_ms;
+    uint16_t flags;
+    uint8_t target_system;
+    uint8_t target_component;
     uint8_t count;
-    uint8_t flags;
-    int16_t channels[24];
+    int16_t channels[32];
 }) fmav_radio_rc_channels_t;
 
 
-#define FASTMAVLINK_MSG_ID_RADIO_RC_CHANNELS  60045
+#define FASTMAVLINK_MSG_ID_RADIO_RC_CHANNELS  420
 
-#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_PAYLOAD_LEN_MAX  50
-#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_CRCEXTRA  89
+#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_PAYLOAD_LEN_MAX  73
+#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_CRCEXTRA  20
 
-#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_FLAGS  0
-#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_TARGET_SYSTEM_OFS  0
-#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_TARGET_COMPONENT_OFS  0
+#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_FLAGS  3
+#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_TARGET_SYSTEM_OFS  6
+#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_TARGET_COMPONENT_OFS  7
 
-#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_FRAME_LEN_MAX  75
+#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_FRAME_LEN_MAX  98
 
-#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_FIELD_CHANNELS_NUM  24 // number of elements in array
-#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_FIELD_CHANNELS_LEN  48 // length of array = number of bytes
+#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_FIELD_CHANNELS_NUM  32 // number of elements in array
+#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_FIELD_CHANNELS_LEN  64 // length of array = number of bytes
 
-#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_FIELD_COUNT_OFS  0
-#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_FIELD_FLAGS_OFS  1
-#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_FIELD_CHANNELS_OFS  2
+#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_FIELD_TIME_LAST_UPDATE_MS_OFS  0
+#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_FIELD_FLAGS_OFS  4
+#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_FIELD_TARGET_SYSTEM_OFS  6
+#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_FIELD_TARGET_COMPONENT_OFS  7
+#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_FIELD_COUNT_OFS  8
+#define FASTMAVLINK_MSG_RADIO_RC_CHANNELS_FIELD_CHANNELS_OFS  9
 
 
 //----------------------------------------
@@ -48,20 +54,23 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_rc_channels_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t count, uint8_t flags, const int16_t* channels,
+    uint8_t target_system, uint8_t target_component, uint32_t time_last_update_ms, uint16_t flags, uint8_t count, const int16_t* channels,
     fmav_status_t* _status)
 {
     fmav_radio_rc_channels_t* _payload = (fmav_radio_rc_channels_t*)_msg->payload;
 
-    _payload->count = count;
+    _payload->time_last_update_ms = time_last_update_ms;
     _payload->flags = flags;
-    memcpy(&(_payload->channels), channels, sizeof(int16_t)*24);
+    _payload->target_system = target_system;
+    _payload->target_component = target_component;
+    _payload->count = count;
+    memcpy(&(_payload->channels), channels, sizeof(int16_t)*32);
 
     _msg->sysid = sysid;
     _msg->compid = compid;
     _msg->msgid = FASTMAVLINK_MSG_ID_RADIO_RC_CHANNELS;
-    _msg->target_sysid = 0;
-    _msg->target_compid = 0;
+    _msg->target_sysid = target_system;
+    _msg->target_compid = target_component;
     _msg->crc_extra = FASTMAVLINK_MSG_RADIO_RC_CHANNELS_CRCEXTRA;
     _msg->payload_max_len = FASTMAVLINK_MSG_RADIO_RC_CHANNELS_PAYLOAD_LEN_MAX;
 
@@ -78,7 +87,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_rc_channels_encode(
 {
     return fmav_msg_radio_rc_channels_pack(
         _msg, sysid, compid,
-        _payload->count, _payload->flags, _payload->channels,
+        _payload->target_system, _payload->target_component, _payload->time_last_update_ms, _payload->flags, _payload->count, _payload->channels,
         _status);
 }
 
@@ -87,14 +96,17 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_rc_channels_pack_to_frame
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t count, uint8_t flags, const int16_t* channels,
+    uint8_t target_system, uint8_t target_component, uint32_t time_last_update_ms, uint16_t flags, uint8_t count, const int16_t* channels,
     fmav_status_t* _status)
 {
     fmav_radio_rc_channels_t* _payload = (fmav_radio_rc_channels_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
 
-    _payload->count = count;
+    _payload->time_last_update_ms = time_last_update_ms;
     _payload->flags = flags;
-    memcpy(&(_payload->channels), channels, sizeof(int16_t)*24);
+    _payload->target_system = target_system;
+    _payload->target_component = target_component;
+    _payload->count = count;
+    memcpy(&(_payload->channels), channels, sizeof(int16_t)*32);
 
     _buf[5] = sysid;
     _buf[6] = compid;
@@ -119,7 +131,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_rc_channels_encode_to_fra
 {
     return fmav_msg_radio_rc_channels_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->count, _payload->flags, _payload->channels,
+        _payload->target_system, _payload->target_component, _payload->time_last_update_ms, _payload->flags, _payload->count, _payload->channels,
         _status);
 }
 
@@ -129,14 +141,17 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_rc_channels_encode_to_fra
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_rc_channels_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint8_t count, uint8_t flags, const int16_t* channels,
+    uint8_t target_system, uint8_t target_component, uint32_t time_last_update_ms, uint16_t flags, uint8_t count, const int16_t* channels,
     fmav_status_t* _status)
 {
     fmav_radio_rc_channels_t _payload;
 
-    _payload.count = count;
+    _payload.time_last_update_ms = time_last_update_ms;
     _payload.flags = flags;
-    memcpy(&(_payload.channels), channels, sizeof(int16_t)*24);
+    _payload.target_system = target_system;
+    _payload.target_component = target_component;
+    _payload.count = count;
+    memcpy(&(_payload.channels), channels, sizeof(int16_t)*32);
 
     return fmav_finalize_serial(
         sysid,
@@ -194,32 +209,56 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_msg_radio_rc_channels_decode(fmav_radio
 }
 
 
-FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_radio_rc_channels_get_field_count(const fmav_message_t* msg)
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_radio_rc_channels_get_field_time_last_update_ms(const fmav_message_t* msg)
 {
-    uint8_t r;
-    memcpy(&r, &(msg->payload[0]), sizeof(uint8_t));
+    uint32_t r;
+    memcpy(&r, &(msg->payload[0]), sizeof(uint32_t));
     return r;
 }
 
 
-FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_radio_rc_channels_get_field_flags(const fmav_message_t* msg)
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_radio_rc_channels_get_field_flags(const fmav_message_t* msg)
+{
+    uint16_t r;
+    memcpy(&r, &(msg->payload[4]), sizeof(uint16_t));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_radio_rc_channels_get_field_target_system(const fmav_message_t* msg)
 {
     uint8_t r;
-    memcpy(&r, &(msg->payload[1]), sizeof(uint8_t));
+    memcpy(&r, &(msg->payload[6]), sizeof(uint8_t));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_radio_rc_channels_get_field_target_component(const fmav_message_t* msg)
+{
+    uint8_t r;
+    memcpy(&r, &(msg->payload[7]), sizeof(uint8_t));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_radio_rc_channels_get_field_count(const fmav_message_t* msg)
+{
+    uint8_t r;
+    memcpy(&r, &(msg->payload[8]), sizeof(uint8_t));
     return r;
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t* fmav_msg_radio_rc_channels_get_field_channels_ptr(const fmav_message_t* msg)
 {
-    return (int16_t*)&(msg->payload[2]);
+    return (int16_t*)&(msg->payload[9]);
 }
 
 
 FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_radio_rc_channels_get_field_channels(uint16_t index, const fmav_message_t* msg)
 {
     if (index >= FASTMAVLINK_MSG_RADIO_RC_CHANNELS_FIELD_CHANNELS_NUM) return 0;
-    return ((int16_t*)&(msg->payload[2]))[index];
+    return ((int16_t*)&(msg->payload[9]))[index];
 }
 
 
@@ -228,19 +267,19 @@ FASTMAVLINK_FUNCTION_DECORATOR int16_t fmav_msg_radio_rc_channels_get_field_chan
 //----------------------------------------
 #ifdef FASTMAVLINK_PYMAVLINK_ENABLED
 
-#define MAVLINK_MSG_ID_RADIO_RC_CHANNELS  60045
+#define MAVLINK_MSG_ID_RADIO_RC_CHANNELS  420
 
 #define mavlink_radio_rc_channels_t  fmav_radio_rc_channels_t
 
-#define MAVLINK_MSG_ID_RADIO_RC_CHANNELS_LEN  50
-#define MAVLINK_MSG_ID_RADIO_RC_CHANNELS_MIN_LEN  2
-#define MAVLINK_MSG_ID_60045_LEN  50
-#define MAVLINK_MSG_ID_60045_MIN_LEN  2
+#define MAVLINK_MSG_ID_RADIO_RC_CHANNELS_LEN  73
+#define MAVLINK_MSG_ID_RADIO_RC_CHANNELS_MIN_LEN  9
+#define MAVLINK_MSG_ID_420_LEN  73
+#define MAVLINK_MSG_ID_420_MIN_LEN  9
 
-#define MAVLINK_MSG_ID_RADIO_RC_CHANNELS_CRC  89
-#define MAVLINK_MSG_ID_60045_CRC  89
+#define MAVLINK_MSG_ID_RADIO_RC_CHANNELS_CRC  20
+#define MAVLINK_MSG_ID_420_CRC  20
 
-#define MAVLINK_MSG_RADIO_RC_CHANNELS_FIELD_CHANNELS_LEN 24
+#define MAVLINK_MSG_RADIO_RC_CHANNELS_FIELD_CHANNELS_LEN 32
 
 
 #if MAVLINK_COMM_NUM_BUFFERS > 0
@@ -249,12 +288,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_radio_rc_channels_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint8_t count, uint8_t flags, const int16_t* channels)
+    uint8_t target_system, uint8_t target_component, uint32_t time_last_update_ms, uint16_t flags, uint8_t count, const int16_t* channels)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_radio_rc_channels_pack(
         _msg, sysid, compid,
-        count, flags, channels,
+        target_system, target_component, time_last_update_ms, flags, count, channels,
         _status);
 }
 
@@ -269,7 +308,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_radio_rc_channels_encode(
         sysid,
         compid,
         _msg,
-        _payload->count, _payload->flags, _payload->channels);
+        _payload->target_system, _payload->target_component, _payload->time_last_update_ms, _payload->flags, _payload->count, _payload->channels);
 }
 
 #endif
@@ -280,13 +319,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_radio_rc_channels_pack_txbuf
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t count, uint8_t flags, const int16_t* channels)
+    uint8_t target_system, uint8_t target_component, uint32_t time_last_update_ms, uint16_t flags, uint8_t count, const int16_t* channels)
 {
     return fmav_msg_radio_rc_channels_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        count, flags, channels,
+        target_system, target_component, time_last_update_ms, flags, count, channels,
         _status);
 }
 

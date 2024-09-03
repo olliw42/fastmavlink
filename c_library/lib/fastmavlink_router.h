@@ -64,10 +64,10 @@ extern "C" {
 
 #ifdef FASTMAVLINK_ROUTER_USE_TIMEOUT
     uint8_t fmav_router_time_100ms(void); // forward declaration
-#endif
 #ifndef FASTMAVLINK_ROUTER_TIMEOUT_100MS
     #define FASTMAVLINK_ROUTER_TIMEOUT_100MS  100 // 10 seconds
-#endif    
+#endif
+#endif
 
 
 //------------------------------
@@ -112,17 +112,17 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_router_accept(uint8_t target_link, u
         if (_fmav_router_component_list[i].link != target_link) continue; // not our link
 
         if (target_sysid == 0) { // target link has seen at least one component, and target_sysid is broadcast, so ok
-          return 1;
+            return 1;
         }
 
         if (_fmav_router_component_list[i].sysid != target_sysid) continue; // not our system
 
         if (target_compid == 0) { // target_sysid is on the link, and target_compid is broadcast
-          return 1;
+            return 1;
         }
 
         if (_fmav_router_component_list[i].compid == target_compid) { // target_sysid and target_compid is on the link
-          return 1;
+            return 1;
         }
     }
 
@@ -145,7 +145,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_router_find_component(uint8_t sysid,
 
 FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_router_add_component(uint8_t link, uint8_t sysid, uint8_t compid)
 {
-    if (link >= FASTMAVLINK_ROUTER_LINKS_MAX) return false;
+    if (link >= FASTMAVLINK_ROUTER_LINKS_MAX) return 0;
 
     for (uint8_t i = 0; i < FASTMAVLINK_ROUTER_COMPONENTS_MAX; i++) {
         if (_fmav_router_component_list[i].valid) continue; // already occupied
@@ -204,7 +204,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_handle_message_by_id(
 {
     // should not occur, but play it safe
     if (link_of_msg >= FASTMAVLINK_ROUTER_LINKS_MAX) {
-        for(uint8_t link = 0; link < FASTMAVLINK_ROUTER_LINKS_MAX; link++) {
+        for (uint8_t link = 0; link < FASTMAVLINK_ROUTER_LINKS_MAX; link++) {
             _fmav_router_send_to_link[link] = 0;
         }
         return;
@@ -220,7 +220,7 @@ FASTMAVLINK_FUNCTION_DECORATOR void fmav_router_handle_message_by_id(
         // accept any message as evidence of presence of component
         fmav_router_find_or_add_component(link_of_msg, sysid, compid);
     }
-    
+
     // update timeout for seen component, and clear out dead components
 #ifdef FASTMAVLINK_ROUTER_USE_TIMEOUT
     for (uint8_t i = 0; i < FASTMAVLINK_ROUTER_COMPONENTS_MAX; i++) {

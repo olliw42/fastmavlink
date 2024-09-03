@@ -19,19 +19,22 @@ typedef struct _fmav_mission_current_t {
     uint16_t total;
     uint8_t mission_state;
     uint8_t mission_mode;
+    uint32_t mission_id;
+    uint32_t fence_id;
+    uint32_t rally_points_id;
 }) fmav_mission_current_t;
 
 
 #define FASTMAVLINK_MSG_ID_MISSION_CURRENT  42
 
-#define FASTMAVLINK_MSG_MISSION_CURRENT_PAYLOAD_LEN_MAX  6
+#define FASTMAVLINK_MSG_MISSION_CURRENT_PAYLOAD_LEN_MAX  18
 #define FASTMAVLINK_MSG_MISSION_CURRENT_CRCEXTRA  28
 
 #define FASTMAVLINK_MSG_MISSION_CURRENT_FLAGS  0
 #define FASTMAVLINK_MSG_MISSION_CURRENT_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_MISSION_CURRENT_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_MISSION_CURRENT_FRAME_LEN_MAX  31
+#define FASTMAVLINK_MSG_MISSION_CURRENT_FRAME_LEN_MAX  43
 
 
 
@@ -39,6 +42,9 @@ typedef struct _fmav_mission_current_t {
 #define FASTMAVLINK_MSG_MISSION_CURRENT_FIELD_TOTAL_OFS  2
 #define FASTMAVLINK_MSG_MISSION_CURRENT_FIELD_MISSION_STATE_OFS  4
 #define FASTMAVLINK_MSG_MISSION_CURRENT_FIELD_MISSION_MODE_OFS  5
+#define FASTMAVLINK_MSG_MISSION_CURRENT_FIELD_MISSION_ID_OFS  6
+#define FASTMAVLINK_MSG_MISSION_CURRENT_FIELD_FENCE_ID_OFS  10
+#define FASTMAVLINK_MSG_MISSION_CURRENT_FIELD_RALLY_POINTS_ID_OFS  14
 
 
 //----------------------------------------
@@ -49,7 +55,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_current_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint16_t seq, uint16_t total, uint8_t mission_state, uint8_t mission_mode,
+    uint16_t seq, uint16_t total, uint8_t mission_state, uint8_t mission_mode, uint32_t mission_id, uint32_t fence_id, uint32_t rally_points_id,
     fmav_status_t* _status)
 {
     fmav_mission_current_t* _payload = (fmav_mission_current_t*)_msg->payload;
@@ -58,6 +64,9 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_current_pack(
     _payload->total = total;
     _payload->mission_state = mission_state;
     _payload->mission_mode = mission_mode;
+    _payload->mission_id = mission_id;
+    _payload->fence_id = fence_id;
+    _payload->rally_points_id = rally_points_id;
 
 
     _msg->sysid = sysid;
@@ -81,7 +90,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_current_encode(
 {
     return fmav_msg_mission_current_pack(
         _msg, sysid, compid,
-        _payload->seq, _payload->total, _payload->mission_state, _payload->mission_mode,
+        _payload->seq, _payload->total, _payload->mission_state, _payload->mission_mode, _payload->mission_id, _payload->fence_id, _payload->rally_points_id,
         _status);
 }
 
@@ -90,7 +99,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_current_pack_to_frame_b
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint16_t seq, uint16_t total, uint8_t mission_state, uint8_t mission_mode,
+    uint16_t seq, uint16_t total, uint8_t mission_state, uint8_t mission_mode, uint32_t mission_id, uint32_t fence_id, uint32_t rally_points_id,
     fmav_status_t* _status)
 {
     fmav_mission_current_t* _payload = (fmav_mission_current_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -99,6 +108,9 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_current_pack_to_frame_b
     _payload->total = total;
     _payload->mission_state = mission_state;
     _payload->mission_mode = mission_mode;
+    _payload->mission_id = mission_id;
+    _payload->fence_id = fence_id;
+    _payload->rally_points_id = rally_points_id;
 
 
     _buf[5] = sysid;
@@ -124,7 +136,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_current_encode_to_frame
 {
     return fmav_msg_mission_current_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->seq, _payload->total, _payload->mission_state, _payload->mission_mode,
+        _payload->seq, _payload->total, _payload->mission_state, _payload->mission_mode, _payload->mission_id, _payload->fence_id, _payload->rally_points_id,
         _status);
 }
 
@@ -134,7 +146,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_current_encode_to_frame
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_current_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint16_t seq, uint16_t total, uint8_t mission_state, uint8_t mission_mode,
+    uint16_t seq, uint16_t total, uint8_t mission_state, uint8_t mission_mode, uint32_t mission_id, uint32_t fence_id, uint32_t rally_points_id,
     fmav_status_t* _status)
 {
     fmav_mission_current_t _payload;
@@ -143,6 +155,9 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_mission_current_pack_to_serial(
     _payload.total = total;
     _payload.mission_state = mission_state;
     _payload.mission_mode = mission_mode;
+    _payload.mission_id = mission_id;
+    _payload.fence_id = fence_id;
+    _payload.rally_points_id = rally_points_id;
 
 
     return fmav_finalize_serial(
@@ -233,6 +248,30 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mission_current_get_field_missio
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_mission_current_get_field_mission_id(const fmav_message_t* msg)
+{
+    uint32_t r;
+    memcpy(&r, &(msg->payload[6]), sizeof(uint32_t));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_mission_current_get_field_fence_id(const fmav_message_t* msg)
+{
+    uint32_t r;
+    memcpy(&r, &(msg->payload[10]), sizeof(uint32_t));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_mission_current_get_field_rally_points_id(const fmav_message_t* msg)
+{
+    uint32_t r;
+    memcpy(&r, &(msg->payload[14]), sizeof(uint32_t));
+    return r;
+}
+
+
 
 
 
@@ -245,9 +284,9 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_mission_current_get_field_missio
 
 #define mavlink_mission_current_t  fmav_mission_current_t
 
-#define MAVLINK_MSG_ID_MISSION_CURRENT_LEN  6
+#define MAVLINK_MSG_ID_MISSION_CURRENT_LEN  18
 #define MAVLINK_MSG_ID_MISSION_CURRENT_MIN_LEN  2
-#define MAVLINK_MSG_ID_42_LEN  6
+#define MAVLINK_MSG_ID_42_LEN  18
 #define MAVLINK_MSG_ID_42_MIN_LEN  2
 
 #define MAVLINK_MSG_ID_MISSION_CURRENT_CRC  28
@@ -262,12 +301,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_mission_current_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint16_t seq, uint16_t total, uint8_t mission_state, uint8_t mission_mode)
+    uint16_t seq, uint16_t total, uint8_t mission_state, uint8_t mission_mode, uint32_t mission_id, uint32_t fence_id, uint32_t rally_points_id)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_mission_current_pack(
         _msg, sysid, compid,
-        seq, total, mission_state, mission_mode,
+        seq, total, mission_state, mission_mode, mission_id, fence_id, rally_points_id,
         _status);
 }
 
@@ -282,7 +321,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_mission_current_encode(
         sysid,
         compid,
         _msg,
-        _payload->seq, _payload->total, _payload->mission_state, _payload->mission_mode);
+        _payload->seq, _payload->total, _payload->mission_state, _payload->mission_mode, _payload->mission_id, _payload->fence_id, _payload->rally_points_id);
 }
 
 #endif
@@ -293,13 +332,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_mission_current_pack_txbuf(
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint16_t seq, uint16_t total, uint8_t mission_state, uint8_t mission_mode)
+    uint16_t seq, uint16_t total, uint8_t mission_state, uint8_t mission_mode, uint32_t mission_id, uint32_t fence_id, uint32_t rally_points_id)
 {
     return fmav_msg_mission_current_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        seq, total, mission_state, mission_mode,
+        seq, total, mission_state, mission_mode, mission_id, fence_id, rally_points_id,
         _status);
 }
 

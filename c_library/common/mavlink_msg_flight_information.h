@@ -19,19 +19,20 @@ typedef struct _fmav_flight_information_t {
     uint64_t takeoff_time_utc;
     uint64_t flight_uuid;
     uint32_t time_boot_ms;
+    uint32_t landing_time;
 }) fmav_flight_information_t;
 
 
 #define FASTMAVLINK_MSG_ID_FLIGHT_INFORMATION  264
 
-#define FASTMAVLINK_MSG_FLIGHT_INFORMATION_PAYLOAD_LEN_MAX  28
+#define FASTMAVLINK_MSG_FLIGHT_INFORMATION_PAYLOAD_LEN_MAX  32
 #define FASTMAVLINK_MSG_FLIGHT_INFORMATION_CRCEXTRA  49
 
 #define FASTMAVLINK_MSG_FLIGHT_INFORMATION_FLAGS  0
 #define FASTMAVLINK_MSG_FLIGHT_INFORMATION_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_FLIGHT_INFORMATION_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_FLIGHT_INFORMATION_FRAME_LEN_MAX  53
+#define FASTMAVLINK_MSG_FLIGHT_INFORMATION_FRAME_LEN_MAX  57
 
 
 
@@ -39,6 +40,7 @@ typedef struct _fmav_flight_information_t {
 #define FASTMAVLINK_MSG_FLIGHT_INFORMATION_FIELD_TAKEOFF_TIME_UTC_OFS  8
 #define FASTMAVLINK_MSG_FLIGHT_INFORMATION_FIELD_FLIGHT_UUID_OFS  16
 #define FASTMAVLINK_MSG_FLIGHT_INFORMATION_FIELD_TIME_BOOT_MS_OFS  24
+#define FASTMAVLINK_MSG_FLIGHT_INFORMATION_FIELD_LANDING_TIME_OFS  28
 
 
 //----------------------------------------
@@ -49,7 +51,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_flight_information_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint64_t arming_time_utc, uint64_t takeoff_time_utc, uint64_t flight_uuid,
+    uint32_t time_boot_ms, uint64_t arming_time_utc, uint64_t takeoff_time_utc, uint64_t flight_uuid, uint32_t landing_time,
     fmav_status_t* _status)
 {
     fmav_flight_information_t* _payload = (fmav_flight_information_t*)_msg->payload;
@@ -58,6 +60,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_flight_information_pack(
     _payload->takeoff_time_utc = takeoff_time_utc;
     _payload->flight_uuid = flight_uuid;
     _payload->time_boot_ms = time_boot_ms;
+    _payload->landing_time = landing_time;
 
 
     _msg->sysid = sysid;
@@ -81,7 +84,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_flight_information_encode(
 {
     return fmav_msg_flight_information_pack(
         _msg, sysid, compid,
-        _payload->time_boot_ms, _payload->arming_time_utc, _payload->takeoff_time_utc, _payload->flight_uuid,
+        _payload->time_boot_ms, _payload->arming_time_utc, _payload->takeoff_time_utc, _payload->flight_uuid, _payload->landing_time,
         _status);
 }
 
@@ -90,7 +93,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_flight_information_pack_to_fram
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint64_t arming_time_utc, uint64_t takeoff_time_utc, uint64_t flight_uuid,
+    uint32_t time_boot_ms, uint64_t arming_time_utc, uint64_t takeoff_time_utc, uint64_t flight_uuid, uint32_t landing_time,
     fmav_status_t* _status)
 {
     fmav_flight_information_t* _payload = (fmav_flight_information_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -99,6 +102,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_flight_information_pack_to_fram
     _payload->takeoff_time_utc = takeoff_time_utc;
     _payload->flight_uuid = flight_uuid;
     _payload->time_boot_ms = time_boot_ms;
+    _payload->landing_time = landing_time;
 
 
     _buf[5] = sysid;
@@ -124,7 +128,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_flight_information_encode_to_fr
 {
     return fmav_msg_flight_information_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->time_boot_ms, _payload->arming_time_utc, _payload->takeoff_time_utc, _payload->flight_uuid,
+        _payload->time_boot_ms, _payload->arming_time_utc, _payload->takeoff_time_utc, _payload->flight_uuid, _payload->landing_time,
         _status);
 }
 
@@ -134,7 +138,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_flight_information_encode_to_fr
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_flight_information_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint64_t arming_time_utc, uint64_t takeoff_time_utc, uint64_t flight_uuid,
+    uint32_t time_boot_ms, uint64_t arming_time_utc, uint64_t takeoff_time_utc, uint64_t flight_uuid, uint32_t landing_time,
     fmav_status_t* _status)
 {
     fmav_flight_information_t _payload;
@@ -143,6 +147,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_flight_information_pack_to_seri
     _payload.takeoff_time_utc = takeoff_time_utc;
     _payload.flight_uuid = flight_uuid;
     _payload.time_boot_ms = time_boot_ms;
+    _payload.landing_time = landing_time;
 
 
     return fmav_finalize_serial(
@@ -233,6 +238,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_flight_information_get_field_ti
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_flight_information_get_field_landing_time(const fmav_message_t* msg)
+{
+    uint32_t r;
+    memcpy(&r, &(msg->payload[28]), sizeof(uint32_t));
+    return r;
+}
+
+
 
 
 
@@ -245,9 +258,9 @@ FASTMAVLINK_FUNCTION_DECORATOR uint32_t fmav_msg_flight_information_get_field_ti
 
 #define mavlink_flight_information_t  fmav_flight_information_t
 
-#define MAVLINK_MSG_ID_FLIGHT_INFORMATION_LEN  28
+#define MAVLINK_MSG_ID_FLIGHT_INFORMATION_LEN  32
 #define MAVLINK_MSG_ID_FLIGHT_INFORMATION_MIN_LEN  28
-#define MAVLINK_MSG_ID_264_LEN  28
+#define MAVLINK_MSG_ID_264_LEN  32
 #define MAVLINK_MSG_ID_264_MIN_LEN  28
 
 #define MAVLINK_MSG_ID_FLIGHT_INFORMATION_CRC  49
@@ -262,12 +275,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_flight_information_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint32_t time_boot_ms, uint64_t arming_time_utc, uint64_t takeoff_time_utc, uint64_t flight_uuid)
+    uint32_t time_boot_ms, uint64_t arming_time_utc, uint64_t takeoff_time_utc, uint64_t flight_uuid, uint32_t landing_time)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_flight_information_pack(
         _msg, sysid, compid,
-        time_boot_ms, arming_time_utc, takeoff_time_utc, flight_uuid,
+        time_boot_ms, arming_time_utc, takeoff_time_utc, flight_uuid, landing_time,
         _status);
 }
 
@@ -282,7 +295,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_flight_information_encode(
         sysid,
         compid,
         _msg,
-        _payload->time_boot_ms, _payload->arming_time_utc, _payload->takeoff_time_utc, _payload->flight_uuid);
+        _payload->time_boot_ms, _payload->arming_time_utc, _payload->takeoff_time_utc, _payload->flight_uuid, _payload->landing_time);
 }
 
 #endif
@@ -293,13 +306,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_flight_information_pack_txbu
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint64_t arming_time_utc, uint64_t takeoff_time_utc, uint64_t flight_uuid)
+    uint32_t time_boot_ms, uint64_t arming_time_utc, uint64_t takeoff_time_utc, uint64_t flight_uuid, uint32_t landing_time)
 {
     return fmav_msg_flight_information_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        time_boot_ms, arming_time_utc, takeoff_time_utc, flight_uuid,
+        time_boot_ms, arming_time_utc, takeoff_time_utc, flight_uuid, landing_time,
         _status);
 }
 
