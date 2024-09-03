@@ -72,14 +72,14 @@ def copyFixedHeaderFiles(outputdir, xml):
 #        ]
     headerfile_list = []
     for fname in os.listdir(srcdir):
-        if fname.endswith('.h'):
+        if fname.endswith('.h') or 'LICENSE' in fname:
             headerfile_list.append(fname)
     fixeddestdir = os.path.realpath(os.path.join(outputdir, 'lib'))
     mavparse.mkdir_p(fixeddestdir)
     import shutil, filecmp
     for headerfile in headerfile_list:
         src = os.path.realpath(os.path.join(srcdir, headerfile))
-        if headerfile in ['fastmavlink_config.h']:
+        if headerfile in ['fastmavlink_config.h','LICENSE']:
             dest = os.path.realpath(os.path.join(outputdir, headerfile))
         else:
             dest = os.path.realpath(os.path.join(fixeddestdir, headerfile))

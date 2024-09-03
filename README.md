@@ -24,7 +24,7 @@ The fastMavlink library is used in three projects of mine, the [STorM32 gimbal c
 
 ## Licence ##
 
-Yet to be determined. It will be a permissive licence, along the ideas of the original MAVLink project. That is, the fastMavlink C code library can be used in a closed source application without copyright issues and without any limitations.
+The fastMavlink C code, which includes the C language files used by the generator and the generated C language files, are made available under the MIT license. That is, the fastMavlink C code library can be used in a closed source application without copyright issues and limitations. The generator scripts (files in folder "generator") are not always independent work of fastMavlink and inherit the copyright and license of the original work they are derived from (check each file for details), otherwise they are LGPL3. The script in the folder "tools" and the codes in the folders "examples" and "tests" are made availabe as "use as you want".
 
 
 ## Limitations ##
