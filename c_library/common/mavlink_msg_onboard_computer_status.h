@@ -35,19 +35,20 @@ typedef struct _fmav_onboard_computer_status_t {
     uint8_t gpu_combined[10];
     int8_t temperature_board;
     int8_t temperature_core[8];
+    uint16_t status_flags;
 }) fmav_onboard_computer_status_t;
 
 
 #define FASTMAVLINK_MSG_ID_ONBOARD_COMPUTER_STATUS  390
 
-#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_PAYLOAD_LEN_MAX  238
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_PAYLOAD_LEN_MAX  240
 #define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_CRCEXTRA  156
 
 #define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FRAME_LEN_MAX  263
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FRAME_LEN_MAX  265
 
 #define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_STORAGE_TYPE_NUM  4 // number of elements in array
 #define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_STORAGE_TYPE_LEN  16 // length of array = number of bytes
@@ -98,6 +99,7 @@ typedef struct _fmav_onboard_computer_status_t {
 #define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_GPU_COMBINED_OFS  219
 #define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_TEMPERATURE_BOARD_OFS  229
 #define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_TEMPERATURE_CORE_OFS  230
+#define FASTMAVLINK_MSG_ONBOARD_COMPUTER_STATUS_FIELD_STATUS_FLAGS_OFS  238
 
 
 //----------------------------------------
@@ -108,7 +110,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_onboard_computer_status_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint64_t time_usec, uint32_t uptime, uint8_t type, const uint8_t* cpu_cores, const uint8_t* cpu_combined, const uint8_t* gpu_cores, const uint8_t* gpu_combined, int8_t temperature_board, const int8_t* temperature_core, const int16_t* fan_speed, uint32_t ram_usage, uint32_t ram_total, const uint32_t* storage_type, const uint32_t* storage_usage, const uint32_t* storage_total, const uint32_t* link_type, const uint32_t* link_tx_rate, const uint32_t* link_rx_rate, const uint32_t* link_tx_max, const uint32_t* link_rx_max,
+    uint64_t time_usec, uint32_t uptime, uint8_t type, const uint8_t* cpu_cores, const uint8_t* cpu_combined, const uint8_t* gpu_cores, const uint8_t* gpu_combined, int8_t temperature_board, const int8_t* temperature_core, const int16_t* fan_speed, uint32_t ram_usage, uint32_t ram_total, const uint32_t* storage_type, const uint32_t* storage_usage, const uint32_t* storage_total, const uint32_t* link_type, const uint32_t* link_tx_rate, const uint32_t* link_rx_rate, const uint32_t* link_tx_max, const uint32_t* link_rx_max, uint16_t status_flags,
     fmav_status_t* _status)
 {
     fmav_onboard_computer_status_t* _payload = (fmav_onboard_computer_status_t*)_msg->payload;
@@ -119,6 +121,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_onboard_computer_status_pack(
     _payload->ram_total = ram_total;
     _payload->type = type;
     _payload->temperature_board = temperature_board;
+    _payload->status_flags = status_flags;
     memcpy(&(_payload->storage_type), storage_type, sizeof(uint32_t)*4);
     memcpy(&(_payload->storage_usage), storage_usage, sizeof(uint32_t)*4);
     memcpy(&(_payload->storage_total), storage_total, sizeof(uint32_t)*4);
@@ -155,7 +158,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_onboard_computer_status_encode(
 {
     return fmav_msg_onboard_computer_status_pack(
         _msg, sysid, compid,
-        _payload->time_usec, _payload->uptime, _payload->type, _payload->cpu_cores, _payload->cpu_combined, _payload->gpu_cores, _payload->gpu_combined, _payload->temperature_board, _payload->temperature_core, _payload->fan_speed, _payload->ram_usage, _payload->ram_total, _payload->storage_type, _payload->storage_usage, _payload->storage_total, _payload->link_type, _payload->link_tx_rate, _payload->link_rx_rate, _payload->link_tx_max, _payload->link_rx_max,
+        _payload->time_usec, _payload->uptime, _payload->type, _payload->cpu_cores, _payload->cpu_combined, _payload->gpu_cores, _payload->gpu_combined, _payload->temperature_board, _payload->temperature_core, _payload->fan_speed, _payload->ram_usage, _payload->ram_total, _payload->storage_type, _payload->storage_usage, _payload->storage_total, _payload->link_type, _payload->link_tx_rate, _payload->link_rx_rate, _payload->link_tx_max, _payload->link_rx_max, _payload->status_flags,
         _status);
 }
 
@@ -164,7 +167,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_onboard_computer_status_pack_to
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint64_t time_usec, uint32_t uptime, uint8_t type, const uint8_t* cpu_cores, const uint8_t* cpu_combined, const uint8_t* gpu_cores, const uint8_t* gpu_combined, int8_t temperature_board, const int8_t* temperature_core, const int16_t* fan_speed, uint32_t ram_usage, uint32_t ram_total, const uint32_t* storage_type, const uint32_t* storage_usage, const uint32_t* storage_total, const uint32_t* link_type, const uint32_t* link_tx_rate, const uint32_t* link_rx_rate, const uint32_t* link_tx_max, const uint32_t* link_rx_max,
+    uint64_t time_usec, uint32_t uptime, uint8_t type, const uint8_t* cpu_cores, const uint8_t* cpu_combined, const uint8_t* gpu_cores, const uint8_t* gpu_combined, int8_t temperature_board, const int8_t* temperature_core, const int16_t* fan_speed, uint32_t ram_usage, uint32_t ram_total, const uint32_t* storage_type, const uint32_t* storage_usage, const uint32_t* storage_total, const uint32_t* link_type, const uint32_t* link_tx_rate, const uint32_t* link_rx_rate, const uint32_t* link_tx_max, const uint32_t* link_rx_max, uint16_t status_flags,
     fmav_status_t* _status)
 {
     fmav_onboard_computer_status_t* _payload = (fmav_onboard_computer_status_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -175,6 +178,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_onboard_computer_status_pack_to
     _payload->ram_total = ram_total;
     _payload->type = type;
     _payload->temperature_board = temperature_board;
+    _payload->status_flags = status_flags;
     memcpy(&(_payload->storage_type), storage_type, sizeof(uint32_t)*4);
     memcpy(&(_payload->storage_usage), storage_usage, sizeof(uint32_t)*4);
     memcpy(&(_payload->storage_total), storage_total, sizeof(uint32_t)*4);
@@ -213,7 +217,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_onboard_computer_status_encode_
 {
     return fmav_msg_onboard_computer_status_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->time_usec, _payload->uptime, _payload->type, _payload->cpu_cores, _payload->cpu_combined, _payload->gpu_cores, _payload->gpu_combined, _payload->temperature_board, _payload->temperature_core, _payload->fan_speed, _payload->ram_usage, _payload->ram_total, _payload->storage_type, _payload->storage_usage, _payload->storage_total, _payload->link_type, _payload->link_tx_rate, _payload->link_rx_rate, _payload->link_tx_max, _payload->link_rx_max,
+        _payload->time_usec, _payload->uptime, _payload->type, _payload->cpu_cores, _payload->cpu_combined, _payload->gpu_cores, _payload->gpu_combined, _payload->temperature_board, _payload->temperature_core, _payload->fan_speed, _payload->ram_usage, _payload->ram_total, _payload->storage_type, _payload->storage_usage, _payload->storage_total, _payload->link_type, _payload->link_tx_rate, _payload->link_rx_rate, _payload->link_tx_max, _payload->link_rx_max, _payload->status_flags,
         _status);
 }
 
@@ -223,7 +227,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_onboard_computer_status_encode_
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_onboard_computer_status_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint64_t time_usec, uint32_t uptime, uint8_t type, const uint8_t* cpu_cores, const uint8_t* cpu_combined, const uint8_t* gpu_cores, const uint8_t* gpu_combined, int8_t temperature_board, const int8_t* temperature_core, const int16_t* fan_speed, uint32_t ram_usage, uint32_t ram_total, const uint32_t* storage_type, const uint32_t* storage_usage, const uint32_t* storage_total, const uint32_t* link_type, const uint32_t* link_tx_rate, const uint32_t* link_rx_rate, const uint32_t* link_tx_max, const uint32_t* link_rx_max,
+    uint64_t time_usec, uint32_t uptime, uint8_t type, const uint8_t* cpu_cores, const uint8_t* cpu_combined, const uint8_t* gpu_cores, const uint8_t* gpu_combined, int8_t temperature_board, const int8_t* temperature_core, const int16_t* fan_speed, uint32_t ram_usage, uint32_t ram_total, const uint32_t* storage_type, const uint32_t* storage_usage, const uint32_t* storage_total, const uint32_t* link_type, const uint32_t* link_tx_rate, const uint32_t* link_rx_rate, const uint32_t* link_tx_max, const uint32_t* link_rx_max, uint16_t status_flags,
     fmav_status_t* _status)
 {
     fmav_onboard_computer_status_t _payload;
@@ -234,6 +238,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_onboard_computer_status_pack_to
     _payload.ram_total = ram_total;
     _payload.type = type;
     _payload.temperature_board = temperature_board;
+    _payload.status_flags = status_flags;
     memcpy(&(_payload.storage_type), storage_type, sizeof(uint32_t)*4);
     memcpy(&(_payload.storage_usage), storage_usage, sizeof(uint32_t)*4);
     memcpy(&(_payload.storage_total), storage_total, sizeof(uint32_t)*4);
@@ -349,6 +354,14 @@ FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_onboard_computer_status_get_field
 {
     int8_t r;
     memcpy(&r, &(msg->payload[229]), sizeof(int8_t));
+    return r;
+}
+
+
+FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_onboard_computer_status_get_field_status_flags(const fmav_message_t* msg)
+{
+    uint16_t r;
+    memcpy(&r, &(msg->payload[238]), sizeof(uint16_t));
     return r;
 }
 
@@ -544,9 +557,9 @@ FASTMAVLINK_FUNCTION_DECORATOR int8_t fmav_msg_onboard_computer_status_get_field
 
 #define mavlink_onboard_computer_status_t  fmav_onboard_computer_status_t
 
-#define MAVLINK_MSG_ID_ONBOARD_COMPUTER_STATUS_LEN  238
+#define MAVLINK_MSG_ID_ONBOARD_COMPUTER_STATUS_LEN  240
 #define MAVLINK_MSG_ID_ONBOARD_COMPUTER_STATUS_MIN_LEN  238
-#define MAVLINK_MSG_ID_390_LEN  238
+#define MAVLINK_MSG_ID_390_LEN  240
 #define MAVLINK_MSG_ID_390_MIN_LEN  238
 
 #define MAVLINK_MSG_ID_ONBOARD_COMPUTER_STATUS_CRC  156
@@ -574,12 +587,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_onboard_computer_status_pack
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint64_t time_usec, uint32_t uptime, uint8_t type, const uint8_t* cpu_cores, const uint8_t* cpu_combined, const uint8_t* gpu_cores, const uint8_t* gpu_combined, int8_t temperature_board, const int8_t* temperature_core, const int16_t* fan_speed, uint32_t ram_usage, uint32_t ram_total, const uint32_t* storage_type, const uint32_t* storage_usage, const uint32_t* storage_total, const uint32_t* link_type, const uint32_t* link_tx_rate, const uint32_t* link_rx_rate, const uint32_t* link_tx_max, const uint32_t* link_rx_max)
+    uint64_t time_usec, uint32_t uptime, uint8_t type, const uint8_t* cpu_cores, const uint8_t* cpu_combined, const uint8_t* gpu_cores, const uint8_t* gpu_combined, int8_t temperature_board, const int8_t* temperature_core, const int16_t* fan_speed, uint32_t ram_usage, uint32_t ram_total, const uint32_t* storage_type, const uint32_t* storage_usage, const uint32_t* storage_total, const uint32_t* link_type, const uint32_t* link_tx_rate, const uint32_t* link_rx_rate, const uint32_t* link_tx_max, const uint32_t* link_rx_max, uint16_t status_flags)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_onboard_computer_status_pack(
         _msg, sysid, compid,
-        time_usec, uptime, type, cpu_cores, cpu_combined, gpu_cores, gpu_combined, temperature_board, temperature_core, fan_speed, ram_usage, ram_total, storage_type, storage_usage, storage_total, link_type, link_tx_rate, link_rx_rate, link_tx_max, link_rx_max,
+        time_usec, uptime, type, cpu_cores, cpu_combined, gpu_cores, gpu_combined, temperature_board, temperature_core, fan_speed, ram_usage, ram_total, storage_type, storage_usage, storage_total, link_type, link_tx_rate, link_rx_rate, link_tx_max, link_rx_max, status_flags,
         _status);
 }
 
@@ -594,7 +607,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_onboard_computer_status_enco
         sysid,
         compid,
         _msg,
-        _payload->time_usec, _payload->uptime, _payload->type, _payload->cpu_cores, _payload->cpu_combined, _payload->gpu_cores, _payload->gpu_combined, _payload->temperature_board, _payload->temperature_core, _payload->fan_speed, _payload->ram_usage, _payload->ram_total, _payload->storage_type, _payload->storage_usage, _payload->storage_total, _payload->link_type, _payload->link_tx_rate, _payload->link_rx_rate, _payload->link_tx_max, _payload->link_rx_max);
+        _payload->time_usec, _payload->uptime, _payload->type, _payload->cpu_cores, _payload->cpu_combined, _payload->gpu_cores, _payload->gpu_combined, _payload->temperature_board, _payload->temperature_core, _payload->fan_speed, _payload->ram_usage, _payload->ram_total, _payload->storage_type, _payload->storage_usage, _payload->storage_total, _payload->link_type, _payload->link_tx_rate, _payload->link_rx_rate, _payload->link_tx_max, _payload->link_rx_max, _payload->status_flags);
 }
 
 #endif
@@ -605,13 +618,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_onboard_computer_status_pack
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint64_t time_usec, uint32_t uptime, uint8_t type, const uint8_t* cpu_cores, const uint8_t* cpu_combined, const uint8_t* gpu_cores, const uint8_t* gpu_combined, int8_t temperature_board, const int8_t* temperature_core, const int16_t* fan_speed, uint32_t ram_usage, uint32_t ram_total, const uint32_t* storage_type, const uint32_t* storage_usage, const uint32_t* storage_total, const uint32_t* link_type, const uint32_t* link_tx_rate, const uint32_t* link_rx_rate, const uint32_t* link_tx_max, const uint32_t* link_rx_max)
+    uint64_t time_usec, uint32_t uptime, uint8_t type, const uint8_t* cpu_cores, const uint8_t* cpu_combined, const uint8_t* gpu_cores, const uint8_t* gpu_combined, int8_t temperature_board, const int8_t* temperature_core, const int16_t* fan_speed, uint32_t ram_usage, uint32_t ram_total, const uint32_t* storage_type, const uint32_t* storage_usage, const uint32_t* storage_total, const uint32_t* link_type, const uint32_t* link_tx_rate, const uint32_t* link_rx_rate, const uint32_t* link_tx_max, const uint32_t* link_rx_max, uint16_t status_flags)
 {
     return fmav_msg_onboard_computer_status_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        time_usec, uptime, type, cpu_cores, cpu_combined, gpu_cores, gpu_combined, temperature_board, temperature_core, fan_speed, ram_usage, ram_total, storage_type, storage_usage, storage_total, link_type, link_tx_rate, link_rx_rate, link_tx_max, link_rx_max,
+        time_usec, uptime, type, cpu_cores, cpu_combined, gpu_cores, gpu_combined, temperature_board, temperature_core, fan_speed, ram_usage, ram_total, storage_type, storage_usage, storage_total, link_type, link_tx_rate, link_rx_rate, link_tx_max, link_rx_max, status_flags,
         _status);
 }
 

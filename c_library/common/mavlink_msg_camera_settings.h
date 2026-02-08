@@ -19,19 +19,20 @@ typedef struct _fmav_camera_settings_t {
     uint8_t mode_id;
     float zoomLevel;
     float focusLevel;
+    uint8_t camera_device_id;
 }) fmav_camera_settings_t;
 
 
 #define FASTMAVLINK_MSG_ID_CAMERA_SETTINGS  260
 
-#define FASTMAVLINK_MSG_CAMERA_SETTINGS_PAYLOAD_LEN_MAX  13
+#define FASTMAVLINK_MSG_CAMERA_SETTINGS_PAYLOAD_LEN_MAX  14
 #define FASTMAVLINK_MSG_CAMERA_SETTINGS_CRCEXTRA  146
 
 #define FASTMAVLINK_MSG_CAMERA_SETTINGS_FLAGS  0
 #define FASTMAVLINK_MSG_CAMERA_SETTINGS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_CAMERA_SETTINGS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_CAMERA_SETTINGS_FRAME_LEN_MAX  38
+#define FASTMAVLINK_MSG_CAMERA_SETTINGS_FRAME_LEN_MAX  39
 
 
 
@@ -39,6 +40,7 @@ typedef struct _fmav_camera_settings_t {
 #define FASTMAVLINK_MSG_CAMERA_SETTINGS_FIELD_MODE_ID_OFS  4
 #define FASTMAVLINK_MSG_CAMERA_SETTINGS_FIELD_ZOOMLEVEL_OFS  5
 #define FASTMAVLINK_MSG_CAMERA_SETTINGS_FIELD_FOCUSLEVEL_OFS  9
+#define FASTMAVLINK_MSG_CAMERA_SETTINGS_FIELD_CAMERA_DEVICE_ID_OFS  13
 
 
 //----------------------------------------
@@ -49,7 +51,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_settings_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint8_t mode_id, float zoomLevel, float focusLevel,
+    uint32_t time_boot_ms, uint8_t mode_id, float zoomLevel, float focusLevel, uint8_t camera_device_id,
     fmav_status_t* _status)
 {
     fmav_camera_settings_t* _payload = (fmav_camera_settings_t*)_msg->payload;
@@ -58,6 +60,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_settings_pack(
     _payload->mode_id = mode_id;
     _payload->zoomLevel = zoomLevel;
     _payload->focusLevel = focusLevel;
+    _payload->camera_device_id = camera_device_id;
 
 
     _msg->sysid = sysid;
@@ -81,7 +84,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_settings_encode(
 {
     return fmav_msg_camera_settings_pack(
         _msg, sysid, compid,
-        _payload->time_boot_ms, _payload->mode_id, _payload->zoomLevel, _payload->focusLevel,
+        _payload->time_boot_ms, _payload->mode_id, _payload->zoomLevel, _payload->focusLevel, _payload->camera_device_id,
         _status);
 }
 
@@ -90,7 +93,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_settings_pack_to_frame_b
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint8_t mode_id, float zoomLevel, float focusLevel,
+    uint32_t time_boot_ms, uint8_t mode_id, float zoomLevel, float focusLevel, uint8_t camera_device_id,
     fmav_status_t* _status)
 {
     fmav_camera_settings_t* _payload = (fmav_camera_settings_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -99,6 +102,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_settings_pack_to_frame_b
     _payload->mode_id = mode_id;
     _payload->zoomLevel = zoomLevel;
     _payload->focusLevel = focusLevel;
+    _payload->camera_device_id = camera_device_id;
 
 
     _buf[5] = sysid;
@@ -124,7 +128,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_settings_encode_to_frame
 {
     return fmav_msg_camera_settings_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->time_boot_ms, _payload->mode_id, _payload->zoomLevel, _payload->focusLevel,
+        _payload->time_boot_ms, _payload->mode_id, _payload->zoomLevel, _payload->focusLevel, _payload->camera_device_id,
         _status);
 }
 
@@ -134,7 +138,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_settings_encode_to_frame
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_settings_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint8_t mode_id, float zoomLevel, float focusLevel,
+    uint32_t time_boot_ms, uint8_t mode_id, float zoomLevel, float focusLevel, uint8_t camera_device_id,
     fmav_status_t* _status)
 {
     fmav_camera_settings_t _payload;
@@ -143,6 +147,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_settings_pack_to_serial(
     _payload.mode_id = mode_id;
     _payload.zoomLevel = zoomLevel;
     _payload.focusLevel = focusLevel;
+    _payload.camera_device_id = camera_device_id;
 
 
     return fmav_finalize_serial(
@@ -233,6 +238,14 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_settings_get_field_focusLev
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_camera_settings_get_field_camera_device_id(const fmav_message_t* msg)
+{
+    uint8_t r;
+    memcpy(&r, &(msg->payload[13]), sizeof(uint8_t));
+    return r;
+}
+
+
 
 
 
@@ -245,9 +258,9 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_settings_get_field_focusLev
 
 #define mavlink_camera_settings_t  fmav_camera_settings_t
 
-#define MAVLINK_MSG_ID_CAMERA_SETTINGS_LEN  13
+#define MAVLINK_MSG_ID_CAMERA_SETTINGS_LEN  14
 #define MAVLINK_MSG_ID_CAMERA_SETTINGS_MIN_LEN  5
-#define MAVLINK_MSG_ID_260_LEN  13
+#define MAVLINK_MSG_ID_260_LEN  14
 #define MAVLINK_MSG_ID_260_MIN_LEN  5
 
 #define MAVLINK_MSG_ID_CAMERA_SETTINGS_CRC  146
@@ -262,12 +275,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_settings_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint32_t time_boot_ms, uint8_t mode_id, float zoomLevel, float focusLevel)
+    uint32_t time_boot_ms, uint8_t mode_id, float zoomLevel, float focusLevel, uint8_t camera_device_id)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_camera_settings_pack(
         _msg, sysid, compid,
-        time_boot_ms, mode_id, zoomLevel, focusLevel,
+        time_boot_ms, mode_id, zoomLevel, focusLevel, camera_device_id,
         _status);
 }
 
@@ -282,7 +295,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_settings_encode(
         sysid,
         compid,
         _msg,
-        _payload->time_boot_ms, _payload->mode_id, _payload->zoomLevel, _payload->focusLevel);
+        _payload->time_boot_ms, _payload->mode_id, _payload->zoomLevel, _payload->focusLevel, _payload->camera_device_id);
 }
 
 #endif
@@ -293,13 +306,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_settings_pack_txbuf(
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint8_t mode_id, float zoomLevel, float focusLevel)
+    uint32_t time_boot_ms, uint8_t mode_id, float zoomLevel, float focusLevel, uint8_t camera_device_id)
 {
     return fmav_msg_camera_settings_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        time_boot_ms, mode_id, zoomLevel, focusLevel,
+        time_boot_ms, mode_id, zoomLevel, focusLevel, camera_device_id,
         _status);
 }
 

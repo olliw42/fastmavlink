@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #ifndef FASTMAVLINK_BUILD_DATE
-#define FASTMAVLINK_BUILD_DATE  "Tue Sep 03 2024"
+#define FASTMAVLINK_BUILD_DATE  "Sun Feb 08 2026"
 #endif
 
 #ifndef FASTMAVLINK_DIALECT_VERSION
@@ -126,8 +126,13 @@ typedef enum MAV_TYPE {
     MAV_TYPE_GPS = 41,  // GPS 
     MAV_TYPE_WINCH = 42,  // Winch 
     MAV_TYPE_GENERIC_MULTIROTOR = 43,  // Generic multirotor that does not fit into a specific type or whose type is unknown 
-    MAV_TYPE_ILLUMINATOR = 44,  // Illuminator. An illuminator is a light source that is used for lighting up dark areas external to the sytstem: e.g. a torch or searchlight (as opposed to a light source for illuminating the system itself, e.g. an indicator light). 
-    MAV_TYPE_ENUM_END = 45,  // end marker
+    MAV_TYPE_ILLUMINATOR = 44,  // Illuminator. An illuminator is a light source that is used for lighting up dark areas external to the system: e.g. a torch or searchlight (as opposed to a light source for illuminating the system itself, e.g. an indicator light). 
+    MAV_TYPE_SPACECRAFT_ORBITER = 45,  // Orbiter spacecraft. Includes satellites orbiting terrestrial and extra-terrestrial bodies. Follows NASA Spacecraft Classification. 
+    MAV_TYPE_GROUND_QUADRUPED = 46,  // A generic four-legged ground vehicle (e.g., a robot dog). 
+    MAV_TYPE_VTOL_GYRODYNE = 47,  // VTOL hybrid of helicopter and autogyro. It has a main rotor for lift and separate propellers for forward flight. The rotor must be powered for hover but can autorotate in cruise flight. See: https://en.wikipedia.org/wiki/Gyrodyne 
+    MAV_TYPE_GRIPPER = 48,  // Gripper 
+    MAV_TYPE_RADIO = 49,  // Radio 
+    MAV_TYPE_ENUM_END = 50,  // end marker
 } MAV_TYPE;
 #endif
 
@@ -135,7 +140,7 @@ typedef enum MAV_TYPE {
 #ifndef FASTMAVLINK_HAS_ENUM_MAV_MODE_FLAG
 #define FASTMAVLINK_HAS_ENUM_MAV_MODE_FLAG
 typedef enum MAV_MODE_FLAG {
-    MAV_MODE_FLAG_CUSTOM_MODE_ENABLED = 1,  // 0b00000001 Reserved for future use. 
+    MAV_MODE_FLAG_CUSTOM_MODE_ENABLED = 1,  // 0b00000001 system-specific custom mode is enabled. When using this flag to enable a custom mode all other flags should be ignored. 
     MAV_MODE_FLAG_TEST_ENABLED = 2,  // 0b00000010 system has a test mode enabled. This flag is intended for temporary system tests and should not be used for stable implementations. 
     MAV_MODE_FLAG_AUTO_ENABLED = 4,  // 0b00000100 autonomous mode enabled, system finds its own goal positions. Guided flag can be set or not, depends on the actual implementation. 
     MAV_MODE_FLAG_GUIDED_ENABLED = 8,  // 0b00001000 guided mode enabled, system flies waypoints / mission items. 
@@ -267,6 +272,9 @@ typedef enum MAV_COMPONENT {
     MAV_COMP_ID_CAMERA4 = 103,  // Camera #4. 
     MAV_COMP_ID_CAMERA5 = 104,  // Camera #5. 
     MAV_COMP_ID_CAMERA6 = 105,  // Camera #6. 
+    MAV_COMP_ID_RADIO = 110,  // Radio #1. 
+    MAV_COMP_ID_RADIO2 = 111,  // Radio #2. 
+    MAV_COMP_ID_RADIO3 = 112,  // Radio #3. 
     MAV_COMP_ID_SERVO1 = 140,  // Servo #1. 
     MAV_COMP_ID_SERVO2 = 141,  // Servo #2. 
     MAV_COMP_ID_SERVO3 = 142,  // Servo #3. 
@@ -339,7 +347,6 @@ typedef enum MAV_COMPONENT {
 #endif
 
 #include "./mavlink_msg_heartbeat.h"
-#include "./mavlink_msg_protocol_version.h"
 
 #ifdef FASTMAVLINK_IGNORE_WADDRESSOFPACKEDMEMBER
   #if defined __GNUC__ && __GNUC__ >= 9

@@ -25,19 +25,20 @@ typedef struct _fmav_camera_fov_status_t {
     float q[4];
     float hfov;
     float vfov;
+    uint8_t camera_device_id;
 }) fmav_camera_fov_status_t;
 
 
 #define FASTMAVLINK_MSG_ID_CAMERA_FOV_STATUS  271
 
-#define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_PAYLOAD_LEN_MAX  52
+#define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_PAYLOAD_LEN_MAX  53
 #define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_CRCEXTRA  22
 
 #define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FRAME_LEN_MAX  77
+#define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FRAME_LEN_MAX  78
 
 #define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FIELD_Q_NUM  4 // number of elements in array
 #define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FIELD_Q_LEN  16 // length of array = number of bytes
@@ -52,6 +53,7 @@ typedef struct _fmav_camera_fov_status_t {
 #define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FIELD_Q_OFS  28
 #define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FIELD_HFOV_OFS  44
 #define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FIELD_VFOV_OFS  48
+#define FASTMAVLINK_MSG_CAMERA_FOV_STATUS_FIELD_CAMERA_DEVICE_ID_OFS  52
 
 
 //----------------------------------------
@@ -62,7 +64,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_fov_status_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, int32_t lat_camera, int32_t lon_camera, int32_t alt_camera, int32_t lat_image, int32_t lon_image, int32_t alt_image, const float* q, float hfov, float vfov,
+    uint32_t time_boot_ms, int32_t lat_camera, int32_t lon_camera, int32_t alt_camera, int32_t lat_image, int32_t lon_image, int32_t alt_image, const float* q, float hfov, float vfov, uint8_t camera_device_id,
     fmav_status_t* _status)
 {
     fmav_camera_fov_status_t* _payload = (fmav_camera_fov_status_t*)_msg->payload;
@@ -76,6 +78,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_fov_status_pack(
     _payload->alt_image = alt_image;
     _payload->hfov = hfov;
     _payload->vfov = vfov;
+    _payload->camera_device_id = camera_device_id;
     memcpy(&(_payload->q), q, sizeof(float)*4);
 
     _msg->sysid = sysid;
@@ -99,7 +102,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_fov_status_encode(
 {
     return fmav_msg_camera_fov_status_pack(
         _msg, sysid, compid,
-        _payload->time_boot_ms, _payload->lat_camera, _payload->lon_camera, _payload->alt_camera, _payload->lat_image, _payload->lon_image, _payload->alt_image, _payload->q, _payload->hfov, _payload->vfov,
+        _payload->time_boot_ms, _payload->lat_camera, _payload->lon_camera, _payload->alt_camera, _payload->lat_image, _payload->lon_image, _payload->alt_image, _payload->q, _payload->hfov, _payload->vfov, _payload->camera_device_id,
         _status);
 }
 
@@ -108,7 +111,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_fov_status_pack_to_frame
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, int32_t lat_camera, int32_t lon_camera, int32_t alt_camera, int32_t lat_image, int32_t lon_image, int32_t alt_image, const float* q, float hfov, float vfov,
+    uint32_t time_boot_ms, int32_t lat_camera, int32_t lon_camera, int32_t alt_camera, int32_t lat_image, int32_t lon_image, int32_t alt_image, const float* q, float hfov, float vfov, uint8_t camera_device_id,
     fmav_status_t* _status)
 {
     fmav_camera_fov_status_t* _payload = (fmav_camera_fov_status_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -122,6 +125,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_fov_status_pack_to_frame
     _payload->alt_image = alt_image;
     _payload->hfov = hfov;
     _payload->vfov = vfov;
+    _payload->camera_device_id = camera_device_id;
     memcpy(&(_payload->q), q, sizeof(float)*4);
 
     _buf[5] = sysid;
@@ -147,7 +151,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_fov_status_encode_to_fra
 {
     return fmav_msg_camera_fov_status_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->time_boot_ms, _payload->lat_camera, _payload->lon_camera, _payload->alt_camera, _payload->lat_image, _payload->lon_image, _payload->alt_image, _payload->q, _payload->hfov, _payload->vfov,
+        _payload->time_boot_ms, _payload->lat_camera, _payload->lon_camera, _payload->alt_camera, _payload->lat_image, _payload->lon_image, _payload->alt_image, _payload->q, _payload->hfov, _payload->vfov, _payload->camera_device_id,
         _status);
 }
 
@@ -157,7 +161,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_fov_status_encode_to_fra
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_fov_status_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, int32_t lat_camera, int32_t lon_camera, int32_t alt_camera, int32_t lat_image, int32_t lon_image, int32_t alt_image, const float* q, float hfov, float vfov,
+    uint32_t time_boot_ms, int32_t lat_camera, int32_t lon_camera, int32_t alt_camera, int32_t lat_image, int32_t lon_image, int32_t alt_image, const float* q, float hfov, float vfov, uint8_t camera_device_id,
     fmav_status_t* _status)
 {
     fmav_camera_fov_status_t _payload;
@@ -171,6 +175,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_fov_status_pack_to_seria
     _payload.alt_image = alt_image;
     _payload.hfov = hfov;
     _payload.vfov = vfov;
+    _payload.camera_device_id = camera_device_id;
     memcpy(&(_payload.q), q, sizeof(float)*4);
 
     return fmav_finalize_serial(
@@ -301,6 +306,14 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_fov_status_get_field_vfov(c
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_camera_fov_status_get_field_camera_device_id(const fmav_message_t* msg)
+{
+    uint8_t r;
+    memcpy(&r, &(msg->payload[52]), sizeof(uint8_t));
+    return r;
+}
+
+
 FASTMAVLINK_FUNCTION_DECORATOR float* fmav_msg_camera_fov_status_get_field_q_ptr(const fmav_message_t* msg)
 {
     return (float*)&(msg->payload[28]);
@@ -323,9 +336,9 @@ FASTMAVLINK_FUNCTION_DECORATOR float fmav_msg_camera_fov_status_get_field_q(uint
 
 #define mavlink_camera_fov_status_t  fmav_camera_fov_status_t
 
-#define MAVLINK_MSG_ID_CAMERA_FOV_STATUS_LEN  52
+#define MAVLINK_MSG_ID_CAMERA_FOV_STATUS_LEN  53
 #define MAVLINK_MSG_ID_CAMERA_FOV_STATUS_MIN_LEN  52
-#define MAVLINK_MSG_ID_271_LEN  52
+#define MAVLINK_MSG_ID_271_LEN  53
 #define MAVLINK_MSG_ID_271_MIN_LEN  52
 
 #define MAVLINK_MSG_ID_CAMERA_FOV_STATUS_CRC  22
@@ -340,12 +353,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_fov_status_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint32_t time_boot_ms, int32_t lat_camera, int32_t lon_camera, int32_t alt_camera, int32_t lat_image, int32_t lon_image, int32_t alt_image, const float* q, float hfov, float vfov)
+    uint32_t time_boot_ms, int32_t lat_camera, int32_t lon_camera, int32_t alt_camera, int32_t lat_image, int32_t lon_image, int32_t alt_image, const float* q, float hfov, float vfov, uint8_t camera_device_id)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_camera_fov_status_pack(
         _msg, sysid, compid,
-        time_boot_ms, lat_camera, lon_camera, alt_camera, lat_image, lon_image, alt_image, q, hfov, vfov,
+        time_boot_ms, lat_camera, lon_camera, alt_camera, lat_image, lon_image, alt_image, q, hfov, vfov, camera_device_id,
         _status);
 }
 
@@ -360,7 +373,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_fov_status_encode(
         sysid,
         compid,
         _msg,
-        _payload->time_boot_ms, _payload->lat_camera, _payload->lon_camera, _payload->alt_camera, _payload->lat_image, _payload->lon_image, _payload->alt_image, _payload->q, _payload->hfov, _payload->vfov);
+        _payload->time_boot_ms, _payload->lat_camera, _payload->lon_camera, _payload->alt_camera, _payload->lat_image, _payload->lon_image, _payload->alt_image, _payload->q, _payload->hfov, _payload->vfov, _payload->camera_device_id);
 }
 
 #endif
@@ -371,13 +384,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_fov_status_pack_txbuf
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, int32_t lat_camera, int32_t lon_camera, int32_t alt_camera, int32_t lat_image, int32_t lon_image, int32_t alt_image, const float* q, float hfov, float vfov)
+    uint32_t time_boot_ms, int32_t lat_camera, int32_t lon_camera, int32_t alt_camera, int32_t lat_image, int32_t lon_image, int32_t alt_image, const float* q, float hfov, float vfov, uint8_t camera_device_id)
 {
     return fmav_msg_camera_fov_status_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        time_boot_ms, lat_camera, lon_camera, alt_camera, lat_image, lon_image, alt_image, q, hfov, vfov,
+        time_boot_ms, lat_camera, lon_camera, alt_camera, lat_image, lon_image, alt_image, q, hfov, vfov, camera_device_id,
         _status);
 }
 

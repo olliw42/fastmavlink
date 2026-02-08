@@ -25,19 +25,20 @@ typedef struct _fmav_camera_tracking_image_status_t {
     uint8_t tracking_status;
     uint8_t tracking_mode;
     uint8_t target_data;
+    uint8_t camera_device_id;
 }) fmav_camera_tracking_image_status_t;
 
 
 #define FASTMAVLINK_MSG_ID_CAMERA_TRACKING_IMAGE_STATUS  275
 
-#define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_PAYLOAD_LEN_MAX  31
+#define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_PAYLOAD_LEN_MAX  32
 #define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_CRCEXTRA  126
 
 #define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_FRAME_LEN_MAX  56
+#define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_FRAME_LEN_MAX  57
 
 
 
@@ -51,6 +52,7 @@ typedef struct _fmav_camera_tracking_image_status_t {
 #define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_FIELD_TRACKING_STATUS_OFS  28
 #define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_FIELD_TRACKING_MODE_OFS  29
 #define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_FIELD_TARGET_DATA_OFS  30
+#define FASTMAVLINK_MSG_CAMERA_TRACKING_IMAGE_STATUS_FIELD_CAMERA_DEVICE_ID_OFS  31
 
 
 //----------------------------------------
@@ -61,7 +63,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_tracking_image_status_pa
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t tracking_status, uint8_t tracking_mode, uint8_t target_data, float point_x, float point_y, float radius, float rec_top_x, float rec_top_y, float rec_bottom_x, float rec_bottom_y,
+    uint8_t tracking_status, uint8_t tracking_mode, uint8_t target_data, float point_x, float point_y, float radius, float rec_top_x, float rec_top_y, float rec_bottom_x, float rec_bottom_y, uint8_t camera_device_id,
     fmav_status_t* _status)
 {
     fmav_camera_tracking_image_status_t* _payload = (fmav_camera_tracking_image_status_t*)_msg->payload;
@@ -76,6 +78,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_tracking_image_status_pa
     _payload->tracking_status = tracking_status;
     _payload->tracking_mode = tracking_mode;
     _payload->target_data = target_data;
+    _payload->camera_device_id = camera_device_id;
 
 
     _msg->sysid = sysid;
@@ -99,7 +102,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_tracking_image_status_en
 {
     return fmav_msg_camera_tracking_image_status_pack(
         _msg, sysid, compid,
-        _payload->tracking_status, _payload->tracking_mode, _payload->target_data, _payload->point_x, _payload->point_y, _payload->radius, _payload->rec_top_x, _payload->rec_top_y, _payload->rec_bottom_x, _payload->rec_bottom_y,
+        _payload->tracking_status, _payload->tracking_mode, _payload->target_data, _payload->point_x, _payload->point_y, _payload->radius, _payload->rec_top_x, _payload->rec_top_y, _payload->rec_bottom_x, _payload->rec_bottom_y, _payload->camera_device_id,
         _status);
 }
 
@@ -108,7 +111,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_tracking_image_status_pa
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t tracking_status, uint8_t tracking_mode, uint8_t target_data, float point_x, float point_y, float radius, float rec_top_x, float rec_top_y, float rec_bottom_x, float rec_bottom_y,
+    uint8_t tracking_status, uint8_t tracking_mode, uint8_t target_data, float point_x, float point_y, float radius, float rec_top_x, float rec_top_y, float rec_bottom_x, float rec_bottom_y, uint8_t camera_device_id,
     fmav_status_t* _status)
 {
     fmav_camera_tracking_image_status_t* _payload = (fmav_camera_tracking_image_status_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -123,6 +126,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_tracking_image_status_pa
     _payload->tracking_status = tracking_status;
     _payload->tracking_mode = tracking_mode;
     _payload->target_data = target_data;
+    _payload->camera_device_id = camera_device_id;
 
 
     _buf[5] = sysid;
@@ -148,7 +152,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_tracking_image_status_en
 {
     return fmav_msg_camera_tracking_image_status_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->tracking_status, _payload->tracking_mode, _payload->target_data, _payload->point_x, _payload->point_y, _payload->radius, _payload->rec_top_x, _payload->rec_top_y, _payload->rec_bottom_x, _payload->rec_bottom_y,
+        _payload->tracking_status, _payload->tracking_mode, _payload->target_data, _payload->point_x, _payload->point_y, _payload->radius, _payload->rec_top_x, _payload->rec_top_y, _payload->rec_bottom_x, _payload->rec_bottom_y, _payload->camera_device_id,
         _status);
 }
 
@@ -158,7 +162,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_tracking_image_status_en
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_tracking_image_status_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint8_t tracking_status, uint8_t tracking_mode, uint8_t target_data, float point_x, float point_y, float radius, float rec_top_x, float rec_top_y, float rec_bottom_x, float rec_bottom_y,
+    uint8_t tracking_status, uint8_t tracking_mode, uint8_t target_data, float point_x, float point_y, float radius, float rec_top_x, float rec_top_y, float rec_bottom_x, float rec_bottom_y, uint8_t camera_device_id,
     fmav_status_t* _status)
 {
     fmav_camera_tracking_image_status_t _payload;
@@ -173,6 +177,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_tracking_image_status_pa
     _payload.tracking_status = tracking_status;
     _payload.tracking_mode = tracking_mode;
     _payload.target_data = target_data;
+    _payload.camera_device_id = camera_device_id;
 
 
     return fmav_finalize_serial(
@@ -311,6 +316,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_camera_tracking_image_status_get
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_camera_tracking_image_status_get_field_camera_device_id(const fmav_message_t* msg)
+{
+    uint8_t r;
+    memcpy(&r, &(msg->payload[31]), sizeof(uint8_t));
+    return r;
+}
+
+
 
 
 
@@ -323,9 +336,9 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_camera_tracking_image_status_get
 
 #define mavlink_camera_tracking_image_status_t  fmav_camera_tracking_image_status_t
 
-#define MAVLINK_MSG_ID_CAMERA_TRACKING_IMAGE_STATUS_LEN  31
+#define MAVLINK_MSG_ID_CAMERA_TRACKING_IMAGE_STATUS_LEN  32
 #define MAVLINK_MSG_ID_CAMERA_TRACKING_IMAGE_STATUS_MIN_LEN  31
-#define MAVLINK_MSG_ID_275_LEN  31
+#define MAVLINK_MSG_ID_275_LEN  32
 #define MAVLINK_MSG_ID_275_MIN_LEN  31
 
 #define MAVLINK_MSG_ID_CAMERA_TRACKING_IMAGE_STATUS_CRC  126
@@ -340,12 +353,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_tracking_image_status
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint8_t tracking_status, uint8_t tracking_mode, uint8_t target_data, float point_x, float point_y, float radius, float rec_top_x, float rec_top_y, float rec_bottom_x, float rec_bottom_y)
+    uint8_t tracking_status, uint8_t tracking_mode, uint8_t target_data, float point_x, float point_y, float radius, float rec_top_x, float rec_top_y, float rec_bottom_x, float rec_bottom_y, uint8_t camera_device_id)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_camera_tracking_image_status_pack(
         _msg, sysid, compid,
-        tracking_status, tracking_mode, target_data, point_x, point_y, radius, rec_top_x, rec_top_y, rec_bottom_x, rec_bottom_y,
+        tracking_status, tracking_mode, target_data, point_x, point_y, radius, rec_top_x, rec_top_y, rec_bottom_x, rec_bottom_y, camera_device_id,
         _status);
 }
 
@@ -360,7 +373,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_tracking_image_status
         sysid,
         compid,
         _msg,
-        _payload->tracking_status, _payload->tracking_mode, _payload->target_data, _payload->point_x, _payload->point_y, _payload->radius, _payload->rec_top_x, _payload->rec_top_y, _payload->rec_bottom_x, _payload->rec_bottom_y);
+        _payload->tracking_status, _payload->tracking_mode, _payload->target_data, _payload->point_x, _payload->point_y, _payload->radius, _payload->rec_top_x, _payload->rec_top_y, _payload->rec_bottom_x, _payload->rec_bottom_y, _payload->camera_device_id);
 }
 
 #endif
@@ -371,13 +384,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_tracking_image_status
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t tracking_status, uint8_t tracking_mode, uint8_t target_data, float point_x, float point_y, float radius, float rec_top_x, float rec_top_y, float rec_bottom_x, float rec_bottom_y)
+    uint8_t tracking_status, uint8_t tracking_mode, uint8_t target_data, float point_x, float point_y, float radius, float rec_top_x, float rec_top_y, float rec_bottom_x, float rec_bottom_y, uint8_t camera_device_id)
 {
     return fmav_msg_camera_tracking_image_status_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        tracking_status, tracking_mode, target_data, point_x, point_y, radius, rec_top_x, rec_top_y, rec_bottom_x, rec_bottom_y,
+        tracking_status, tracking_mode, target_data, point_x, point_y, radius, rec_top_x, rec_top_y, rec_bottom_x, rec_bottom_y, camera_device_id,
         _status);
 }
 

@@ -22,19 +22,20 @@ typedef struct _fmav_camera_capture_status_t {
     uint8_t image_status;
     uint8_t video_status;
     int32_t image_count;
+    uint8_t camera_device_id;
 }) fmav_camera_capture_status_t;
 
 
 #define FASTMAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS  262
 
-#define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_PAYLOAD_LEN_MAX  22
+#define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_PAYLOAD_LEN_MAX  23
 #define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_CRCEXTRA  12
 
 #define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_FRAME_LEN_MAX  47
+#define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_FRAME_LEN_MAX  48
 
 
 
@@ -45,6 +46,7 @@ typedef struct _fmav_camera_capture_status_t {
 #define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_FIELD_IMAGE_STATUS_OFS  16
 #define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_FIELD_VIDEO_STATUS_OFS  17
 #define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_FIELD_IMAGE_COUNT_OFS  18
+#define FASTMAVLINK_MSG_CAMERA_CAPTURE_STATUS_FIELD_CAMERA_DEVICE_ID_OFS  22
 
 
 //----------------------------------------
@@ -55,7 +57,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_capture_status_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint8_t image_status, uint8_t video_status, float image_interval, uint32_t recording_time_ms, float available_capacity, int32_t image_count,
+    uint32_t time_boot_ms, uint8_t image_status, uint8_t video_status, float image_interval, uint32_t recording_time_ms, float available_capacity, int32_t image_count, uint8_t camera_device_id,
     fmav_status_t* _status)
 {
     fmav_camera_capture_status_t* _payload = (fmav_camera_capture_status_t*)_msg->payload;
@@ -67,6 +69,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_capture_status_pack(
     _payload->image_status = image_status;
     _payload->video_status = video_status;
     _payload->image_count = image_count;
+    _payload->camera_device_id = camera_device_id;
 
 
     _msg->sysid = sysid;
@@ -90,7 +93,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_capture_status_encode(
 {
     return fmav_msg_camera_capture_status_pack(
         _msg, sysid, compid,
-        _payload->time_boot_ms, _payload->image_status, _payload->video_status, _payload->image_interval, _payload->recording_time_ms, _payload->available_capacity, _payload->image_count,
+        _payload->time_boot_ms, _payload->image_status, _payload->video_status, _payload->image_interval, _payload->recording_time_ms, _payload->available_capacity, _payload->image_count, _payload->camera_device_id,
         _status);
 }
 
@@ -99,7 +102,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_capture_status_pack_to_f
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint8_t image_status, uint8_t video_status, float image_interval, uint32_t recording_time_ms, float available_capacity, int32_t image_count,
+    uint32_t time_boot_ms, uint8_t image_status, uint8_t video_status, float image_interval, uint32_t recording_time_ms, float available_capacity, int32_t image_count, uint8_t camera_device_id,
     fmav_status_t* _status)
 {
     fmav_camera_capture_status_t* _payload = (fmav_camera_capture_status_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -111,6 +114,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_capture_status_pack_to_f
     _payload->image_status = image_status;
     _payload->video_status = video_status;
     _payload->image_count = image_count;
+    _payload->camera_device_id = camera_device_id;
 
 
     _buf[5] = sysid;
@@ -136,7 +140,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_capture_status_encode_to
 {
     return fmav_msg_camera_capture_status_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->time_boot_ms, _payload->image_status, _payload->video_status, _payload->image_interval, _payload->recording_time_ms, _payload->available_capacity, _payload->image_count,
+        _payload->time_boot_ms, _payload->image_status, _payload->video_status, _payload->image_interval, _payload->recording_time_ms, _payload->available_capacity, _payload->image_count, _payload->camera_device_id,
         _status);
 }
 
@@ -146,7 +150,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_capture_status_encode_to
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_capture_status_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint8_t image_status, uint8_t video_status, float image_interval, uint32_t recording_time_ms, float available_capacity, int32_t image_count,
+    uint32_t time_boot_ms, uint8_t image_status, uint8_t video_status, float image_interval, uint32_t recording_time_ms, float available_capacity, int32_t image_count, uint8_t camera_device_id,
     fmav_status_t* _status)
 {
     fmav_camera_capture_status_t _payload;
@@ -158,6 +162,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_camera_capture_status_pack_to_s
     _payload.image_status = image_status;
     _payload.video_status = video_status;
     _payload.image_count = image_count;
+    _payload.camera_device_id = camera_device_id;
 
 
     return fmav_finalize_serial(
@@ -272,6 +277,14 @@ FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_camera_capture_status_get_field_
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_camera_capture_status_get_field_camera_device_id(const fmav_message_t* msg)
+{
+    uint8_t r;
+    memcpy(&r, &(msg->payload[22]), sizeof(uint8_t));
+    return r;
+}
+
+
 
 
 
@@ -284,9 +297,9 @@ FASTMAVLINK_FUNCTION_DECORATOR int32_t fmav_msg_camera_capture_status_get_field_
 
 #define mavlink_camera_capture_status_t  fmav_camera_capture_status_t
 
-#define MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS_LEN  22
+#define MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS_LEN  23
 #define MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS_MIN_LEN  18
-#define MAVLINK_MSG_ID_262_LEN  22
+#define MAVLINK_MSG_ID_262_LEN  23
 #define MAVLINK_MSG_ID_262_MIN_LEN  18
 
 #define MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS_CRC  12
@@ -301,12 +314,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_capture_status_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint32_t time_boot_ms, uint8_t image_status, uint8_t video_status, float image_interval, uint32_t recording_time_ms, float available_capacity, int32_t image_count)
+    uint32_t time_boot_ms, uint8_t image_status, uint8_t video_status, float image_interval, uint32_t recording_time_ms, float available_capacity, int32_t image_count, uint8_t camera_device_id)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_camera_capture_status_pack(
         _msg, sysid, compid,
-        time_boot_ms, image_status, video_status, image_interval, recording_time_ms, available_capacity, image_count,
+        time_boot_ms, image_status, video_status, image_interval, recording_time_ms, available_capacity, image_count, camera_device_id,
         _status);
 }
 
@@ -321,7 +334,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_capture_status_encode
         sysid,
         compid,
         _msg,
-        _payload->time_boot_ms, _payload->image_status, _payload->video_status, _payload->image_interval, _payload->recording_time_ms, _payload->available_capacity, _payload->image_count);
+        _payload->time_boot_ms, _payload->image_status, _payload->video_status, _payload->image_interval, _payload->recording_time_ms, _payload->available_capacity, _payload->image_count, _payload->camera_device_id);
 }
 
 #endif
@@ -332,13 +345,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_camera_capture_status_pack_t
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint32_t time_boot_ms, uint8_t image_status, uint8_t video_status, float image_interval, uint32_t recording_time_ms, float available_capacity, int32_t image_count)
+    uint32_t time_boot_ms, uint8_t image_status, uint8_t video_status, float image_interval, uint32_t recording_time_ms, float available_capacity, int32_t image_count, uint8_t camera_device_id)
 {
     return fmav_msg_camera_capture_status_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        time_boot_ms, image_status, video_status, image_interval, recording_time_ms, available_capacity, image_count,
+        time_boot_ms, image_status, video_status, image_interval, recording_time_ms, available_capacity, image_count, camera_device_id,
         _status);
 }
 

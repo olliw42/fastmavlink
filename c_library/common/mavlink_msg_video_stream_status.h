@@ -23,19 +23,20 @@ typedef struct _fmav_video_stream_status_t {
     uint16_t rotation;
     uint16_t hfov;
     uint8_t stream_id;
+    uint8_t camera_device_id;
 }) fmav_video_stream_status_t;
 
 
 #define FASTMAVLINK_MSG_ID_VIDEO_STREAM_STATUS  270
 
-#define FASTMAVLINK_MSG_VIDEO_STREAM_STATUS_PAYLOAD_LEN_MAX  19
+#define FASTMAVLINK_MSG_VIDEO_STREAM_STATUS_PAYLOAD_LEN_MAX  20
 #define FASTMAVLINK_MSG_VIDEO_STREAM_STATUS_CRCEXTRA  59
 
 #define FASTMAVLINK_MSG_VIDEO_STREAM_STATUS_FLAGS  0
 #define FASTMAVLINK_MSG_VIDEO_STREAM_STATUS_TARGET_SYSTEM_OFS  0
 #define FASTMAVLINK_MSG_VIDEO_STREAM_STATUS_TARGET_COMPONENT_OFS  0
 
-#define FASTMAVLINK_MSG_VIDEO_STREAM_STATUS_FRAME_LEN_MAX  44
+#define FASTMAVLINK_MSG_VIDEO_STREAM_STATUS_FRAME_LEN_MAX  45
 
 
 
@@ -47,6 +48,7 @@ typedef struct _fmav_video_stream_status_t {
 #define FASTMAVLINK_MSG_VIDEO_STREAM_STATUS_FIELD_ROTATION_OFS  14
 #define FASTMAVLINK_MSG_VIDEO_STREAM_STATUS_FIELD_HFOV_OFS  16
 #define FASTMAVLINK_MSG_VIDEO_STREAM_STATUS_FIELD_STREAM_ID_OFS  18
+#define FASTMAVLINK_MSG_VIDEO_STREAM_STATUS_FIELD_CAMERA_DEVICE_ID_OFS  19
 
 
 //----------------------------------------
@@ -57,7 +59,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_status_pack(
     fmav_message_t* _msg,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t stream_id, uint16_t flags, float framerate, uint16_t resolution_h, uint16_t resolution_v, uint32_t bitrate, uint16_t rotation, uint16_t hfov,
+    uint8_t stream_id, uint16_t flags, float framerate, uint16_t resolution_h, uint16_t resolution_v, uint32_t bitrate, uint16_t rotation, uint16_t hfov, uint8_t camera_device_id,
     fmav_status_t* _status)
 {
     fmav_video_stream_status_t* _payload = (fmav_video_stream_status_t*)_msg->payload;
@@ -70,6 +72,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_status_pack(
     _payload->rotation = rotation;
     _payload->hfov = hfov;
     _payload->stream_id = stream_id;
+    _payload->camera_device_id = camera_device_id;
 
 
     _msg->sysid = sysid;
@@ -93,7 +96,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_status_encode(
 {
     return fmav_msg_video_stream_status_pack(
         _msg, sysid, compid,
-        _payload->stream_id, _payload->flags, _payload->framerate, _payload->resolution_h, _payload->resolution_v, _payload->bitrate, _payload->rotation, _payload->hfov,
+        _payload->stream_id, _payload->flags, _payload->framerate, _payload->resolution_h, _payload->resolution_v, _payload->bitrate, _payload->rotation, _payload->hfov, _payload->camera_device_id,
         _status);
 }
 
@@ -102,7 +105,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_status_pack_to_fra
     uint8_t* _buf,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t stream_id, uint16_t flags, float framerate, uint16_t resolution_h, uint16_t resolution_v, uint32_t bitrate, uint16_t rotation, uint16_t hfov,
+    uint8_t stream_id, uint16_t flags, float framerate, uint16_t resolution_h, uint16_t resolution_v, uint32_t bitrate, uint16_t rotation, uint16_t hfov, uint8_t camera_device_id,
     fmav_status_t* _status)
 {
     fmav_video_stream_status_t* _payload = (fmav_video_stream_status_t*)(&_buf[FASTMAVLINK_HEADER_V2_LEN]);
@@ -115,6 +118,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_status_pack_to_fra
     _payload->rotation = rotation;
     _payload->hfov = hfov;
     _payload->stream_id = stream_id;
+    _payload->camera_device_id = camera_device_id;
 
 
     _buf[5] = sysid;
@@ -140,7 +144,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_status_encode_to_f
 {
     return fmav_msg_video_stream_status_pack_to_frame_buf(
         _buf, sysid, compid,
-        _payload->stream_id, _payload->flags, _payload->framerate, _payload->resolution_h, _payload->resolution_v, _payload->bitrate, _payload->rotation, _payload->hfov,
+        _payload->stream_id, _payload->flags, _payload->framerate, _payload->resolution_h, _payload->resolution_v, _payload->bitrate, _payload->rotation, _payload->hfov, _payload->camera_device_id,
         _status);
 }
 
@@ -150,7 +154,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_status_encode_to_f
 FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_status_pack_to_serial(
     uint8_t sysid,
     uint8_t compid,
-    uint8_t stream_id, uint16_t flags, float framerate, uint16_t resolution_h, uint16_t resolution_v, uint32_t bitrate, uint16_t rotation, uint16_t hfov,
+    uint8_t stream_id, uint16_t flags, float framerate, uint16_t resolution_h, uint16_t resolution_v, uint32_t bitrate, uint16_t rotation, uint16_t hfov, uint8_t camera_device_id,
     fmav_status_t* _status)
 {
     fmav_video_stream_status_t _payload;
@@ -163,6 +167,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t fmav_msg_video_stream_status_pack_to_ser
     _payload.rotation = rotation;
     _payload.hfov = hfov;
     _payload.stream_id = stream_id;
+    _payload.camera_device_id = camera_device_id;
 
 
     return fmav_finalize_serial(
@@ -285,6 +290,14 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_video_stream_status_get_field_st
 }
 
 
+FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_video_stream_status_get_field_camera_device_id(const fmav_message_t* msg)
+{
+    uint8_t r;
+    memcpy(&r, &(msg->payload[19]), sizeof(uint8_t));
+    return r;
+}
+
+
 
 
 
@@ -297,9 +310,9 @@ FASTMAVLINK_FUNCTION_DECORATOR uint8_t fmav_msg_video_stream_status_get_field_st
 
 #define mavlink_video_stream_status_t  fmav_video_stream_status_t
 
-#define MAVLINK_MSG_ID_VIDEO_STREAM_STATUS_LEN  19
+#define MAVLINK_MSG_ID_VIDEO_STREAM_STATUS_LEN  20
 #define MAVLINK_MSG_ID_VIDEO_STREAM_STATUS_MIN_LEN  19
-#define MAVLINK_MSG_ID_270_LEN  19
+#define MAVLINK_MSG_ID_270_LEN  20
 #define MAVLINK_MSG_ID_270_MIN_LEN  19
 
 #define MAVLINK_MSG_ID_VIDEO_STREAM_STATUS_CRC  59
@@ -314,12 +327,12 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_video_stream_status_pack(
     uint8_t sysid,
     uint8_t compid,
     mavlink_message_t* _msg,
-    uint8_t stream_id, uint16_t flags, float framerate, uint16_t resolution_h, uint16_t resolution_v, uint32_t bitrate, uint16_t rotation, uint16_t hfov)
+    uint8_t stream_id, uint16_t flags, float framerate, uint16_t resolution_h, uint16_t resolution_v, uint32_t bitrate, uint16_t rotation, uint16_t hfov, uint8_t camera_device_id)
 {
     fmav_status_t* _status = mavlink_get_channel_status(MAVLINK_COMM_0);
     return fmav_msg_video_stream_status_pack(
         _msg, sysid, compid,
-        stream_id, flags, framerate, resolution_h, resolution_v, bitrate, rotation, hfov,
+        stream_id, flags, framerate, resolution_h, resolution_v, bitrate, rotation, hfov, camera_device_id,
         _status);
 }
 
@@ -334,7 +347,7 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_video_stream_status_encode(
         sysid,
         compid,
         _msg,
-        _payload->stream_id, _payload->flags, _payload->framerate, _payload->resolution_h, _payload->resolution_v, _payload->bitrate, _payload->rotation, _payload->hfov);
+        _payload->stream_id, _payload->flags, _payload->framerate, _payload->resolution_h, _payload->resolution_v, _payload->bitrate, _payload->rotation, _payload->hfov, _payload->camera_device_id);
 }
 
 #endif
@@ -345,13 +358,13 @@ FASTMAVLINK_FUNCTION_DECORATOR uint16_t mavlink_msg_video_stream_status_pack_txb
     fmav_status_t* _status,
     uint8_t sysid,
     uint8_t compid,
-    uint8_t stream_id, uint16_t flags, float framerate, uint16_t resolution_h, uint16_t resolution_v, uint32_t bitrate, uint16_t rotation, uint16_t hfov)
+    uint8_t stream_id, uint16_t flags, float framerate, uint16_t resolution_h, uint16_t resolution_v, uint32_t bitrate, uint16_t rotation, uint16_t hfov, uint8_t camera_device_id)
 {
     return fmav_msg_video_stream_status_pack_to_frame_buf(
         (uint8_t*)_buf,
         sysid,
         compid,
-        stream_id, flags, framerate, resolution_h, resolution_v, bitrate, rotation, hfov,
+        stream_id, flags, framerate, resolution_h, resolution_v, bitrate, rotation, hfov, camera_device_id,
         _status);
 }
 

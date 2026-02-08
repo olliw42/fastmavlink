@@ -15,7 +15,6 @@
 //------------------------------
 
 #define FASTMAVLINK_MSG_ENTRY_HEARTBEAT  {0, 50, 9, 0, 0, 0}
-#define FASTMAVLINK_MSG_ENTRY_PROTOCOL_VERSION  {300, 217, 22, 0, 0, 0}
 
 
 /*------------------------------
@@ -41,8 +40,7 @@
  ------------------------------*/
 
 #define FASTMAVLINK_MSG_ENTRIES {\
-  FASTMAVLINK_MSG_ENTRY_HEARTBEAT,\
-  FASTMAVLINK_MSG_ENTRY_PROTOCOL_VERSION\
+  FASTMAVLINK_MSG_ENTRY_HEARTBEAT\
 }
 
 
