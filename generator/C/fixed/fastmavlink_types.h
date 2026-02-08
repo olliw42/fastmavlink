@@ -76,7 +76,7 @@ typedef struct _fmav_message {
     uint8_t magic;
     uint8_t len;
     uint8_t incompat_flags; // only v2, see FASTMAVLINK_INCOMPAT_FLAGS
-    uint8_t compat_flags;  // only v2
+    uint8_t compat_flags; // only v2
     uint8_t seq;
     uint8_t sysid;
     uint8_t compid;
